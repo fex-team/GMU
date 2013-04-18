@@ -1,0 +1,114 @@
+
+.ui-slider {
+    height: 148px;
+}
+
+.ui-slider-item img {
+    background:#E7E7E7 url(ui-slider-imgbg.png) center center no-repeat;
+}
+
+.ui-slider-item > p {
+    color: #fff;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 6px 0;
+    text-indent: 10px;
+}
+
+
+.ui-slider-dots b {
+    display: inline-block;
+    margin: 0 4px;
+    width: 6px;
+    height: 6px;
+    border-radius: 3px;
+    background: rgba(144, 144, 144, 0.8);
+}
+
+.ui-slider-dots .ui-slider-dot-select {
+    background: #fff;
+}
+
+.ui-slider-pre, .ui-slider-next {
+    position: absolute;
+    z-index: 99;
+    width: 20px;
+    height: 40px;
+    top:50%;
+    margin-top: -35px;
+    background: rgba(0, 0, 0, 0.3) url(ui-slider-arrow.png) no-repeat;
+    background-size: 35px 15px;
+    outline: none;
+}
+.ui-slider-pre b, .ui-slider-next b {
+    display: inline-block;
+    width:50px;
+    height:60px;
+    position: relative;
+    top:-10px;
+}
+
+.ui-slider-pre b {
+    left:0;
+}
+.ui-slider-next b {
+    left:-30px;
+}
+.ui-slider-pre {
+    background-position: 3px center;
+    left: 0;
+    border-radius: 0 20px 20px 0;
+}
+
+.ui-slider-next {
+    background-position: -18px center;
+    right: 0;
+    border-radius: 20px 0 0 20px;
+}
+
+/*css for pad*/
+@media all and (min-device-width:768px) and (max-device-width: 1024px){
+    .ui-slider-item > p {
+        font-size: 16px;
+        padding: .5em 0;
+        text-indent: .8em;
+    }
+    .ui-slider-dots {
+        bottom:.5em;
+        padding-right: .5em;
+    }
+
+    .ui-slider-dots b {
+        margin-right: .5em;
+        width: .5em;
+        height: .5em;
+        border-radius: .25em;
+    }
+    .ui-slider-pre, .ui-slider-next {
+        width: 24px;
+        height: 48px;
+        top:50%;
+        margin-top: -42px;
+        background-size: 42px 18px;
+    }
+    .ui-slider-pre b, .ui-slider-next b {
+        width:60px;
+        height:72px;
+        top:-12px;
+    }
+
+    .ui-slider-pre b {
+        left:0;
+    }
+    .ui-slider-next b {
+        left:-36px;
+    }
+    .ui-slider-pre {
+        background-position: 3px center;
+        border-radius: 0 24px 24px 0;
+    }
+
+    .ui-slider-next {
+        background-position: -22px center;
+        border-radius: 24px 0 0 24px;
+    }
+}

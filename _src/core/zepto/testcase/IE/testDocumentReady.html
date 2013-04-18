@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <title>Zepto DOM unit tests</title>
+</head>
+<body>
+
+    <div id="appendtoprependto_container"><div id="appendtoprependto"></div></div>
+    <div id="insertbeforeinsertafter_container"><div id="insertbeforeinsertafter"></div></div>
+    <script src="../../polyfill.js"></script>
+  	<script src="../../zepto.js"></script>
+    <script src="../../event.js"></script>
+    <script>
+        /*
+        var arg1, arg2, fired = false
+        $(function (Z1) {
+            arg1 = Z1
+            $(document).ready(function (Z2) {
+                arg2 = Z2
+                fired = true
+                alert('ready')
+            })
+        })
+        */
+
+        $(document).ready(function (Z2) {
+
+            alert('ready1')
+            $(document).ready(function (Z2) {
+
+                alert('ready2')
+            })
+        })
+        //alert(fired)
+        //console.log(arg1)
+        //console.log(arg2)
+    </script>
+</body>
+</html>

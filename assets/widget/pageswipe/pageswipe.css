@@ -1,0 +1,25 @@
+
+.ui-pageswipe{
+    position: relative;
+    width:100%;
+    overflow: hidden;
+}
+
+.ui-pageswipe-wheel {
+    width:200%;
+    position: relative;
+    -webkit-transform: translate3d(0, 0, 0);
+    -webkit-transition-duration: 0ms;
+    -webkit-animation-timing-function:ease-out;
+}
+.ui-pageswipe-content {
+    width: 50%;
+}
+
+.ui-pageswipe-index {
+    width:50%;
+    position: absolute;
+    z-index: 998;
+    left: 50%;
+    top:0;
+}

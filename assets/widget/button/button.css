@@ -1,0 +1,19 @@
+.ui-helper-hidden {
+    position: absolute !important;
+    clip: rect(1px 1px 1px 1px);
+    left: -10000px;
+}
+.ui-button{
+    cursor:pointer;
+    -webkit-user-select: none;
+    -webkit-box-sizing:border-box;
+    box-sizing:border-box;
+    -webkit-appearance:none;
+}
+.ui-button.ui-state-disable {
+    cursor: default;
+}
+.ui-button-icon-only .ui-button-text {
+    position: absolute !important;
+    clip: rect(1px 1px 1px 1px);
+}

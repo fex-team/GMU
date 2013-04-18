@@ -1,0 +1,80 @@
+.nav {
+    background: #ddd;
+    text-align: center;
+    height: 40px;
+    line-height: 40px;
+    color: #636363;
+    font-size: 18px;
+    font-weight: bold;
+    position: relative;
+    z-index: 5;
+    -webkit-box-shadow: 0 2px 16px #999;
+}
+
+.nav>span {
+    position: absolute;
+    width: 38px;
+    height: 35px;
+    line-height: 35px;
+    text-indent: 200px;
+    cursor: pointer;
+    border:1px solid #EBEBEB;
+    margin: 3px;
+    -webkit-text-shadow:0 1px 1px #666;
+    /*    border: 1px solid #C8C8C8;
+   border-radius: 2px;
+   background-color: #D8D8D8;*/
+
+}
+
+body{
+    background-color: #333;
+}
+
+
+div.container{
+    width:100%;
+    text-align: center;
+}
+
+#refresh{
+    margin: 0 20px 20px 20px;
+}
+
+div.wrap{
+    margin: 20px 0 0 20px;
+    height:260px;
+}
+
+/*chart*/
+div#linechart canvas{
+    border: 1px #000;
+    -webkit-border-radius: 10px;
+    -webkit-box-shadow: inset 0px 0px 24px #999;
+}
+
+
+#linechart .value-label{
+    color: #ffffff;
+}
+
+
+.tips-container{
+    text-align: left;
+    background-color: rgba(0,0,0,0) !important;
+}
+
+.tip-color{
+    color: #333 !important;
+}
+
+.tip-group{
+    display: inline-block;
+    width: 5.5em;
+}
+
+.tip-content{
+    color: #ffffff;
+    margin: 0 !important;
+}
+

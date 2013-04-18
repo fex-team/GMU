@@ -1,0 +1,288 @@
+::-webkit-scrollbar {
+    width: 0; 
+    height: 0;
+}
+
+body {
+    background: url(./bg.png);
+}
+
+.wrapper {}
+
+header {
+    position: relative;
+}
+
+/** more下拉列表样式 */
+.ui-header {
+    position: relative;
+    border-top: 1px solid #fff;
+    background: #f3f3f3;
+}
+
+.ui-header .nav {
+    padding: 7px 6px 5px 5px;
+}
+
+.ui-header .nav .tab {
+    display: inline-block;
+    -webkit-box-sizing: border-box;
+    padding: 3px 6px;
+    color: #46446d;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    font-size: 15px;
+    -webkit-transform: translate(0px, -2px);
+}
+
+.ui-header .nav .tab-hover {
+    background-color: #DFDFDF;
+    -webkit-border-radius:2px;
+    border: 1px solid #d4d4d4;
+    line-height: 16px;
+    padding: 3px 5px;
+    
+}
+
+.ui-header .nav .more {
+    padding: 3px 1px ;
+    margin-left: 5px;
+}
+
+.ui-header .nav .more-tab-hover {
+	background-color: #DFDFDF;
+	border: 1px solid #d4d4d4;
+	-webkit-border-radius:2px;
+	padding: 2px 0px ;
+}
+
+.ui-header .nav .tab.on {
+    border: 1px solid #98b7e5;
+    -webkit-border-radius: 2px;
+    background: #bdd8ff;
+    color: #084fb2;
+    line-height:16px;
+}
+
+.ui-header .logo {
+    width: 71px;
+    height: 23px;
+    vertical-align: -3px;
+    background: url(./logo.png) center no-repeat;
+    background-size: 71px 23px;
+    -webkit-background-size: 71px 23px;
+}
+
+.ui-header .n-tabs {
+    width: auto;
+    display: -webkit-box;
+    -webkit-box-pack: end;
+    position: absolute;
+    top: 7px;
+    right: 12px;
+    font-size: 0;
+    -webkit-transform: translate(-5px, 2px);
+}
+
+.ui-header .more, .ui-header .more2 {
+    position: relative;
+    padding-right: 10px;
+}
+
+.ui-header .more span, .ui-header .more2 span {
+    position: absolute;
+    top: 11px;
+    right: -8px;
+    width: 0px;
+    height: 0px;
+    border-bottom: none;
+    border-top: 4px solid #46446d;
+    border-left: 3px solid transparent;
+    border-right: 3px solid transparent;
+}
+
+.ui-header .more span.on, .ui-header .more2 span.on {
+    border-top: none;
+    border-bottom: 4px solid #0058D2;
+    border-left: 3px solid transparent;
+    border-right: 3px solid transparent;
+}
+
+.ui-more-links a {
+    font-size: 15px;
+    color: #36355a;
+}
+
+/** suggestion */
+.search {
+    position: relative;
+    padding: 0 5px 5px 5px;
+    background: #F3F3F3;
+    display: -webkit-box;
+    -webkit-box-pack: start;
+    z-index: 999;
+}
+
+.search input {
+    border: none;
+    border-radius: 0;
+    background: none;
+    -webkit-appearance: none;
+    font-size: 16px;
+    vertical-align: middle;
+}
+
+.search-input {
+    -webkit-box-flex: 1;
+    border: 1px solid #9a9a9a;
+    background: #fff url(./i-1.0.0.png) 0 0 no-repeat;
+    border-radius: 2px 0 0 2px;
+}
+
+.search-input input {
+    width: 100%;
+    height: 39px;
+    padding: 0 0px;
+}
+
+.search-button {
+    border: 1px solid #888888;
+    border-left: none;
+    border-radius: 0 2px 2px 0;
+    z-index: 0;
+}
+
+.search-button input {
+    -webkit-appearance: none;
+	-moz-appearance: none;
+	line-height: 39px;
+	height: 39px;
+	padding: 0 3px;
+	font-weight: bold;
+	font-size: 16px;
+	color: #000;
+	margin: 0;
+	border: 0 none transparent;
+	border-radius: 0 !important;
+	background: -moz-linear-gradient(-90deg,#f7f7f7,#dfdfdf);
+	background: -o-linear-gradient(-90deg,#f7f7f7,#dfdfdf);
+	background: -webkit-gradient(linear,left top,left bottom,from(#f7f6f6),to(#dfdfdf));
+	filter: progid : DXImageTransform.Microsoft.gradient(startColorstr=#f7f7f7,endColorstr=#dfdfdf);
+    cursor: pointer;
+}
+
+.search-button-hover{
+	background: -webkit-gradient(linear,left top,left bottom,from(#dfdfdf),to(#f7f6f6)) !important;
+}
+
+.ui-dialog .ui-dialog-content .buttonContent {
+    text-align: center;
+}
+
+.ui-dialog .ui-dialog-content button {
+    width: 80px;
+    height: 30px;
+    cursor: pointer;
+    border: 1px solid #999;
+    -webkit-appearance: none;
+}
+
+.ui-dialog .ui-dialog-content .ok {
+    margin-left: 10px;
+}
+
+/** navigator */
+.instance2 {
+    display: -webkit-box;
+    -webkit-box-orient: horizontal;
+    border-top: 1px solid #0045a5;
+    border-bottom: 1px solid #0045a5;
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0.37, rgb(81, 188, 27)), color-stop(0.85, rgb(61, 168, 19)));
+}
+
+.instance2 .ui-navigator-wrap, .instance2 .ui-navigator-fix {
+    overflow: hidden;
+}
+
+.instance2 .ui-navigator-swipeEffect {
+    /** Safari and Chrome */
+    -webkit-transition-property: -webkit-transform;
+    -webkit-transition-duration: 300ms;
+    -webkit-transition-timing-function: ease-out;
+}
+
+.instance2 .ui-navigator-list, .instance2 .ui-navigator-fix {
+    display: -webkit-box;
+    -webkit-box-orient: horizontal;
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0.37, rgb(81, 188, 27)), color-stop(0.85, rgb(61, 168, 19)));
+}
+
+.instance2 .ui-navigator-list li.cur, .instance2 .fix-cur {
+    -webkit-box-flex: 1;
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0.37, rgb(53, 149, 15)), color-stop(0.85, rgb(53, 151, 15)));
+}
+
+.instance2 .ui-navigator-list li a, .instance2 .ui-navigator-fix a {
+    display: -webkit-box;
+    -webkit-box-sizing: border-box;
+    -webkit-box-align: center;
+    -webkit-box-pack: center;
+    -webkit-box-flex: 1;
+    padding: 0 6px;
+    height: 44px;
+    font-size: 18px;
+    color: #ffffff;
+    text-decoration: none;
+}
+
+#carouselWrap {
+    position: relative;
+    height: 180px;
+    background-color: #3b3b3b;
+}
+
+/** page */
+#page {
+    position: relative;
+}
+
+#scroller {
+    /**	-webkit-touch-callout: none; */
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    padding: 0;
+    z-index: 1;
+}
+
+#scroller #thelist ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    text-align: left;
+}
+
+#scroller #thelist li {
+    padding: 0 10px;
+    height: 40px;
+    line-height: 40px;
+    border-bottom: 1px solid #ccc;
+    border-top: 1px solid #fff;
+    background-color: #fafafa;
+    font-size: 14px;
+}
+
+#area {
+    position: relative;
+    clear: both;
+    height: 300px;
+    overflow: hidden;
+}
+
+#scroller #thelist li.ui-list-hover {
+    background:#ededed;
+}
+
+.ui-more-link-hover {
+    background-color: #ccc;
+}

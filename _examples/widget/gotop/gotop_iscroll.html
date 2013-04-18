@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+<head>
+    <title>gotop demo - iscroll</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <!--demo展示所用css，不用关心 begin-->
+    <link rel="stylesheet" type="text/css" href="../../../assets/reset.css" />
+    <link rel="stylesheet" href="gotop_demo.css"/>
+    <!--demo展示所用css end-->
+    <!--组件依赖css begin-->
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/gotop/gotop.css" />
+    <!--组件依赖css end-->
+    <!--组件依赖js begin-->
+    <script type="text/javascript" src="../../../_src/core/zepto.js"></script>
+    <script type="text/javascript" src="../../../_src/core/zepto.extend.js"></script>
+    <script type="text/javascript" src="../../../_src/core/zepto.ui.js"></script>
+    <script type="text/javascript" src="../../../_src/core/zepto.fix.js"></script>
+    <script type="text/javascript" src="../../../_src/widget/gotop.js"></script>
+    <script type="text/javascript" src="../../../_src/widget/gotop.iscroll.js"></script>
+    <!--组件依赖js end-->
+
+    <!--demo展示所用js begin-->
+    <script type="text/javascript" src="../../../_src/core/zepto.iscroll.js"></script>
+    <!--demo展示所用js end-->
+</head>
+<body>
+<div id="main">
+    <div id="thelist" >
+    </div>
+</div>
+<div id="gotop"></div>
+
+<script>
+    //填充页面
+    for(var i = 0, html = []; i < 50; i++) {html.push('<li>第 ' + i + ' 行</li>');}
+    $('#thelist').html(html.join(''));
+    //创建iScroll
+    var iScroll_1 = new iScroll('main');
+
+    //创建组件
+    $('#gotop').gotop({
+        iScrollInstance: iScroll_1      //将iscroll实例传入
+    });
+</script>
+<!--demo公用头部展示所用js，可以不用加载 begin-->
+<script id="bootstrap" src="../../example.js" type="text/javascript" data-page="普通页面|gotop.html,使用iScroll|gotop_iscroll.html"></script>
+<!--demo公用头部展示所用js end-->
+</body>
+</html>

@@ -1,0 +1,59 @@
+.ui-toolbar {
+    width:100%;
+    z-index: 999
+}
+
+.ui-toolbar-wrap {
+    position: relative;
+}
+
+.ui-toolbar-placeholder {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    overflow: visible;
+    position: relative;
+}
+
+.ui-toolbar-title {
+    height: 100%;
+}
+
+.ui-toolbar-backbtn {
+    display: block;
+    position: relative;
+    float: left;
+    cursor: pointer;
+    -webkit-box-sizing:border-box;
+    box-sizing:border-box;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.ui-toolbar-left, .ui-toolbar-right {
+    position: absolute;
+    top:0;
+    height: 100%;
+}
+
+.ui-toolbar-left {
+    left: 0;
+}
+.ui-toolbar-right {
+    top:3px;
+    right: 0;
+}
+.ui-toolbar-left > * {
+    display: inline-block;
+    float: left;
+    margin-right:5px;
+    text-align: center;
+}
+.ui-toolbar-right > * {
+    display: inline-block;
+    float: right;
+    margin-right:10px;
+    text-align: center;
+}
+
+

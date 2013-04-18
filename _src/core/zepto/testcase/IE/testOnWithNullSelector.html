@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <title>Zepto DOM unit tests</title>
+</head>
+<body>
+    <div id="fixtures">
+    </div>
+    <script src="../src/all.js"></script>
+    <script>
+        var global = {};
+        global.el = $('<div />').appendTo('#fixtures');
+
+        function click(el){
+            var event = document.createEvent('MouseEvents')
+            event.initMouseEvent('click', true, true, document.defaultView, 1, 0, 0, 0, 0, false, false, false, false, 0, null)
+            $(el).get(0).dispatchEvent(event)
+        }
+
+        var log = []
+        global.el.on('click', null, function(){ log.push('a') }).
+                on('click', undefined, function(){ log.push('b') })
+
+        click(global.el)
+        alert(log.sort().join(' '))
+    </script>
+</body>
+</html>

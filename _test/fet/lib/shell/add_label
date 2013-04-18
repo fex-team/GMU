@@ -1,0 +1,1 @@
+RewriteEngine on\n    RewriteCond %{REQUEST_URI} ^/list.php\n    RewriteRule  ^/(.*)$ /fet/bin/list.php/$1 [L,NC]\n    RewriteCond %{REQUEST_URI} ^/run.php\n    RewriteRule  ^/(.*)$ /fet/bin/run.php/$1 [L,NC]\n    RewriteCond %{REQUEST_URI} ^/lib/\n    RewriteRule   ^/(.*)$ /fet/$1 [L,NC]\n    RewriteCond %{REQUEST_URI} ^/

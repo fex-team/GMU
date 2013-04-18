@@ -1,0 +1,38 @@
+.ui-input-mask{
+	position: relative;
+	z-index: 100;
+}
+
+.ui-suggestion{
+	position: absolute;
+	display: none;
+	z-index: 100;
+}
+
+.ui-suggestion ul li{
+	position: relative;
+}
+
+.ui-suggestion .ui-suggestion-result{
+	display: block;
+}
+
+.ui-suggestion .ui-suggestion-content{
+	position: relative;
+}
+
+.ui-suggestion-button span{
+	display: inline-block;
+}
+
+.ui-suggestion-button span:first-child{
+	float: left;
+}
+
+.ui-suggestion-button span:last-child{
+ 	float: right;
+}
+
+.ui-suggestion .ui-suggestion-plus{
+	position: absolute;
+}

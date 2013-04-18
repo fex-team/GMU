@@ -1,0 +1,11 @@
+.ui-navigator .ui-navigator-shadowr, .ui-navigator .ui-navigator-shadowl {
+    /*gmu-image-self*/background: url('nav.png') right -44px no-repeat;
+}
+
+.ui-navigator .ui-navigator-shadowl{
+    /*gmu-image-self*/background-position: 0 0;
+}
+
+.ui-navigator .ui-navigator-shadowall {
+    /*gmu-image-self*/background: url('nav.png') 0 0 no-repeat, url('nav.png') right -44px no-repeat;
+}

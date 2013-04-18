@@ -1,0 +1,78 @@
+body {
+  padding: 1em;
+  font: medium "American Typewriter", Helvetica, sans-serif;
+}
+a:link, a:visited { color: darkblue; }
+#results.failed em { font-style: normal; color: crimson; }
+#results.passed em { font-style: normal; color: darkgreen; }
+#fixtures {
+  position: absolute;
+  top: -10000px;
+  left: -10000px;
+}
+#nav {
+  list-style: none;
+  padding: 0;
+  margin: 2em 0 0 0;
+  font-size: 12px;
+  max-width: 30em;
+}
+#nav a {
+  padding: .8em 1.5em;
+  background: #eee;
+  border-top: 2px solid white;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  display: block;
+  color: #555;
+}
+#nav .current a { background: #ccc; color: black; }
+#nav a:active { background: #555; color: white; }
+
+@media only screen and (max-device-width:480px) {
+  body { margin: 7px; font-size: small; }
+  h1 { margin: 0; }
+  h1, #results { text-align: center; }
+  #results { min-height: 3em; }
+  #nav { font-size: 14px; max-width: auto; }
+}
+
+@-webkit-keyframes animName {
+      0% {
+        -webkit-transform: rotate(180deg) scale(.8);
+        opacity: 1;
+      }
+      100% {
+        -webkit-transform: rotate(0deg) scale(1) translate3d(80px, 20px, 0);
+        opacity: 0.5;
+      }
+    }
+@-moz-keyframes animName {
+      from {
+        -moz-transform: rotate(180deg) scale(.8) translate(0, 0);
+        opacity: 1;
+      }
+      to {
+        -moz-transform: rotate(0deg) scale(1) translate(80px, 20px);
+        opacity: 0.5;
+      }
+    }
+
+#keyframetest {
+    opacity: 0.5;
+    -webkit-transform: translate3d(80px, 20px, 0);
+    -moz-transform: translate3d(80px, 20px, 0);
+}
+
+.fixtures-left {
+    width: 120px;
+    float: left;
+}
+.fixtures-right {
+    margin-left: 120px;
+}
+
+html, body {
+    -ms-touch-action: none; /* Direct all pointer events to JavaScript code. */
+}

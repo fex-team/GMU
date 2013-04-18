@@ -1,0 +1,24 @@
+/*page styles*/
+#container {
+    margin-top: 20px;
+    width: 100%;
+}
+
+#wheel {
+    margin: 0 auto;
+    width: 275px;
+}
+
+body{
+    background-color: #808080;
+}
+
+
+#prize_dialog{
+    width: 200px;
+    height: 210px;
+    -webkit-border-radius: 4px;
+    background-color: #ccc;
+    display: none;
+    position: relative;
+}

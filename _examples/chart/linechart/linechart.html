@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>图表示例</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <link href="css/prettychart.css" rel="stylesheet">
+    <link href="css/reset.css" rel="stylesheet">
+    <link href="../../../assets/chart/lineChart.css" rel="stylesheet">
+    <link href="css/jquery.mobile-1.2.0.min.css" rel="stylesheet">
+
+</head>
+<body>
+
+<div class="container">
+    <div class="wrap">
+        <div id="linechart"></div>
+    </div>
+    <div class="bottom">
+    <a id="refresh" href="#" class="ui-btn ui-shadow ui-btn-corner-all ui-btn-icon-left ui-btn-up-b" >
+        <span class="ui-btn-inner ui-btn-corner-all">
+            <span class="ui-btn-text">
+               刷新数据
+             </span>
+            <span class="ui-icon ui-icon-refresh ui-icon-shadow ui-iconsize-18">&nbsp;</span></span></a>
+        </div>
+</div>
+
+<script type="text/javascript" src="../../../_src/core/zepto.js"></script>
+<script type="text/javascript" src="../../../_src/core/zepto.extend.js"></script>
+<script type="text/javascript" src="../../../_src/core/zepto.ui.js"></script>
+<script type="text/javascript" src="../../../_src/chart/base/Chart.js"></script>
+<script type="text/javascript" src="../../../_src/chart/line/lineChart.js"></script>
+<script type="text/javascript">
+    $(function() {
+
+        if($.os.android){
+            $.later(chartDemo,200);
+        }else{
+            chartDemo();
+        }
+
+        function chartDemo(){
+            var chartWidth = window.innerWidth - 20;
+            var chartHeight = 200;
+
+
+            var lineChart = $.ui.LineChart("#linechart", {
+                "width":chartWidth - 65,
+                "height":200,
+                "tipsHeight":25,
+                "gridXStep":4,
+                "axisColor":"rgba(0,0,0,0)",
+                "backgroundColor":"#fff",
+                "chartOffsetX":30,
+                "showLastSplitLineX":false,
+                "showLastSplitLineY":false,
+                "touchTimeout":200
+            });
+
+            var NUM_DATA = 40;
+
+            function generateLargeData(min, max) {
+                min = min || 0;
+                max = max || 100;
+                var i = 0, data = [];
+                while (i < NUM_DATA) {
+                    data[i] = Math.round(Math.random() * (max - min)) + min;
+                    i++;
+                }
+                return data;
+            }
+
+            var cateArray = new Array(NUM_DATA);
+            for (var i = 0; i < NUM_DATA; i++) {
+                cateArray[i] = '';
+            }
+            //lineChart.setCategoryGrid(["09pm","","","","","","9pm","","","","","10pm","","","","","","11pm","","","","","12pm"]);
+            lineChart.setCategoryGrid(cateArray);
+            lineChart.setValueGrid([0, 25, 50, 75, 100, 125, 150]);
+
+            function setChartData() {
+                var data1 = generateLargeData(80, 120);
+                var data2 = generateLargeData(50, 110);
+                var data3 = generateLargeData(30, 75);
+                lineChart.setData([
+                    {type:"none", name:"产品1", data:data1, color:"#fa99bc"},
+                    {type:"none", name:"产品2", data:data2, color:"#56acd8"},
+                    {type:"none", name:"产品3", data:data3, color:"#ffdd7c"}
+                ]);
+                return {data1:data1, data2:data2};
+            }
+
+            setChartData();
+
+
+
+            var screenWidth = window.innerWidth;
+
+            function refreshLayout() {
+                if(window.innerWidth != screenWidth){
+                    lineChart.setWidth(window.innerWidth - 20 - 65);
+                    screenWidth = window.innerWidth;
+                }else{
+                    $.later(refreshLayout);
+                }
+            }
+
+
+            var resizeEvt = 'onorientationchange' in window ? 'orientationchange' : 'resize';
+
+            window.addEventListener(resizeEvt, function () {
+                $.later(refreshLayout);
+            }, false);
+
+
+            $('#refresh').on('click', function (event) {
+                event.preventDefault();
+                setChartData();
+            });
+
+            /*
+
+             //fix for android
+             if($.os.android){
+             $.later(function(){
+             //判断是否变化了大小
+             if(chartWidth != window.innerWidth - 20){
+             refreshLayout();
+             }
+             },500);
+             }
+             */
+        }
+    });
+</script>
+<script id="bootstrap" src="../../example.js"
+        type="text/javascript"
+        data-theme="default"
+        data-use="chart/core/Chart.js, chart/line/lineChart.js"
+        data-backurl="../../"
+        data-page="折线图|linechart.html"></script>
+</body>
+</html>

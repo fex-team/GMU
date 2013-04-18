@@ -1,0 +1,23 @@
+/*page styles*/
+#container {
+    width: 100%;
+}
+
+.luckchest {
+    margin: 0 auto;
+    width: 320px;
+}
+
+body{
+    background-color: #808080;
+}
+
+
+#prize_dialog{
+    width: 200px;
+    height: 210px;
+    -webkit-border-radius: 4px;
+    background-color: #ccc;
+    display: none;
+    position: relative;
+}

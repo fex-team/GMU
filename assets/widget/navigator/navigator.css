@@ -1,0 +1,21 @@
+/** 一级导航样式 */
+.ui-navigator {
+    display: -webkit-box;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+
+.ui-navigator .ui-navigator-list, .ui-navigator .ui-navigator-fix {
+    display: -webkit-box;
+    -webkit-box-flex: 1;
+}
+
+.ui-navigator .ui-navigator-list li{
+    -webkit-box-flex: 1;
+}
+
+.ui-navigator .ui-navigator-list li a, .ui-navigator .ui-navigator-fix{
+    display: -webkit-box;
+    -webkit-box-sizing: border-box;
+    -webkit-box-align: center;
+    -webkit-box-pack: center;
+}

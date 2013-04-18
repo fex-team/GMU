@@ -1,0 +1,89 @@
+.ui-button{
+    display: inline-block;
+    padding: 0.5em 0.6em;
+    margin: 2px;
+    border: 1px solid #D2D2D2;
+    -webkit-border-radius:  2px;
+    border-radius:  2px;
+    background-color: #fff;
+    color: #333;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+@media all and (min-device-width:768px) and (max-device-width: 1024px){
+    .ui-button{
+        font-size: 16px;
+    }
+}
+.ui-button.white {
+    background-color: rgba(0, 0, 0, 0.4);
+    border-color: black;
+}
+.ui-button.ui-state-disable {
+    color:#ababab;
+    background-color:#e6e6e6 ;
+    border-color: #d2d2d2;
+}
+.ui-button.ui-state-active {
+    color:#fff;
+    background-color: #2d7ded;
+    border-color:#135cbe;
+}
+.ui-button.ui-state-active.white {
+    color:#fff;
+    background-color: rgba(0, 0, 0, 0.8);
+    border-color:black;
+}
+.ui-button.ui-state-hover{
+    background-color: #d9d9d9;
+    border-color: #B3B3B3;
+}
+.ui-button.ui-state-hover.white{
+    background-color: rgba(0, 0, 0, 0.6);
+    border-color:black;
+}
+.ui-button-text-icon {
+    position: relative;
+}
+.ui-button.white .ui-icon {
+    background-image: url(../../icons-36-white.png);
+}
+.ui-button-text-icon .ui-icon {
+    position: absolute;
+}
+.ui-button-icon-pos-left {
+    padding-left: 30px;
+}
+.ui-button-icon-pos-left .ui-icon {
+    left: 5px;
+    top: 50%;
+    margin-top: -9px;
+}
+.ui-button-icon-pos-right {
+    padding-right: 30px;
+}
+.ui-button-icon-pos-right .ui-icon {
+    right: 5px;
+    top: 50%;
+    margin-top: -9px;
+}
+.ui-button-icon-pos-top {
+    padding-top: 30px;
+}
+.ui-button-icon-pos-top .ui-icon {
+    top: 5px;
+    left: 50%;
+    margin-left: -9px;
+}
+.ui-button-icon-pos-bottom {
+    padding-bottom: 30px;
+}
+.ui-button-icon-pos-bottom .ui-icon {
+    bottom: 5px;
+    left: 50%;
+    margin-left: -9px;
+}
+.ui-button-icon-only {
+    padding: 0.38em 0.5em;
+}

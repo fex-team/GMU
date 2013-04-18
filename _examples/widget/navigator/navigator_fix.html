@@ -1,0 +1,128 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>导航栏组件demo</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    <!--demo展示所用css，不用关心 begin-->
+    <link rel="stylesheet" type="text/css" href="../../../assets/reset.css" />
+    <!--demo展示所用css end-->
+
+    <!--组件依赖css begin-->
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/navigator/navigator.css" />
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/navigator/navigator.iscroll.css" />
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/navigator/navigator.default.css" /> <!--皮肤文件，若不使用该皮肤，可以不加载-->
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/navigator/navigator.iscroll.default.css" /> <!--皮肤文件，若不使用该皮肤，可以不加载-->
+    <!--组件依赖css end-->
+    <!--组件依赖js begin-->
+    <script type="text/javascript" src="../../../_src/core/zepto.js"></script>
+    <script type="text/javascript" src="../../../_src/core/zepto.extend.js"></script>
+    <script type="text/javascript" src="../../../_src/core/zepto.ui.js"></script>
+    <script type="text/javascript" src="../../../_src/core/zepto.iscroll.js"></script>    <!--iScroll-->
+    <script type="text/javascript" src="../../../_src/widget/navigator.js"></script>
+    <script type="text/javascript" src="../../../_src/widget/navigator.iscroll.js"></script>  <!--滑动插件-->
+    <!--组件依赖js end-->
+</head>
+
+<body>
+<h3>左右都有fix元素(setup方式创建)</h3>
+<div id="fix-both">
+    <a class="ui-navigator-fixleft" href="#test1">fixleft</a>
+    <ul>
+        <li><a href="#test1">要闻</a></li>
+        <li><a href="javascript:;">国内</a></li>
+        <li><a class="cur" href="#test2">国际</a></li>
+        <li><a href="#test3">军事</a></li>
+        <li><a href="#test4">社会</a></li>
+        <li><a href="#test5">娱乐</a></li>
+        <li><a href="#test6">女人</a></li>
+        <li><a href="http://www.baidu.com">体育</a></li>
+        <li><a href="#test7">科技</a></li>
+        <li><a href="#test8">互联网</a></li>
+        <li><a href="#test9">教育</a></li>
+        <li><a href="#test10">财经</a></li>
+        <li><a href="#test11">房产</a></li>
+        <li><a href="#test12">汽车</a></li>
+    </ul>
+    <a class="ui-navigator-fixright" href="#test1">fixright</a>
+</div>
+
+<h3>左/右有多个fix元素(render方式创建)</h3>
+<div id="fix-more"></div>
+
+<script type="text/javascript">
+    (function () {
+        /*组件初始化js begin*/
+        $('#fix-both').navigator({     //左右都有fix元素
+            isScrollToNext: false,      //出现半个tab时，不跳动到下一个tab
+            isShowShadow: false        //不显示左右阴影
+        });
+
+        $.ui.navigator('#fix-more', {    //render方式创建
+            content:[
+                {
+                    text:"电影",
+                    url:"#test1"
+                },
+                {
+                    text:"电视剧",
+                    url:"#test2"
+                },
+                {
+                    text:"动漫",
+                    url:"#test1"
+                },
+                {
+                    text:"综艺",
+                    url:"http://www.baidu.com"
+                },
+                {
+                    text:"排行榜",
+                    url:"javascript:;"
+                },
+                {
+                    text:"应用推荐",
+                    url:"javascript:;"
+                },
+                {
+                    text:"美女",
+                    url:"javascript:;"
+                },
+                {
+                    text:"相声",
+                    url:"javascript:;"
+                },
+                {
+                    text:"体育",
+                    url:"javascript:;"
+                },
+                {
+                    text:"资讯",
+                    url:"javascript:;"
+                },
+                {
+                    text:"游戏",
+                    url:"javascript:;"
+                },
+                {
+                    text:"个人",
+                    url:"#test2",
+                    pos: 'right'
+                },
+                {
+                    text:"登录",
+                    url:"http://www.baidu.com",
+                    pos: 'right'
+                }
+            ]
+        });
+        /*组件初始化js end*/
+    })();
+</script>
+
+<!--demo公用头部展示所用js，可以不用加载 begin-->
+<script id="bootstrap" src="../../example.js" type="text/javascript" data-page="普通tab|tab.html,tab相关事件|tab_event.html,可滑动导航栏|navigator.html,带fix可滑动导航|navigator_fix.html,可滑动导航事件|navigator_event.html"></script>
+<!--demo公用头部展示所用js end-->
+
+</body>
+</html>

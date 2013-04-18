@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <title>Zepto DOM unit tests</title>
+    <style>
+    .hidden { display: none; }
+    #show_hide_span1,
+    #show_hide_span2 {
+      display:block
+    }
+    #show_hide_div1 {
+      display:inline-block
+    }
+    #log{
+        position: absolute;
+        right: 0;
+        bottom:0;
+        width:100px;
+        height: 100px;
+        border: 1px solid red;
+    }
+
+  </style>
+  <script>
+      var outerHTML = function(node) {
+          return node.outerHTML || (function(n) {
+              var div = document.createElement('div')
+              div.appendChild(n)
+              var html = div.innerHTML
+              div = null
+              return html
+          })(node)
+      };
+	
+
+  </script>
+</head>
+<body>
+	<div id="show_hide_div1" style="display:none"></div>
+    <span id="show_hide_span1" style="display:none"></span>
+    <div id="log"></div>
+    <div id="appendtoprependto_container"><div id="appendtoprependto"></div></div>
+    <div id="some_element"></div>
+     <div id="delegate_blur_test"><input id="testInput" type="text"></div>
+  <div id="delegate_focus_test"><input type="text"></div>
+    <script>
+	var logger = document.getElementById("log");
+	function log(txt) {
+		logger.innerHTML += txt + '<br>';
+	}
+    </script>
+    <script src="../src/polyfill.js"></script>
+  	<script src="../src/polyfill$wp.js"></script>
+  	<script src="../src/zeptoTemp.js"></script>
+  	<script src="../src/zepto.wp.js"></script>
+    <script src="../src/event.js"></script>
+    <script src="../src/fx.js"></script>
+    <script>
+        $(document.body).delegate('#some_element', 'click', function(e){
+            e.returnValue = false;
+            return false
+        })
+
+        var event = $.Event('click')
+        $('#some_element').trigger(event)
+        alert(event.defaultPrevented)  //TODO IE 下没有defaultPrevented
+    </script>
+</body>
+</html>

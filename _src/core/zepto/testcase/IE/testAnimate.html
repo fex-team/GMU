@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <title>Zepto DOM unit tests</title>
+    <style>
+    body{height:100px; border: 1px solid black;}
+    .hidden { display: none; }
+    #show_hide_span1,
+    #show_hide_span2 {
+      display:block
+    }
+    #show_hide_div1 {
+      display:inline-block
+    }
+
+    #log{
+        position: absolute;
+        left: 0;
+        top:0;
+        width:200px;
+        height: 200px;
+        border: 1px solid red;
+    }
+
+    @-webkit-keyframes animName {
+      0% {
+        -webkit-transform: rotateY(180deg) scale(.8) translate3d(0, 0, 0);
+        opacity: 1;
+      }
+      100% {
+        -webkit-transform: rotateY(0deg) scale(1) translate3d(100px, 100px, 100px);
+        opacity: 0;
+      }
+    }
+    @-moz-keyframes animName {
+      from {
+        -moz-transform: rotateY(180deg) scale(.8) translate(0, 0);
+        opacity: 1;
+      }
+      to {
+        -moz-transform: rotateY(0deg) scale(1) translate(100px, 100px);
+        opacity: 0;
+      }
+    }
+    .animate{
+
+    }
+    #demo {
+        position: absolute;
+        top:0px;
+        left:0px;
+        background:#ccc;
+        width:200px;
+        height:200px;
+        margin-top:200px;
+        overflow: hidden;
+        position:relative;
+        -webkit-transition-property: width, height, top, left, opacity;
+        -webkit-transition-duration: 1s;
+        -moz-transition-property: width, height, top, left, opacity;
+        -moz-transition-duration: 1s;
+        transition-property: width, height, top, left, opacity;
+        transition-duration: 1s;
+    }
+        #animtest_1{
+            width:40px;
+            height:40px;
+            background:red;
+            position: absolute;
+            top:0px;
+            left:0px;
+
+        }
+    #animtest_2{
+        width:60px;height:60px;background:red; position: absolute;top:0px;left: 0px;
+    }
+    @keyframes animName {
+      0% {
+        transform: rotateY(180deg) scale(.8) translate3d(0, 0, 0);
+        opacity: 1;
+      }
+      100% {
+        transform: rotateY(0deg) scale(1) translate3d(100px, 100px, 100px);
+        opacity: 0;
+      }
+    }
+    @-webkit-keyframes animName {
+      0% {
+        -webkit-transform: rotateY(180deg) scale(.8) translate3d(0, 0, 0);
+        opacity: 1;
+      }
+      100% {
+        -webkit-transform: rotateY(0deg) scale(1) translate3d(100px, 100px, 100px);
+        opacity: 0;
+      }
+    }
+  </style>
+  <script>
+      var outerHTML = function(node) {
+          return node.outerHTML || (function(n) {
+              var div = document.createElement('div')
+              div.appendChild(n)
+              var html = div.innerHTML
+              div = null
+              return html
+          })(node)
+      };
+	
+
+  </script>
+</head>
+<body>
+<div id="animtest_1" class="animate">123</div>
+<div id="animtest_2" style="">321</div>
+
+<!--
+<div id="durationtest_1" style="width:40px;height:40px;background:red"></div>
+<div id="durationtest_2" style="width:40px;height:40px;background:red"></div>
+<div id="callbacktest" style="width:40px;height:40px;background:red"><div style="width:40px;height:40px;background:blue"></div></div>
+<div id="keyframetest" style="width:40px;height:40px;background:red;opacity: 0;"></div>
+-->
+<div id="anim_zero_duration_callback_test"></div>
+
+    <script>
+	var logger = document.getElementById("log");
+	function log(txt) {
+		logger.innerHTML += txt + '<br>';
+	}
+    </script>
+    <script src="../src/polyfill.js"></script>
+  	<script src="../src/polyfill$wp.js"></script>
+  	<script src="../src/zeptoTemp.js"></script>
+  	<script src="../src/zepto.wp.js"></script>
+    <script src="../src/event.js"></script>
+    <script src="../src/touch.js"></script>
+    <script src="../src/fx.js"></script>
+    <script>
+        var el = $('#animtest_1'), el2 = $('#animtest_2')
+        /*
+        setTimeout(function(){
+            el.css({
+                '-webkit-transition-property' : 'top, translate3d, rotate',
+                '-webkit-transition-duration' : '3s',
+                'top'         : '200px',
+                '-webkit-transform'  :  'translate3d(100px, 100px, 100px) rotate(180deg)'
+            })
+            el2.css({
+                'transition-property' : 'top, rotate',
+                'transition-duration' : '3s',
+                'top'         : '200px',
+                'transform'  :  'translate3d(100px, 100px, 100px) rotate(180deg)'
+            })
+            //console.log('transform ' + el.css('transform'))
+            //console.log('transition ' + el.css('transition'))
+        }, 100)
+        */
+        el.animate({
+            'translate3d': '100px, 100px, 100px',
+            'rotateZ': '90deg',
+            'scale': '0.8',
+            'opacity': 0.5,
+            'background-color': '#BADA55'
+        }, 5000, 'ease-out')
+
+        el2.animate({
+            'translate3d': '100px, 100px, 100px',
+            'rotate': '-90deg',
+            'background-color': '#BADA55'
+        }, {
+            duration: 5000,
+            easing: 'ease-out'
+        })
+
+        /*
+
+        el2.animate({
+            translate3d: '100px, 100px, 100px',
+            rotateZ: '-90deg',
+            'background-color': '#BADA55'
+        }, {
+            duration: 180,
+            easing: 'ease-out'
+        })
+
+        var node      = document.getElementById('demo'),
+                computed  = getComputedStyle(node, '')
+        EVENT_END = 'WebkitTransition' in node.style ? 'webkitTransitionEnd' : 'transitionend';
+
+        node.addEventListener(EVENT_END, function (e) {
+            console.log(e.propertyName);
+            console.log(e.elapsedTime);
+            console.log(node.style[e.propertyName]);
+        }, false);
+
+        document.onclick = function () {
+            var w = parseFloat(computed.width) + 100;
+            //node.style.width = w + 'px';
+            node.style.top = 10 + 'px'
+            node.style.left = 10 + 'px'
+
+        };
+         */
+    </script>
+</body>
+</html>

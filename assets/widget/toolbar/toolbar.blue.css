@@ -1,0 +1,88 @@
+
+.ui-toolbar-wrap {
+    height: 40px;
+    border: 1px solid #135CBE;
+    border-width: 1px 0;
+    background: #2773dc;
+    color: #fff;
+}
+
+.ui-toolbar-wrap a {
+    text-decoration: none;
+}
+
+.ui-toolbar-title {
+    text-align: center;
+    line-height: 40px;
+}
+
+.ui-toolbar-backbtn {
+    border: 1px solid #135cbe;
+    background: #2d7ded;
+    border-width: 1px 1px 1px 0;
+    line-height: 29px;
+    height: 30px;
+    margin: 5px 0 0 20px;
+    padding: 0 8px 0 6px;
+}
+
+.ui-toolbar-backbtn:before, .ui-toolbar-backbtn:after {
+    content: '\0020';
+    border-width:15px 8px 15px 0;
+    border-style:solid;
+    position: absolute;
+    left: -8px;
+    top: -1px;
+    width:0;
+    height:0;
+    display: block;
+}
+
+.ui-toolbar-backbtn:before {
+    border-color:transparent #135cbe transparent transparent;
+}
+
+.ui-toolbar-backbtn:after {
+    border-color: transparent #2d7ded transparent transparent;
+    left: -7px;
+}
+
+.ui-toolbar .ui-toolbar-backbtn.ui-state-hover {
+    background-color: #135cbe;
+    border-color: #114fa2;
+}
+.ui-toolbar .ui-toolbar-backbtn.ui-state-hover:after {
+    border-color: transparent #135cbe transparent transparent;
+}
+.ui-toolbar .ui-toolbar-backbtn.ui-state-hover:before {
+    border-color: transparent #114fa2 transparent transparent;
+}
+
+/*css for pad*/
+@media all and (min-device-width:768px) and (max-device-width: 1024px){
+    .ui-toolbar-wrap {
+        height: 48px;
+    }
+    .ui-toolbar-title {
+        font-size: 16px;
+        line-height: 48px;
+    }
+    .ui-toolbar-backbtn {
+        line-height: 35px;
+        height: 36px;
+        margin: 6px 0 0 22px;
+        padding: 0 0.6em 0 0.5em;
+    }
+    .ui-toolbar-backbtn:before, .ui-toolbar-backbtn:after {
+        content: '\0020';
+        border-width:18px 9px 18px 0;
+        left: -8px;
+        top: -1px;
+        width:0;
+        height:0;
+        display: block;
+    }
+    .ui-toolbar-backbtn:after {
+        left: -7px;
+    }
+}

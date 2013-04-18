@@ -1,0 +1,30 @@
+.ui-refresh .ui-refresh-up .ui-refresh-icon,
+.ui-refresh .ui-refresh-down .ui-refresh-icon{
+    display: inline-block;
+    width: 25px;
+    height: 25px;
+    vertical-align: middle;
+    background: url('r-flip.png') no-repeat;
+    -webkit-background-size: 25px 25px;
+    -webkit-transition-property: -webkit-transform;
+    -webkit-transition-duration: 400ms;
+    -webkit-transition-timing-function: ease-in-out;
+}
+
+.ui-refresh .ui-refresh-down .ui-refresh-icon{
+    -webkit-transform: rotate(180deg) translateZ(0);
+}
+
+.ui-refresh .ui-refresh-up .ui-refresh-flip{
+    -webkit-transform: rotate(180deg) translateZ(0);
+}
+
+.ui-refresh .ui-refresh-down .ui-refresh-flip{
+    -webkit-transform: rotate(0deg) translateZ(0);
+}
+
+
+.ui-refresh .ui-refresh-up .ui-loading,
+.ui-refresh .ui-refresh-down .ui-loading{
+    -webkit-transition-duration: 0ms;      /*停止flip动画*/
+}

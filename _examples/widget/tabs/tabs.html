@@ -1,0 +1,86 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0">
+    <meta charset="utf-8">
+    <title>选项卡</title>
+    <!--demo展示所用css，不用关心 begin-->
+    <link rel="stylesheet" type="text/css" href="../../../assets/reset.css" />
+    <style>
+        .section {
+            padding:1em 3px;
+        }
+        .section h2 {
+            font-size: 16px;
+            font-weight: bold;
+            padding: 5px 5px;
+            color: #5b5b5b;
+        }
+    </style>
+    <!--demo展示所用css end-->
+    <!--组件依赖css begin-->
+    <link rel="stylesheet" type="text/css" href="../../../assets/transitions.css" />
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/tabs/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/tabs/tabs.default.css" />
+    <!--组件依赖css end-->
+    <!--组件依赖js begin-->
+    <script type="text/javascript" src="../../../_src/core/zepto.js"></script>
+    <script type="text/javascript" src="../../../_src/core/touch.js"></script>      <!--新版zepto合并版中不包括touch.js-->
+    <script type="text/javascript" src="../../../_src/core/zepto.extend.js"></script>
+    <script type="text/javascript" src="../../../_src/core/zepto.ui.js"></script>
+    <script type="text/javascript" src="../../../_src/core/zepto.highlight.js"></script>
+    <script type="text/javascript" src="../../../_src/widget/tabs.js"></script>
+    <!--组件依赖js end-->
+</head>
+<body>
+<div class="section">
+    <div id="container">
+        <div id="tabs1">
+            <ul>
+                <li><a href="#conten1">Tab1</a></li>
+                <li><a href="#conten2">Tab2</a></li>
+                <li><a href="#conten3">Tab3</a></li>
+            </ul>
+            <div id="conten1">content1</div>
+            <div id="conten2"><input type="checkbox" id="input1" /><label for="input1">选中我后tabs不可切换</label></div>
+            <div id="conten3">content3</div>
+        </div>
+    </div>
+</div>
+
+<div class="section">
+    <h2>无动画</h2>
+    <div id="container2">
+        <div id="tabs2">
+            <ul>
+                <li><a href="#conten21" onclick="return false;">Tab1</a></li>
+                <li class="ui-state-active"><a href="#conten22" onclick="return false;">Tab2</a></li>
+                <li><a href="#conten23" onclick="return false;">Tab3</a></li>
+            </ul>
+            <div id="conten21">content1</div>
+            <div id="conten22">content2</div>
+            <div id="conten23">content3</div>
+        </div>
+    </div>
+</div>
+<script>
+    window.scrollTo(0, 1);//收起地址栏
+
+    $('#tabs1').tabs();
+    $('#tabs1').on('beforeActivate', function(e){
+        $('#input1').prop('checked') && e.preventDefault();
+    });
+
+    $('#tabs2').tabs({
+        transition:''
+    });
+</script>
+<!--demo公用头部展示所用js，可以不用加载 begin-->
+<script id="bootstrap" src="../../example.js"
+        type="text/javascript"
+        data-theme="default"
+        data-use="widget/tabs.swipe.js"
+        data-page="选项卡|tabs.html,选项卡render模式|tabs_render.html,选项卡-ajax|tabs_ajax.html,选项卡-json|tabs_json.html,选项卡嵌套|tabs_tabs.html,不缓存内容选项卡|tabs_nocache.html,选项卡－历史纪录|tabs_history.html"></script>
+<!--demo公用头部展示所用js end-->
+</body>
+</html>

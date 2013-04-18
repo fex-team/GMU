@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <title>Zepto DOM unit tests</title>
+</head>
+<body>
+    <div id="fixtures">
+        <div id="ajax_load"></div>
+    </div>
+    <script src="../../src/polyfill.js"></script>
+    <script src="../../src/zepto.js"></script>
+    <script src="../../src/event.js"></script>
+    <script src="../../src/ajax.js"></script>
+    <script>
+        OriginalXHR = $.ajaxSettings.xhr
+        MockXHR = function() {
+            this.headers = []
+            this.responseHeaders = {}
+            MockXHR.last = this
+        }
+        MockXHR.prototype = {
+            open: function(method, url, async) {
+                this.method = method
+                this.url = url
+                this.async = async
+            },
+            setRequestHeader: function(name, value) {
+                this.headers.push({ name: name, value: value })
+            },
+            getResponseHeader: function(name) {
+                return this.responseHeaders[name]
+            },
+            overrideMimeType: function(type) {
+                this.responseHeaders['content-type'] = type
+            },
+            send: function(data) {
+                this.data = data
+            },
+            abort: function() {
+                this.aborted = true
+            },
+            ready: function(readyState, status, responseText, headers) {
+                this.readyState = readyState
+                this.status = status
+                this.responseText = responseText
+                $.extend(this.responseHeaders, headers)
+                this.onreadystatechange()
+            },
+            onreadystatechange: function() {}
+        }
+        matchHeader = function(name, value) {
+            return function(header) {
+                return header.name == name && (!value || header.value == value)
+            }
+        }
+
+        $.ajaxSettings.xhr = function(){ return new MockXHR }
+
+
+            var successFired = false, xhr, status
+            $.ajax({
+                url: '/cly/zepto/test/fixtures/ajax_load_big.html?v=' + new Date(),
+                timeout: 5,
+                success: function() { successFired = true; },
+                error: function(x, s) { xhr = x; status = s; }
+            })
+
+            setTimeout(function(){
+                console.log(successFired)
+                console.log(status)
+            }, 0)
+
+            setTimeout(function(){
+                console.log(successFired)
+                console.log(xhr.aborted)
+                console.log(status)
+            }, 40)
+    </script>
+</body>
+</html>

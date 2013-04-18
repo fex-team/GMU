@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>线图示例</title>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<link rel="stylesheet" type="text/css" href="../../../assets/chart/lineChart.css" />
+		<script type="text/javascript" src="../../../_src/core/zepto.js"></script>
+		<script type="text/javascript" src="../../../_src/core/zepto.extend.js"></script>
+		<script type="text/javascript" src="../../../_src/core/zepto.ui.js"></script>
+		<script type="text/javascript" src="../../../_src/chart/base/Chart.js"></script>
+		<script type="text/javascript" src="../../../_src/chart/line/lineChart.js"></script>
+	</head>
+	<body>
+		<div id="linechart" style="width:800px; height:240px;">
+		</div>
+		<script type="text/javascript">
+			var lineChart = $.ui.LineChart("#linechart", {"width":680, "height":170});
+			lineChart.setCategoryGrid(["09pm","10pm","11pm","12pm","01am","02am","03am","04am","05am","06am","07am","08am"]);
+            lineChart.setValueGrid([0, 20, 40, 60, 80, 100]);
+            lineChart.setData([{type:"diamond", name:"graph1", data:[100,10,20,30,20,50,60,40,50,40,50,40], color:"#0000ff"},
+            	{type:"circle", name:"graph2", data:[30,70,100,50,60,10,20,50,80,30,10,80], color:"#ff0000"}]);
+		</script>
+	</body>
+</html>

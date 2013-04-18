@@ -1,0 +1,175 @@
+<!doctype html>
+<html>
+<head>
+    <title>dropmenu demo - 位置自动计算</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <!--demo展示所用css，不用关心 begin-->
+    <link rel="stylesheet" type="text/css" href="../../../assets/reset.css" />
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/button/button.css" />
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/button/button.default.css" />
+    <style>
+        .section {
+            padding: 0 3px;
+            -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+        }
+
+        .section h2 {
+            font-size: 16px;
+            font-weight: bold;
+            padding: 5px 5px;
+            color: #5b5b5b;
+        }
+
+        .btns .ui-button {
+            vertical-align: bottom;
+        }
+
+        #container {
+            position: relative;
+            height: 300px;
+        }
+        #btn1, #btn2, #btn3, #btn4 {
+            position: absolute;
+            left: 5px;
+            top: 5px;
+        }
+        #btn2 {
+            left: 50%;
+            margin-left: -20px;
+        }
+        #btn3 {
+            left: auto;
+            right: 5px;
+        }
+        #btn4 {
+            top: auto;
+            left: 50%;
+            margin-left: -10px;
+            bottom: 5px;
+        }
+    </style>
+    <!--demo展示所用css end-->
+    <!--组件依赖css begin-->
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/dropmenu/dropmenu.css" />
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/dropmenu/dropmenu.default.css" /> <!--皮肤文件，若不使用该皮肤，可以不加载-->
+    <!--组件依赖css end-->
+    <!--组件依赖js begin-->
+    <script type="text/javascript" src="../../../_src/core/zepto.js"></script>
+    <script type="text/javascript" src="../../../_src/core/zepto.extend.js"></script>
+    <script type="text/javascript" src="../../../_src/core/zepto.ui.js"></script>
+    <script type="text/javascript" src="../../../_src/core/zepto.highlight.js"></script>
+    <script type="text/javascript" src="../../../_src/widget/dropmenu.js"></script>
+    <!--组件依赖js end-->
+
+    <!--demo展示所用js begin-->
+    <script type="text/javascript" src="../../../_src/widget/button.js"></script>
+    <!--demo展示所用js end-->
+</head>
+<body>
+<div class="section">
+    <h2>下拉菜单在上面显示还是下面显示，是左对齐还是有对齐将会自动化，尽量保证菜单不会超出可视区域</h2>
+
+    <div id="container">
+        <div class="btns">
+            <a id="btn1" data-icon="arrow-d" data-iconpos="right">下拉按钮
+            </a><a id="btn2" data-iconpos="right">下拉按钮
+        </a><a id="btn3">下拉按钮
+        </a><a id="btn4" data-icon="grid"></a>
+        </div>
+
+        <div id="dropmenu1">
+            <ul>
+                <li><a>item1</a></li>
+                <li><a><span class="ui-icon ui-icon-home"></span>主页</a></li>
+                <li><a><span class="ui-icon ui-icon-grid"></span>设置</a></li>
+                <li><a><span class="ui-icon ui-icon-delete"></span>删除</a></li>
+            </ul>
+        </div>
+
+
+        <div id="dropmenu2">
+            <ul>
+                <li><a>item1</a></li>
+                <li><a><span class="ui-icon ui-icon-home"></span>主页</a></li>
+                <li><a><span class="ui-icon ui-icon-grid"></span>设置</a></li>
+                <li><a><span class="ui-icon ui-icon-delete"></span>删除</a></li>
+            </ul>
+        </div>
+
+        <div id="dropmenu3">
+            <ul>
+                <li><a>item1</a></li>
+                <li><a><span class="ui-icon ui-icon-home"></span>主页</a></li>
+                <li><a><span class="ui-icon ui-icon-grid"></span>设置</a></li>
+                <li><a><span class="ui-icon ui-icon-delete"></span>删除</a></li>
+            </ul>
+        </div>
+
+        <div id="dropmenu4">
+            <ul>
+                <li><a><span class="ui-icon ui-icon-home"></span></a><!--</li>放在下行结尾可以去除display:inline-block带来的间隔-->
+                </li>
+                <li><a><span class="ui-icon ui-icon-grid"></span></a>
+                </li>
+                <li><a><span class="ui-icon ui-icon-delete"></span></a>
+                </li>
+                <li><a><span class="ui-icon ui-icon-gear"></span></a></li>
+            </ul>
+        </div>
+
+
+    </div>
+</div>
+<script>
+    $('#btn1').button();
+    $('#dropmenu1').dropmenu({
+        width:$('#btn1').width()*2,
+        align:'auto',
+        pos:'auto',
+        btn: $('#btn1')
+    }).on('itemClick', function (e, item) {
+                alert(item.text);
+            });
+
+
+    $('#btn2').button().on('click', function () {
+        $('#dropmenu2').dropmenu('toggle', this);
+    });
+    $('#dropmenu2').dropmenu({
+        width:$('#btn2').width()*2,
+        align:'auto',
+        pos:'auto'
+    }).on('itemClick', function (e, item) {
+                alert(item.text);
+            });
+
+
+    $('#btn3').button();
+    $('#dropmenu3').dropmenu({
+        width:$('#btn3').width()*2,
+        align:'auto',
+        pos:'auto'
+    }).dropmenu('bindButton', $('#btn3')).on('itemClick', function (e, item) {
+                alert(item.text);
+            });
+
+
+    $('#btn4').button();
+    $('#dropmenu4').dropmenu({
+        direction:'horizontal',
+        align:'auto',
+        pos:'auto',
+        btn: $('#btn4')
+    }).on('itemClick', function (e, item) {
+                alert(item.icon);
+            });
+
+    $('body>.section').on('click', function(){//make blank area clickabel
+    });
+</script>
+<!--demo公用头部展示所用js，可以不用加载 begin-->
+<script id="bootstrap" src="../../example.js" type="text/javascript" data-page="下拉菜单|dropmenu.html,dropmenu的render模式|dropmenu_render.html,dropmenu位置自动计算|dropmenu_smart.html,dropmenu内滚|dropmenu_iscroll.html"></script>
+<!--demo公用头部展示所用js end-->
+</body>
+</html>

@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites><testsuite name="SH12HNX01484_SystemBrowser" time="4.289" failures="0" tests="2"><testcase name="chart/bar/barChart" time="4.289" cov="_" failNumber="0" totalNumber="200" browserInfo="SH12HNX01484_SystemBrowser" hostInfo=""/><testcase name="plat" time="0" cov="" failNumber="" totalNumber="" browserInfo="SH12HNX01484_SystemBrowser" hostInfo=""/></testsuite></testsuites>

@@ -1,0 +1,35 @@
+.ui-gotop {
+    position: fixed;
+    display: none;
+	width: 50px;
+	height: 50px;
+	bottom: 10px;
+	right: 10px;
+	z-index: 999;
+	cursor:pointer;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+.ui-gotop div {
+    margin: 5px;
+    width: 40px;
+    height: 40px;
+    border-radius: 2px;
+    -webkit-box-shadow: 0px 0px 5px #9c9c9c;
+    opacity: 0.9;
+    background:#454545 url(ui-gotop-icon.png) no-repeat center center;
+    -webkit-background-size: 18px 15px;
+}
+
+/*css for pad*/
+@media all and (min-device-width:768px) and (max-device-width: 1024px){
+    .ui-gotop{
+        width:60px;
+        height: 60px;
+    }
+    .ui-gotop div{
+        width: 48px;
+        height: 48px;
+        -webkit-background-size: 22px 18px;
+    }
+}

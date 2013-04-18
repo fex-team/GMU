@@ -1,0 +1,147 @@
+.ui-dropmenu {
+    border: 1px solid #d9d9d9;
+    border-radius: 2px;
+    -webkit-box-shadow:  0 2px 4px rgba(0, 0, 0, 0.15);
+    min-width: 75px;
+    min-height: 35px;
+    background-color: #fff;
+}
+.ui-dropmenu .ui-dropmenu-items li {
+    border-bottom: 1px solid #d9d9d9;
+}
+.ui-dropmenu .ui-dropmenu-items li:last-child {
+    border-bottom: 0 none;
+}
+
+.ui-dropmenu .ui-dropmenu-items a {
+    display: block;
+    padding: 0.5em 1em;
+    text-align: left;
+    position: relative;
+    color: #5b5b5b;
+    text-decoration: none;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.ui-dropmenu .ui-dropmenu-items .ui-icontext a {
+    padding-left: 2em;
+}
+
+.ui-dropmenu .ui-dropmenu-items .ui-icontext .ui-icon {
+    position: absolute;
+    top: 50%;
+    margin-top: -9px;
+    left: 5px;
+}
+.ui-dropmenu .ui-dropmenu-items a.ui-state-hover {
+    background-color: #e2e2e2;
+}
+
+/*用来输出剪头*/
+.ui-dropmenu .ui-dropmenu-arrow, .ui-dropmenu .ui-dropmenu-arrow:after {
+    display:block;
+    border-width:0 7px 8px 7px;
+    border-color:transparent transparent #d9d9d9 transparent;
+    border-style:solid;
+    position:absolute;
+    width:0;
+    height:0;
+    left: 50%;
+    top: -8px;
+    margin-left: -7px;
+}
+.ui-dropmenu .ui-dropmenu-arrow:after {
+    content: '\0020';
+    border-width:0 5px 6px 5px;
+    border-color:transparent transparent #fff transparent;
+    position: relative;
+    left: -5px;
+    top: 2px;
+    margin-left: 0;
+}
+
+/**垂直的dropmenu*/
+.ui-dropmenu.ui-horizontal {
+    min-width: 0;
+    min-height: 0;
+}
+.ui-dropmenu.ui-horizontal .ui-dropmenu-items {
+    padding: 2px 3px 1px;
+    line-height: 0;
+    display: inline-block;
+}
+/*清除浮动*/
+.ui-dropmenu.ui-horizontal .ui-dropmenu-items:after {
+    content: '\0020';
+    display: block;
+    height: 0;
+    clear: both;
+}
+.ui-dropmenu.ui-horizontal .ui-dropmenu-items li{
+    border: 0 none;
+    position: relative;
+    padding: 3px 4px 3px;
+    display: inline-block;
+}
+.ui-dropmenu.ui-horizontal .ui-dropmenu-items .ui-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -9px 0 0 -9px;
+}
+.ui-dropmenu.ui-horizontal .ui-dropmenu-items li a {
+    border-radius: 3px;
+    width: 1.7em;
+    height: 1.7em;
+    padding: 0;
+    display: block;
+}
+.ui-dropmenu.ui-horizontal .ui-dropmenu-items li:after {
+    content: '\0020';
+    width:1px;
+    height: 20px;
+    background-color: #d9d9d9;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    margin-top: -10px;
+}
+/*分割线*/
+.ui-dropmenu.ui-horizontal .ui-dropmenu-items li:last-child {
+    padding: 3px;
+}
+.ui-dropmenu.ui-horizontal .ui-dropmenu-items li:last-child:after {
+    display: none;
+}
+
+.ui-dropmenu-pos-up {
+    -webkit-box-shadow:0 -2px 4px rgba(0, 0, 0, 0.15);
+}
+
+.ui-dropmenu-pos-up .ui-dropmenu-arrow, .ui-dropmenu-pos-up .ui-dropmenu-arrow:after {
+    border-width:8px 7px 0 7px;
+    border-color:#d9d9d9 transparent transparent transparent;
+    top:auto;
+    bottom: -8px;
+}
+.ui-dropmenu-pos-up .ui-dropmenu-arrow:after {
+    border-width:6px 5px 0 5px;
+    border-color:#fff transparent transparent transparent;
+    top:-8px;
+}
+.ui-dropmenu.has-iScroll .ui-dropmenu-arrow {
+    -webkit-transform: translateZ(0px);/**解决箭头不消失问题*/
+}
+
+@media all and (min-device-width: 768px) and (max-device-width:1024px){
+    .ui-dropmenu .ui-dropmenu-items a{
+        font-size: 16px;
+    }
+    .ui-dropmenu.ui-horizontal .ui-dropmenu-items li{
+        padding: 6px 4px 6px;
+    }
+    .ui-dropmenu.ui-horizontal .ui-dropmenu-items li:last-child {
+        padding: 6px 4px;
+    }
+}

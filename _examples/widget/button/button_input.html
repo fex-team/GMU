@@ -1,0 +1,129 @@
+<!doctype html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <meta charset="utf-8">
+    <title>表单按钮</title>
+    <!--demo展示所用css，不用关心 begin-->
+    <link rel="stylesheet" type="text/css" href="../../../assets/reset.css" />
+    <link rel="stylesheet" href="button_demo.css" />
+    <!--demo展示所用css end-->
+    <!--组件依赖css begin-->
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/button/button.css" />
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/button/button.default.css" />
+    <!--组件依赖css end-->
+    <!--组件依赖js begin-->
+    <script type="text/javascript" src="../../../_src/core/zepto.js"></script>
+    <script type="text/javascript" src="../../../_src/core/zepto.extend.js"></script>
+    <script type="text/javascript" src="../../../_src/core/zepto.highlight.js"></script>
+    <script type="text/javascript" src="../../../_src/core/zepto.ui.js"></script>
+    <script type="text/javascript" src="../../../_src/widget/button.js"></script>
+    <script type="text/javascript" src="../../../_src/widget/button.input.js"></script>
+    <!--组件依赖js end-->
+</head>
+<body>
+<div class="section">
+    <h2>Setup模式创建</h2>
+    <div>
+        <input id="button1" class="button" type="checkbox" />
+        <label for="button1">复选按钮1</label>
+        <input id="button2" class="button" type="checkbox" />
+        <label for="button2">复选按钮2</label>
+        <input id="button3" class="button" type="radio" name="radio" />
+        <label for="button3">单选1</label>
+        <input id="button4" class="button" checked="checked" type="radio" name="radio" />
+        <label for="button4">单选2</label>
+        <a class="button" href="http://www.baidu.com">a按钮</a>
+        <button class="button">button按钮</button>
+        <input type="button" value="input按钮" class="button" />
+    </div>
+</div>
+<div class="section">
+    <h2>Render模式创建</h2>
+    <div id="btsn_create">
+    </div>
+</div>
+<div class="section">
+    <h2>单选 － 复选</h2>
+    <div>
+        <input id="button11" data-icon="checkbox" type="checkbox" />
+        <label for="button11">复选按钮1</label>
+        <input id="button12"  data-icon="checkbox" type="checkbox" />
+        <label for="button12">复选按钮2</label>
+        <input id="button13" data-icon="radio" type="radio" name="radio1" />
+        <label for="button13">单选1</label>
+        <input id="button14"  data-icon="radio" type="radio" name="radio1" />
+        <label for="button14">单选2</label>
+        <input id="button15"  data-icon="radio" checked="checked" type="radio" name="radio1" />
+        <label for="button15">单选3</label>
+    </div>
+</div>
+<script>
+    $('.button').button();
+    $('#button11, #button12, #button13, #button14, #button15').button();
+
+    $.ui.button('<a>', {
+        label: '点击后不可用',
+        click: function() {
+            this.disable();
+        },
+        container: '#btsn_create'
+    });
+
+    $.ui.button({
+        label: '复选按钮1',
+        type: 'checkbox',
+        container: '#btsn_create'
+    });
+
+    $.ui.button({
+        label: '复选按钮2',
+        type: 'checkbox',
+        container: '#btsn_create'
+    });
+
+
+
+    $.ui.button({
+        type: 'radio',
+        label: '单选1',
+        attributes: {
+            name: 'test'
+        },
+        container: '#btsn_create'
+    });
+
+    $.ui.button({
+        type: 'radio',
+        label: '单选2',
+        selected: true,
+        attributes: {
+            name: 'test'
+        },
+        container: '#btsn_create'
+    });
+
+    $.ui.button('<a>', {
+        label: 'a按钮',
+        attributes: {
+            href: 'http://www.baidu.com'
+        },
+        container: '#btsn_create'
+    });
+
+    $.ui.button({
+        label: 'button按钮',
+        container: '#btsn_create'
+    });
+
+    $.ui.button({
+        label: 'input按钮',
+        type: 'input',
+        container: '#btsn_create'
+    });
+</script>
+<!--demo公用头部展示所用js，可以不用加载 begin-->
+<script id="bootstrap" src="../../example.js" type="text/javascript" data-theme="default" data-use="widget/button.js" data-page="普通按钮|button.html,带图标的按钮|button_icon.html,图标位置|button_iconpos.html,表单按钮|button_input.html"></script>
+<!--demo公用头部展示所用js end-->
+</body>
+</html>

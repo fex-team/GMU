@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>饼图</title>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<link rel="stylesheet" type="text/css" href="../../../assets/chart/pieChart.css" />
+		<script type="text/javascript" src="../../../_src/core/zepto.js"></script>
+		<script type="text/javascript" src="../../../_src/core/zepto.extend.js"></script>
+		<script type="text/javascript" src="../../../_src/core/zepto.ui.js"></script>
+		<script type="text/javascript" src="../../../_src/chart/base/Chart.js"></script>
+		<script type="text/javascript" src="../../../_src/chart/pie/pieChart.js"></script>
+	</head>
+	<body>
+		<div id="piechart" style="width:800px; height:600px;">
+		</div>
+		<script type="text/javascript">
+			var pieChart = $.ui.PieChart("#piechart", {"width":380, "height":380});
+			pieChart.setData([{name:"数据1", color:"#69cceb", data:37}, 
+				{name:"数据2", color:"#ffdd7b", data:54},
+				{name:"数据3", color:"#fa99bc", data:24},
+				{name:"数据4", color:"#84bd92", data:52},
+				{name:"数据5", color:"#f45e5d", data:20}]);
+				
+		</script>
+	</body>
+</html>

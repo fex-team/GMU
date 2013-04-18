@@ -1,0 +1,158 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>导航栏组件demo</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    <!--demo展示所用css，不用关心 begin-->
+    <link rel="stylesheet" type="text/css" href="../../../assets/reset.css" />
+    <!--demo展示所用css end-->
+
+    <!--组件依赖css begin-->
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/navigator/navigator.css" />
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/navigator/navigator.iscroll.css" />
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/navigator/navigator.default.css" /> <!--皮肤文件，若不使用该皮肤，可以不加载-->
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/navigator/navigator.iscroll.default.css" /> <!--皮肤文件，若不使用该皮肤，可以不加载-->
+    <!--组件依赖css end-->
+
+    <!--demo展示所用css，不用关心 begin-->
+    <style>
+        .sec-nav {
+            border-top: 1px solid #d2d2d2;;
+            border-bottom: 1px solid #d2d2d2;
+            background:#f4f4f4;
+            padding: 2px 0;
+        }
+
+        .sec-nav .ui-navigator-list li a {
+            line-height: 1.6em;
+            padding: 0.2em 15px;
+            font-size: 16px;
+            color: #3b3b3b;
+        }
+
+        @media all and (min-device-width: 768px) and (max-device-width: 1024px) {
+            .sec-nav .ui-navigator-list li a{
+                font-size: 18px;
+            }
+        }
+
+        .sec-nav .ui-navigator-list li > a.cur {
+            background-color: #dbe5f2;
+            outline: 1px solid  #bed0e8;
+            color: #0a50b1;
+        }
+
+
+        .sec-nav .ui-navigator-shadowr, .sec-nav .ui-navigator-shadowl {
+            background: url('s-sec.png') right -33px no-repeat;
+        }
+
+        .sec-nav .ui-navigator-shadowl{
+            background-position: 0 0;
+        }
+
+        .sec-nav .ui-navigator-shadowall {
+            background: url('s-sec.png') 0 0 no-repeat, url('s-sec.png') right -33px no-repeat;
+        }
+    </style>
+    <!--demo展示所用css end-->
+
+    <!--组件依赖js begin-->
+    <script type="text/javascript" src="../../../_src/core/zepto.js"></script>
+    <script type="text/javascript" src="../../../_src/core/zepto.extend.js"></script>
+    <script type="text/javascript" src="../../../_src/core/zepto.ui.js"></script>
+    <script type="text/javascript" src="../../../_src/core/zepto.iscroll.js"></script>   <!--iScroll-->
+    <script type="text/javascript" src="../../../_src/widget/navigator.js"></script>
+    <script type="text/javascript" src="../../../_src/widget/navigator.iscroll.js"></script>  <!--滑动插件-->
+    <!--组件依赖js end-->
+</head>
+
+<body>
+<h3>Smart setup方式创建</h3>
+<div id="nav-smartSetup">
+    <ul>
+        <li><a href="#test1">要闻</a></li>
+        <li><a href="javascript:;">国内</a></li>
+        <li><a href="#test2">国际</a></li>
+        <li><a href="#test3">军事</a></li>
+        <li><a href="#test4">社会</a></li>
+        <li><a href="#test5">娱乐</a></li>
+        <li><a href="#test6">女人</a></li>
+        <li><a href="http://www.baidu.com">体育</a></li>
+        <li><a href="#test7">科技</a></li>
+        <li><a href="#test8">互联网</a></li>
+        <li><a href="#test9">教育</a></li>
+        <li><a class="cur" href="http://www.baidu.com">财经</a></li>
+        <li><a href="#test11">房产</a></li>
+        <li><a href="#test12">汽车</a></li>
+    </ul>
+</div>
+
+<h3>Render方式创建</h3>
+<div id="nav-render"></div>
+
+<h3>Full setup方式创建</h3>
+<div id="nav-fullSetup" class="ui-navigator" data-mode=true>
+    <div class="ui-navigator-wrapper" style="overflow: hidden;">
+        <ul class="ui-navigator-list">
+            <li><a href="#test1">首页</a></li>
+            <li><a href="javascript:;">电影</a></li>
+            <li><a class="cur" href="#test2">电视剧</a></li>
+            <li><a href="#test3">综艺</a></li>
+            <li><a href="#test4">动漫</a></li>
+            <li><a href="#test5">电视直播</a></li>
+            <li><a href="#test6">我的随心看</a></li>
+            <li><a href="http://www.baidu.com">百度</a></li>
+            <li><a href="#test7">音乐</a></li>
+            <li><a href="#test8">搞笑</a></li>
+            <li><a href="#test9">排行榜</a></li>
+        </ul>
+    </div>
+</div>
+
+<script type="text/javascript">
+    (function () {
+        /*组件初始化js begin*/
+        $('#nav-smartSetup').navigator();    //smart setup方式创建 推荐方式
+
+        $.ui.navigator('#nav-render', {    //render方式创建
+            content:[
+                {
+                    text:"电影",
+                    url:"javascript:;"
+                },
+                {
+                    text:"电视剧",
+                    url:"javascript:;"
+                },
+                {
+                    text:"动漫",
+                    url:"javascript:;"
+                },
+                {
+                    text:"综艺",
+                    url:"javascript:;"
+                },
+                {
+                    text:"排行榜",
+                    url:"javascript:;"
+                },
+                {
+                    text:"应用推荐",
+                    url:"javascript:;"
+                }
+            ]
+        });
+
+        $('#nav-fullSetup').navigator();    //fullsetup方式创建
+        $('#nav-fullSetup').navigator().addClass('sec-nav')    //添加样式
+        /*组件初始化js end*/
+    })();
+</script>
+
+<!--demo公用头部展示所用js，可以不用加载 begin-->
+<script id="bootstrap" src="../../example.js" type="text/javascript" data-page="普通tab|tab.html,tab相关事件|tab_event.html,可滑动导航栏|navigator.html,带fix可滑动导航|navigator_fix.html,可滑动导航事件|navigator_event.html"></script>
+<!--demo公用头部展示所用js end-->
+</body>
+</html>

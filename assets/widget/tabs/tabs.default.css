@@ -1,0 +1,46 @@
+.ui-tabs-nav {
+    display: -webkit-box;
+    width: 100%;
+}
+.ui-tabs-nav li {
+    border: solid #d4d4d4;
+    border-width: 1px 0 1px 1px;
+    -webkit-box-flex:1;
+    text-align: center;
+    color: #4a4a4a;
+    font-size: 16px;
+    background-color: #f4f4f4;
+    height: 35px;
+    line-height: 35px;
+    white-space:nowrap;/*内容不换行*/
+    cursor: pointer;
+}
+.ui-tabs-nav li a {
+    text-decoration: none;
+    color: #4a4a4a;
+}
+.ui-tabs-nav li:last-child {
+    border-width: 1px;
+}
+.ui-tabs-nav li.ui-state-active{
+    background-color: #fff;
+    border-bottom-color:#fff;
+}
+.ui-tabs-content {
+    border: solid #d4d4d4;
+    border-width: 0 1px 1px;
+}
+.ui-tabs-content .ui-tabs-panel {
+    padding: 1em;
+}
+.ui-tabs-panel .ui-loading {
+    position: absolute;
+    left: 50%;
+    top: 50px;
+    margin-top: -20px;
+    margin-left: -20px;
+}
+.ui-tabs-panel .ui-load-error {
+    color: red;
+    text-align: center;
+}
