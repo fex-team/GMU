@@ -1,7 +1,7 @@
 /**
  * @file 所有UI组件的基类，通过它可以简单的快速的创建新的组件。
- * @name UI 基类
- * @short Zepto UI
+ * @name zepto.ui
+ * @short UI
  * @desc 所有UI组件的基类，通过它可以简单的快速的创建新的组件。
  * @import core/zepto.js, core/zepto.extend.js
  */
@@ -189,7 +189,7 @@
         };
     }
     /**
-     * @name widget基类
+     * @name widget
      * @desc GMU所有的组件都是此类的子类，即以下此类里面的方法都可在其他组建中调用。
      */
     var _widget = function() {};

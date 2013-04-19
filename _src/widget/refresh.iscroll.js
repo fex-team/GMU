@@ -1,13 +1,14 @@
 /**
  * @file 加载更多组件 － iScroll版
  * @name Refresh.iscroll
+ * @desc <qrcode align="right" title="Live Demo">../gmu/_examples/widget/refresh/refresh_iscroll.html</qrcode>
  * @short Refresh.iscroll
  * @import core/zepto.iscroll.js, widget/refresh.js
  */
 
 (function($, undefined) {
     /**
-     * @name 说明
+     * @name refresh.iscroll
      * @desc Refresh iscroll插件，支持拉动加载，内滚采用iscroll方式，体验更加贴近native。
      * @desc **Options** 在refresh的基础上增加参数
      * - ''threshold''   {Number}: (可选) 加载的阀值，默认向上或向下拉动距离超过5px，即可触发拉动操作，该值只能为正值，若该值是10，则需要拉动距离大于15px才可触发加载操作

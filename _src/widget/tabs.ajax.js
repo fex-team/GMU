@@ -2,6 +2,7 @@
  * @file Tabs - ajax插件
  * @name Tabs - ajax插件
  * @short Tabs.ajax
+ * @desc <qrcode align="right" title="Live Demo">../gmu/_examples/widget/tabs/tabs_ajax.html</qrcode>
  * @desc tabs插件, 有了此插件,tabs支持ajax功能
  *
  * 在a上面href设置的是地址，而不是id，则组件认为这个为ajax类型的。

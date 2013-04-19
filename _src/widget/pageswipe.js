@@ -2,6 +2,7 @@
 /**
  * @file 页面切换组件
  * @name Pageswipe
+ * @desc <qrcode align="right" title="Live Demo">../gmu/_examples/widget/pageswipe/pageswipe.html</qrcode>
  * @desc 切换页面内容和索引
  * @import core/zepto.extend.js, core/zepto.ui.js, core/zepto.iscroll.js,core/zepto.fix.js
  */

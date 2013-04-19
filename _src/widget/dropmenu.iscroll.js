@@ -1,6 +1,7 @@
 /**
  * @file Dropmenu － 内滚插件
  * @name Dropmenu － 内滚插件
+ * @desc <qrcode align="right" title="Live Demo">../gmu/_examples/widget/dropmenu/dropmenu_iscroll.html</qrcode>
  * @short Dropmenu.iscroll
  * @import widget/dropmenu.js, core/zepto.iscroll.js
  */
@@ -27,7 +28,7 @@
         }
     });
     /**
-     * @name dropmenu
+     * @name dropmenu.iscroll
      * @desc 此插件使dropmenu带有内滚功能。
      *
      * 在初始化时需要传入iScroll参数才能启用此功能，如传入true，也可以传入对象，此对象在初始化 iScroll的时候可以将传入

@@ -819,7 +819,7 @@
  */
 
 /**
- * @name iScroll
+ * @name zepto.iScroll
  * @grammar new iScroll(el,[options])  ⇒ self
  * @grammar $('selecotr').iScroll([options])  ⇒ zepto实例
  * @desc 将iScroll加入到了***$.fn***中，方便用Zepto的方式调用iScroll。

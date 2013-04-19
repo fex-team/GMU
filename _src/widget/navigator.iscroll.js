@@ -2,7 +2,7 @@
  * @file 导航栏组件 － iScroll插件
  * @name Navigator.iscroll
  * @desc <qrcode align="right" title="Live Demo">../gmu/_examples/webapp/naivgator/navigator.html</qrcode>
- * @description navigator iscroll插件，可滚动导航栏
+ * @desc navigator iscroll插件，可滚动导航栏
  * @import core/zepto.iscroll.js, widget/navigator.js
  */
 

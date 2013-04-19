@@ -2,12 +2,13 @@
  * @file 加载更多组件 － lite版本
  * @name Refresh.lite
  * @short Refresh.lite
+ * @desc <qrcode align="right" title="Live Demo">../gmu/_examples/widget/refresh/refresh_lite.html</qrcode>
  * @import widget/refresh.js
  */
 
 (function($, undefined) {
     /**
-     * @name refresh
+     * @name refresh.lite
      * @desc Refresh lite插件，支持拉动加载。
      * @desc **Options** 在refresh的基础上增加参数
      * - ''threshold'' {Number}: (可选) 加载的阀值，默认手指在屏幕的一半，并且拉动距离超过10px即可触发加载操作，配置该值后，可以将手指在屏幕位置进行修重情重改，若需要实现连续加载效果，可将该值配置很大，如1000等

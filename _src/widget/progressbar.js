@@ -1,7 +1,8 @@
 
 /**
  * @file 进度条组件
- * @name progressbar
+ * @name Progressbar
+ * @desc <qrcode align="right" title="Live Demo">../gmu/_examples/widget/progresssbar/progresssbar.html</qrcode>
  * @desc 提供一个可调整百分比的进度条
  * @import core/touch.js, core/zepto.extend.js, core/zepto.ui.js
  */

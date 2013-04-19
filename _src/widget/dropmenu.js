@@ -1,6 +1,7 @@
 /**
  * @file 下拉菜单组件
  * @name Dropmenu
+ * @desc <qrcode align="right" title="Live Demo">../gmu/_examples/widget/dropmenu/dropmenu.html</qrcode>
  * @desc 下拉菜单组件
  * @import core/zepto.ui.js, core/zepto.highlight.js
  * @importCSS icons.css

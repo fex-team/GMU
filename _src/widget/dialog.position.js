@@ -1,7 +1,8 @@
 /**
  * @file Dialog － 父容器插件
- * @name Dialog － 父容器插件
- * @short Dialog.container
+ * @name Dialog.position
+ * @desc <qrcode align="right" title="Live Demo">../gmu/_examples/widget/dialog/dialog_position.html</qrcode>
+ * @short Dialog.position
  * @import widget/dialog.js, core/zepto.position.js
  */
 (function ($, undefined) {

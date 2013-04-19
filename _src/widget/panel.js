@@ -1,6 +1,7 @@
 /**
  * @file panel组件
  * @ignore
+ * @desc <qrcode align="right" title="Live Demo">../gmu/_examples/widget/panel/panel.html</qrcode>
  * @desc 面板组件
  * @name Panel
  * @import core/touch.js, core/zepto.ui.js
