@@ -7,12 +7,12 @@
  */
 (function ($, undefined) {
     /**
-     * @name Position插件
-     * @desc 用
+     * @name dialog.position
+     * @desc 用zepto.position来定位dialog
      *
      * **Demo**
-     * <codepreview href="../gmu/_examples/widget/dialog/dialog_container.html">
-     * ../gmu/_examples/widget/dialog/dialog_container.html
+     * <codepreview href="../gmu/_examples/widget/dialog/dialog_position.html">
+     * ../gmu/_examples/widget/dialog/dialog_position.html
      * </codepreview>
      */
     $.ui.dialog.register(function () {

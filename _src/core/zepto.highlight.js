@@ -1,6 +1,6 @@
 /**
  *  @file 实现了通用highlight方法。
- *  @name highlight
+ *  @name zepto.highlight
  *  @desc 点击高亮效果
  *  @import core/zepto.js, core/zepto.extend.js
  */

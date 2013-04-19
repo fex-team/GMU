@@ -2,6 +2,7 @@
  * @file 加载更多组件 － iScroll版
  * @name Refresh.iscroll
  * @desc <qrcode align="right" title="Live Demo">../gmu/_examples/widget/refresh/refresh_iscroll.html</qrcode>
+ * 拉动加载更多iscroll插件
  * @short Refresh.iscroll
  * @import core/zepto.iscroll.js, widget/refresh.js
  */

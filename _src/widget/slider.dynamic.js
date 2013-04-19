@@ -3,9 +3,7 @@
  * @name Slider.dynamic
  * @short Slider.dynamic
  * @desc <qrcode align="right" title="Live Demo">../gmu/_examples/widget/slider/slider_dynamic.html</qrcode>
- * @desc 此插件扩充slider， 让内容可以动态修改，
- *
- *
+ * 此插件扩充slider， 让内容可以动态修改，
  * @import widget/slider.js
  */
 (function ($) {

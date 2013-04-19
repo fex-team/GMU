@@ -3,6 +3,7 @@
  * @name Refresh.lite
  * @short Refresh.lite
  * @desc <qrcode align="right" title="Live Demo">../gmu/_examples/widget/refresh/refresh_lite.html</qrcode>
+ * 上拉加载更多，利用原生滚动，不使用iscroll
  * @import widget/refresh.js
  */
 

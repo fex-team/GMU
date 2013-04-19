@@ -14,9 +14,9 @@
  */
 
 /**
- * @grammar $.proxy(fn, context)  ⇒ function
- * @grammar $.proxy(context, property)  ⇒ function
- * @name $.proxy v1.0+
+ * @grammar $.proxy(fn, context)  ⇒ function  v1.0+
+ * @grammar $.proxy(context, property)  ⇒ function   v1.0+
+ * @name $.proxy
  * @desc 使函数能在指定的上下文中执行。
  * @example var obj = {name: 'Zepto'},
  * handler = function(){ console.log("hello from + ", this.name) }

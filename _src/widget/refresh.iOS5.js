@@ -3,6 +3,7 @@
  * @file 加载更多组件 － iOS5版，采用overflow:''scroll''实现
  * @name Refresh.iOS5
  * @desc <qrcode align="right" title="Live Demo">../gmu/_examples/widget/refresh/refresh_iOS5.html</qrcode>
+ * 拉动加载更多iOS5插件，适用于iOS5及以上
  * @short Refresh.iOS5
  * @import widget/refresh.js
  */

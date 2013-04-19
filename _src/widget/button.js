@@ -2,7 +2,7 @@
  * @file 按钮组件
  * @name Button
  * @desc <qrcode align="right" title="Live Demo">../gmu/_examples/widget/button/button.html</qrcode>
- * @desc 按钮组件
+ * 按钮组件
  * @import core/zepto.extend.js, core/zepto.ui.js, core/zepto.highlight.js
  * @importCSS icons.css
  */
