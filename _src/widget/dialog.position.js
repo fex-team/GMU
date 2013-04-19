@@ -10,6 +10,14 @@
      * @name dialog.position
      * @desc 用zepto.position来定位dialog
      *
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     *
      * **Demo**
      * <codepreview href="../gmu/_examples/widget/dialog/dialog_position.html">
      * ../gmu/_examples/widget/dialog/dialog_position.html

@@ -1,7 +1,8 @@
 /**
  * @file
  * @name LineChart
- * @desc 折线图
+ * @desc <qrcode align="right" title="Live Demo">../gmu/_examples/chart/linechart/linechart.html</qrcode>
+ * 折线图
  * @import core/zepto.js, core/zepto.extend.js, core/zepto.ui.js, chart/base/Chart.js
  */
 (function(){
