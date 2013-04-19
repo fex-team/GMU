@@ -1,5 +1,6 @@
 /**
  * @file panel组件
+ * @ignore
  * @desc 面板组件
  * @name Panel
  * @import core/touch.js, core/zepto.ui.js
