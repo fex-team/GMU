@@ -9,7 +9,7 @@
 (function ($, undefined) {
     var cssPrefix = $.fx.cssPrefix;
     /**
-     * @name $.ui.panel
+     * @name panel
      * @grammar $('.panel').panel() ⇒ self
      * --该组件不支持create模式，只有setup模式--
      * @desc **Options**
