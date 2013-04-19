@@ -93,7 +93,7 @@ $arr = array(
         "href" => 'button/button.html'
     ),
     'pageswipe' => array(
-        "name" => 'Page swipe',
+        "name" => 'Pageswipe',
         "description" => '页面切换',
         "group" => 'Components',
         "icon" => 'slider.png',
