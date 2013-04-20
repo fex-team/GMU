@@ -4,7 +4,7 @@
 	var Q = require('q'),
 		file = require("./util/file"),
 		helper = require("./util/helper"),
-		config = require("./config").dist;
+		config = require("./config.json").dist;
 
 	function concatZepto() {
 		var opt = config.zepto,
