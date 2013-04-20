@@ -74,7 +74,7 @@ $gmuDoc->setOrder('
             widget/gotop.iscroll.js
             widget/pageswipe.js
             widget/dialog.js
-            widget/dialog.container.js
+            widget/dialog.position.js
             widget/toolbar.js
             widget/button.js
             widget/button.input.js
