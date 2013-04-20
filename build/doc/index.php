@@ -99,6 +99,10 @@ $template->assignVariable('theme', 'blue');
 $template->assignVariable('activeTheme', 'purple');
 $content = $template->render();
 
+if(!is_dir($outputDir)){
+    @mkdir($outputDir);
+}
+
 // 删除doc目录下所有文件
 //todo 加配置项
 if( true ) {
