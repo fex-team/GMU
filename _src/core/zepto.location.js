@@ -1,6 +1,6 @@
 /**
  *  @file 获取当前详细地址
- *  @name location
+ *  @name zepto.location
  *  @desc 获取当前详细地址
  *  @import core/zepto.js, core/zepto.extend.js
  */

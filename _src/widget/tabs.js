@@ -2,6 +2,7 @@
  * @file 选项卡组件
  * @desc 选项卡组件
  * @name Tabs
+ * @desc <qrcode align="right" title="Live Demo">../gmu/_examples/widget/tabs/tabs.html</qrcode>
  * @import core/touch.js, core/zepto.ui.js,core/zepto.highlight.js
  * @importCSS transitions.css, loading.css
  */

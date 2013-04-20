@@ -1,10 +1,9 @@
 /**
  * @file Slider － 内容可动态修改插件
- * @name Button － 内容可动态修改插件
- * @short Button.dynamic
- * @desc 此插件扩充slider， 让内容可以动态修改，
- *
- *
+ * @name Slider.dynamic
+ * @short Slider.dynamic
+ * @desc <qrcode align="right" title="Live Demo">../gmu/_examples/widget/slider/slider_dynamic.html</qrcode>
+ * 此插件扩充slider， 让内容可以动态修改，在这种模式下，dom个数跟items的个数无关，永远是3个div轮换，对于图片集比较多的图片轮播，采用这种方式。
  * @import widget/slider.js
  */
 (function ($) {
@@ -166,6 +165,18 @@
                 });
             },
 
+            /**
+             * @desc 更新内容，直接换掉content中数据，然后重新渲染新设置的内容。在需要延时扩充图片集的情况下使用。
+             * @name update
+             * @grammar update( content ) => self
+             *  @example
+             * //setup mode
+             * $('#slider').slider('update', [item1, item2, item3]);
+             *
+             * //render mode
+             * var demo = $.ui.slider();
+             * demo.update([item1, item2, item3]);
+             */
             update: function (content) {
                 var data = this._data, group, width = data.width,
                     active,

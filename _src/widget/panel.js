@@ -1,13 +1,15 @@
 /**
  * @file panel组件
- * @desc 面板组件
+ * @ignore
+ * @desc <qrcode align="right" title="Live Demo">../gmu/_examples/widget/panel/panel.html</qrcode>
+ * 面板组件
  * @name Panel
  * @import core/touch.js, core/zepto.ui.js
  */
 (function ($, undefined) {
     var cssPrefix = $.fx.cssPrefix;
     /**
-     * @name $.ui.panel
+     * @name panel
      * @grammar $('.panel').panel() ⇒ self
      * --该组件不支持create模式，只有setup模式--
      * @desc **Options**

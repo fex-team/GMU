@@ -2,7 +2,8 @@
 /**
  * @file 生成桌面图标组件
  * @name Add2desktop
- * @desc 在iOS中将页面添加为桌面图标(不支持Android系统)
+ * @desc <qrcode align="right" title="Live Demo">../gmu/_examples/widget/add2desktop/add2desktop.html</qrcode>
+ * 在iOS中将页面添加为桌面图标(不支持Android系统)
  * @import core/zepto.extend.js, core/zepto.ui.js, core/zepto.fix.js
  */
 

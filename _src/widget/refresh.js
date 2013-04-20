@@ -1,7 +1,8 @@
 /**
  * @file 加载更多组件
  * @name Refresh
- * @desc 加载更多组件
+ * @desc <qrcode align="right" title="Live Demo">../gmu/_examples/widget/refresh/refresh.html</qrcode>
+ * 加载更多组件
  * @import core/zepto.ui.js
  * @importCSS loading.css
  */

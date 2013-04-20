@@ -3,11 +3,12 @@
  * @file Gotop - 内滚插件
  * @name Gotop － iscroll插件
  * @short Gotop.iscroll
+ * @desc <qrcode align="right" title="Live Demo">../gmu/_examples/widget/gotop/gotop_iscroll.html</qrcode>
  * @import core/zepto.iscroll.js, widget/gotop.js
  */
 (function($, undefined) {
     /**
-     * @name 说明
+     * @name gotop.iscroll
      * @desc 在使用iScroll的页面上使用gotop组件时，需要加入该插件
      * @desc 使用iscroll后useAnimation参数不起作用
      * **Options**

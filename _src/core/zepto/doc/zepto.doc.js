@@ -31,16 +31,16 @@
  */
 
 /**
- * @grammar $.camelCase(string)  ⇒ string
- * @name $.camelCase v1.0+
+ * @grammar $.camelCase(string)  ⇒ string v1.0+
+ * @name $.camelCase
  * @desc 将带有破折号的字符串转成“驼峰式”。不影响已经是驼峰式的字符串。
  * @example $.camelCase('hello-there') //=> "helloThere"
  * $.camelCase('helloThere')  //=> "helloThere"
  */
 
 /**
- * @grammar $.contains(parent, node)  ⇒ boolean
- * @name $.contains     v1.0+
+ * @grammar $.contains(parent, node)  ⇒ boolean v1.0+
+ * @name $.contains
  * @desc 检查父节点是否包含第二个参数中的DOM节点。若两者为同一个元素也返回false。
  *
  */
@@ -89,8 +89,8 @@
  */
 
 /**
- * @grammar $.inArray(element, array, [fromIndex])  ⇒ number
- * @name $.inArray  v1.0+
+ * @grammar $.inArray(element, array, [fromIndex])  ⇒ number   v1.0+
+ * @name $.inArray
  * @desc 获取元素在数组中的位置， 若没有找到，则返回***-1***。
  */
 
@@ -118,8 +118,8 @@
  */
 
 /**
- * @grammar $.isWindow(object)  ⇒ boolean
- * @name $.isWindow    v1.0+
+ * @grammar $.isWindow(object)  ⇒ boolean  v1.0+
+ * @name $.isWindow
  * @desc 如果对象是窗体对象则返回true。这对每个都有自己的窗体，并且使用普通的***obj === window*** 方法检测会失败的iframes特别有用。
  */
 
@@ -130,20 +130,20 @@
  */
 
 /**
- * @grammar $.parseJSON(string)  ⇒ string
- * @name $.parseJSON    v1.0+
+ * @grammar $.parseJSON(string)  ⇒ string  v1.0+
+ * @name $.parseJSON
  * @desc 原生***JSON.parse*** 的别名。
  */
 
 /**
- * @grammar $.trim(string)  ⇒ string
- * @name $.trim     v1.0+
+ * @grammar $.trim(string)  ⇒ string   v1.0+
+ * @name $.trim
  * @desc 去掉字符串开头和结尾的空白符。
  */
 
 /**
- * @grammar $.type(string)  ⇒ string
- * @name $.type     v1.0+
+ * @grammar $.type(string)  ⇒ string   v1.0+
+ * @name $.type
  * @desc 取得一个对象的字符串格式的类型，可能的类型为：*** null undefined boolean number string function array date regexp object error***。
  * @desc 对于别的对象该函数只是简单的返回“object”，要检测出一个对象是否是一个纯粹对象（plain object），请用<a href="#$.isplainobject">isPlainObject</a>
  */
@@ -223,8 +223,8 @@
 
 
 /**
- * @grammar clone()  ⇒ collection
- * @name clone  v1.0+
+ * @grammar clone()  ⇒ collection  v1.0+
+ * @name clone
  * @desc 深克隆集合中的所有元素。
  * @desc 该方法并不像jQuery中那样有一个复制数据以及事件到新元素的选项。
  */
@@ -250,8 +250,8 @@
 
 
 /**
- * @grammar contents()  ⇒ collection
- * @name contents v1.0+
+ * @grammar contents()  ⇒ collection  v1.0+
+ * @name contents
  * @desc 获取集合中每个元素的子元素，包括文字节点和注释节点。
  */
 
@@ -361,9 +361,9 @@
 
 
 /**
- * @grammar has(selector)  ⇒ collection
- * @grammar has(node)  ⇒ collection
- * @name has  v1.0+
+ * @grammar has(selector)  ⇒ collection  v1.0+
+ * @grammar has(node)  ⇒ collection  v1.0+
+ * @name has
  * @desc 保留子孙匹配选择器的元素，或包含特定节点的元素。
  * @example $('ol > li').has('a[href]')
  * //=> get only LI elements that contain links
@@ -496,8 +496,8 @@
 
 
 /**
- * @grammar offsetParent()  ⇒ collection
- * @name offsetParent v1.0+
+ * @grammar offsetParent()  ⇒ collection  v1.0+
+ * @name offsetParent
  * @desc 返回首个祖先节点CSS***position***属性是"relative", "absolute", "fixed"。
  */
 
@@ -532,8 +532,8 @@
 
 
 /**
- * @grammar position()  ⇒ object
- * @name position v1.0+
+ * @grammar position()  ⇒ object  v1.0+
+ * @name position
  * @desc 取得集合中第一个元素的位置，相对于它的<a href="#offsetparent">offsetParent</a>。这在一个绝对定位的元素与另一个元素对齐时很有用。
  * @desc 获取集合首个元素的position值，包含***top***，***left***值。
  *
@@ -564,18 +564,18 @@
 
 
 /**
- * @grammar prev()  ⇒ collection
- * @grammar prev(selector)  ⇒ collection v1.0+
+ * @grammar prev()  ⇒ collection  v1.0+
+ * @grammar prev(selector)  ⇒ collection   v1.0+
  * @name prev
  * @desc 获取集合中每个元素的前一个兄弟节点，可以传入选择器参数。
  */
 
 
 /**
- * @grammar prop(name)  ⇒ value
- * @grammar prop(name, value)  ⇒ self
- * @grammar prop(name, function(index, oldValue){ ... })  ⇒ self
- * @name prop v1.0+
+ * @grammar prop(name)  ⇒ value  v1.0+
+ * @grammar prop(name, value)  ⇒ self   v1.0+
+ * @grammar prop(name, function(index, oldValue){ ... })  ⇒ self  v1.0+
+ * @name prop
  * @desc 读写DOM元素的属性。这个方法在读取像***checked***和***selected***等在不同时间可能随着用户行为而变化的属性值时，应该比<a href="#attr">attr</a>方法更优先使用。
  */
 
@@ -631,8 +631,8 @@
 
 
 /**
- * @grammar scrollTop()  ⇒ number
- * @name scrollTop v1.0+
+ * @grammar scrollTop()  ⇒ number  v1.0+
+ * @name scrollTop
  * @desc 获取window或可滚动元素在当前页面滚动的像素值。
  */
 

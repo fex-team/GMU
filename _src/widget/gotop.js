@@ -2,7 +2,8 @@
 /**
  * @file 返回顶部组件
  * @name Gotop
- * @desc 提供一个快速回到页面顶部的按钮
+ * @desc <qrcode align="right" title="Live Demo">../gmu/_examples/widget/gotop/gotop.html</qrcode>
+ * 提供一个快速回到页面顶部的按钮
  * @import core/zepto.extend.js, core/zepto.ui.js,core/zepto.fix.js
  */
 (function($, undefined) {

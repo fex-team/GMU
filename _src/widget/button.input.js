@@ -2,7 +2,8 @@
  * @file Button － 表单插件
  * @name Button － 表单插件
  * @short Button.input
- * @desc button组件下的表单插件，用来扩展按钮类型，在没有插件的情况，只支持button，加此插件后，可以支持以下类型
+ * @desc <qrcode align="right" title="Live Demo">../gmu/_examples/widget/button/button_input.html</qrcode>
+ * button组件下的表单插件，用来扩展按钮类型，在没有插件的情况，只支持button，加此插件后，可以支持以下类型
  * - ''checkbox'' 复选按钮
  * - ''radio'' 单选按钮
  * - ''input'' input按钮（包括type为input, button, submit, reset的input）
@@ -13,8 +14,6 @@
  *   type: 'radio'
  * });
  * </code>
- *
- *
  *
  * **如果使用setup模式，类型将自动识别, 规则为: **
  * <tabs>
