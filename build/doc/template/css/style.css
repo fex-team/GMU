@@ -155,6 +155,7 @@ li li {
 }
 
 pre {
+    clear:both;
     padding: 10px;
     -webkit-border-radius: 5px;
     border-radius: 5px;
@@ -705,6 +706,7 @@ div.notice {
 
 
 .codepreivew {
+    clear: both;
     margin:1em 0;
 }
 .codepreivew ul {
