@@ -98,7 +98,7 @@ span.code {
 }
 
 .toc_title span.icon {
-    background-image: url('../../images/doc/list-arrow-white.png');
+    background-image: url('../images/list-arrow-white.png');
     top: 3px;
 }
 
@@ -299,7 +299,7 @@ tr:hover th {
 ::-webkit-scrollbar-thumb {
     min-height: 30px;
     min-width: 30px;
-    -webkit-border-image: url("../../images/doc/thum-dark.png") 4 0 4 0 stretch stretch;
+    -webkit-border-image: url("../images/thum-dark.png") 4 0 4 0 stretch stretch;
     border-width: 4px;
 }
 
@@ -321,22 +321,22 @@ tr:hover th {
 }
 
 .nav >ul>li a.text-large {
-    background: url('../../images/doc/text-large-white.png') no-repeat center center;
+    background: url('../images/text-large-white.png') no-repeat center center;
     background-size: 27px 20px;
 }
 
 .nav >ul>li a.text-small {
-    background: url('../../images/doc/text-small-white.png') no-repeat center center;
+    background: url('../images/text-small-white.png') no-repeat center center;
     background-size: 27px 20px;
 }
 
 .nav >ul>li a.collapse {
-    background: url('../../images/doc/collapse-white.png') no-repeat center center;
+    background: url('../images/collapse-white.png') no-repeat center center;
     background-size: 23px 23px;
 }
 
 .nav >ul>li a.expand {
-    background: url('../../images/doc/expand-white.png') no-repeat center center;
+    background: url('../images/expand-white.png') no-repeat center center;
     background-size: 23px 23px;
 
 }

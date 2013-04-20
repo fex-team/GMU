@@ -99,19 +99,18 @@ $template->assignVariable('theme', 'blue');
 $template->assignVariable('activeTheme', 'purple');
 $content = $template->render();
 
-
-
-
 // 删除doc目录下所有文件
 //todo 加配置项
 if( true ) {
     emptyDir($outputDir);
 }
 
+//生成二维码
 @mkdir($outputDir."/qrcode");
 $content = preg_replace_callback('#\ssrc=(\'|")(.+?)\1#', function($maches){
     global $outputDir;
-    if(preg_match('#data=(.*)$#', $maches[2], $m)){
+
+    if(preg_match('#qrcode\.php\?data=(.*)$#i', $maches[2], $m)){
         $url = urldecode($m[1]);
         $filename = "/qrcode/".md5($url).".png";
         QRcode::png($url, $outputDir.$filename, QR_ECLEVEL_L, 4);
@@ -120,16 +119,19 @@ $content = preg_replace_callback('#\ssrc=(\'|")(.+?)\1#', function($maches){
     return $maches[0];
 }, $content);
 
+//生成文档首页
 file_put_contents($outputDir."/index.html", $content);
 
+//把非.phtml文件或目录全部移过去
 $items = scandir($templateDir);
 foreach($items as $item) {
     if ($item == '.' || $item == '..' || preg_match('#\.phtml$#', $item)) continue;
     copyDir($templateDir.'/'.$item, $outputDir.'/'.$item);
 }
 
-echo "生成文档成功";
+echo "生成API文档成功";
 
+//清空文件夹
 function emptyDir($dir, $includeSelf = false){
     if (!file_exists($dir)) return true;
     if (!is_dir($dir) || is_link($dir)) return unlink($dir);

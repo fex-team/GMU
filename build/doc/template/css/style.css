@@ -813,11 +813,11 @@ div.notice {
 ::-webkit-scrollbar-thumb {
     min-height: 30px;
     min-width: 30px;
-    -webkit-border-image: url("../../images/doc/thum.png") 4 0 4 0 stretch stretch;
+    -webkit-border-image: url("../images/thum.png") 4 0 4 0 stretch stretch;
     border-width: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-    -webkit-border-image: url("../../images/doc/thum-hover.png") 4 0 4 0 stretch stretch;
+    -webkit-border-image: url("../images/thum-hover.png") 4 0 4 0 stretch stretch;
 }
 
 .nav {

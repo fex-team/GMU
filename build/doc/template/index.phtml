@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <title><?php echo $title?></title>
     <link rel="stylesheet" href="./css/codemirror.css">
-    <link type="text/css" href="./css/style.min.css" rel="stylesheet"/>
+    <link type="text/css" href="./css/style.css" rel="stylesheet"/>
     <?php
     $theme = isset($themes[$activeTheme])?$themes[$activeTheme]:'';
     if($theme):?><link id="theme-link" type="text/css" href="<?php echo $theme;?>" rel="stylesheet"/><?php endif;?>
@@ -35,7 +35,8 @@ var globalSettings = {
 };
 // //]]>
 </script>
-<script type="text/javascript" src="./js/all.min.js"></script>
+<script type="text/javascript" src="js/depencies.min.js"></script>
+<script type="text/javascript" src="js/doc.js"></script>
 <script type="text/javascript">
     var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
     document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F7c62aaa2c3803c6fdbbd95058c165683' type='text/javascript'%3E%3C/script%3E"));

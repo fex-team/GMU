@@ -7,7 +7,7 @@
 
     //提供直接调用
     var run = exports.run = function() {
-        shell('which php')
+        return shell('which php')
             .then(function(value){
                 var phpFile = path.resolve('build/doc/index.php');
                 return shell(value + ' '+phpFile);
