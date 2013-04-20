@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title><?php echo $title?></title>
+    <link rel="stylesheet" href="./css/codemirror.css">
+    <link type="text/css" href="./css/style.min.css" rel="stylesheet"/>
+    <?php
+    $theme = isset($themes[$activeTheme])?$themes[$activeTheme]:'';
+    if($theme):?><link id="theme-link" type="text/css" href="<?php echo $theme;?>" rel="stylesheet"/><?php endif;?>
+</head>
+<body>
+<div class="wrapper">
+    <div class="clearfix container" style="margin: 0 25px;"><?php echo $docContent?></div>
+    <div class="themes-list">
+        <h3 class="invisible">切换主题</h3>
+        <ul>
+            <?php foreach($themes as $key => $theme):?>
+            <li <?php print $activeTheme == $key?' class="on"':''?>><a href="#" class="<?php echo $key;?>"><?php echo $key;?></a></li>
+            <?php endforeach;?>
+        </ul>
+    </div>
+</div>
+<a id="gotopBtn" href="#">GoTop</a>
+<script type="text/javascript">
+    //<![CDATA[
+    var globalSettings = {themes:<?php echo json_encode($themes)?>, activeTheme:'<?php echo $activeTheme?>'};
+    // //]]>
+</script>
+<script type="text/javascript" src="js/depencies.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,135 @@
+<div id="sidebar">
+    <?php echo $this->hook_content('NavPrefix')?>
+    <div id="search">
+        <input disabled="disabled" results="5"  type="search" placeholder="Search" autosave="searchdoc" autocomplete="off">
+    </div>
+    <div class="sidebar-list">
+        <div id="result"></div>
+        <div id="static_list">
+            <?php
+            $jsDocs = $this->getJsDocs();
+            foreach($jsDocs as $index=> $jsDoc):?>
+            <?php if($jsDoc->hasData('name')):?>
+                    <?php if($index!=0):?><hr /><?php endif;?>
+                    <a class="doc_g_t" href="#<?php echo preg_replace('/[^a-z0-9]/', '', strtolower($jsDoc->getData('name')))?>"><?php echo $jsDoc->getData('name');?></a>
+                    <hr />
+            <?php endif;?>
+            <?php
+            foreach ($jsDoc as $jsFile):
+                $fileComment = $jsFile->getFileComment();
+                $methodsComments = $jsFile->getMethodComments();
+                $name = $fileComment->short ? $fileComment->short : $fileComment->name;
+                ?>
+                <div class="collapsble">
+                    <div class="toc_title <?php if ($fileComment->theme): ?>left-nav-<?php print $fileComment->theme ?><?php endif;?>">
+                        <a href="#<?php echo $this->gennerateCommentId($fileComment);?>"><?php echo $name;?></a>
+                        <span class="icon"></span>
+                    </div>
+                    <div class="toc_section">
+                        <ul>
+                            <?php foreach ($methodsComments as $comment): ?>
+                            <li <?php if ($comment->theme): ?>class="left-nav-<?php print $comment->theme?>"<?php endif;?>>
+                                <a href="#<?php echo $this->gennerateCommentId($comment);?>"><?php echo $comment->name;?></a>
+                            </li>
+                            <?php endforeach;?>
+                        </ul>
+                    </div>
+                </div>
+                <?php endforeach;?>
+            <?php endforeach;?>
+        </div>
+    </div>
+    <?php echo $this->hook_content('NavSuffix')?>
+</div>
+<div class="container">
+    <?php echo $this->hook_content('ContentPrefix')?>
+    <!--[if IE]>
+    <div class="notice">
+        此API文档，在IE浏览器下表现不佳，请适用非IE浏览器，推荐适用<a href="http://www.google.cn/intl/zh-CN/chrome/browser/">Chrome</a>（谷歌浏览器）!
+    </div>
+    <![endif]-->
+    <?php foreach($jsDocs as $index=> $jsDoc):?>
+    <?php if($jsDoc->hasData('title')):?>
+        <h2 id="<?php echo preg_replace('/[^a-z0-9]/', '', strtolower($jsDoc->getData('name')))?>"><?php echo $jsDoc->getData('title');?></h2>
+    <?php endif;?>
+    <?php if($jsDoc->hasData('desc')):?>
+        <div class="doc_desc">
+            <?php echo $jsDoc->getData('desc');?>
+        </div>
+    <?php endif;?>
+    <?php foreach ($jsDoc as $jsFile):
+    $fileComment = $jsFile->getFileComment();
+    $methodsComments = $jsFile->getMethodComments();
+    ?>
+    <div class="clearfix category <?php if ($fileComment->theme): ?>category-<?php print $fileComment->theme ?><?php endif;?>">
+        <h2 id="<?php echo $this->gennerateCommentId($fileComment);?>"><?php echo $fileComment->name?></h2>
+        <?php if ($fileComment->hasProperty('import')): ?>
+        <h4>依赖</h4>
+        <p class="requires"><?php
+            $imports = explode(",", $fileComment->import);
+            $importsA = array();
+            foreach ($imports as $import):
+                $import = trim($import);
+                $link = $this->getFileLink($import);
+                if ($link) {
+                    $importsA[] = '<a href="' . $link['link'] . '" ' . (isset($link['target']) ? 'target="' . $link['target'] . '"' : '') . ' title="' . $link['title'] . '">' . $link['text'] . '</a>';
+                } else {
+                    $importsA[] = $import;
+                }
+            endforeach;
+            echo implode(", ", $importsA);
+            ?></p>
+        <?php endif;?>
+        <?php if ($fileComment->desc): echo $this->wrapText($fileComment->desc); endif;?>
+        <?php foreach ($methodsComments as $comment):
+        $commentId = $this->gennerateCommentId($comment);
+        ?>
+        <article
+                class="clearfix method <?php if ($comment->theme): ?>method-<?php print $comment->theme ?><?php endif;?>">
+            <h3 id="<?php echo $commentId;?>" <?php if ($comment->hasProperty('deprecated')): ?>class="deprecated"<?php endif;?>><?php echo $comment->name?>
+                <?php if ($comment->hasProperty('since')): ?><span
+                        class="version"><?php echo $comment->since?></span><?php endif;?>
+            </h3>
+            <?php if ($comment->hasProperty('deprecated')): ?>
+            <div class="warning"><?php echo $this->wrapText($comment->deprecated)?></div>
+            <?php endif;?>
+            <?php $signatures = $comment->grammar;?>
+            <?php if ($signatures):
+            if (!is_array($signatures)) $signatures = array($signatures);
+            ?>
+            <?php /*<h4>语法</h4>*/ ?>
+            <ul class="signature">
+                <?php foreach ($signatures as $signature): ?>
+                <li><?php echo $this->wrapGrammar($signature);?></li>
+                <?php endforeach;?>
+            </ul>
+            <?php endif;?>
+            <?php
+            $desc = '';
+            foreach ($comment as $key => $value):
+                switch ($key) {
+                    case 'notice':
+                        echo $this->wrapNotice($value);
+                        break;
+                    case 'example':
+                        echo $this->wrapCode($value);
+                        break;
+                    case 'desc':
+                        $tmp = $this->wrapText($value);
+                        $desc.= $tmp;
+                        echo $tmp;
+                        break;
+                }
+                ?>
+                <?php endforeach;?>
+        </article>
+        <?php
+            $this->addSearchEntry($comment->name, $comment->name, $desc, '#'.$commentId, $fileComment->short ? $fileComment->short : $fileComment->name);
+        ?>
+        <?php endforeach;?>
+        <hr/>
+    </div>
+    <?php endforeach;?>
+    <?php endforeach;?>
+    <?php echo $this->hook_content('NavSuffix')?>
+</div>

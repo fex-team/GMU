@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title><?php echo $title?></title>
+    <link rel="stylesheet" href="./css/codemirror.css">
+    <link type="text/css" href="./css/style.css" rel="stylesheet"/>
+    <?php
+    $theme = isset($themes[$activeTheme])?$themes[$activeTheme]:'';
+    if($theme):?><link id="theme-link" type="text/css" href="<?php echo $theme;?>" rel="stylesheet"/><?php endif;?>
+</head>
+<body>
+<div class="wrapper">
+    <?php
+    $docContent = preg_replace('#\.\.%2Fgmu%2F_examples%2F#', urlencode('http://gmu.baidu.com/demo/'), $docContent);
+    $docContent = preg_replace('#\.\./gmu/_examples/#', 'http://gmu.baidu.com/demo/', $docContent);
+    echo $docContent;
+    ?>
+    <div class="themes-list">
+        <h3 class="invisible">切换主题</h3>
+        <ul>
+            <?php foreach($themes as $key => $theme):?>
+            <li <?php print $activeTheme == $key?' class="on"':''?>><a href="#" class="<?php echo $key;?>"><?php echo $key;?></a></li>
+            <?php endforeach;?>
+        </ul>
+    </div>
+</div>
+<a id="gotopBtn" href="#">GoTop</a>
+<script type="text/javascript">
+//<![CDATA[
+var globalSettings = {
+    themes: <?php echo json_encode($themes)?>,
+    activeTheme:'<?php echo $activeTheme?>',
+    source: <?php echo json_encode($searchEntries); ?>
+};
+// //]]>
+</script>
+<script type="text/javascript" src="js/depencies.min.js"></script>
+<script type="text/javascript" src="js/doc.js"></script>
+<script type="text/javascript">
+    var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+    document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F7c62aaa2c3803c6fdbbd95058c165683' type='text/javascript'%3E%3C/script%3E"));
+</script>
+</body>
+</html>

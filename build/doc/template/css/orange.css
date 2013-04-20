@@ -1,0 +1,57 @@
+body {
+    background: #fff;
+}
+a, a:visited {
+    color: #724dff;
+}
+a:active, a:hover {
+    color: #6180f4;
+}
+
+hr {
+    height: 1px;
+    border: 0;
+    padding: 0;
+    margin: 35px 0 0 0;
+    background-image: -moz-linear-gradient(0 0 0deg, rgba(253, 176, 23, 0.0) 0%, rgba(253, 176, 23, 0.33) 50%, rgba(253, 176, 23, 0.0) 100%);
+    background-image: -webkit-gradient(linear, left top, right top, from(rgba(253, 176, 23, 0.0)), color-stop(0.5, rgba(253, 176, 23, 0.33)), to(rgba(253, 176, 23, 0.0)));
+}
+pre {
+    background: #fefaf2;
+    border: 2px solid #fdf3df;
+}
+p > code, li > code {
+    border: 1px solid #eee;
+}
+
+#sidebar {
+    border-right: 1px solid rgba(252, 238, 210, 1);
+    background-color: #fef5e3;
+    background-image: -moz-linear-gradient(0 0 0deg, transparent 0%, rgba(252, 238, 210, 0.0) 92%, rgba(252, 238, 210, 0.8) 100%);
+    background-image: -webkit-gradient(linear, left top, right top, from(transparent), color-stop(0.92, transparent), color-stop(0.9201, rgba(252, 238, 210, 0.0)), to(rgba(252, 238, 210, 0.8)));
+}
+ul.signature li .return {
+    color: gray;
+}
+
+.method .warning a {
+    color: #700;
+}
+
+span.code {
+    border: 1px solid #fdf3df;
+    background-color: #fefaf2;
+}
+
+.themes-list ul {
+    background: rgba(254, 245, 227, 0.8);
+    border: 1px solid #fcdfa4;
+    box-shadow: 2px 2px 5px #Fdf3df;
+}
+.result-list li.active a {
+    background-color: orange;
+}
+
+.collapsed #sidebar {
+    border-bottom: 1px solid rgba(252, 238, 210, 1);
+}

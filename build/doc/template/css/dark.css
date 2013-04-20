@@ -1,0 +1,350 @@
+body {
+    background: #171614;
+    color: #fdfdfd;
+}
+
+a, a:visited {
+    color: #e6e6e6;
+}
+
+a:active, a:hover {
+    color: #e6e6e6;
+    text-decoration: none;
+}
+
+hr {
+    height: 1px;
+    border: 0;
+    padding: 0;
+    margin: 35px 0 0 0;
+    background: rgba(0, 0, 0, 0.20);
+    background-image: -moz-linear-gradient(0 0 0deg, rgba(255, 255, 255, 0.0) 0%, rgba(255, 255, 255, 0.33) 50%, rgba(255, 255, 255, 0.0) 100%);
+    background-image: -webkit-gradient(linear, left top, right top, from(rgba(0, 0, 0, 0.0)), color-stop(0.5, rgba(255, 255, 255, 0.33)), to(rgba(0, 0, 0, 0.0)));
+}
+
+h1, h2, h3, h4, h5, h6, strong {
+    color: #e6e6e6;
+    text-shadow: 1px 1px 5px rgba(255, 255, 255, 0.3);
+    font-weight: normal;
+}
+
+pre {
+    background: #262722;
+    border: 1px solid #49483e;
+    border-radius: 5px;
+}
+
+p > code, li > code {
+    border: 1px solid #eee;
+}
+
+#sidebar {
+    border-right: 1px solid #474743;
+    background-image: -moz-linear-gradient(0 0 0deg, #272722 0%, #292824 50%, #383732 100%);
+    background-image: -webkit-gradient(linear, 0% 0%, 100% 0%, from(#272722), to(#383732), color-stop(0.5, #292824));
+}
+
+ul.signature {
+    color: #e6e6e6;
+}
+
+ul.signature li .return {
+    color: gray;
+}
+
+.toc_title a, .toc_title a:visited, a.doc_g_t, a.doc_g_t:visited {
+    color: #e6e6e6;
+    text-shadow: 1px 1px 5px rgba(255, 255, 255, 0.3);
+    text-decoration: none;
+    font-weight: normal;
+}
+
+.toc_section li a {
+    color: #e6e6e6;
+}
+
+.method .warning, .method .warning a {
+    color: #b42b53;
+}
+
+.method .version {
+    background: #bce1fe;
+}
+
+span.code {
+    border: 1px solid #262822;
+    background-color: #262822;
+    border-radius: 3px;
+    margin: 0 3px;
+    color: #fdfdfd;
+}
+
+.themes-list ul {
+    background: rgba(234, 244, 254, 0.2);
+    border: 1px solid #49483e;
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
+}
+
+.method .notice {
+    padding: 4px 10px;
+    border-left: 2px solid #FF8;
+    background: transparent;
+    color: #FF8;
+    margin: 10px 0;
+}
+
+.method .notice .code, .method .notice strong {
+    color: #FF8;
+}
+
+.toc_title span.icon {
+    background-image: url('../images/list-arrow-white.png');
+    top: 3px;
+}
+
+.themes-list ul li.on a, .themes-list ul li a:hover {
+    opacity: 0.6;
+    border: 1px solid #fff;
+}
+
+th, td {
+    border-color: #49483E;
+}
+
+th {
+    background-color: #272722;
+}
+
+tr:hover td {
+    background-color: #292824;
+}
+
+tr:hover th {
+    background-color: #49483E;
+}
+
+.qrcode-block a {
+    color: #724dff;
+}
+
+.ui-tabs > div {
+    border: 1px solid #49483E;
+}
+
+.ui-tabs ul li a {
+    color: #959595;
+    border: 1px solid #646462;
+    background-color: #E8EBF0;
+    background: -webkit-linear-gradient(top, #4d4d4a 0%, #393937 100%);
+    background: -o-linear-gradient(top, #4d4d4a 0%, #393937 100%);
+    background: -ms-linear-gradient(top, #4d4d4a 0%, #393937 100%);
+    background: linear-gradient(top, #4d4d4a 0%, #393937 100%);
+}
+
+.ui-tabs ul li.active a, .ui-tabs ul li:hover a {
+    color: white;
+    border-bottom-color: #262722;
+    background-color: #262722;
+    background: -webkit-linear-gradient(top, #33342e 0%, #262722 100%);
+    background: -o-linear-gradient(top, #33342e 0%, #262722 100%);
+    background: -ms-linear-gradient(top, #33342e 0%, #262722 100%);
+    background: linear-gradient(top, #33342e 0%, #262722 100%);
+}
+
+.codepreivew > div {
+    border: 1px solid #49483E;
+    padding: 0;
+}
+
+.codepreivew ul li a {
+    color: #959595;
+    border: 1px solid #646462;
+    background-color: #E8EBF0;
+    background: -webkit-linear-gradient(top, #4d4d4a 0%, #393937 100%);
+    background: -o-linear-gradient(top, #4d4d4a 0%, #393937 100%);
+    background: -ms-linear-gradient(top, #4d4d4a 0%, #393937 100%);
+    background: linear-gradient(top, #4d4d4a 0%, #393937 100%);
+}
+
+.codepreivew ul li.active a, .codepreivew ul li:hover a {
+    color: white;
+    border-bottom-color: #262722;
+    background-color: #262722;
+    background: -webkit-linear-gradient(top, #33342e 0%, #262722 100%);
+    background: -o-linear-gradient(top, #33342e 0%, #262722 100%);
+    background: -ms-linear-gradient(top, #33342e 0%, #262722 100%);
+    background: linear-gradient(top, #33342e 0%, #262722 100%);
+}
+
+.codepreivew ul.btns li a {
+    color: #959595;
+    border: 1px solid #646462;
+    background-color: #E8EBF0;
+    background: -webkit-linear-gradient(top, #393937 0%, #4d4d4a 100%);
+    background: -o-linear-gradient(top, #393937 0%, #4d4d4a 100%);
+    background: -ms-linear-gradient(top, #393937 0%, #4d4d4a 100%);
+    background: linear-gradient(top, #393937 0%, #4d4d4a 100%);
+}
+
+.codepreivew ul.btns li.active a, .codepreivew ul.btns li:hover a {
+    color: white;
+    border-top-color: #262722;
+    background-color: #262722;
+    background: -webkit-linear-gradient(top, #262722 0%, #33342e 100%);
+    background: -o-linear-gradient(top, #262722 0%, #33342e 100%);
+    background: -ms-linear-gradient(top, #262722 0%, #33342e 100%);
+    background: linear-gradient(top, #262722 0%, #33342e 100%);
+}
+
+/* Based on Sublime Text's Monokai theme */
+
+.cm-s-default {
+    background: #272822;
+    color: #f8f8f2;
+}
+
+.cm-s-default div.CodeMirror-selected {
+    background: #49483E !important;
+}
+
+.cm-s-default .CodeMirror-gutter {
+    background: #272822;
+    border-right: 0px;
+}
+
+.cm-s-default .CodeMirror-gutter-text {
+    color: #d0d0d0;
+}
+
+.cm-s-default .CodeMirror-cursor {
+    border-left: 1px solid #f8f8f0 !important;
+}
+
+.cm-s-default span.cm-operator {
+    color: #f8f8f2;
+}
+
+.cm-s-default span.cm-comment {
+    color: #75715e;
+}
+
+.cm-s-default span.cm-atom {
+    color: #ae81ff;
+}
+
+.cm-s-default span.cm-number {
+    color: #ae81ff;
+}
+
+.cm-s-default span.cm-property, .cm-s-default span.cm-attribute {
+    color: #a6e22e;
+}
+
+.cm-s-default span.cm-keyword {
+    color: #f92672;
+}
+
+.cm-s-default span.cm-string {
+    color: #e6db74;
+}
+
+.cm-s-default span.cm-variable {
+    color: #a6e22e;
+}
+
+.cm-s-default span.cm-variable-2 {
+    color: #9effff;
+}
+
+.cm-s-default span.cm-def {
+    color: #fd971f;
+}
+
+.cm-s-default span.cm-error {
+    background: #f92672;
+    color: #f8f8f0;
+}
+
+.cm-s-default span.cm-bracket {
+    color: #f8f8f2;
+}
+
+.cm-s-default span.cm-tag {
+    color: #f92672;
+}
+
+.cm-s-default span.cm-link {
+    color: #ae81ff;
+}
+
+/*For javascript*/
+.cm-type-javascript span.cm-property {
+    color:#F8F8F2;
+}
+
+.cm-s-default .CodeMirror-matchingbracket {
+    text-decoration: underline;
+    color: white !important;
+}
+
+/* Turn on a 13x13 scrollbar */
+::-webkit-scrollbar {
+    width: 16px;
+    height: 16px;
+    background-image: -webkit-gradient(linear, 0 0, 100% 0, from(#212121), to(#2f2f2f));
+    border-left: 1px solid #1d1d1d;
+}
+
+/* The thumb itself */
+::-webkit-scrollbar-thumb {
+    min-height: 30px;
+    min-width: 30px;
+    -webkit-border-image: url("../images/thum-dark.png") 4 0 4 0 stretch stretch;
+    border-width: 4px;
+}
+
+.result-list li a span.title {
+    color: #E6E6E6;
+}
+
+.result-list li:nth-of-type(even) a {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.result-list li.active a {
+    background-color: rgba(255, 255, 255, .3);
+    color: #E6E6E6;
+}
+
+.result-list li.active a span.title {
+    color: white;
+}
+
+.nav >ul>li a.text-large {
+    background: url('../images/text-large-white.png') no-repeat center center;
+    background-size: 27px 20px;
+}
+
+.nav >ul>li a.text-small {
+    background: url('../images/text-small-white.png') no-repeat center center;
+    background-size: 27px 20px;
+}
+
+.nav >ul>li a.collapse {
+    background: url('../images/collapse-white.png') no-repeat center center;
+    background-size: 23px 23px;
+}
+
+.nav >ul>li a.expand {
+    background: url('../images/expand-white.png') no-repeat center center;
+    background-size: 23px 23px;
+
+}
+
+.nav >ul>li a:hover, .nav >ul>li a.active {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.collapsed #sidebar {
+    border-bottom: 1px solid #474743;
+}

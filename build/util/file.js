@@ -43,26 +43,30 @@
 	//如果文件夹不存在，尝试创建它
 
 	function mkdir(dirPaths, mode) {
+
+        // Set directory mode in a strict-mode-friendly way.
+        /*jshint eqnull:true */
+        if (mode == null) {
+            mode = parseInt('0777', 8) & (~process.umask());
+        }
+
 		return callEach(dirPaths, function(dirPath) {
-			var paths,
-			subpath;
 
-			// Set directory mode in a strict-mode-friendly way.
-			/*jshint eqnull:true */
-			if (mode == null) {
-				mode = parseInt('0777', 8) & (~process.umask());
-			}
+            dirPath = dirPath.split(/[\/\\]/g);
+            dirPath.push('');
 
-			paths = dirPath.split(/[\/\\]/g).reduce(function(parts, part) {
+            dirPath.reduce(function(parts, part) {
+                var subPath;
+
 				parts += path.sep + part;
-				subpath = path.resolve(parts);
+				subPath = path.resolve(parts);
 
-				if (!exists(subpath)) {
+				if (!exists(subPath)) {
 
 					try {
-						fs.mkdirSync(subpath, mode);
+						fs.mkdirSync(subPath, mode);
 					} catch (e) {
-						throw new Error("创建目录\"" + subpath + "\"失败(错误代码：" + e.code + ")");
+						throw new Error("创建目录\"" + subPath + "\"失败(错误代码：" + e.code + ")");
 					}
 				}
 				return parts;
