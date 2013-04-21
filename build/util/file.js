@@ -101,6 +101,7 @@
 	}
 
 	function write(filename, content, file_encoding) {
+        mkdir(path.dirname(filename));
 		return fs.writeFileSync(filename, content, file_encoding || FILE_ENCODING);
 	}
 
