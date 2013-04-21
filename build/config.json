@@ -8,8 +8,11 @@
         },
         "gmu": {
             "path": "_src",
+            "cssPath": "assets",
             "src": ["core/*.js", "widget/**.js"],
-            "dest": "dist/gmu.js"
+            "dest": "dist/gmu.js",
+            "exclude": ["core/zepto.js", "core/zepto.fx.js"],
+            "banner": "/* Gmu v@version */"
         }
     }
 }

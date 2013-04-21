@@ -18,8 +18,14 @@
         }
     }
 
+    function str_replace( search, replace, subject) {
+        var r = new RegExp(''+search, 'ig');
+        return subject.replace( r, replace);
+    }
+
     helper.unCurryThis = unCurryThis;
     helper.curry = curry;
+    helper.str_replace = str_replace;
 
     ["push", "pop", "shift", "unshift", "slice",
         "splice", "map", "filter", "forEach",
