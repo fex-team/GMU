@@ -1,14 +1,21 @@
 (function () {
     "use strict";
 
-    var Q = require('q'),
+    var
+        //Q 是一个实现了promise/A+规范的js库
+        Q = require('q'),
+
+        //用来根据规则查找文件的工具
         glob = require('glob'),
         path = require('path'),
+
+        //用来判断某字符串是否满足某规则
         minimatch = require('minimatch'),
         file = require("./util/file"),
         helper = require("./util/helper"),
         config = require("./config.json").dist;
 
+    //合并zepto文件
     function concatZepto() {
         var opt = config.zepto,
             dest = opt.dest,
@@ -25,6 +32,7 @@
         console.log('生成 %s 成功， 大小为: %s ', dest, file.caculateSize(dest));
     }
 
+    //用uglify压缩zepto文件
     function minifyZepto() {
         var opt = config.zepto,
             minDest = opt.dest.replace(/\.js$/, '.min.js');
@@ -38,13 +46,15 @@
         var opt = config.gmu,
             dir = path.resolve(opt.path),
             files = opt.src,
+
+            //判断文件名是否满足exclude中设置的规则
             matchExclude = function (item) {
                 var i = 0,
                     len = exclude.length;
 
-                for( ; i<len; i++) {
+                for (; i < len; i++) {
 
-                    if(minimatch(item, exclude[i])) {
+                    if (minimatch(item, exclude[i])) {
                         return true;
                     }
                 }
@@ -52,19 +62,28 @@
                 return false;
             };
 
-        exclude = opt.exclude.concat(exclude? exclude.split(/\s+/): []);
+        exclude = (opt.exclude || [])
+            .concat(exclude ? exclude.split(/\s+/) : []);
 
+        //确保files是个数组
         if (!Array.isArray(files)) {
             files = [files];
         }
 
         return Q.all(files.map(function (file) {
                 return Q.nfcall(glob, file, { cwd: dir});
-            })).then(function (files) {
+            }))
+            .then(function (files) {
 
-                return files.reduce(function (prefix, now) {
-                    return prefix.concat(now);
-                }).filter(function (item, i, me) {
+                return files
+
+                    //摊平数组
+                    .reduce(function (prefix, now) {
+                        return prefix.concat(now);
+                    })
+
+                    //去重
+                    .filter(function (item, i, me) {
                         return me.lastIndexOf(item) === i && !matchExclude(item);
                     });
             });
@@ -81,14 +100,12 @@
                     content,
                     cssPath,
                     exists,
-
-                //dependencies
-                    deps,
+                    depends,//dependencies
                     item,
                     matches;
 
                 //如果文件不存在，则直接跳过, 同时从数组中过滤掉
-                //如果已经处理过也跳过
+                //或者已经处理过也跳过
                 if (!(exists = file.exists((prefix + path))) ||
                     hash.hasOwnProperty(path)) {
 
@@ -100,7 +117,7 @@
                 //读取文件内容中对js的依赖 格式为：@import core/zepto.js
                 matches = content.match(/@import\s(.*?)\n/i);
                 if (matches) {
-                    deps = matches[1]
+                    depends = matches[1]
 
                         //多个依赖用道号隔开
                         .split(/\s*,\s*/g)
@@ -147,7 +164,7 @@
 
                 item = {
                     path: path,
-                    dependencies: deps,
+                    dependencies: depends,
                     css: css
                 };
 
@@ -173,15 +190,15 @@
         var js = '',
             css = '',
             pkg = require('../package.json'),
+
+            //存取css文件中的图片信息 key为url()括号中的值，value为原始图片路径
             images = {},
             opt = config.gmu,
             prefix = path.resolve(opt.path) + path.sep,
             cssPrefix = path.resolve(opt.cssPath) + path.sep,
             hash = {},
             rendered = {
-
-                //不再输出core/zepto.js, 这个文件会单独打包
-                'core/zepto.js': true
+                'core/zepto.js': true//不再输出core/zepto.js, 这个文件会单独打包
             },
             jsRender = function (item) {
 
@@ -199,10 +216,11 @@
 
                 js += file.read(prefix + item.path) + '\n';
 
+                //标明已经输出过
                 rendered[item.path] = true;
             },
 
-            readCss = function( obj ){
+            readCss = function (obj) {
                 var ret = '',
                     i = 0,
                     matches,
@@ -215,9 +233,11 @@
                 //收集images
                 matches = ret.match(/url\(((['"]?)(?!data)([^'"\n]+?)\2)\)/ig);
 
-                if( matches ) {
+                if (matches) {
 
-                    for( len = matches.length; i<len; i++ ) {
+                    for (len = matches.length; i < len; i++) {
+
+                        //苦恼，为何matches结果里面不带分组结果呢？
                         url = matches[i].match(/url\(((['"]?)(?!data)([^'"\n]+?)\2)\)/i)[3];
                         images[url] = path.resolve(cssPrefix + path.dirname(obj.structor || obj[theme]) + path.sep + url);
                     }
@@ -237,7 +257,7 @@
 
                 css = item.css;
 
-                if(css.dependencies){
+                if (css.dependencies) {
                     css.dependencies.forEach(readCss);
                 }
 
@@ -247,7 +267,7 @@
             minDest,
             destDir,
             image,
-            newname,
+            newName,
             banner;
 
         //生成hash表
@@ -262,7 +282,7 @@
         banner = opt.banner.replace(/@version/g, pkg.version);
 
         dest = opt.dest;
-        file.write(dest, banner+'\n'+js);
+        file.write(dest, banner + '\n' + js);
 
         console.log('生成 %s 成功， 大小为: %s ', dest, file.caculateSize(dest));
 
@@ -272,22 +292,24 @@
 
         //复制图片
         destDir = path.dirname(dest) + path.sep;
-        for(image in images) {
-            newname = path.basename(image);
+        for (image in images) {
+            newName = path.basename(image);
 
-            while( file.exists( destDir + 'images/' + newname)){
-                newname = newname.replace(/(?:-(\d+))?\.(png|jpg|jpeg|gif)$/i, function(m0, m1, m2){
-                    m1 = m1>>>0;
-                    return '-'+(m1 + 1)+'.'+m2;
+            //如果文件名已经占用，则换个名字
+            while (file.exists(destDir + 'images/' + newName)) {
+                newName = newName.replace(/(?:-(\d+))?\.(png|jpg|jpeg|gif)$/i, function (m0, m1, m2) {
+                    m1 = m1 >>> 0;
+                    return '-' + (m1 + 1) + '.' + m2;
                 });
             }
 
-            file.write(destDir + 'images/' + newname, file.read(images[image]));
-            css = helper.str_replace('\\((\'|")?'+image.replace(/\./g, '\\.')+'\\1\\)', '(./images/'+newname+')', css);
+            file.write(destDir + 'images/' + newName, file.read(images[image]));
+            css = helper
+                .str_replace('\\((\'|")?' + image.replace(/\./g, '\\.') + '\\1\\)', '(./images/' + newName + ')', css);
         }
 
         dest = dest.replace(/\.js$/, '.css');
-        file.write(dest, banner+'\n'+css);
+        file.write(dest, banner + '\n' + css);
         console.log('生成 %s 成功， 大小为: %s ', dest, file.caculateSize(dest));
     }
 
