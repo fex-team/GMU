@@ -1,6 +1,6 @@
-##GMU github地址迁移通告（2013.04.19）##
+##Notice##
 + 该地址是GMU新github地址，基于最新zepto 1.0版本，GMU版本为2.0.4
-+ 2.0.3及以下版本（支持zepto 1.0rc1），请移步到 https://github.com/campaign/gmu
++ 2.0.3及以下版本（支持zepto 1.0rc1），请移步至老的github地址 https://github.com/campaign/gmu
 
 ##GMU##
 GMU是基于zepto的轻量级mobile UI组件库，符合jquery ui使用规范，提供webapp、pad端简单易用的UI组件。为了减小代码量，提高性能，组件再插件化，兼容iOS3+ / android2.1+，支持国内主流移动端浏览器，如safari, chrome, UC, qq等。
