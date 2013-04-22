@@ -116,25 +116,28 @@
 
 <script type="text/javascript">
     $(function ($) {
-        $('.panel').css('height', window.innerHeight).iScroll({
-            hScroll: false
-        }).panel({
-            contentWrap: $('.cont'),
-            scrollMode: 'fixed',
-            position: 'left',
-            display: 'overlay',
-            swipeClose: false
-         });
+        $(document).on('headready', function () {
+            $('.panel').css('height', window.innerHeight - ($('header').height() || 42)).iScroll({
+                hScroll: false
+            }).panel({
+                contentWrap: $('.cont'),
+                scrollMode: 'fix',
+                position: 'left',
+                display: 'overlay',
+                swipeClose: false
+            });
 
-        $('.scroll-iscroll').on('tap', function (e) {
-            e.stopPropagation();
-            $('.panel').panel('toggle');
+            $('.scroll-iscroll').on('tap', function (e) {
+                $('.panel').panel('toggle');
+            });
+
+            function resetHeight() {
+                $('.panel').css('height', window.innerHeight).iScroll('refresh');
+            }
+            $(document).on('scrollStop', resetHeight);
+
         });
 
-        function resetHeight() {
-            $('.panel').css('height', window.innerHeight).iScroll('refresh');
-        }
-        $(document).on('scrollStop', resetHeight);
 
     }(Zepto));
 </script>

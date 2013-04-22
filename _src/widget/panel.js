@@ -14,13 +14,12 @@
      * --该组件不支持create模式，只有setup模式--
      * @desc **Options**
      * - ''contentWrap'' {Dom/Zepto/selector}: (可选，默认：true)主体内容dom
-     * - ''scrollMode'' {String}: (可选，默认：true)'follow |'disappear' | 'fixed'   Panel滑动方式，follow表示跟随页面滑动，disappear表示页面滑动时panel消失
+     * - ''scrollMode'' {String}: (可选，默认：true)'follow |'hide' | 'fix'   Panel滑动方式，follow表示跟随页面滑动，hide表示页面滑动时panel消失, fix表示panel固定在页面中
      * - ''animate'' {Boolean}: (可选，默认：true)Panel出现时是否有动画
      * - ''display'' {String}: (可选，默认：true)'overlay' | 'reveal' | 'push' Panel出现模式，overlay表示浮层reveal表示在content下边展示，push表示panel将content推出
      * - ''position'' {String}: (可选)left' | 'right' 在右边或左边
      * - ''dismissible'' {Boolean}: (render模式下必填)是否在内容区域点击后，panel消失
      * - ''swipeClose'' {Boolean}: (可选，默认: 300)在panel上滑动，panel是否关闭
-     * - ''offset'' {Object}: (可选，默认: \'auto\')相对于contentWrap的offset
      * - ''beforeopen'' {Function}: (可选，默认: \'auto\')panel打开前事件，该事件可以被阻止
      * - ''open'' {Function}: (可选，默认: \'auto\')panel打开后前事件
      * - ''beforeclose'' {Function}: (可选，默认: \'auto\')panel关闭前事件，该事件可以被阻止
@@ -39,13 +38,12 @@
     $.ui.define('panel', {
         _data: {
             contentWrap: '',       //若不传，则默认为panel的next节点
-            scrollMode: 'follow',   //'follow |'disappear' | 'fixed'   Panel滑动方式，follow表示跟随页面滑动，disappear表示页面滑动时panel消失
+            scrollMode: 'follow',   //'follow |'hide' | 'fix'   Panel滑动方式，follow表示跟随页面滑动，hide表示页面滑动时panel消失, fix表示panel固定在页面中
             animate: true,
             display: 'push',     //'overlay' | 'reveal' | 'push' Panel出现模式，overlay表示浮层reveal表示在content下边展示，push表示panel将content推出
             position: 'right',    //'left' | 'right' 在右边或左边
             dismissible: true,
             swipeClose: true,
-            offset: {x:0, y:0},     //相对于contentWrap的offset
             beforeopen: null,
             open: null,
             beforeclose: null,
@@ -53,15 +51,16 @@
         },
         isOpen: false,    //是否打开标志
         _create: function () {
-            throw new Exception('panel组件不支持create模式，请使用setup模式');
+            throw new Error('panel组件不支持create模式，请使用setup模式');
         },
         _setup: function () {
             var me = this,
                 data = me._data,
-                $el = me.root().addClass('ui-panel ui-panel-'+ data.position).css('top', data.offset.y);
+                $el = me.root().addClass('ui-panel ui-panel-'+ data.position);
 
             me.panelWidth = $el.width() || 0;
             me.$contentWrap = $(data.contentWrap || $el.next());
+            data.dismissible && ( me.$panelMask = $('<div class="ui-panel-dismiss"></div>').width(document.body.clientWidth - $el.width()).appendTo('body') || null);
         },
         _init: function () {
             var me = this,
@@ -71,13 +70,11 @@
             me.displayFn = me._setDisplay();
             me.isOpen = true, me.close();   //panel状态初始化
             data.animate && me.$contentWrap.addClass('ui-panel-animate');
-            if (scrollMode === 'disappear') {
+            data.dismissible && me.$panelMask.hide().on('click', $.proxy(me._eventHandler, me));    //绑定mask上的关闭事件
+            if (scrollMode === 'hide') {
                 $(document).on('scrollStop', $.proxy(me._eventHandler, me));
-            } else if (scrollMode === 'fixed'){
-                me.root().css({
-                    position: 'fixed',
-                    top: data.offset.y
-                });
+            } else if (scrollMode === 'fix'){
+                me.root().css('position', 'fixed');
             }
         },
         /**
@@ -94,8 +91,11 @@
             $.each(['push', 'overlay', 'reveal'], function (i,display) {
                 obj[display] = function (isOpen, pos, isClear) {   //isOpen:是打开还是关闭操作，pos:从右或从左打开关闭，isClear:是否是初始化操作
                     panelPos = posData[display].panel, contPos = posData[display].cont;
-                    panelPos && $panel.css(transform, 'translate3d(' + me._transDirectionToPos(pos, panelPos[isOpen & 1]) + 'px,0,0)');
-                    !isClear && contPos && $contentWrap.css(transform, 'translate3d(' + me._transDirectionToPos(pos, contPos[isOpen & 1]) + 'px,0,0)');
+                    $panel.css(transform, 'translate3d(' + me._transDirectionToPos(pos, panelPos[isOpen]) + 'px,0,0)');
+                    if (!isClear) {
+                        $contentWrap.css(transform, 'translate3d(' + me._transDirectionToPos(pos, contPos[isOpen]) + 'px,0,0)');
+                        me.$panelMask && me.$panelMask.css(pos, $panel.width()).toggle(isOpen);    //改变mask left/right值
+                    }
                     return me;
                 }
             });
@@ -118,28 +118,21 @@
          * */
         _transDisplayToPos: function () {
             var me = this,
-                panelWidth = me.panelWidth,
-                offset = me._data.offset;
+                panelWidth = me.panelWidth;
             return {
                 push: {
-                    panel: [-panelWidth-offset.x, 0],    //[from, to] for panel
+                    panel: [-panelWidth, 0],    //[from, to] for panel
                     cont: [0, panelWidth]       //[from, to] for contentWrap
                 },
                 overlay: {
-                    panel: [-panelWidth-offset.x, 0],
-                    cont: false
+                    panel: [-panelWidth, 0],
+                    cont: [0, 0]
                 },
                 reveal: {
                     panel: [0, 0],
-                    cont: [0, panelWidth+offset.x]
+                    cont: [0, panelWidth]
                 }
             }
-        },
-        /**
-         * 封装zepto的$.contains，zepto中contains当相等是为false
-         * */
-        _contains: function (parent, target) {
-            return parent === target || $.contains(parent, target)
         },
         /**
          * 设置显示或关闭，关闭时的操作，包括模式、方向与需与打开时相同
@@ -149,7 +142,7 @@
                 data = me._data,
                 eventName = isOpen ? 'open' : 'close',
                 beforeEvent = $.Event('before' + eventName),
-                _isOpen = isOpen ? !me.state() : me.state(),
+                changed = isOpen !== me.state(),
                 _eventBinder = isOpen ? 'on' : 'off',
                 _eventHandler = isOpen ? $.proxy(me._eventHandler, me) : me._eventHandler,
                 _dis = dis || data.display,
@@ -157,11 +150,10 @@
 
             me.trigger(beforeEvent);
             if (beforeEvent.defaultPrevented) return me;
-            if (_isOpen) {
+            if (changed) {
                 me._dealState(isOpen, _dis, _pos);    //关闭或显示时，重置状态
-                me.displayFn[_dis](me.isOpen = isOpen ? 1 : 0, _pos);   //根据模式和打开方向，操作panel
-                data.dismissible && $(document)[_eventBinder]('tap', _eventHandler);    //点击页面panel关闭
-                data.swipeClose && me.root()[_eventBinder]($.camelCase('swipe-' + _pos), _eventHandler);     //滑动panel养老
+                me.displayFn[_dis](me.isOpen = Number(isOpen), _pos);   //根据模式和打开方向，操作panel
+                data.swipeClose && me.root()[_eventBinder]($.camelCase('swipe-' + _pos), _eventHandler);     //滑动panel关闭
                 data.display = _dis, data.position = _pos;
                 me.trigger(eventName);
             }
@@ -183,21 +175,24 @@
                 me._initPanelPos(dis, pos), $panel.get(0).clientLeft;   //触发页面reflow，使得ui-panel-animate样式不生效
                 if (dis === 'reveal') {
                     me.contPosition = $contentWrap.css('position');
-                    $contentWrap.css('position',  'relative');
+                    $contentWrap.addClass('ui-panel-contentWrap');
                 } else {
                     data.animate && $panel.addClass('ui-panel-animate');
                 }
+                me.$panelMask && me.$panelMask.css({     //panel mask状态初始化
+                    'left': 'auto',
+                    'right': 'auto'
+                });
             } else {
-                dis === 'reveal' && $contentWrap.css('position', me.contPosition);   //打开状态时加上position relative，关闭状态时还原position
+                dis === 'reveal' && $contentWrap.css('position', me.contPosition).removeClass('ui-panel-contentWrap');   //打开状态时加上position relative，关闭状态时还原position
             }
             return me;
         },
+
         _eventHandler: function (e) {
             var me = this;
             switch (e.type) {
-                case 'tap':
-                    !me._contains(me.root().get(0), e.target) && me.close();
-                    break;
+                case 'click':
                 case 'swipeLeft':
                 case 'swipeRight':
                 case 'scrollStop':

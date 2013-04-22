@@ -102,17 +102,14 @@
     $(function ($) {
         $('.panel').panel({
             contentWrap: $('.cont'),
-            scrollMode: 'disappear',
-            offset: {x:20, y:20}
+            scrollMode: 'hide'
         });
 
         $('#scroll-disappear').on('tap', function (e) {
-            e.stopPropagation();
             $('.panel').panel('toggle');
         });
 
         $('#stop-close').on('tap', function (e) {
-            e.stopPropagation();
             $('.panel').on('beforeopen', function (event) {
                 event.preventDefault();
             })

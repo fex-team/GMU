@@ -108,33 +108,27 @@
             contentWrap: $('.cont')
         });
 
-        $('#push-left').on('tap', function (e) {
-            e.stopPropagation();
+        $('#push-left').on('tap', function () {
             $('.panel').panel('toggle', 'push', 'left');
         });
 
-        $('#overlay-left').on('tap', function (e) {
-            e.stopPropagation();
+        $('#overlay-left').on('tap', function () {
             $('.panel').panel('toggle', 'overlay', 'left');
         });
 
-        $('#reveal-left').on('tap', function (e) {
-            e.stopPropagation();
+        $('#reveal-left').on('tap', function () {
             $('.panel').panel('toggle', 'reveal', 'left');
         });
 
-        $('#push-right').on('tap', function (e) {
-            e.stopPropagation();
+        $('#push-right').on('tap', function () {
             $('.panel').panel('toggle', 'push', 'right');
         });
 
-        $('#overlay-right').on('tap', function (e) {
-            e.stopPropagation();
+        $('#overlay-right').on('tap', function () {
             $('.panel').panel('toggle', 'overlay', 'right');
         });
 
-        $('#reveal-right').on('tap', function (e) {
-            e.stopPropagation();
+        $('#reveal-right').on('tap', function () {
             $('.panel').panel('toggle', 'reveal', 'right');
         });
     }(Zepto));
