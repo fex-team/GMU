@@ -179,7 +179,6 @@
                     }
                     ret = $.isFunction( obj[ opts ] ) ? obj[opts].apply(obj, args) : undefined;
                 }
-                ret = $.isString( opts ) && $.isFunction( obj[ opts ] ) ? obj[opts].apply(obj, args) : undefined;
                 if( ret !== undefined && ret !== obj || opts === "this" && ( ret = obj ) ) {
                     return false;
                 }
