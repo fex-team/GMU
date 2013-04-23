@@ -238,7 +238,7 @@
                 var result = fn.apply( me );
                 if(result && $.isPlainObject(result) ){
                     var plugins = me._data.disablePlugin;
-                    if( !plugins || $.isString(plugins) && !~plugins.indexOf() ){
+                    if( !plugins || $.isString(plugins) && !~plugins.indexOf(result.pluginName) ){
                         delete result.pluginName;
                         $.each(result,function( key, val ){
                             var orgFn;
