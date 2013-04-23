@@ -104,7 +104,6 @@
    <div class="filter clearfix">
        <a id="datestart" href="javascript:void(0)"><span class="ui-icon-down"></span></a>
        <a id="dateend" href="javascript:void(0)"><span class="ui-icon-down"></span></a>
-       <a class="search" href="#">搜索</a>
    </div>
    <div id="datepicker_wrap">
        <div id="dp_start">
@@ -117,7 +116,8 @@
        </div>
    </div>
    <div class="result">
-       搜素结果列表
+       <p>开始时间只能选择当月的，且不能选择比结束时间后的日期</p>
+       <p>结束时间只能选择开始时间之后的日期。</p>
    </div>
 </div>
 
@@ -184,7 +184,7 @@
     })(Zepto);
 </script>
 <!--demo公用头部展示所用js，可以不用加载 begin-->
-<script id="bootstrap" src="../../example.js" type="text/javascript" data-page="日历控件|datepicker.html,日历控件-Range|datepicker_range.html,日历控件-inline|datepicker_inline.html,日历控件-select|datepicker_select.html,可修改年月|datepicker_changeyearmonth.html"></script>
+<script id="bootstrap" src="../../example.js" type="text/javascript" data-page="日历控件|calendar.html,可修改年月|calendar_monthyearchangeable.html,日历控件-Range|calendar_range.html,日历控件-picker|calendar_picker.html,日历控件-select|calendar_select.html"></script>
 <!--demo公用头部展示所用js end-->
 </body>
 </html>
