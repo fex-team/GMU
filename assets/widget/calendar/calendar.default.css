@@ -1,16 +1,16 @@
-.ui-datepicker {
+.ui-calendar {
     width: 100%;
     line-height: 25px;
     font-size: 14px;
 }
 
-.ui-datepicker-header {
+.ui-calendar-header {
     color: #545454;
     text-align: center;
     padding: 3px 0;
 }
 
-.ui-datepicker-header a {
+.ui-calendar-header a {
     color: #545454;
     text-decoration: none;
     display: inline-block;
@@ -20,20 +20,20 @@
     border-radius: 3px;
     line-height: 1.0;
 }
-.ui-datepicker-header a.ui-state-hover {
+.ui-calendar-header a.ui-state-hover {
     background-color: #ccc;
 }
-.ui-datepicker-header .ui-datepicker-title {
+.ui-calendar-header .ui-calendar-title {
     text-align: center;
     display: inline-block;
 }
 
-.ui-datepicker-calendar {
+.ui-calendar-calendar {
     width: 100%;
     border-collapse: collapse;
 }
 
-.ui-datepicker-calendar th, .ui-datepicker-calendar td {
+.ui-calendar-calendar th, .ui-calendar-calendar td {
     text-align: center;
     color: #000;
     background: #f5f5f5;
@@ -41,42 +41,42 @@
     font-weight: normal;
 }
 
-.ui-datepicker-calendar thead tr {
+.ui-calendar-calendar thead tr {
     border: 1px solid #fff;
 }
 
-.ui-datepicker-calendar thead th {
+.ui-calendar-calendar thead th {
     color: #fff;
     background: #b6b6b6;
 }
 
-.ui-datepicker-calendar a {
+.ui-calendar-calendar a {
     text-decoration: none;
     color:#000;
     display: block;
 }
 
-.ui-datepicker-calendar tr.ui-datepicker-gap td {
+.ui-calendar-calendar tr.ui-calendar-gap td {
     line-height: 5px;
     font-size: 0;
     border: none;
     background: transparent;
 }
 
-.ui-datepicker-calendar td.ui-datepicker-unselectable {
+.ui-calendar-calendar td.ui-calendar-unSelectable {
     color: #e1e1e1;
 }
 
-.ui-datepicker-calendar td.ui-datepicker-today {
+.ui-calendar-calendar td.ui-calendar-today {
     background: #FBF9EE;
 }
-.ui-datepicker-calendar td.ui-datepicker-current-day {
+.ui-calendar-calendar td.ui-calendar-current-day {
     background: #b6b6b6;
     font-weight: bold;
     border-color: #fff;
 }
 
-.ui-datepicker-calendar td.ui-state-hover {
+.ui-calendar-calendar td.ui-state-hover {
     background: #ccc;
 }
 
@@ -86,7 +86,7 @@
     border-top: 1px solid black;
     border-bottom: 1px solid black;
     opacity: 0.9;
-    background: url(./datepicker-header.png) repeat-x;
+    background: url(./calendar-header.png) repeat-x;
     overflow: hidden;
 }
 .ui-slideup .ok-btn, .ui-slideup .no-btn {

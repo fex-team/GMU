@@ -3,13 +3,13 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
     <meta charset="utf-8">
-    <title>日历控件 - 可修改年月</title>
+    <title>日历控件 - picker</title>
     <!--demo展示所用css，不用关心 begin-->
     <link rel="stylesheet" type="text/css" href="../../../assets/reset.css" />
     <!--demo展示所用css end-->
     <!--组件依赖css begin-->
-    <link rel="stylesheet" type="text/css" href="../../../assets/widget/datepicker/datepicker.css" />
-    <link rel="stylesheet" type="text/css" href="../../../assets/widget/datepicker/datepicker.default.css" />
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/calendar/calendar.css" />
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/calendar/calendar.default.css" />
     <!--组件依赖css end-->
 
     <!--demo展示所用css，不用关心 begin-->
@@ -27,21 +27,21 @@
     <script type="text/javascript" src="../../../_src/core/zepto.extend.js"></script>
     <script type="text/javascript" src="../../../_src/core/zepto.highlight.js"></script>
     <script type="text/javascript" src="../../../_src/core/zepto.ui.js"></script>
-    <script type="text/javascript" src="../../../_src/widget/datepicker.js"></script>
+    <script type="text/javascript" src="../../../_src/widget/calendar.js"></script>
+    <script type="text/javascript" src="../../../_src/widget/calendar.picker.js"></script>
     <!--组件依赖js end-->
 </head>
 <body>
 
 <div class="section">
-    <div id="datepicker"></div>
+    <input type="text" readonly="readonly" id="input" />
 </div>
 
 <script type="text/javascript">
-    (function($, undefined){
+    (function($){
         $(function(){
-            $('#datepicker').datepicker({
-                inline: true,
-                changeYearMonth: true
+            $('#input').on('focus', function(){
+                $(this).calendar('show');
             });
         });
     })(Zepto);

@@ -8,8 +8,8 @@
     <link rel="stylesheet" type="text/css" href="../../../assets/reset.css" />
     <!--demo展示所用css end-->
     <!--组件依赖css begin-->
-    <link rel="stylesheet" type="text/css" href="../../../assets/widget/datepicker/datepicker.css" />
-    <link rel="stylesheet" type="text/css" href="../../../assets/widget/datepicker/datepicker.default.css" />
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/calendar/calendar.css" />
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/calendar/calendar.default.css" />
     <!--组件依赖css end-->
 
     <!--demo展示所用css，不用关心 begin-->
@@ -27,31 +27,25 @@
     <script type="text/javascript" src="../../../_src/core/zepto.extend.js"></script>
     <script type="text/javascript" src="../../../_src/core/zepto.highlight.js"></script>
     <script type="text/javascript" src="../../../_src/core/zepto.ui.js"></script>
-    <script type="text/javascript" src="../../../_src/widget/datepicker.js"></script>
+    <script type="text/javascript" src="../../../_src/widget/calendar.js"></script>
     <!--组件依赖js end-->
 </head>
 <body>
 
 <div class="section">
     <h1>只允许选择过去10到将来10天之间</h1>
-    <input id="datestart" type="text" readonly="readonly" value="" />
+    <div id="calendar"></div>
 </div>
 
 <script type="text/javascript">
     (function($, undefined){
         $(function(){
-            var input = $('#datestart'),
-                    date = new Date(),
-                    dp = $.ui.datepicker({
-                        valuecommit: function(e, date, datestr){
-                            input.val(datestr);
-                        },
-                        minDate: new Date(date.getFullYear(), date.getMonth(), date.getDate()-10),
-                        maxDate: new Date(date.getFullYear(), date.getMonth(), date.getDate()+10)
-                    });
-            input.on('click', function(){
-                dp.toggle();
-            }).val($.datepicker.formatDate(date));
+            var date = new Date();
+
+            $('#calendar').calendar({
+                minDate: new Date(date.getFullYear(), date.getMonth(), date.getDate()-10),
+                maxDate: new Date(date.getFullYear(), date.getMonth(), date.getDate()+10)
+            });
         });
     })(Zepto);
 </script>
