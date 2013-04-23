@@ -173,9 +173,13 @@
                 obj = record( el, name ) || $.ui[name]( el, $.extend( $.isPlainObject(opts) ? opts : {}, {
                     setup: true
                 } ) );
-
+                if ($.isString( opts )) {
+                    if (!$.isFunction( obj[ opts ] ) && opts !== 'this') {
+                        throw new Error(name + '组件没有此方法');    //当不是取方法是，抛出错误信息
+                    }
+                    ret = $.isFunction( obj[ opts ] ) ? obj[opts].apply(obj, args) : undefined;
+                }
                 ret = $.isString( opts ) && $.isFunction( obj[ opts ] ) ? obj[opts].apply(obj, args) : undefined;
-
                 if( ret !== undefined && ret !== obj || opts === "this" && ( ret = obj ) ) {
                     return false;
                 }
