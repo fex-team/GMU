@@ -8,8 +8,8 @@
     <link rel="stylesheet" type="text/css" href="../../../assets/reset.css" />
     <!--demo展示所用css end-->
     <!--组件依赖css begin-->
-    <link rel="stylesheet" type="text/css" href="../../../assets/widget/datepicker/datepicker.css" />
-    <link rel="stylesheet" type="text/css" href="../../../assets/widget/datepicker/datepicker.default.css" />
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/calendar/calendar.css" />
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/calendar/calendar.default.css" />
     <!--组件依赖css end-->
 
     <!--demo展示所用css，不用关心 begin-->
@@ -95,7 +95,7 @@
     <script type="text/javascript" src="../../../_src/core/zepto.extend.js"></script>
     <script type="text/javascript" src="../../../_src/core/zepto.highlight.js"></script>
     <script type="text/javascript" src="../../../_src/core/zepto.ui.js"></script>
-    <script type="text/javascript" src="../../../_src/widget/datepicker.js"></script>
+    <script type="text/javascript" src="../../../_src/widget/calendar.js"></script>
     <!--组件依赖js end-->
 </head>
 <body>
@@ -104,7 +104,6 @@
    <div class="filter clearfix">
        <a id="datestart" href="javascript:void(0)"><span class="ui-icon-down"></span></a>
        <a id="dateend" href="javascript:void(0)"><span class="ui-icon-down"></span></a>
-       <a class="search" href="#">搜索</a>
    </div>
    <div id="datepicker_wrap">
        <div id="dp_start">
@@ -117,7 +116,8 @@
        </div>
    </div>
    <div class="result">
-       搜素结果列表
+       <p>开始时间只能选择当月的，且不能选择比结束时间后的日期</p>
+       <p>结束时间只能选择开始时间之后的日期。</p>
    </div>
 </div>
 
@@ -125,15 +125,20 @@
     (function($, undefined){
         $(function(){//dom ready
             var open = null, today = new Date();
-            $('#datestart').text($.datepicker.formatDate(today));
-            $('#dateend').text($.datepicker.formatDate(new Date(today.getFullYear(), today.getMonth(), today.getDate()+2)));
-            $('#datepicker_start').datepicker({//初始化开始时间的datepicker
-                inline: true,
+
+            //设置开始时间为今天
+            $('#datestart').html($.calendar.formatDate(today) + '<span class="ui-icon-down"></span>');
+
+            //设置结束事件为两天之后
+            $('#dateend').html($.calendar.formatDate(new Date(today.getFullYear(), today.getMonth(), today.getDate()+2)) +
+                '<span class="ui-icon-down"></span>');
+
+            $('#datepicker_start').calendar({//初始化开始时间的datepicker
                 date:$('#datestart').text(),//设置初始日期为文本内容
                 minDate: new Date(today.getFullYear(), today.getMonth(), 1),//设置最小日期为当月第一天，既上一月的不能选
                 maxDate: $('#dateend').text(),//设置最大日期为结束日期，结束日期以后的天不能选
-                valuecommit: function(e, date, dateStr){//当选中某个日期时。
-                    $('#datepicker_end').datepicker('minDate', date).datepicker('refresh');//将结束时间的datepick的最小日期设成所选日期
+                select: function(e, date, dateStr){//当选中某个日期时。
+                    $('#datepicker_end').calendar('minDate', date).calendar('refresh');//将结束时间的datepick的最小日期设成所选日期
 
                     //收起datepicker
                     open = null;
@@ -143,12 +148,11 @@
                     $('#datestart').html(dateStr+'<span class="ui-icon-down"></span>').removeClass('ui-state-active');
                 }
             });
-            $('#datepicker_end').datepicker({//初始化结束时间的datepicker
-                inline: true,
+            $('#datepicker_end').calendar({//初始化结束时间的datepicker
                 date:$('#dateend').text(),//设置初始日期为文本内容
                 minDate: $('#datestart').text(),//设置最小日期为开始日期，开始日期以前的天不能选
-                valuecommit: function(e, date, dateStr){//当选中某个日期时。
-                    $('#datepicker_start').datepicker('maxDate', date).datepicker('refresh');//将开始时间的datepicker的最达日期设成所选日期
+                select: function(e, date, dateStr){//当选中某个日期时。
+                    $('#datepicker_start').calendar('maxDate', date).calendar('refresh');//将开始时间的datepicker的最达日期设成所选日期
 
                     //收起datepicker
                     open = null;
@@ -180,7 +184,7 @@
     })(Zepto);
 </script>
 <!--demo公用头部展示所用js，可以不用加载 begin-->
-<script id="bootstrap" src="../../example.js" type="text/javascript" data-page="日历控件|datepicker.html,日历控件-Range|datepicker_range.html,日历控件-inline|datepicker_inline.html,日历控件-select|datepicker_select.html,可修改年月|datepicker_changeyearmonth.html"></script>
+<script id="bootstrap" src="../../example.js" type="text/javascript" data-page="日历控件|calendar.html,可修改年月|calendar_monthyearchangeable.html,日历控件-Range|calendar_range.html,日历控件-picker|calendar_picker.html,日历控件-select|calendar_select.html"></script>
 <!--demo公用头部展示所用js end-->
 </body>
 </html>
