@@ -7,6 +7,8 @@
 
     //提供直接调用
     var run = exports.run = function() {
+
+        //todo 改成node全权负责生成
         return shell('which php')
             .then(function(value){
                 var phpFile = path.resolve('build/doc/index.php');
