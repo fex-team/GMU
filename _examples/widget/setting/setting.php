@@ -50,12 +50,12 @@ $arr = array(
         "icon" => 'tabs.png',
         "href" => 'tabs/tabs.html'
     ),
-    'datepicker' => array(
-        "name" => 'Datepicker',
+    'calendar' => array(
+        "name" => 'Calendar',
         "description" => '日历控件',
         "group" => 'Components',
         "icon" => 'tabs.png',
-        "href" => 'datepicker/datepicker.html'
+        "href" => 'calendar/calendar.html'
     ),
     'toolbar' => array(
         "name" => 'Toolbar',
