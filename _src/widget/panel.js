@@ -7,16 +7,17 @@
  * @import core/touch.js, core/zepto.ui.js
  */
 (function ($, undefined) {
-    var cssPrefix = $.fx.cssPrefix;
+    var cssPrefix = $.fx.cssPrefix,
+        transitionEnd = $.fx.transitionEnd;
     /**
      * @name panel
      * @grammar $('.panel').panel() ⇒ self
      * --该组件不支持create模式，只有setup模式--
      * @desc **Options**
      * - ''contentWrap'' {Dom/Zepto/selector}: (可选，默认：true)主体内容dom
-     * - ''scrollMode'' {String}: (可选，默认：true)'follow |'hide' | 'fix'   Panel滑动方式，follow表示跟随页面滑动，hide表示页面滑动时panel消失, fix表示panel固定在页面中
+     * - ''scrollMode'' {String}: (可选，默认：follow)'follow |'hide' | 'fix'   Panel滑动方式，follow表示跟随页面滑动，hide表示页面滑动时panel消失, fix表示panel固定在页面中
      * - ''animate'' {Boolean}: (可选，默认：true)Panel出现时是否有动画
-     * - ''display'' {String}: (可选，默认：true)'overlay' | 'reveal' | 'push' Panel出现模式，overlay表示浮层reveal表示在content下边展示，push表示panel将content推出
+     * - ''display'' {String}: (可选，默认：push)'overlay' | 'reveal' | 'push' Panel出现模式，overlay表示浮层reveal表示在content下边展示，push表示panel将content推出
      * - ''position'' {String}: (可选)left' | 'right' 在右边或左边
      * - ''dismissible'' {Boolean}: (render模式下必填)是否在内容区域点击后，panel消失
      * - ''swipeClose'' {Boolean}: (可选，默认: 300)在panel上滑动，panel是否关闭
@@ -49,7 +50,6 @@
             beforeclose: null,
             close: null
         },
-        isOpen: false,    //是否打开标志
         _create: function () {
             throw new Error('panel组件不支持create模式，请使用setup模式');
         },
@@ -65,17 +65,20 @@
         _init: function () {
             var me = this,
                 data = me._data,
-                scrollMode = data.scrollMode;
+                scrollMode = data.scrollMode,
+                $el = me.root();
 
             me.displayFn = me._setDisplay();
+            me._firstClose = false;
             me.isOpen = true, me.close();   //panel状态初始化
             data.animate && me.$contentWrap.addClass('ui-panel-animate');
             data.dismissible && me.$panelMask.hide().on('click', $.proxy(me._eventHandler, me));    //绑定mask上的关闭事件
             if (scrollMode === 'hide') {
                 $(document).on('scrollStop', $.proxy(me._eventHandler, me));
             } else if (scrollMode === 'fix'){
-                me.root().css('position', 'fixed');
+                $el.css('position', 'fixed');
             }
+            $el.on(transitionEnd, $.proxy(me._eventHandler, me));
         },
         /**
          * 生成display模式函数
@@ -148,14 +151,15 @@
                 _dis = dis || data.display,
                 _pos = pos || data.position;
 
-            me.trigger(beforeEvent);
+            me._firstClose && me.trigger(beforeEvent, [dis, pos]);
+            !me._firstClose &&  (me._firstClose = true);     //是否第一次执行close
             if (beforeEvent.defaultPrevented) return me;
             if (changed) {
                 me._dealState(isOpen, _dis, _pos);    //关闭或显示时，重置状态
                 me.displayFn[_dis](me.isOpen = Number(isOpen), _pos);   //根据模式和打开方向，操作panel
                 data.swipeClose && me.root()[_eventBinder]($.camelCase('swipe-' + _pos), _eventHandler);     //滑动panel关闭
                 data.display = _dis, data.position = _pos;
-                me.trigger(eventName);
+                !data.animate && me.trigger(eventName, [dis, pos]);
             }
             return me;
         },
@@ -176,8 +180,12 @@
                 if (dis === 'reveal') {
                     me.contPosition = $contentWrap.css('position');
                     $contentWrap.addClass('ui-panel-contentWrap');
+                    data.animate && $contentWrap.on(transitionEnd, $.proxy(me._eventHandler, me));    //reveal模式下不
                 } else {
-                    data.animate && $panel.addClass('ui-panel-animate');
+                    if (data.animate) {
+                        $contentWrap.off(transitionEnd, $.proxy(me._eventHandler, me));
+                        $panel.addClass('ui-panel-animate');
+                    }
                 }
                 me.$panelMask && me.$panelMask.css({     //panel mask状态初始化
                     'left': 'auto',
@@ -190,13 +198,19 @@
         },
 
         _eventHandler: function (e) {
-            var me = this;
+            var me = this,
+                data = me._data,
+                eventName = me.state() ? 'open' : 'close';
+
             switch (e.type) {
                 case 'click':
                 case 'swipeLeft':
                 case 'swipeRight':
                 case 'scrollStop':
                     me.close();
+                    break;
+                case transitionEnd:
+                    me.trigger(eventName, [data.display, data.position]);
                     break;
             }
         },
@@ -239,6 +253,17 @@
          */
         state: function () {
             return !!this.isOpen;
+        },
+        /**
+         * @desc 销毁组件。
+         * @name destroy
+         * @grammar destroy()  ⇒ instance
+         */
+        destroy:function () {
+            this.$panelMask && this.$panelMask.off().remove();
+            this.$contentWrap.removeClass('ui-panel-animate');
+            $(document).off('scrollStop', this._eventHandler);
+            return this.$super('destroy');
         }
         /**
          * @name Trigger Events
