@@ -97,7 +97,9 @@
                     $panel.css(transform, 'translate3d(' + me._transDirectionToPos(pos, panelPos[isOpen]) + 'px,0,0)');
                     if (!isClear) {
                         $contentWrap.css(transform, 'translate3d(' + me._transDirectionToPos(pos, contPos[isOpen]) + 'px,0,0)');
-                        me.$panelMask && me.$panelMask.css(pos, $panel.width()).toggle(isOpen);    //改变mask left/right值
+                        me.maskTimer = $.later(function () {      //防止外界注册tap穿透，故做了延迟
+                            me.$panelMask && me.$panelMask.css(pos, $panel.width()).toggle(isOpen);
+                        }, 400);    //改变mask left/right值
                     }
                     return me;
                 }
@@ -261,6 +263,7 @@
          */
         destroy:function () {
             this.$panelMask && this.$panelMask.off().remove();
+            this.maskTimer && clearTimeout(this.maskTimer);
             this.$contentWrap.removeClass('ui-panel-animate');
             $(document).off('scrollStop', this._eventHandler);
             return this.$super('destroy');
