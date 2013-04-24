@@ -331,29 +331,62 @@
 
 //Event.js
 (function($) {
-    /** detect orientation change */
-    $(document).ready(function () {
-        var getOrt = function(){
-                var elem = document.documentElement;
-                return elem.clientWidth / Math.max(elem.clientHeight, 320) < 1.1 ? "portrait" : "landscape";
-            },
-            lastOrt = getOrt(),
-            handler = function(e) {
-                maxTry = 20;
-                clearInterval(timer);
-                timer = $.later(function() {
-                    var curOrt = getOrt();
-                    if (lastOrt !== curOrt) {
-                        lastOrt = curOrt;
-                        clearInterval(timer);
-                        $(window).trigger('ortchange');
-                    } else if(--maxTry){//最多尝试20次
-                        clearInterval(timer);
-                    }
-                }, 50, true);
-            },
-            timer, maxTry;
-        $(window).bind($.support.orientation ? 'orientationchange' : 'resize', $.debounce(handler));
+    $.matchMedia = (function() {
+        var mediaId = 0,
+            cls = 'gmu-media-detect',
+            transitionEnd = $.fx.transitionEnd,
+            cssPrefix = $.fx.cssPrefix,
+            $style = $('<style></style>').append('.' + cls + '{' + cssPrefix + 'transition: width 0.001ms; width: 0; position: absolute; top: -10000px;}\n').appendTo('head');
+
+        return function (query) {
+            var id = cls + mediaId++,
+                $mediaElem = $('<div class="' + cls + '" id="' + id + '"></div>').appendTo('body'),
+                listeners = [],
+                ret;
+
+            $style.append('@media ' + query + ' { #' + id + ' { width: 1px; } }\n') ;   //原生matchMedia也需要添加对应的@media才能生效
+            if ('matchMedia' in window) {
+                return window.matchMedia(query);
+            }
+
+            $mediaElem.on(transitionEnd, function() {
+                ret.matches = $mediaElem.width() === 1;
+                $.each(listeners, function (i,fn) {
+                    $.isFunction(fn) && fn.call(ret, ret);
+                });
+            });
+
+            ret = {
+                matches: $mediaElem.width() === 1 ,
+                media: query,
+                addListener: function (callback) {
+                    listeners.push(callback);
+                    return this;
+                },
+                removeListener: function (callback) {
+                    var index = listeners.indexOf(callback);
+                    ~index && listeners.splice(index, 1);
+                    return this;
+                }
+            };
+
+            return ret;
+        };
+    }());
+
+    $(function () {
+        /** detect orientation change */
+        var lastMedia = true,
+            handleOrtchange = function (mql) {
+                if (mql.matches !== lastMedia) {
+                    $(window).trigger('ortchange');
+                    lastMedia = mql.matches;
+                }
+            };
+        $.mediaQuery = {
+            ortchange: '(width: ' + window.innerWidth + 'px)'
+        };
+        $.matchMedia($.mediaQuery.ortchange).addListener(handleOrtchange);
     });
 
     /**
