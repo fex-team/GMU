@@ -1,12 +1,11 @@
 .ui-panel{
-    width: 17em;
-    height: 100%;
     position: absolute;
-    top: 0;
-    padding: 10px;
     display: block;
-    background: -webkit-gradient(linear, left top, left bottom, from(#444444), to(#222222));
-    color: #ffffff;
+}
+
+.ui-panel-contentWrap{
+    position: relative;
+    z-index: 100;
 }
 
 .ui-panel.ui-panel-right{
@@ -27,10 +26,13 @@
     z-index: -1;
 }
 
-
 .ui-panel-animate{
     -webkit-transition: -webkit-transform 350ms ease;
 }
 
-.ui-panel-open{}
-.ui-panel-close{}
+.ui-panel-dismiss{
+    position: absolute;
+    z-index: 1000;
+    height: 100%;
+    top: 0;
+}
