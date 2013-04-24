@@ -453,3 +453,40 @@ test("基本操作：页面滚动过程的，panel的三种模式正常（scroll
         }, 100);
     }, 400);
 });
+
+test("destroy", function(){
+    ua.destroyTest(function(w,f){
+    	w.$("body").append("<div id='page' ></div>");
+    	w.$('#page').append('<div id="panel"></div>');
+        w.$("#panel").append(
+            '<ul>' +
+                '<li>目录目录目录</li>' +
+                '<li>目录目录目录</li>' +
+                '<li>目录目录目录</li>' +
+                '<li>目录目录目录</li>' +
+                '<li>目录目录目录</li>' +
+                '<li>目录目录目录</li>' +
+                '</ul>'
+        );
+        w.$('#page').append('<div id="contWrap" style="height:1000px; width: 100%;">这是panel相对的内容</div>');
+        w.$('body').css('overflow-x', 'hidden');
+        
+        var dl1 = w.dt.domLength(w);
+        var el1= w.dt.eventLength();
+
+        var panel = w.$('#panel').panel().panel("this");
+        
+        panel.open();
+        
+        panel.destroy();
+
+        var el2= w.dt.eventLength();
+        var ol = w.dt.objLength(panel);
+        var dl2 =w.dt.domLength(w);
+
+        equal(w.$(".panel").length, 0, "The dom is ok");
+        equal(el1,el2,"The event is ok");
+        ok(ol==0,"The panel is destroy");
+        this.finish();
+    });
+});
