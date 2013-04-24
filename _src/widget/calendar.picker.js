@@ -109,7 +109,7 @@
                 this._visible = false;
 
                 this._frame.close(function(){
-                    me.trigger('hide');
+                    me.trigger && me.trigger('hide');
                 });
 
                 this._frame = null;

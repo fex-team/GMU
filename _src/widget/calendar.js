@@ -93,8 +93,7 @@
         },
 
         _eventHandler: function (e) {
-            var me = this,
-                data = me._data,
+            var data = this._data,
                 root = (this._container || this.root()).get(0),
                 match,
                 target,
@@ -105,13 +104,13 @@
             switch (e.type) {
                 case 'swipeLeft':
                 case 'swipeRight':
-                    return me.switchMonthTo((e.type == 'swipeRight' ? '-' : '+') + '1M');
+                    return this.switchMonthTo((e.type == 'swipeRight' ? '-' : '+') + '1M');
 
                 case 'change':
                     elems = $('.ui-calendar-header .ui-calendar-year, ' +
                         '.ui-calendar-header .ui-calendar-month', this._el);
 
-                    return me.switchMonthTo(getVal(elems.eq(1)), getVal(elems.eq(0)));
+                    return this.switchMonthTo(getVal(elems.eq(1)), getVal(elems.eq(0)));
 
                 default://click
 
@@ -123,18 +122,16 @@
                         e.preventDefault();
                         cell = match.parent();
 
-                        me._option('selectedDate',
+                        this._option('selectedDate',
                             date = new Date(cell.attr('data-year'), cell.attr('data-month'), match.text()));
 
-                        me.trigger('select', [date, $.calendar.formatDate(date), me]);
-                        me.refresh();
+                        this.trigger('select', [date, $.calendar.formatDate(date), this]);
+                        this.refresh();
                     } else if ((match = $(target).closest('.ui-calendar-prev, .ui-calendar-next', root)) &&
                         match.length) {
 
                         e.preventDefault();
-                        $.later(function () {
-                            me.switchMonthTo((match.is('.ui-calendar-prev') ? '-' : '+') + '1M');
-                        });
+                        this.switchMonthTo((match.is('.ui-calendar-prev') ? '-' : '+') + '1M');
                     }
             }
         },
@@ -169,9 +166,9 @@
 
                     case 'date':
                         this._option('selectedDate', val);
+                        data[key] = this._option('selectedDate');
+                        break;
 
-                    //故意的别加break, 否则data.date = val不会执行。
-                    //break;
                     default:
                         data[key] = val;
                 }
@@ -375,7 +372,7 @@
                 }
                 html += '</select>';
             } else {
-                html += '<span class="ui-calendar-year" data-value="' + drawMonth + '">' + monthNames[drawMonth] + '</span>';
+                html += '<span class="ui-calendar-month" data-value="' + drawMonth + '">' + monthNames[drawMonth] + '</span>';
             }
 
             html += '</div><a class="ui-calendar-next' + (maxDate && maxDate < fnd ?
