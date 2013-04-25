@@ -54,7 +54,7 @@ if( condition ) doSomething();
 for ( name in object ) {
 
     if ( object.hasOwnProperty( name ) ) {
-        doSomething()
+        doSomething();
     }
 }
 ```
