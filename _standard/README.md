@@ -88,9 +88,9 @@ function a() {
 function a() {
     var first = 1,
         second = 2,
-        third = 3，
-        fourth，
-        fifth；
+        third = 3,
+        fourth,
+        fifth;
 
         doSomething();
 }
@@ -141,42 +141,7 @@ if ( condition1 && condition2 || condition3 &&
 }
 ```
 
-
-1-5-3. 块语句间隔。所有块语句开始前需要一个新行.
-
-```javascript
-if( condition ) {
-
-    while( condition ) {
-        doSomething();
-    }
-
-    for( ; condition ; ; ) {
-        doSomething();
-    }
-}
-```
-
-1-5-4. 超长字符串应该使用"+"进行换行。
-```javascript
-//正确
-var myString = 'A rather long string of English text, an error message ' +
-			 'actually that just keeps going and going -- an error ' +
-			 'message to make the Energizer bunny blush (right through ' +
-			 'those Schwarzenegger shades)! Where was I? Oh yes, ' +
-			 'you\'ve got an error and all the extraneous whitespace is ' +
-			 'just gravy.  Have a nice day.';
-
-//错误
-var myString = 'A rather long string of English text, an error message \
-              actually that just keeps going and going -- an error \
-              message to make the Energizer bunny blush (right through \
-              those Schwarzenegger shades)! Where was I? Oh yes, \
-              you\'ve got an error and all the extraneous whitespace is \
-              just gravy.  Have a nice day.';
-```
-
-1-5-5. 每一个块状代码的开始都应当有一个空行。
+1-5-3. 每一个块状代码的开始都应当有一个空行。
 ```javascript
 function myFunc(){
     var v1 = 1,
@@ -211,7 +176,7 @@ function myFunc(){
 }
 ```
 
-1-5-6. if之后的else的代码块应当在前个代码块之后，不允许另起新行。
+1-5-4. if之后的else的代码块应当在前个代码块之后，不允许另起新行。
 ```javascript
 if ( a === 1 ){
     statement
@@ -228,7 +193,7 @@ else if ( a === 2 ){
 }
 ```
 
-1-5-7. 包含代码块的"{}"，应该在"{"后立即换行。
+1-5-5. 包含代码块的"{}"，应该在"{"后立即换行。
 ```javascript
 //正确
 for ( t in selected ) {
@@ -250,26 +215,45 @@ for (t in selected)
 for (t in selected) { statement }
 ```
 
-1-5-8. switch语句中的断行, 每个case之前有一个缩进，case之后的语句两个缩进, 每个break;后都有一个新行，最后一个除外。
+1-5-6. switch语句中的断行, 每个case之前有一个缩进，case之后的语句两个缩进, 每个break;后都有一个新行，最后一个除外。
 
 ```javascript
 switch( condition ) {
-    case “first”:
+    case "first":
         doSomething();
         break;
 
-    case “second”:
+    case "second":
         doSomething();
         break;
 
-    case “third”:
-    case “fourth”:
+    case "third":
+    case "fourth":
          doSomething();
          break;
 
     default:
         break;
 }
+```
+
+1-5-7. 超长字符串应该使用"+"进行换行。
+```javascript
+//正确
+var myString = 'A rather long string of English text, an error message ' +
+			 'actually that just keeps going and going -- an error ' +
+			 'message to make the Energizer bunny blush (right through ' +
+			 'those Schwarzenegger shades)! Where was I? Oh yes, ' +
+			 'you\'ve got an error and all the extraneous whitespace is ' +
+			 'just gravy.  Have a nice day.';
+
+//错误
+var myString = 'A rather long string of English text, an error message \
+              actually that just keeps going and going -- an error \
+              message to make the Energizer bunny blush (right through \
+              those Schwarzenegger shades)! Where was I? Oh yes, \
+              you\'ve got an error and all the extraneous whitespace is \
+              just gravy.  Have a nice day.';
 ```
 
 
@@ -332,7 +316,7 @@ callFunc(function() {
 
 1-6-3. "="、"=="、"&&"、"||"、">"、"<"前后需要跟空格
 
-1-6-4. 数组成员间的","后面需要跟空格
+1-6-4. 数组成员间的","和各个参数间的","（包括形参和实参）后面需要跟空格。
 
 1-6-5. "[]"中的"["后以及"]"前需要跟空格
 ```javascript
@@ -631,14 +615,14 @@ catch( ex ){
 
 2-10. 所有Zepto/jQuery对象，变量名以$符号开头，如：
 ```javascript
-var $div = $(‘<div></div>’);
+var $div = $('<div></div>');
 ```
 
 2-11. 变量命名前缀应当是名词，与函数区分开来，函数应当是动词
 ```javascript
 //好的写法
 var count = 10,
-    myName = “Abcd”,
+    myName = "Abcd",
     found = true;
 
 //不好的写法
@@ -672,6 +656,7 @@ function theName(){
 ```
 
 单行注释分一下两种：
+
 1. 独占一行，用来解释下一行代码。这行注释之前应当有一个空行，且缩进层级和下一行代码保持一致。
 2. 在代码行的尾部添加，代码结束到注释之间至少有一个缩进。注释（包括前面的代码部分）不能超过单行最大字符数限制，如果超过改成第一种注释。
 
