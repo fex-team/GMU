@@ -331,6 +331,21 @@
 
 //Event.js
 (function($) {
+    /**
+     * @name $.matchMedia  => MediaQueryList
+     * @desc 是原生的window.matchMedia方法的polyfill，对于不支持matchMedia的方法系统和浏览器，按照[w3c window.matchMedia](http://www.w3.org/TR/cssom-view/#dom-window-matchmedia)的接口
+     * 定义，对matchMedia方法进行了封装。原理用css media query及transitionEnd事件来完成的。在页面中插入media query样式及元素，当query条件满足时改变该元素样式，同时这个样式是transition作用的属性，
+     * 满足条件后即会触发transitionEnd，由此创建MediaQueryList的事件监听
+     *
+     * **MediaQueryList对象包含的属性**
+     * - ***matches*** 是否满足query
+     * - ***query*** 查询的css query，类似\'screen and (orientation: portrait)\'
+     * - ***addListener*** 添加MediaQueryList对象监听器，接收回调函数，回调参数为MediaQueryList对象
+     * - ***removeListener*** 移除MediaQueryList对象监听器
+     *
+     * @example
+     * $.matchMedia('screen and (orientation: portrait)').addListener(fn);
+     */
     $.matchMedia = (function() {
         var mediaId = 0,
             cls = 'gmu-media-detect',
@@ -375,16 +390,11 @@
     }());
 
     $(function () {
-        /** detect orientation change */
-        var lastMedia = true,
-            handleOrtchange = function (mql) {
-                if (mql.matches !== lastMedia) {
-                    $(window).trigger('ortchange');
-                    lastMedia = mql.matches;
-                }
+        var handleOrtchange = function (mql) {
+                $(window).trigger('ortchange');
             };
         $.mediaQuery = {
-            ortchange: '(width: ' + window.innerWidth + 'px)'
+            ortchange: 'screen and (width: ' + window.innerWidth + 'px)'
         };
         $.matchMedia($.mediaQuery.ortchange).addListener(handleOrtchange);
     });
@@ -394,12 +404,12 @@
      * @theme event
      * @desc 扩展的事件
      * - ***scrollStop*** : scroll停下来时触发, 考虑前进或者后退后scroll事件不触发情况。
-     * - ***ortchange*** : 当转屏的时候触发，兼容uc和其他不支持orientationchange的设备
+     * - ***ortchange*** : 当转屏的时候触发，兼容uc和其他不支持orientationchange的设备，利用css media query实现，解决了转屏延时及orientation事件的兼容性问题
      * @example $(document).on('scrollStop', function () {        //scroll停下来时显示scrollStop
      *     console.log('scrollStop');
      * });
      *
-     * $(document).on('ortchange', function () {        //当转屏的时候触发
+     * $(window).on('ortchange', function () {        //当转屏的时候触发
      *     console.log('ortchange');
      * });
      */
