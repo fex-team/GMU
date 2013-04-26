@@ -530,17 +530,17 @@ function theName(){
 
 ```javascript
 function doSomething() {
-    var a = 3,  //这变量用来存长度
+    var a = 3,  // 这变量用来存长度
 
-        //这个变量用来存宽度
+        // 这个变量用来存宽度
         b,
 
-        //这个变量用来存高度
+        // 这个变量用来存高度
         c;
 
     if( condition ) {
 
-        //如果代码执行到这，则说明通过安全验证。
+        // 如果代码执行到这，则说明通过安全验证。
         popupDialog();
     }
 }
