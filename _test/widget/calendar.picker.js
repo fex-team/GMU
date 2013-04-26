@@ -292,6 +292,6 @@ test("method: destroy",function(){
             equal(el1,el2,"The event is ok");
             ok(ol==0,"The widget is destroy");
             me.finish();
-        }, 300);
+        }, 800);
     })
 }) ;
