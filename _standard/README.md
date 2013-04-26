@@ -39,7 +39,6 @@ if( condition ) doSomething();
 ```javascript
 //正确
 function a() {
-
     var v1 = 1,
         v2 = 2,
         v3 = 3,
@@ -151,12 +150,12 @@ if ( condition1 && condition2 || condition3 &&
 
 1-5-3. 每一个块状代码的开始都应当有一个空行。
 ```javascript
-function myFunc(){
+function myFunc() {
     var v1 = 1,
-       v2 = 2,
-       v3 = 3;
+        v2 = 2,
+        v3 = 3;
 
-    if( v1 == 1 ){
+    if( v1 == 1 ) {
         statement
     }
 
@@ -170,11 +169,11 @@ function myFunc(){
 }
 
 //错误
-function myFunc(){
+function myFunc() {
     var v1 = 1,
-       v2 = 2,
-       v3 = 3;
-    if( v1 == 1 ){
+        v2 = 2,
+        v3 = 3;
+    if( v1 == 1 ) {
         statement
     }
     while( condition ) {
@@ -186,17 +185,17 @@ function myFunc(){
 
 1-5-4. if之后的else的代码块应当在前个代码块之后，不允许另起新行。
 ```javascript
-if ( a === 1 ){
+if ( a === 1 ) {
     statement
-} else if ( a === 2 ){
+} else if ( a === 2 ) {
     statement
 }
 
 //错误
-if ( a === 1 ){
+if ( a === 1 ) {
     statement
 }
-else if ( a === 2 ){
+else if ( a === 2 ) {
     statement
 }
 ```
@@ -227,16 +226,16 @@ for (t in selected) { statement }
 
 ```javascript
 switch( condition ) {
-    case "first":
+    case 'first':
         doSomething();
         break;
 
-    case "second":
+    case 'second':
         doSomething();
         break;
 
-    case "third":
-    case "fourth":
+    case 'third':
+    case 'fourth':
          doSomething();
          break;
 
@@ -405,7 +404,7 @@ function Dialog( config ) {
 
 2-6. 方法的返回值如果是布尔值，则必须以is、can、has、should等为前缀
 ```javascript
-function isGroupId( id ){
+function isGroupId( id ) {
 	return (id + '').indexOf( 'G' ) > 0;
 }
 ```
@@ -428,13 +427,13 @@ var XMLDocument;
 2-8. 在闭包中访问所在实例this指针时，统一使用变量me指向。
 ```javascript
 var me = this;
-setTimeout( function(){
+setTimeout( function() {
     //me.
 }, 1000 );
 
 //错误
 var ins = this;
-setTimeout( function(){
+setTimeout( function() {
     //ins.
 }, 1000 );
 ```
@@ -491,7 +490,7 @@ var $div = $('<div></div>');
 ```javascript
 //好的写法
 var count = 10,
-    myName = "Abcd",
+    myName = 'Abcd',
     found = true;
 
 //不好的写法
@@ -524,7 +523,7 @@ function theName(){
     // 这是一个注释
 ```
 
-单行注释分一下两种：
+单行注释分以下两种：
 
 1. 独占一行，用来解释下一行代码。这行注释之前应当有一个空行，且缩进层级和下一行代码保持一致。
 2. 在代码行的尾部添加，代码结束到注释之间至少有一个缩进。注释（包括前面的代码部分）不能超过单行最大字符数限制，如果超过改成第一种注释。
