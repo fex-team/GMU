@@ -132,6 +132,7 @@
             //解绑ortchange事件
             destroy: function () {
                 $(window).off('ortchange', this._eventHandler);
+                this._frame && this._frame.close();
                 return this.destroyOrg();
             }
         };
