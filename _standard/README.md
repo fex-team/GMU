@@ -99,7 +99,7 @@ function a() {
         fourth,
         fifth;
 
-        doSomething();
+    doSomething();
 }
 ```
 
