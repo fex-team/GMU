@@ -591,7 +591,7 @@ if ( isValid === true ) {
 }
 ```
 
-4-14. 下面类型的对象不建议用new构造：new Number, new String, new Boolean, new Object(用{}代替), new Array(用[]代替)。
+4-4. 下面类型的对象不建议用new构造：new Number, new String, new Boolean, new Object(用{}代替), new Array(用[]代替)。
 
 4-5. 引用对象成员用obj.prop代替obj['prop']，除非属性名是变量。
 
