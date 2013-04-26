@@ -450,7 +450,7 @@ setTimeout( function(){
     <tr>
         <td>e</td>
         <td>Event对象</td>
-        <td><pre><code>$( '#a' ).click( function( evt ){
+        <td><pre><code>$( '#a' ).click( function( e ){
     //...
 });
 </code></pre></td>
