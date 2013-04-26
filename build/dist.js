@@ -1,5 +1,5 @@
 (function () {
-    "use strict";
+    'use strict';
 
     var
         //Q 是一个实现了promise/A+规范的js库
@@ -11,9 +11,10 @@
 
         //用来判断某字符串是否满足某规则
         minimatch = require('minimatch'),
-        file = require("./util/file"),
-        helper = require("./util/helper"),
-        config = require("./config.json").dist;
+        file = require('./util/file'),
+        helper = require('./util/helper'),
+        config = require('./config.json').dist,
+        run;
 
     //合并zepto文件
     function concatZepto() {
@@ -22,7 +23,7 @@
             files = opt.files;
 
         files = files
-            .split(" ")
+            .split(' ')
             .map(function (file) {
                 return opt.path + file + '.js';
             });
@@ -84,7 +85,8 @@
 
                     //去重
                     .filter(function (item, i, me) {
-                        return me.lastIndexOf(item) === i && !matchExclude(item);
+                        return me.lastIndexOf(item) === i && 
+                                !matchExclude(item);
                     });
             });
     }
@@ -125,8 +127,9 @@
                 }
 
                 //查找css文件
-                cssPath = path.replace(/\/(.+)\.js$/, function (m0, m1) {
-                    return '/' + m1 + '/' + m1 + '.css';
+                cssPath = path.replace(/\/(.+)\.js$/, function (m0, m1, m2) {
+                    m1 = ~~m1;
+                    return '-' + (m1 + 1) + '.' + m2;
                 });
 
                 //检查骨架css是否存在
@@ -152,8 +155,11 @@
                             var ret = {};
 
                             //可能只有骨架css存在，可能只有主题css存在
-                            file.exists(cssPrefix + item) && (ret.structor = item);
-                            glob.sync(item.replace(/\.css$/, '.*.css'), {cwd: cssPrefix})
+                            file.exists(cssPrefix + item) && 
+                                    (ret.structor = item);
+                            glob.sync(item.replace(/\.css$/, '.*.css'), 
+                                    {cwd: cssPrefix})
+
                                 .forEach(function (item) {
                                     var m = item.match(/\.(.*)\.css$/i);
                                     m && (ret[m[1]] = item );
@@ -227,8 +233,11 @@
                     len,
                     url;
 
-                obj.structor && (ret += file.read(cssPrefix + obj.structor) + '\n');
-                theme && obj[theme] && (ret += file.read(cssPrefix + obj[theme]) + '\n');
+                obj.structor && 
+                        (ret += file.read(cssPrefix + obj.structor) + '\n');
+
+                theme && obj[theme] && 
+                        (ret += file.read(cssPrefix + obj[theme]) + '\n');
 
                 //收集images
                 matches = ret.match(/url\(((['"]?)(?!data)([^'"\n]+?)\2)\)/ig);
@@ -238,8 +247,12 @@
                     for (len = matches.length; i < len; i++) {
 
                         //苦恼，为何matches结果里面不带分组结果呢？
-                        url = matches[i].match(/url\(((['"]?)(?!data)([^'"\n]+?)\2)\)/i)[3];
-                        images[url] = path.resolve(cssPrefix + path.dirname(obj.structor || obj[theme]) + path.sep + url);
+                        url = matches[i].match(
+                                /url\(((['"]?)(?!data)([^'"\n]+?)\2)\)/i)[3];
+
+                        images[url] = path.resolve(cssPrefix + 
+                                path.dirname(obj.structor || obj[theme]) + 
+                                path.sep + url);
                     }
                 }
 
@@ -262,6 +275,10 @@
                 }
 
                 readCss(css);
+            },
+            replaceFn = function (m0, m1, m2) {
+                m1 = m1 >> 0;
+                return '-' + (m1 + 1) + '.' + m2;
             },
             dest,
             minDest,
@@ -293,19 +310,25 @@
         //复制图片
         destDir = path.dirname(dest) + path.sep;
         for (image in images) {
-            newName = path.basename(image);
+            
+            if( images.hasOwnProperty( image ) ) {
+                newName = path.basename(image);
 
-            //如果文件名已经占用，则换个名字
-            while (file.exists(destDir + 'images/' + newName)) {
-                newName = newName.replace(/(?:-(\d+))?\.(png|jpg|jpeg|gif)$/i, function (m0, m1, m2) {
-                    m1 = m1 >>> 0;
-                    return '-' + (m1 + 1) + '.' + m2;
-                });
+                //如果文件名已经占用，则换个名字
+                while (file.exists(destDir + 'images/' + newName)) {
+                    newName = newName
+                            .replace(/(?:-(\d+))?\.(png|jpg|jpeg|gif)$/i, 
+                            replaceFn);
+                }
+
+                file.write(destDir + 'images/' + newName, 
+                        file.read(images[image]));
+
+                css = helper
+                    .strReplace('\\((\'|")?' + 
+                            image.replace(/\./g, '\\.') + '\\1\\)', 
+                            '(./images/' + newName + ')', css);
             }
-
-            file.write(destDir + 'images/' + newName, file.read(images[image]));
-            css = helper
-                .str_replace('\\((\'|")?' + image.replace(/\./g, '\\.') + '\\1\\)', '(./images/' + newName + ')', css);
         }
 
         dest = dest.replace(/\.js$/, '.css');
@@ -314,11 +337,11 @@
     }
 
     //提供直接调用
-    var run = exports.run = function () {
+    exports.run = function () {
         var exclude = this.exclude;
 
         return Q
-            .try(concatZepto)
+            .fcall(concatZepto)
             .then(minifyZepto)
             .then(helper.curry(collectComponents, exclude))
             .then(buildComponents)
@@ -329,16 +352,18 @@
     exports.task = true;
 
     exports.init = function (cli) {
-        cli.option('-X, --exclude <files...>', '在打包GMU的时候，可以通过此Option来过滤掉不需要的文件，格式与glob一致');
+        cli.option('-X, --exclude <files...>', '在打包GMU的时候，' + 
+                '可以通过此Option来过滤掉不需要的文件，格式与glob一致');
 
         cli.command('dist')
             .description('合并代码并采用uglify压缩代码')
             .action(run.bind(cli));
     };
 
-    function debug(anything, exit) {
-        console.log(anything);
-        exit && process.exit(1);
-    }
+    //暴露给fis用
+    exports.getComponents = function( exclude ){
+        return collectComponents(exclude)
+            .then(buildComponents);
+    };
 
 })();

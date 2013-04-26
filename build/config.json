@@ -14,5 +14,9 @@
             "exclude": ["core/zepto.js", "core/zepto.fx.js"],
             "banner": "/* Gmu v@version */"
         }
+    },
+
+    "fis": {
+        "dest": "dist/fis/gmu_@version"
     }
 }

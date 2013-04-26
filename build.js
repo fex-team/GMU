@@ -3,7 +3,7 @@
 // node.js based build script
 // run `node build -h` for usage information
 (function () {
-    "use strict";
+    'use strict';
 
     var cli = require('commander'),
         glob = require('glob'),
@@ -13,7 +13,7 @@
     cli.option('-s, --silent', '安静模式，不输出任何调试信息');
 
     //加载所有task
-    Q.nfcall(glob, "build/*.js")
+    Q.nfcall(glob, 'build/*.js')
         .then(function (files) {
 
             files.map(function (file) {

@@ -18,7 +18,7 @@
         }
     }
 
-    function str_replace( search, replace, subject) {
+    function strReplace( search, replace, subject) {
         var r = new RegExp(''+search, 'ig');
         return subject.replace( r, replace);
     }
@@ -32,6 +32,19 @@
         "reduce"].forEach(function (name) {
             helper[name] = unCurryThis(emptyArray[name]);
         });
+
+    helper.debug = function( exit ){
+        var args = helper.slice(arguments, 0);
+
+        exit = args.pop();
+        if(typeof exit !== 'boolean') {
+            args.push(exit);
+            exit = false;
+        }
+
+        console.log.apply(console, args);
+        exit && process.exit(1);
+    }
 
     emptyArray = null;
 })();
