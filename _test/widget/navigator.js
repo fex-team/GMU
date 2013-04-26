@@ -42,7 +42,7 @@ module('plugin/widget/navigator', {
             + '<li><a href="#test1">首页</a></li>'
             + '<li><a href="#test2">电影</a></li>'
             + '<li><a class="cur"  href="http://www.baidu.com">电视剧</a></li>'
-            + '<li><a href="#test3">动漫</a></li>'
+            + '<li><a href="#test3?a">动漫</a></li>'
             + '<li><a href="javascript:;">综艺</a></li>'
             + '</ul>'
         var w = w || window;
@@ -306,7 +306,7 @@ test("select tab & switchTo() & getCurTab() & setup mode & fixTab", function(){ 
     equals(nav._data._lastIndex, 4, "The lastIndex is right");
     equals(a[1].className, "", "The tab select is right");
     equals(a[3].className, "cur", "The tab select is right");
-    equals(window.location.href, l + "#test3", "DefTab doesn't jump to the cur tab url");
+    equals(window.location.href, l + "#test3?a", "DefTab doesn't jump to the cur tab url");
     equals(nav.getCurTab().index, 4, "The getCurTab() is right");
     equals(nav.getCurTab().info.text, "动漫", "The getCurTab() is right");
 
@@ -314,7 +314,7 @@ test("select tab & switchTo() & getCurTab() & setup mode & fixTab", function(){ 
     equals(nav._data._lastIndex, 5, "The lastIndex is right");
     equals(a[2].className, "", "The tab select is right");
     equals(a[4].className, "cur", "The tab select is right");
-    equals(window.location.href, l + "#test3", "DefTab doesn't jump to the cur tab url");
+    equals(window.location.href, l + "#test3?a", "DefTab doesn't jump to the cur tab url");
     equals(nav.getCurTab().index, 5 , "The getCurTab() is right");
     equals(nav.getCurTab().info.text, "综艺", "The getCurTab() is right");
 
