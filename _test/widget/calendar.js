@@ -23,7 +23,7 @@ test("option: el(default) & container(default)", function(){
     ok(ua.isShown(calendar.root()[0]), "The container shows");
     equals(calendar.data("container"), undefined, "The option is right");
     
-    equals(calendar.root().find('.ui-calendar-today').text(), 25, "today is right");
+    equals(calendar.root().find('.ui-calendar-today').text(), (new Date()).getDate(), "today is right");
     calendar.destroy();
 });
 

@@ -42,7 +42,7 @@ test("render & el", function(){
 });
 
 test("init: selector", function(){
-    expect(4);
+    expect(3);
     stop();
     var input = $('<input type="text">');
 
@@ -55,10 +55,6 @@ test("init: selector", function(){
 
     setTimeout(function(){
     	ok(ua.isShown(input.calendar('this')._container[0]), 'The calendar shows');
-    	
-    	ua.click($('.ui-slideup .ok-btn')[0]);
-
-        equal(input.val(), '2013-04-24', '赋值成功');
 
         input.calendar('destroy');
         setTimeout(start, 500);
@@ -146,10 +142,10 @@ test("event: show/hide/beforehide", function(){
     }, 200);
 });
 
-test("event: commit", function(){
-    expect(2);
+test("user interface: submit & event: commit", function(){
+    expect(4);
     stop();
-    var input = $('<input type="text">');
+    var input = $('<input type="text">').appendTo(document.body);
 
     input.calendar({
         date: '2013-04-24',
@@ -165,13 +161,70 @@ test("event: commit", function(){
     input.calendar('show');
 
     setTimeout(function(){
+    	a = input.calendar('this')._container.find('td a').filter(function(){
+            return $(this).text() === '25';
+        });
+    	
+        ua.click(a[0]);
+        
         ua.click($('.ui-slideup .ok-btn')[0]);
 
         setTimeout(function(){
+        	ok(!ua.isShown(input.calendar('this')._container[0]), 'The calendar hides');
+        	equals(input.val(), '2013-04-25', "The input value is right");
+        	
             input.calendar('destroy');
             setTimeout(start, 300);
         }, 300);
     }, 200);
+});
+
+test("user interface: cancel", function(){
+    expect(2);
+    stop();
+    var input = $('<input type="text">').appendTo(document.body);
+
+    input.calendar({
+        date: '2013-04-24'
+    });
+
+    input.calendar('show');
+
+    setTimeout(function(){
+    	a = input.calendar('this')._container.find('td a').filter(function(){
+            return $(this).text() === '25';
+        });
+    	
+        ua.click(a[0]);
+        
+        ua.click($('.ui-slideup .no-btn')[0]);
+
+        setTimeout(function(){
+        	ok(!ua.isShown(input.calendar('this')._container[0]), 'The calendar hides');
+        	equals(input.val(), '', "The input value is right");
+        	
+            input.calendar('destroy');
+            setTimeout(start, 300);
+        }, 300);
+    }, 200);
+});
+
+test("user interface: select the input value", function(){
+    expect(1);
+    stop();
+    var input = $('<input type="text">').appendTo(document.body);
+    input.val("2013-04-24")
+
+    input.calendar();
+
+    input.calendar('show');
+
+    setTimeout(function(){
+        equal(input.calendar('this')._container.find('.ui-calendar-current-day').text(), 24);
+        
+	    input.calendar('this').destroy();
+	    setTimeout(start, 300);
+	}, 200);
 });
 
 test("option: disablePlugin", function(){
@@ -220,6 +273,7 @@ test("window resize", function(){
 });
 test("method: destroy",function(){
     ua.destroyTest(function(w,f){
+    	var me = this;
     	w.$('body').highlight();//由于highlight在调用的时候会注册全局事件，以便多次其他实例使用，所以这里先让hightlight把全局事件注册以后再来对比。
         var dl1 = w.dt.domLength(w);
         var el1= w.dt.eventLength();
@@ -227,14 +281,17 @@ test("method: destroy",function(){
         var input = w.$('<input type="text">');
     	
         var instance = input.calendar('this');
+        instance.show();
         
         instance.destroy();
-        var el2= w.dt.eventLength();
-        var ol = w.dt.objLength(instance);
-        var dl2 =w.dt.domLength(w);
-        equal(dl1,dl2,"The dom is ok");   
-        equal(el1,el2,"The event is ok");
-        ok(ol==0,"The widget is destroy");
-        this.finish();
+        setTimeout(function(){
+        	var el2= w.dt.eventLength();
+            var ol = w.dt.objLength(instance);
+            var dl2 =w.dt.domLength(w);
+            equal(dl1,dl2,"The dom is ok");   
+            equal(el1,el2,"The event is ok");
+            ok(ol==0,"The widget is destroy");
+            me.finish();
+        }, 300);
     })
 }) ;
