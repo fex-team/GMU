@@ -334,8 +334,9 @@
     /**
      * @name $.matchMedia  => MediaQueryList
      * @desc 是原生的window.matchMedia方法的polyfill，对于不支持matchMedia的方法系统和浏览器，按照[w3c window.matchMedia](http://www.w3.org/TR/cssom-view/#dom-window-matchmedia)的接口
-     * 定义，对matchMedia方法进行了封装。原理用css media query及transitionEnd事件来完成的。在页面中插入media query样式及元素，当query条件满足时改变该元素样式，同时这个样式是transition作用的属性，
-     * 满足条件后即会触发transitionEnd，由此创建MediaQueryList的事件监听
+     * 定义，对matchMedia方法进行了封装。原理是用css media query及transitionEnd事件来完成的。在页面中插入media query样式及元素，当query条件满足时改变该元素样式，同时这个样式是transition作用的属性，
+     * 满足条件后即会触发transitionEnd，由此创建MediaQueryList的事件监听。由于transition的duration time为0.001ms，故若直接使用MediaQueryList对象的matches去判断当前是否与query匹配，会有部分延迟，
+     * 建议注册addListener的方式去监听query的改变。
      *
      * **MediaQueryList对象包含的属性**
      * - ***matches*** 是否满足query
