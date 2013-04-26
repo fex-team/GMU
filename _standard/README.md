@@ -1,5 +1,13 @@
 # GMU 代码规范
 
+## 内容导航
+ * [基本的格式化](#1-)
+    * [合适的换行](#1-5-)
+    * [合适的空格](#1-6-)
+ * [Javascript命名规范](#2-javascript)
+ * [注释](#3-)
+ * [其他规范](#4-)
+
 ##1. 基本的格式化
 
 1-1. 代码缩进采用4个空白符。
@@ -96,7 +104,7 @@ function a() {
 }
 ```
 
-1-5. 合适的换行。
+### 1-5. 合适的换行。
 
 单行语句不允许超出80个字符，超出的需要进行合适的断行处理。
 
@@ -257,7 +265,7 @@ var myString = 'A rather long string of English text, an error message \
 ```
 
 
-1-6. 适当的空格。
+### 1-6. 适当的空格。
 
 1-6-1. 包含"()"括号的语句，括号前后应当各有一个空格，括号内部开头和结尾处应当各有一空格，诸如： if / for / while / switch ( statements ) { … } 等；
 ```javascript
@@ -295,7 +303,7 @@ myFunc( arg );
 
 ```
 
-**方法调用时，有几种例外函数调用时不需要要空格**
+**方法调用时，有几种例外，函数调用时有些场景不需要要空格**
 
 ```javascript
 //1. 函数调用中无参数
@@ -349,145 +357,6 @@ function MyClass(selector){
 new MyClass('#abc');
 
 var arr = [1,2,3,4];
-```
-
-1-7.  for-in循环体中必须用hasOwnProperty方法检查成员是否为自身成员。避免来自原型链上的污染。
-
-```javascript
-//正确
-for ( name in object ) {
-
-    if ( object.hasOwnProperty( name ) ) {
-        doSomething();
-    }
-}
-```
-
-1-8. 不要使用with, void, eval。
-
-1-9. 在与类型确定的变量进行条件判断时，使用严格的条件判断符。用===代替==，用!==代替!=。
-```javascript
-if ( isValid === true ) {
-    //
-}
-```
-
-1-10. 下面类型的对象不建议用new构造：new Number, new String, new Boolean, new Object(用{}代替), new Array(用[]代替)。
-
-1-11. 引用对象成员用obj.prop代替obj['prop']，除非属性名是变量。
-
-1-12. 使用parseInt将字符串转换成整数时必须使用基数参数。
-```javascript
-//10进制
-parseInt( str, 10 );
-
-//2进制
-parseInt( str, 2 );
-
-//8进制
-parseInt( str, 8 );
-
-//16进制
-parseInt( str, 16 );
-
-//错误
-parseInt( str );
-```
-另外`parseInt( str, 10)`可以考虑是用`~~str`或者`str>>0`来达到同样的效果
-
-1-13. 函数定义。不要在if、for的代码块中定义函数，在函数中定义内嵌函数时应该把函数定义放在顶部。闭包除外。
-
-```javascript
-//正确
-function outerFunc( va ){
-    va = va || 0;
-
-    function innerFunc(){
-        //to do....
-    }
-
-    if( va ){
-        innerFunc();
-    }
-}
-
-//错误
-function outerFunc( va ){
-    va = va || 0;
-
-    if( va ){
-        function innerFunc(){
-            //to do....
-        }
-        innerFunc();
-    }
-}
-
-```
-
-1-14. 立即调用的函数用括号括起来.
-
-```javascript
-//正确
-(function(){
-    doSomething();
-})();
-
-//错误
-void function(){
-    doSomething();
-}();
-
-//错误
-(function(){
-    doSomething();
-}());
-
-//错误
-function(){
-    doSomething();
-}();
-```
-
-1-15. 初始化一个可能赋值为对象的变量时，设为null。
-```javascript
-var a = null;
-
-//later
-a = new Foo();
-
-```
-
-1-16. 如果某方法，期待返回某一对象时，在异常的情况下应当返回null, 不要返回undefined, 0, false之类的。
-```javascript
-function getPerson() {
-
-    if( condition ) {
-        return new Persion();
-    } else {
-        return null;
-    }
-}
-```
-
-1-17. 引号，字符串外层必须使用单引号，内部如果是HTML属性所需的引号则必须为双引号。
-```javascript
-var myString = '< a href="http://www.baidu.com">Let\'sGo</a>';
-
-//错误
-var myString = "< a href='http://www.baidu.com'>Let'sGo</a>"';
-```
-
-1-18. 构造函数，使用函数申明定义。
-```javascript
-function MyClass( opts ){
-    statement
-}
-
-//错误
-var MyClass = function( opts ){
-    statement
-}
 ```
 
 ##2. Javascript命名规范
@@ -702,7 +571,146 @@ var count = 10;
 
 
 ###4. 其他规范
-4-1. 不要分发事件对象，目标方法应该明确所需变量。
+4-1.  for-in循环体中必须用hasOwnProperty方法检查成员是否为自身成员。避免来自原型链上的污染。
+
+```javascript
+//正确
+for ( name in object ) {
+
+    if ( object.hasOwnProperty( name ) ) {
+        doSomething();
+    }
+}
+```
+
+4-2. 不要使用with, void, eval。
+
+4-3. 在与类型确定的变量进行条件判断时，使用严格的条件判断符。用===代替==，用!==代替!=。
+```javascript
+if ( isValid === true ) {
+    //
+}
+```
+
+4-14. 下面类型的对象不建议用new构造：new Number, new String, new Boolean, new Object(用{}代替), new Array(用[]代替)。
+
+4-5. 引用对象成员用obj.prop代替obj['prop']，除非属性名是变量。
+
+4-6. 使用parseInt将字符串转换成整数时必须使用基数参数。
+```javascript
+//10进制
+parseInt( str, 10 );
+
+//2进制
+parseInt( str, 2 );
+
+//8进制
+parseInt( str, 8 );
+
+//16进制
+parseInt( str, 16 );
+
+//错误
+parseInt( str );
+```
+另外`parseInt( str, 10)`可以考虑是用`~~str`或者`str>>0`来达到同样的效果
+
+4-7. 函数定义。不要在if、for的代码块中定义函数，在函数中定义内嵌函数时应该把函数定义放在顶部。闭包除外。
+
+```javascript
+//正确
+function outerFunc( va ){
+    va = va || 0;
+
+    function innerFunc(){
+        //to do....
+    }
+
+    if( va ){
+        innerFunc();
+    }
+}
+
+//错误
+function outerFunc( va ){
+    va = va || 0;
+
+    if( va ){
+        function innerFunc(){
+            //to do....
+        }
+        innerFunc();
+    }
+}
+
+```
+
+4-8. 立即调用的函数用括号括起来.
+
+```javascript
+//正确
+(function(){
+    doSomething();
+})();
+
+//错误
+void function(){
+    doSomething();
+}();
+
+//错误
+(function(){
+    doSomething();
+}());
+
+//错误
+function(){
+    doSomething();
+}();
+```
+
+4-9. 初始化一个可能赋值为对象的变量时，设为null。
+```javascript
+var a = null;
+
+//later
+a = new Foo();
+
+```
+
+4-10. 如果某方法，期待返回某一对象时，在异常的情况下应当返回null, 不要返回undefined, 0, false之类的。
+```javascript
+function getPerson() {
+
+    if( condition ) {
+        return new Persion();
+    } else {
+        return null;
+    }
+}
+```
+
+4-11. 引号，字符串外层必须使用单引号，内部如果是HTML属性所需的引号则必须为双引号。
+```javascript
+var myString = '< a href="http://www.baidu.com">Let\'sGo</a>';
+
+//错误
+var myString = "< a href='http://www.baidu.com'>Let'sGo</a>"';
+```
+
+4-12. 构造函数，使用函数申明定义。
+```javascript
+function MyClass( opts ){
+    statement
+}
+
+//错误
+var MyClass = function( opts ){
+    statement
+}
+```
+
+4-13. 不要分发事件对象，目标方法应该明确所需变量。
 ```javascript
 var myApp = {
     handler: function( e ) {
