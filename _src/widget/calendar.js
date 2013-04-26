@@ -5,25 +5,25 @@
  * 日历组件, 可以用来给一容器生成日历。
  * @import core/touch.js, core/zepto.ui.js, core/zepto.highlight.js
  */
-(function ($, undefined) {
+(function($, undefined) {
     var monthNames = ["01月", "02月", "03月", "04月", "05月", "06月",
-            "07月", "08月", "09月", "10月", "11月", "12月"],
+        "07月", "08月", "09月", "10月", "11月", "12月"],
 
         dayNames = ["日", "一", "二", "三", "四", "五", "六"],
         offsetRE = /^(\+|\-)?(\d+)(M|Y)$/i,
 
-    //获取月份的天数
-        getDaysInMonth = function (year, month) {
+        //获取月份的天数
+        getDaysInMonth = function(year, month) {
             return 32 - new Date(year, month, 32).getDate();
         },
 
-    //获取月份中的第一天是所在星期的第几天
-        getFirstDayOfMonth = function (year, month) {
+        //获取月份中的第一天是所在星期的第几天
+        getFirstDayOfMonth = function(year, month) {
             return new Date(year, month, 1).getDay();
         },
 
-    //格式化数字，不足补零.
-        formatNumber = function (val, len) {
+        //格式化数字，不足补零.
+        formatNumber = function(val, len) {
             var num = "" + val;
             while (num.length < len) {
                 num = "0" + num;
@@ -31,7 +31,7 @@
             return num;
         },
 
-        getVal = function (elem) {
+        getVal = function(elem) {
             return elem.is('select, input') ? elem.val() : elem.attr('data-value');
         },
 
@@ -67,15 +67,15 @@
             yearChangeable: false
         },
 
-        _create: function () {
+        _create: function() {
             var el = this.root();
 
             //如果没有指定el, 则创建一个空div
             el = el || this.root($('<div></div>'));
-            el.appendTo( this.data('container') || (el.parent().length ? '': document.body ));
+            el.appendTo(this.data('container') || (el.parent().length ? '' : document.body));
         },
 
-        _init: function () {
+        _init: function() {
             var data = this._data,
                 el = this._container || this.root(),
                 eventHandler = $.proxy(this._eventHandler, this);
@@ -92,7 +92,7 @@
             data.swipeable && el.on('swipeLeft swipeRight', eventHandler);
         },
 
-        _eventHandler: function (e) {
+        _eventHandler: function(e) {
             var data = this._data,
                 root = (this._container || this.root()).get(0),
                 match,
@@ -112,23 +112,22 @@
 
                     return this.switchMonthTo(getVal(elems.eq(1)), getVal(elems.eq(0)));
 
-                default://click
+                default:
+                    //click
 
                     target = e.target;
 
-                    if ((match = $(target).closest('.ui-calendar-calendar tbody a', root)) &&
-                        match.length) {
+                    if ((match = $(target).closest('.ui-calendar-calendar tbody a', root)) && match.length) {
 
                         e.preventDefault();
                         cell = match.parent();
 
                         this._option('selectedDate',
-                            date = new Date(cell.attr('data-year'), cell.attr('data-month'), match.text()));
+                        date = new Date(cell.attr('data-year'), cell.attr('data-month'), match.text()));
 
                         this.trigger('select', [date, $.calendar.formatDate(date), this]);
                         this.refresh();
-                    } else if ((match = $(target).closest('.ui-calendar-prev, .ui-calendar-next', root)) &&
-                        match.length) {
+                    } else if ((match = $(target).closest('.ui-calendar-prev, .ui-calendar-next', root)) && match.length) {
 
                         e.preventDefault();
                         this.switchMonthTo((match.is('.ui-calendar-prev') ? '-' : '+') + '1M');
@@ -142,8 +141,9 @@
          * @grammar option(key[, value]) ⇒ instance
          * @desc 设置或获取Option，如果想要Option生效需要调用[Refresh](#calendar_refresh)方法。
          */
-        _option: function (key, val) {
-            var data = this._data, date, minDate, maxDate;
+        _option: function(key, val) {
+            var data = this._data,
+                date, minDate, maxDate;
 
             //如果是setter
             if (val !== undefined) {
@@ -189,7 +189,7 @@
          * @grammar switchToToday() ⇒ instance
          * @returns {*}
          */
-        switchToToday: function(){
+        switchToToday: function() {
             var today = new Date();
             return this.switchMonthTo(today.getMonth(), today.getFullYear());
         },
@@ -200,7 +200,7 @@
          * @grammar switchMonthTo(str) ⇒ instance
          * @desc 使组件显示某月，当第一参数为str可以+1M, +4M, -5Y, +1Y等等。+1M表示在显示的月的基础上显示下一个月，+4m表示下4个月，-5Y表示5年前
          */
-        switchMonthTo: function (month, year) {
+        switchMonthTo: function(month, year) {
             var data = this._data,
                 minDate = this.minDate(),
                 maxDate = this.maxDate(),
@@ -229,7 +229,7 @@
 
             if (month != data._drawMonth || year != data._drawYear) {
                 this.trigger('monthchange', [
-                    data._drawMonth = month, data._drawYear = year, this]);
+                data._drawMonth = month, data._drawYear = year, this]);
 
                 data._invalid = true;
                 this.refresh();
@@ -243,7 +243,7 @@
          * @grammar refresh() ⇒ instance
          * @desc 当修改option后需要调用此方法。
          */
-        refresh: function () {
+        refresh: function() {
             var data = this._data,
                 el = this._container || this.root(),
                 eventHandler = $.proxy(this._eventHandler, this);
@@ -267,7 +267,7 @@
          * @name destroy
          * @grammar destroy()  ⇒ instance
          */
-        destroy: function () {
+        destroy: function() {
             var el = this._container || this.root(),
                 eventHandler = this._eventHandler;
 
@@ -279,13 +279,13 @@
         /**
          * 重绘表格
          */
-        _generateHTML: function () {
+        _generateHTML: function() {
             var data = this._data,
                 drawYear = data._drawYear,
                 drawMonth = data._drawMonth,
                 tempDate = new Date(),
                 today = new Date(tempDate.getFullYear(), tempDate.getMonth(),
-                    tempDate.getDate()),
+                tempDate.getDate()),
 
                 minDate = this.minDate(),
                 maxDate = this.maxDate(),
@@ -310,8 +310,8 @@
 
                 html += '<th' + ((i + firstDay + 6) % 7 >= 5 ?
 
-                    //如果是周末则加上ui-calendar-week-end的class给th
-                    ' class="ui-calendar-week-end"' : '') + '>' +
+                //如果是周末则加上ui-calendar-week-end的class给th
+                ' class="ui-calendar-week-end"' : '') + '>' +
                     '<span>' + dayNames[day] + '</span></th>';
             }
 
@@ -337,13 +337,13 @@
             return html;
         },
 
-        _renderHead: function (data, drawYear, drawMonth, minDate, maxDate) {
+        _renderHead: function(data, drawYear, drawMonth, minDate, maxDate) {
             var html = '<div class="ui-calendar-header">',
 
-            //上一个月的最后一天
+                //上一个月的最后一天
                 lpd = new Date(drawYear, drawMonth, -1),
 
-            //下一个月的第一天
+                //下一个月的第一天
                 fnd = new Date(drawYear, drawMonth + 1, 1),
                 i,
                 max;
@@ -380,41 +380,34 @@
             return html;
         },
 
-        _renderDay: function (j, printDate, firstDay, drawMonth, selectedDate, today, minDate, maxDate) {
+        _renderDay: function(j, printDate, firstDay, drawMonth, selectedDate, today, minDate, maxDate) {
 
             var otherMonth = (printDate.getMonth() !== drawMonth),
                 unSelectable;
 
-            unSelectable = otherMonth || (minDate && printDate < minDate) ||
-                (maxDate && printDate > maxDate);
+            unSelectable = otherMonth || (minDate && printDate < minDate) || (maxDate && printDate > maxDate);
 
-            return "<td class='" +
-                ((j + firstDay + 6) % 7 >= 5 ? " ui-calendar-week-end" : "") + // 标记周末
+            return "<td class='" + ((j + firstDay + 6) % 7 >= 5 ? "ui-calendar-week-end" : "") + // 标记周末
 
-                (unSelectable ? " ui-calendar-unSelectable ui-state-disabled" : "") + //标记不可点的天
+            (unSelectable ? " ui-calendar-unSelectable ui-state-disabled" : "") + //标记不可点的天
 
-                (otherMonth || unSelectable ? '' :
-                    (printDate.getTime() === selectedDate.getTime() ? " ui-calendar-current-day" : "") + //标记当前选择
-                        (printDate.getTime() === today.getTime() ? " ui-calendar-today" : "") //标记今天
-                    ) + "'" +
+            (otherMonth || unSelectable ? '' : (printDate.getTime() === selectedDate.getTime() ? " ui-calendar-current-day" : "") + //标记当前选择
+            (printDate.getTime() === today.getTime() ? " ui-calendar-today" : "") //标记今天
+            ) + "'" +
 
-                (unSelectable ? "" : " data-month='" + printDate.getMonth() + "' data-year='" +
-                    printDate.getFullYear() + "'") + ">" +
+            (unSelectable ? "" : " data-month='" + printDate.getMonth() + "' data-year='" + printDate.getFullYear() + "'") + ">" +
 
-                (otherMonth ? "&#xa0;" :
-                    (unSelectable ? "<span class='ui-state-default'>" + printDate.getDate() + "</span>" :
-                        "<a class='ui-state-default" +
-                            (printDate.getTime() === today.getTime() ? " ui-state-highlight" : "") +
-                            (printDate.getTime() === selectedDate.getTime() ? " ui-state-active" : "") +
-                            "' href='#'>" + printDate.getDate() + "</a>")) + "</td>";
+            (otherMonth ? "&#xa0;" : (unSelectable ? "<span class='ui-state-default'>" + printDate.getDate() + "</span>" :
+                "<a class='ui-state-default" + (printDate.getTime() === today.getTime() ? " ui-state-highlight" : "") + (printDate.getTime() === selectedDate.getTime() ? " ui-state-active" : "") +
+                "' href='#'>" + printDate.getDate() + "</a>")) + "</td>";
         }
     });
 
     prototype = $.ui.calendar.prototype;
 
     //添加更直接的option修改接口
-    $.each(['maxDate', 'minDate', 'date', 'selectedDate'], function (i, name) {
-        prototype[name] = function (val) {
+    $.each(['maxDate', 'minDate', 'date', 'selectedDate'], function(i, name) {
+        prototype[name] = function(val) {
             return this._option(name, val);
         }
     });
@@ -446,8 +439,8 @@
      */
 
 
-        //@todo 支持各种格式
-        //开放接口，如果现有格式不能满足需求，外部可以通过覆写一下两个方法
+    //@todo 支持各种格式
+    //开放接口，如果现有格式不能满足需求，外部可以通过覆写一下两个方法
     $.calendar = {
 
         /**
@@ -455,7 +448,7 @@
          * @name $.calendar.parseDate
          * @grammar $.calendar.parseDate( str ) ⇒ Date
          */
-        parseDate: function (obj) {
+        parseDate: function(obj) {
             var dateRE = /^(\d{4})(?:\-|\/)(\d{1,2})(?:\-|\/)(\d{1,2})$/;
             return $.isDate(obj) ? obj : dateRE.test(obj) ? new Date(parseInt(RegExp.$1, 10), parseInt(RegExp.$2, 10) - 1, parseInt(RegExp.$3, 10)) : null;
         },
@@ -465,7 +458,7 @@
          * @name $.calendar.formatDate
          * @grammar $.calendar.formatDate( date ) ⇒ String
          */
-        formatDate: function (date) {
+        formatDate: function(date) {
             return date.getFullYear() + '-' + formatNumber(date.getMonth() + 1, 2) + '-' + formatNumber(date.getDate(), 2);
         }
     }
