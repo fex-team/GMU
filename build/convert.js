@@ -24,7 +24,7 @@
                 
 
             content = content.replace(/^```.*\n([\s\S]+?)^```/mg, function(m0, m1){
-                return ('\n' + m1).replace(/^/mg, '    ');
+                return ( '\n' + m1 ).replace(/^/mg, '    ');
             });
 
             fs.writeFileSync( file, content, 'utf-8');
