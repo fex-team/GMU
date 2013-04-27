@@ -1,15 +1,15 @@
 (function(){
-    "use strict";
+    'use strict';
 
     var dist = require('./dist'),
         file = require('./util/file'),
         helper = require('./util/helper'),
         Q = require('q'),
-        path = require('path');
+        path = require('path'),
+        pkg = require("../package");
 
     function buildForFis( files ){
         var config = require("./config"),
-            pkg = require("../package"),
             opt = config.fis,
             gmu = config.dist.gmu,
             prefix = path.resolve(gmu.path) + path.sep,
@@ -21,13 +21,16 @@
                     matches,
                     module;
 
-                matches = item.path.match(/([^\/]+)\/([^\/]+)\.js$/i);
+                matches = item.path
+                    .match(/([^\/]+)\/([^\/]+)\.js$/i);
 
                 if(matches) {
+
                     switch(matches[1]) {
                         case 'core':
-                            folder = 'base'+path.sep;
+                            folder = 'base' + path.sep;
                             break;
+
                         default:
                             break;
                     }

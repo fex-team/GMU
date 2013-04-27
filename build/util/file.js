@@ -132,13 +132,13 @@
 	}
 
 	//expose
-	exports.concat = concat;
-	exports.minify = minify;
-	exports.mkdir = mkdir;
-	exports.rmdir = rmdir;
-	exports.caculateSize = caculateSize;
-	exports.exists = exists;
-	exports.read = read;
-	exports.write = write;
+    exports.concat       = concat;
+    exports.minify       = minify;
+    exports.mkdir        = mkdir;
+    exports.rmdir        = rmdir;
+    exports.caculateSize = caculateSize;
+    exports.exists       = exists;
+    exports.read         = read;
+    exports.write        = write;
 
 })();

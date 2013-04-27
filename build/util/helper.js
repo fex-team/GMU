@@ -25,7 +25,7 @@
 
     helper.unCurryThis = unCurryThis;
     helper.curry = curry;
-    helper.str_replace = str_replace;
+    helper.strReplace = strReplace;
 
     ["push", "pop", "shift", "unshift", "slice",
         "splice", "map", "filter", "forEach",
