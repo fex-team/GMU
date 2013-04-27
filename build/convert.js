@@ -27,7 +27,7 @@
                 return ( '\n' + m1 ).replace(/^/mg, '    ');
             });
 
-            file = file.replace(/\.([^\.]+)/, '.convert.$1');
+            file = file.replace(/\.([^\.]+)$/, '.convert.$1');
             fs.writeFileSync( file, content, 'utf-8');
         });
     } else {
