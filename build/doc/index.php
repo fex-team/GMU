@@ -42,7 +42,7 @@ $zeptoDoc->setOrder('*zepto.doc.js
             ');
 
 
-$gmuDoc = new JsDoc($gmuDir, array('core/zepto/*', 'core/zepto.fx.js', 'widget/datepicker.js'), true);
+$gmuDoc = new JsDoc($gmuDir, array('core/zepto/*', 'core/zepto.fx.js'), true);
 $gmuDoc->setData('name', 'GMU 新版API');
 $gmuDoc->setData('title', 'GMU 新版API');
 $gmuDoc->setOrder('
@@ -67,7 +67,8 @@ $gmuDoc->setOrder('
             widget/refresh.iOS5.js
             widget/dropmenu.js
             widget/dropmenu.iscroll.js
-            widget/datepicker.js
+            widget/calendar.js
+            widget/calendar.picker.js
             widget/slider.js
             widget/add2desktop.js
             widget/gotop.js

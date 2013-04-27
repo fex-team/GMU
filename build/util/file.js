@@ -1,3 +1,6 @@
+/**
+ * @fileOverview 文件操作方法集合。
+ */
 (function() {
 	"use strict";
 
@@ -58,7 +61,6 @@
             dirPath.reduce(function(parts, part) {
                 var subPath;
 
-				parts += path.sep + part;
 				subPath = path.resolve(parts);
 
 				if (!exists(subPath)) {
@@ -69,10 +71,37 @@
 						throw new Error("创建目录\"" + subPath + "\"失败(错误代码：" + e.code + ")");
 					}
 				}
-				return parts;
+				return parts + path.sep + part;
 			});
 		});
 	}
+
+    function rmdir( dirPaths ) {
+        var rm = function( item ){
+            var stat,
+                children;
+
+            if( !exists(item) ) return ;
+
+            stat = fs.statSync(item);
+
+            if( stat.isDirectory() ) {
+                children = fs.readdirSync(item);
+
+                children
+                    .map(function( child ){
+                        return item + path.sep + child;
+                    })
+                    .forEach(rm);
+
+                fs.rmdirSync(item);
+            } else if(stat.isFile() ) {
+                fs.unlinkSync(item);
+            }
+        }
+
+        return callEach(dirPaths, rm);
+    }
 
 	function caculateSize(files) {
 		return callEach(files, function(file) {
@@ -106,12 +135,13 @@
 	}
 
 	//expose
-	exports.concat = concat;
-	exports.minify = minify;
-	exports.mkdir = mkdir;
-	exports.caculateSize = caculateSize;
-	exports.exists = exists;
-	exports.read = read;
-	exports.write = write;
+    exports.concat       = concat;
+    exports.minify       = minify;
+    exports.mkdir        = mkdir;
+    exports.rmdir        = rmdir;
+    exports.caculateSize = caculateSize;
+    exports.exists       = exists;
+    exports.read         = read;
+    exports.write        = write;
 
 })();
