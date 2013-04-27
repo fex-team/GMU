@@ -14,6 +14,7 @@
 
 1-2. 语句必须都有分号结尾，除了 for, function申明, if, switch, try, while。
 **非申明式函数也需要分号**
+    
     var a;
     
     //错误, 结尾缺少分号
@@ -23,6 +24,7 @@
     
 
 1-3. 所有的循环体和判断体都需要用"{}"括起来。如：
+    
     //正确
     if( condition ) {
         doSomething();
@@ -34,6 +36,7 @@
 
 1-4. 变量声明。同一作用域下的所有变量，全部提至函数顶部，且使用一个var来集中申明。
 
+    
     //正确
     function a() {
         var v1 = 1,
@@ -52,11 +55,11 @@
     //错误
     function a() {
     
-    	var v1 = 1;
-    	var v2 = 2;
-    	var v3 = 3;
+        var v1 = 1;
+        var v2 = 2;
+        var v3 = 3;
     
-    	statement;
+        statement;
     }
     
     //错误
@@ -88,6 +91,7 @@
 
 同时每个变量独占一行，第二个起应当有两个缩进。需要赋值初始值的优先放在前面，如：
 
+    
     function a() {
         var first = 1,
             second = 2,
@@ -105,6 +109,7 @@
 
 1-5-1. 函数链式调用，从第二个点的前面开始换行，且换行后前面应当有一个缩进。
 
+    
     //函数链式调用
     var $item = $( '<div></div>' ).attr( 'id', 'test' )
         .attr( 'id', 'what ever' )
@@ -126,6 +131,7 @@
 
 1-5-2. 方法参数过长，if语句中条件过多时也需要换行，这种情况下的缩进为2个。同是操作符应当保留在右边结尾处。
 
+    
     callFunc( arg1, arg2, longArgmunent3, longArgmuent4,
             longArgmument5 );
     
@@ -143,6 +149,7 @@
     
 
 1-5-3. 每一个块状代码的开始都应当有一个空行。
+    
     function myFunc() {
         var v1 = 1,
             v2 = 2,
@@ -177,6 +184,7 @@
     
 
 1-5-4. if之后的else的代码块应当在前个代码块之后，不允许另起新行。
+    
     if ( a === 1 ) {
         statement
     } else if ( a === 2 ) {
@@ -193,6 +201,7 @@
     
 
 1-5-5. 包含代码块的"{}"，应该在"{"后立即换行。
+    
     //正确
     for ( t in selected ) {
         statement1
@@ -215,6 +224,7 @@
 
 1-5-6. switch语句中的断行, 每个case之前有一个缩进，case之后的语句两个缩进, 每个break;后都有一个新行，最后一个除外。
 
+    
     switch( condition ) {
         case 'first':
             doSomething();
@@ -235,13 +245,14 @@
     
 
 1-5-7. 超长字符串应该使用"+"进行换行。
+    
     //正确
     var myString = 'A rather long string of English text, an error message ' +
-    			 'actually that just keeps going and going -- an error ' +
-    			 'message to make the Energizer bunny blush (right through ' +
-    			 'those Schwarzenegger shades)! Where was I? Oh yes, ' +
-    			 'you\'ve got an error and all the extraneous whitespace is ' +
-    			 'just gravy.  Have a nice day.';
+                 'actually that just keeps going and going -- an error ' +
+                 'message to make the Energizer bunny blush (right through ' +
+                 'those Schwarzenegger shades)! Where was I? Oh yes, ' +
+                 'you\'ve got an error and all the extraneous whitespace is ' +
+                 'just gravy.  Have a nice day.';
     
     //错误
     var myString = 'A rather long string of English text, an error message \
@@ -256,6 +267,7 @@
 ### 1-6. 适当的空格。
 
 1-6-1. 包含"()"括号的语句，括号前后应当各有一个空格，括号内部开头和结尾处应当各有一空格，诸如： if / for / while / switch ( statements ) { … } 等；
+    
     if ( a === 1 ) {
         statement
     }
@@ -274,6 +286,7 @@
     
 
 1-6-2. 方法定义和方法调用左括号“(”前面不需要空格, 右括号与{之间始终有一个空格，括号内部开头和结尾应当各有一空格。
+    
     //函数定义
     function myFunc( arg ) {
         statement
@@ -291,6 +304,7 @@
 
 **方法调用时，有几种例外，函数调用时有些场景不需要要空格**
 
+    
     //1. 函数调用中无参数
     callFunc();
     
@@ -312,6 +326,7 @@
 1-6-4. 数组成员间的","和各个参数间的","（包括形参和实参）后面需要跟空格。
 
 1-6-5. "[]"中的"["后以及"]"前需要跟空格
+    
     for ( t in selected ) {
     
         if ( !hash[ t ] && isOk ) {
@@ -345,35 +360,40 @@
 
 ##2. Javascript命名规范
 2-1.  构造器采用驼峰式命名，并且首字母大写。如：
+    
     function DialogManager ( config ) {
-    	statement;
+        statement;
     }
     
 
 2-2. 枚举类型变量采用驼峰式命名，并且首字母大写。属性名单词全部大写，单词间以下划线分隔。如：
+    
     var QueueError = {
-    	QUEUE_LIMIT_EXCEEDED: -100,
-    	FILE_EXCEEDS_SIZE_LIMIT: -110,
-    	ZERO_BYTE_FILE: -120,
-    	INVALID_FILETYPE: -130
+        QUEUE_LIMIT_EXCEEDED: -100,
+        FILE_EXCEEDS_SIZE_LIMIT: -110,
+        ZERO_BYTE_FILE: -120,
+        INVALID_FILETYPE: -130
     };
     
 
 2-3. 对象的属性或方法名采用小驼峰式(lower camel-case)，如"init", "bindEvent", "updatePosition"：
+    
     Dialog.prototype = {
-    	init: function () {},
-    	bindEvent: function () {},
-    	updatePosition: function () {}
+        init: function () {},
+        bindEvent: function () {},
+        updatePosition: function () {}
     };
     
 
 2-4. 私有变量名用下划线开头。如："_current", "_defaultConfig"
+    
     function Dialog( config ) {
         this._defaultConfig = {};
     }
     
 
 2-5. 常量名全部大写，单词间用下划线分隔。如：“CSS_BTN_CLOSE”, "TXT_LOADING"
+    
     function Dialog( config ) {
         this.DEFAULT_CONFIG = {
             CSS_BTN_CLOSE: 'x-btn-cls',
@@ -383,12 +403,14 @@
     
 
 2-6. 方法的返回值如果是布尔值，则必须以is、can、has、should等为前缀
+    
     function isGroupId( id ) {
-    	return (id + '').indexOf( 'G' ) > 0;
+        return (id + '').indexOf( 'G' ) > 0;
     }
     
 
 2-7. 简写单词在变量名中出现时也应该遵循驼峰式写法。
+    
     //正确
     function getXml () {}
     function getId () {}
@@ -403,6 +425,7 @@
     
 
 2-8. 在闭包中访问所在实例this指针时，统一使用变量me指向。
+    
     var me = this;
     setTimeout( function() {
         //me.
@@ -459,10 +482,12 @@ catch( ex ){
 </table>
 
 2-10. 所有Zepto/jQuery对象，变量名以$符号开头，如：
+    
     var $div = $('<div></div>');
     
 
 2-11. 变量命名前缀应当是名词，与函数区分开来，函数应当是动词
+    
     //好的写法
     var count = 10,
         myName = 'Abcd',
@@ -485,6 +510,7 @@ catch( ex ){
 
 ##3. 注释
 3-1. Js文档注释，每个js文件顶部都必须包含关于Js文件功能的注释信息。
+    
     /**
      * @fileoverview 文件功能描述或一些其他相关信息.
      */
@@ -493,6 +519,7 @@ catch( ex ){
 3-2. 单行注释。
 
 以两个斜线开始，以行尾结束，两个斜线与内容之间应当有一个空格。
+    
         // 这是一个注释
     
 
@@ -501,6 +528,7 @@ catch( ex ){
 1. 独占一行，用来解释下一行代码。这行注释之前应当有一个空行，且缩进层级和下一行代码保持一致。
 2. 在代码行的尾部添加，代码结束到注释之间至少有一个缩进。注释（包括前面的代码部分）不能超过单行最大字符数限制，如果超过改成第一种注释。
 
+    
     function doSomething() {
         var a = 3,  // 这变量用来存长度
     
@@ -522,6 +550,7 @@ catch( ex ){
 
 当内容比较多用单行注释不能满足需求时，推荐使用多行注释，格式如下，前面应当有个空格。
     
+    
     /*
      * 我的注释
      * 注释中的第二段
@@ -532,6 +561,7 @@ catch( ex ){
     
 
 3-4. 避免多余的注释，当代码很明了时不应当添加注释。
+    
     // 不必要的注释
     
     // 初始化count
@@ -542,6 +572,7 @@ catch( ex ){
 ###4. 其他规范
 4-1.  for-in循环体中必须用hasOwnProperty方法检查成员是否为自身成员。避免来自原型链上的污染。
 
+    
     //正确
     for ( name in object ) {
     
@@ -554,6 +585,7 @@ catch( ex ){
 4-2. 不要使用with, void, eval。
 
 4-3. 在与类型确定的变量进行条件判断时，使用严格的条件判断符。用===代替==，用!==代替!=。
+    
     if ( isValid === true ) {
         //
     }
@@ -564,6 +596,7 @@ catch( ex ){
 4-5. 引用对象成员用obj.prop代替obj['prop']，除非属性名是变量。
 
 4-6. 使用parseInt将字符串转换成整数时必须使用基数参数。
+    
     //10进制
     parseInt( str, 10 );
     
@@ -583,6 +616,7 @@ catch( ex ){
 
 4-7. 函数定义。不要在if、for的代码块中定义函数，在函数中定义内嵌函数时应该把函数定义放在顶部。闭包除外。
 
+    
     //正确
     function outerFunc( va ){
         va = va || 0;
@@ -612,6 +646,7 @@ catch( ex ){
 
 4-8. 立即调用的函数用括号括起来.
 
+    
     //正确
     (function(){
         doSomething();
@@ -634,6 +669,7 @@ catch( ex ){
     
 
 4-9. 初始化一个可能赋值为对象的变量时，设为null。
+    
     var a = null;
     
     //later
@@ -642,6 +678,7 @@ catch( ex ){
     
 
 4-10. 如果某方法，期待返回某一对象时，在异常的情况下应当返回null, 不要返回undefined, 0, false之类的。
+    
     function getPerson() {
     
         if( condition ) {
@@ -653,6 +690,7 @@ catch( ex ){
     
 
 4-11. 引号，字符串外层必须使用单引号，内部如果是HTML属性所需的引号则必须为双引号。
+    
     var myString = '< a href="http://www.baidu.com">Let\'sGo</a>';
     
     //错误
@@ -660,6 +698,7 @@ catch( ex ){
     
 
 4-12. 构造函数，使用函数申明定义。
+    
     function MyClass( opts ){
         statement
     }
@@ -671,6 +710,7 @@ catch( ex ){
     
 
 4-13. 不要分发事件对象，目标方法应该明确所需变量。
+    
     var myApp = {
         handler: function( e ) {
             this.showPopup( e.pageX, e.pageY );
