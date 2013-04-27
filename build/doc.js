@@ -1,3 +1,7 @@
+/**
+ * @fileOverview 生成doc工具，此程序会在生成一个doc目录。
+ * 程序依赖linux/unix系统，需要php已经安装，并暴露php命令。
+ */
 (function(){
     "use strict";
 

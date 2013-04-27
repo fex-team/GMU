@@ -1,3 +1,6 @@
+/**
+ * @fileOverview 数组帮助类方法。包括curry, 和unCurryThis.
+ */
 (function () {
     "use strict";
 
@@ -14,24 +17,37 @@
     function curry(f) {
         var args = helper.slice(arguments, 1);
         return function () {
-            return f.apply(this, (helper.push(args, arguments), args));
+            return f.apply(this, helper.concat(args, helper.slice(arguments, 0)));
         }
     }
 
-    function str_replace( search, replace, subject) {
+    function strReplace( search, replace, subject) {
         var r = new RegExp(''+search, 'ig');
         return subject.replace( r, replace);
     }
 
     helper.unCurryThis = unCurryThis;
     helper.curry = curry;
-    helper.str_replace = str_replace;
+    helper.strReplace = strReplace;
 
     ["push", "pop", "shift", "unshift", "slice",
-        "splice", "map", "filter", "forEach",
+        "splice", "map", "filter", "forEach", "concat",
         "reduce"].forEach(function (name) {
             helper[name] = unCurryThis(emptyArray[name]);
         });
+
+    helper.debug = function( exit ){
+        var args = helper.slice(arguments, 0);
+
+        exit = args.pop();
+        if(typeof exit !== 'boolean') {
+            args.push(exit);
+            exit = false;
+        }
+
+        console.log.apply(console, args);
+        exit && process.exit(1);
+    }
 
     emptyArray = null;
 })();
