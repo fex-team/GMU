@@ -1,3 +1,6 @@
+/**
+ * @fileOverview 运行shell命令。
+ */
 (function () {
     "use strict";
 

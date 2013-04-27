@@ -1,10 +1,35 @@
+/**
+ * @fileOverview 负责打包Zepto和GMU代码，包括合并成一个JS和采用uglify压缩js。
+ *
+ * 调用方式如下`node build dist`.
+ *
+ * 定制打包
+ * ====================================================================
+ * 默认会把所有的组件打包，如果指向打包部分组件可以采用如下命令
+ *
+ * * `node build dist refresh` 这样只会打包refresh组件（包括它的依赖）。
+ * * `node build dist refresh.iOS5` 这样只会打包refresh.iOS5组件（包括它的依赖）。
+ *
+ * 另外还可以过滤掉部分组件如.
+ *
+ * `node build dist --exclude "widget/refresh*.js"` 此条命令将会打包所有的，除了refresh。
+ *
+ * 主题指定
+ * =====================================================================
+ * 如果默认不指定，将会打包default主题， 通过一下方式可以指定主题
+ *
+ * `node build dist --theme default` 或者 `node build dist -t default`。
+ *
+ * 如果只需打包骨架样式，通过一下方式来打包
+ * `node build dist -t ""` 即将theme指定为空
+ */
 (function () {
     'use strict';
 
     var
-        // Q 是一个实现了promise/A+规范的js库
+        // q 是一个实现了promise/A+规范的js库
         // 主要用来优化异步操作代码
-        Q = require('q'),
+        q = require('q'),
 
         // 用来根据规则查找文件的工具
         glob = require('glob'),
@@ -15,7 +40,6 @@
         file = require('./util/file'),
         helper = require('./util/helper'),
         config =  require('./config.json').dist,
-
         run;
 
     // 合并zepto文件
@@ -65,17 +89,22 @@
             };
 
         exclude = (opt.exclude || [])
-            .concat(exclude ? exclude.split(/\s+/) : []);
+            .concat(exclude ? exclude.split(/\s+/) : [])
+            .map(function( item ){
 
-        files = files || opt.src;
+                //转义.和$, 正确的匹配应该\.和\$
+                return item.replace(/(\.|\$\-)/, '\\$1');
+            });
+
+        files = files || opt.all;
 
         // 确保files是个数组
         if (!Array.isArray(files)) {
             files = [files];
         }
 
-        return Q.all(files.map(function (file) {
-                return Q.nfcall(glob, file, { cwd: dir});
+        return q.all(files.map(function (file) {
+                return q.nfcall(glob, file, { cwd: dir});
             }))
             .then(function (files) {
 
@@ -129,9 +158,13 @@
                         .filter(parse);
                 }
 
-                // 查找css文件
+                // 查找css文件，对应的目录在assets目录下面的widgetName/widget.css
+                // 或者widgetName/widget.plugin.css
                 cssPath = path.replace(/\/(.+)\.js$/, function (m0, m1) {
-                    var name = m1.replace(/\..+$/, '');
+                    var
+                        //插件的css并不在插件名所在目录，而是对应的组件名所在目录
+                        name = m1.replace(/\..+$/, '');
+
                     return '/' + name + '/' + m1 + '.css';
                 });
 
@@ -140,8 +173,8 @@
                     css.structor = cssPath;
                 }
 
-                // 获取themes
-                glob.sync(cssPath.replace(/\.css$/, '.*.css'), {cwd: cssPrefix})
+                // 查找themes
+                glob.sync(cssPath.replace(/\.css$/, '\\.*\\.css'), {cwd: cssPrefix})
                     .forEach(function (item) {
                         var m = item.match(/\.([^\.]*)\.css$/i);
                         m && (css[m[1]] = item );
@@ -157,15 +190,16 @@
                         .map(function (item) {
                             var ret = {};
 
-                            // 可能只有骨架css存在，可能只有主题css存在
+                            // 可能只有骨架css存在，也可能只有主题css存在
                             file.exists(cssPrefix + item) && 
                                     (ret.structor = item);
-                            glob.sync(item.replace(/\.css$/, '.*.css'), 
+
+                            glob.sync(item.replace(/\.css$/, '\\.*\\.css'),
                                     {cwd: cssPrefix})
 
                                 .forEach(function (item) {
-                                    var m = item.match(/\.(.*)\.css$/i);
-                                    m && (ret[m[1]] = item );
+                                    var m = item.match(/\.([^\.]*)\.css$/i);
+                                    m && (css[m[1]] = item );
                                 });
                             return ret;
                         });
@@ -198,7 +232,10 @@
 
         var js = '',
             css = '',
+            // 存贮合并了哪些js文件
             jsFiles = [],
+
+            // 存贮合并了哪些css文件
             cssFiles = [],
             pkg = require('../package.json'),
 
@@ -207,6 +244,8 @@
             opt = config.gmu,
             prefix = path.resolve(opt.path) + path.sep,
             cssPrefix = path.resolve(opt.cssPath) + path.sep,
+
+            //hash表，key为js的路径，value为对应obj
             hash = {},
             rendered = {
 
@@ -230,7 +269,8 @@
                 //jsFiles.push( item.path.replace(/([^\/]+)\/([^\/]+)\.js/, '$1:$2'));
                 jsFiles.push( item.path );
 
-                js += file.read(prefix + item.path) + '\n';
+                js += '/*!' + item.path + '*/\n' +
+                        file.read(prefix + item.path) + '\n';
 
                 // 标明已经输出过
                 rendered[item.path] = true;
@@ -244,11 +284,13 @@
                     url;
 
                 obj.structor && 
-                        (ret += file.read(cssPrefix + obj.structor) + '\n') &&
+                        (ret += '/*!' + obj.structor + '*/\n' +
+                                file.read(cssPrefix + obj.structor) + '\n') &&
                         cssFiles.push(obj.structor);
 
                 theme && obj[theme] && 
-                        (ret += file.read(cssPrefix + obj[theme]) + '\n') &&
+                        (ret += '/*!' + obj.theme + '*/\n' +
+                                file.read(cssPrefix + obj[theme]) + '\n') &&
                         cssFiles.push(obj[theme]);
 
                 // 收集images
@@ -270,6 +312,7 @@
 
                 css += ret;
             },
+
             cssRender = function (item) {
                 var css;
 
@@ -288,9 +331,11 @@
 
                 readCss(css);
             },
+
             replaceFn = function (m0, m1, m2) {
                 return '-' + (~~m1 + 1) + '.' + m2;
             },
+
             dest,
             minDest,
             destDir,
@@ -336,7 +381,7 @@
                 // todo 如果是同一文件则不换名字
                 while (file.exists(destDir + 'images/' + newName)) {
                     newName = newName
-                            .replace(/(?:-(\d+))?\.(png|jpg|jpeg|gif)$/i, 
+                            .replace(/(?:-(\d+))?\.(png|jpg|jpeg|gif)$/i,
                                     replaceFn);
                 }
 
@@ -358,21 +403,24 @@
     // 提供直接调用
     exports.run = run = function () {
         var exclude = this.exclude,
+            theme = this.theme,
             files = [],
             len = this.args.length,
             i = 0;
 
+        theme = typeof theme === 'undefined' ? 'default' : theme;
+
         //如果node build dist后面还带其他参数，则只收集指定的文件。
         for( ; i < len-1; i++ ) {
-            files.push('widget/' + this.args[i] + '*.js');
+            files.push('widget/' + this.args[i].replace(/(\.|\$\-)/, '\\$1') + '*.js');
         }
 
-        return Q
+        return q
             .fcall(concatZepto)
             .then(minifyZepto)
             .then(helper.curry(collectComponents, exclude, files.length ? files : null))
             .then(buildComponents)
-            .then(concatComponents);
+            .then(helper.curry(concatComponents, theme));
     };
 
     //标记是一个task
@@ -380,7 +428,10 @@
 
     exports.init = function ( cli ) {
         cli.option('-X, --exclude <files...>', '在打包GMU的时候，' + 
-                '可以通过此Option来过滤掉不需要的文件，格式与glob一致');
+                '用来过滤部分文件。');
+
+        cli.option('-t, --theme <name>', '在打包GMU的时候，' +
+                '用来指定打包什么主题。');
 
         cli.command('dist')
             .description('合并代码并采用uglify压缩代码')

@@ -1,3 +1,6 @@
+/**
+ * @fileOverview 文件操作方法集合。
+ */
 (function() {
 	"use strict";
 

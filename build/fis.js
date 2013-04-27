@@ -1,3 +1,9 @@
+/**
+ * @fileOverview 负责生成fis包。
+ * 生成路径 dist/fis/gmu_@version.
+ *
+ * 未完工。
+ */
 (function(){
     'use strict';
 

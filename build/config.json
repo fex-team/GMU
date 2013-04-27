@@ -9,7 +9,7 @@
         "gmu": {
             "path": "_src",
             "cssPath": "assets",
-            "src": ["widget/**.js"],
+            "all": ["widget/**.js"],
             "dest": "dist/gmu.js",
             "exclude": ["core/zepto.js", "core/zepto.fx.js"],
             "banner": "/* Gmu v@version - @files */"
