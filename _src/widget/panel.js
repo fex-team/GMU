@@ -145,8 +145,7 @@
                 _dis = dis || data.display,
                 _pos = pos || data.position;
 
-            me._firstClose && me.trigger(beforeEvent, [dis, pos]);
-            !me._firstClose &&  (me._firstClose = true);     //是否第一次执行close
+            me.trigger(beforeEvent, [dis, pos]);
             if (beforeEvent.defaultPrevented) return me;
             if (changed) {
                 me._dealState(isOpen, _dis, _pos);    //关闭或显示时，重置状态
