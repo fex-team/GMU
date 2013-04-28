@@ -60,6 +60,13 @@ foreach ($setting as $item) {
             margin-top: -27px;
             top: 50%;
         }
+        .thelist ul li img.newIcon{
+            width: 22px;
+            height: 12px;
+            right: 60px;
+            left: auto;
+            top: 70%;
+        }
 
         .thelist ul li a {
             color: #B2B2B2;
@@ -110,6 +117,8 @@ foreach ($setting as $item) {
                         <img src="setting/<?php echo $demo['icon']?>" alt="<?php echo $demo['name']?>"/>
                         <span class="title"><?php echo $demo['name']?></span>
                         <span class="desc"><?php echo $demo['description']?></span>
+                        <?php if ($demo['newIcon']): ?><img class="newIcon" src="setting/<?php echo $demo['newIcon']?>" />
+                        <?php endif;?>
                     </a>
                 </li>
                 <?php endforeach;?>
