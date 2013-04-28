@@ -7,7 +7,13 @@
     <!--demo展示所用css，不用关心 begin-->
     <link rel="stylesheet" type="text/css" href="../../../assets/reset.css" />
     <link rel="stylesheet" type="text/css" href="panel_demo.css" />
-    <!--demo展示所用css end-->
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/toolbar/toolbar.css" />
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/toolbar/toolbar.default.css" />
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/button/button.css" />
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/button/button.default.css" />
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/dropmenu/dropmenu.css" />
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/dropmenu/dropmenu.default.css" />
+     <!--皮肤文件，若不使用该皮肤，可以不加载-->
 
     <!--组件依赖css begin-->
     <link rel="stylesheet" type="text/css" href="../../../assets/widget/panel/panel.css" />
@@ -21,15 +27,24 @@
     <script type="text/javascript" src="../../../_src/core/zepto.iscroll.js"></script>
     <script type="text/javascript" src="../../../_src/widget/panel.js"></script>
     <!--组件依赖js end-->
+
+    <!--demo展示所用js begin-->
+    <script type="text/javascript" src="../../../_src/core/zepto.fix.js"></script>
+    <script type="text/javascript" src="../../../_src/widget/toolbar.js"></script>
+    <script type="text/javascript" src="../../../_src/core/zepto.highlight.js"></script>
+    <script type="text/javascript" src="../../../_src/widget/button.js"></script>
+    <script type="text/javascript" src="../../../_src/widget/dropmenu.js"></script>
+    <!--demo展示所用js end-->
 </head>
 
 <body>
 <div id="page">
     <div class="cont">
-        <section id="panel-demo" class="demo iscroll">
-            <h4>打开的panel是iscroll</h4>
-            <button class="scroll-iscroll">打开的panel是iscroll</button>
-        </section>
+        <div class="toolbar">
+            <a href="../">返回</a>  <!-- 如果按钮为a标签，则默认不会添加点击事件 ,若不为a标签，默认会添加上【点击 history(-1)】的事件,该事件可以自己覆写-->
+            <h2>固顶工具栏</h2>
+            <span class="btn1"></span>
+        </div>
         <section id="cont-panel" class="option">
             <h2>panel组件</h2>
             <p class="panel-des">panel是GMU_2.0.5推出的新组件，可以从左边或右边呼出新内容，是一款适合于移动端交互的组件，它具有以下参数：</p>
@@ -60,10 +75,6 @@
                 </li>
             </ul>
         </section>
-        <section class="demo iscroll">
-            <h4>打开的panel是iscroll</h4>
-            <button class="scroll-iscroll">打开的panel是iscroll</button>
-        </section>
         <section id="cont-gmu" class="gmu">
             <h2>GMU介绍</h2>
             <dl class="gmu-feture">
@@ -81,7 +92,6 @@
                 <dd>完全开源免费开源基于BSD协议，支持商业和非商业用户的免费使用和任意修改。</dd>
             </dl>
         </section>
-
     </div>
     <div class="panel wrapper">
         <div class="panel-scroller">
@@ -109,43 +119,108 @@
                 <li>swipeClose</li>
                 <li>offset</li>
             </ul>
+            <ul class="panel-opt">
+                <li>contentWrap</li>
+                <li>scrollMode</li>
+                <li>animate</li>
+                <li>display</li>
+                <li>position</li>
+                <li>dismissible</li>
+                <li>swipeClose</li>
+                <li>offset</li>
+            </ul>
+            <ul class="panel-opt">
+                <li>contentWrap</li>
+                <li>scrollMode</li>
+                <li>animate</li>
+                <li>display</li>
+                <li>position</li>
+                <li>dismissible</li>
+                <li>swipeClose</li>
+                <li>offset</li>
+            </ul>
+            <ul class="panel-opt">
+                <li>contentWrap</li>
+                <li>scrollMode</li>
+                <li>animate</li>
+                <li>display</li>
+                <li>position</li>
+                <li>dismissible</li>
+                <li>swipeClose</li>
+                <li>offset</li>
+            </ul>
         </div>
     </div>
 </div>
 
-
 <script type="text/javascript">
+    (function () {
+
+        //添加公共头部
+        var btn = $('.btn1').button({label:'切换'});
+        $.ui.dropmenu({
+            cacheParentOffset: false,
+            btn: btn,
+            align:'right',
+            items:[
+                {
+                    text:'panel组件',
+                    href:'panel.html'
+                },
+                {
+                    text:'panel多种打开模式',
+                    href:'panel_position.html'
+                },
+                {
+                    text:'panel页面滚动关闭',
+                    href:'panel_hide.html'
+                },
+                {
+                    text:'panel iScroll',
+                    href:'panel_iscroll.html'
+                }
+            ],
+            //创建toolbar
+            container: $('.toolbar').toolbar({
+                btns: [$('.btn2').on('click', function() {
+                    $('.panel').toggle();
+                })],
+                useFix: true
+            })
+        });
+        $('.btn2').on('click', function() {
+            $('.panel').toggle();
+        })
+    })();
     $(function ($) {
-        $(document).on('headready', function () {
-            $('.panel').css('height', window.innerHeight - ($('header').height() || 42)).iScroll({
-                hScroll: false
-            }).panel({
-                contentWrap: $('.cont'),
-                scrollMode: 'fix',
-                position: 'left',
-                display: 'overlay',
-                swipeClose: false
-            });
 
-            $('.scroll-iscroll').on('tap', function (e) {
+        //初始化panel，panel是iscroll
+        $('.panel').css({
+            'height': window.innerHeight,
+            'padding-top': 0,
+            'padding-bottom': 0
+        }).iScroll()
+            .panel({
+            contentWrap: $('.cont'),
+            scrollMode: 'fix',
+            display: 'overlay',
+            swipeClose: false
+        }).on('open', function () {
+            $('.panel').iScroll('refresh');
+        })
+        $.ui.button({
+            label: 'open',
+            click: function() {
                 $('.panel').panel('toggle');
-            });
-
-            function resetHeight() {
-                $('.panel').css('height', window.innerHeight).iScroll('refresh');
-            }
-            $(document).on('scrollStop', resetHeight);
-
+            },
+            container: $('.ui-toolbar-right').eq(0)
         });
 
-
+        function resetHeight() {
+            $('.panel').css('height', window.innerHeight).iScroll('refresh');
+        }
+        $(window).on('scrollStop ortchange', resetHeight);
     }(Zepto));
 </script>
-
-<!--demo公用头部展示所用js，可以不用加载 begin-->
-<script id="bootstrap" src="../../example.js" type="text/javascript"
-        data-page="panel组件|panel.html, panel多种打开模式|panel_position.html, panel页面滚动关闭|panel_disappear.html, panel是iscroll|panel_iscroll.html"></script>
-<!--demo公用头部展示所用js end-->
-
 </body>
 </html>

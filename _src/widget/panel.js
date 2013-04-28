@@ -16,7 +16,6 @@
      * @desc **Options**
      * - ''contentWrap'' {Dom/Zepto/selector}: (可选，默认：true)主体内容dom
      * - ''scrollMode'' {String}: (可选，默认：follow)'follow |'hide' | 'fix'   Panel滑动方式，follow表示跟随页面滑动，hide表示页面滑动时panel消失, fix表示panel固定在页面中
-     * - ''animate'' {Boolean}: (可选，默认：true)Panel出现时是否有动画
      * - ''display'' {String}: (可选，默认：push)'overlay' | 'reveal' | 'push' Panel出现模式，overlay表示浮层reveal表示在content下边展示，push表示panel将content推出
      * - ''position'' {String}: (可选)left' | 'right' 在右边或左边
      * - ''dismissible'' {Boolean}: (render模式下必填)是否在内容区域点击后，panel消失
@@ -40,7 +39,6 @@
         _data: {
             contentWrap: '',       //若不传，则默认为panel的next节点
             scrollMode: 'follow',   //'follow |'hide' | 'fix'   Panel滑动方式，follow表示跟随页面滑动，hide表示页面滑动时panel消失, fix表示panel固定在页面中
-            animate: true,
             display: 'push',     //'overlay' | 'reveal' | 'push' Panel出现模式，overlay表示浮层reveal表示在content下边展示，push表示panel将content推出
             position: 'right',    //'left' | 'right' 在右边或左边
             dismissible: true,
@@ -64,21 +62,13 @@
         },
         _init: function () {
             var me = this,
-                data = me._data,
-                scrollMode = data.scrollMode,
-                $el = me.root();
+                data = me._data;
 
             me.displayFn = me._setDisplay();
-            me._firstClose = false;
-            me.isOpen = true, me.close();   //panel状态初始化
-            data.animate && me.$contentWrap.addClass('ui-panel-animate');
+            me.$contentWrap.addClass('ui-panel-animate');
+            me.root().on(transitionEnd, $.proxy(me._eventHandler, me)).hide();  //初始状态隐藏panel
             data.dismissible && me.$panelMask.hide().on('click', $.proxy(me._eventHandler, me));    //绑定mask上的关闭事件
-            if (scrollMode === 'hide') {
-                $(document).on('scrollStop', $.proxy(me._eventHandler, me));
-            } else if (scrollMode === 'fix'){
-                $el.css('position', 'fixed');
-            }
-            $el.on(transitionEnd, $.proxy(me._eventHandler, me));
+            data.scrollMode !== 'follow' && $(document).on('scrollStop', $.proxy(me._eventHandler, me));
         },
         /**
          * 生成display模式函数
@@ -110,7 +100,9 @@
          * 初始化panel位置，每次打开之前由于位置可能不同，所以均需重置
          * */
         _initPanelPos: function (dis, pos) {
-            return this.displayFn[dis](0, pos, true);
+            this.displayFn[dis](0, pos, true);
+            this.root().get(0).clientLeft;    //触发页面reflow，使得ui-panel-animate样式不生效
+            return this;
         },
         /**
          * 将位置（左或右）转化为数值
@@ -153,15 +145,13 @@
                 _dis = dis || data.display,
                 _pos = pos || data.position;
 
-            me._firstClose && me.trigger(beforeEvent, [dis, pos]);
-            !me._firstClose &&  (me._firstClose = true);     //是否第一次执行close
+            me.trigger(beforeEvent, [dis, pos]);
             if (beforeEvent.defaultPrevented) return me;
             if (changed) {
                 me._dealState(isOpen, _dis, _pos);    //关闭或显示时，重置状态
                 me.displayFn[_dis](me.isOpen = Number(isOpen), _pos);   //根据模式和打开方向，操作panel
                 data.swipeClose && me.root()[_eventBinder]($.camelCase('swipe-' + _pos), _eventHandler);     //滑动panel关闭
                 data.display = _dis, data.position = _pos;
-                !data.animate && me.trigger(eventName, [dis, pos]);
             }
             return me;
         },
@@ -174,27 +164,23 @@
                 $panel = me.root(),
                 $contentWrap = me.$contentWrap,
                 addCls = 'ui-panel-' + dis + ' ui-panel-' + pos,
-                removeCls = 'ui-panel-' + data.display + ' ui-panel-' + data.position + (data.animate ? ' ui-panel-animate' : '');
+                removeCls = 'ui-panel-' + data.display + ' ui-panel-' + data.position + ' ui-panel-animate';
 
             if (isOpen) {
-                $panel.removeClass(removeCls).addClass(addCls);
-                me._initPanelPos(dis, pos), $panel.get(0).clientLeft;   //触发页面reflow，使得ui-panel-animate样式不生效
+                $panel.removeClass(removeCls).addClass(addCls).show();
+                data.scrollMode === 'fix' && $panel.css('top', $(window).scrollTop());    //fix模式下
+                me._initPanelPos(dis, pos);      //panel及contentWrap位置初始化
                 if (dis === 'reveal') {
-                    me.contPosition = $contentWrap.css('position');
-                    $contentWrap.addClass('ui-panel-contentWrap');
-                    data.animate && $contentWrap.on(transitionEnd, $.proxy(me._eventHandler, me));    //reveal模式下不
+                    $contentWrap.addClass('ui-panel-contentWrap').on(transitionEnd, $.proxy(me._eventHandler, me));    //reveal模式下panel不触发transitionEnd;
                 } else {
-                    if (data.animate) {
-                        $contentWrap.off(transitionEnd, $.proxy(me._eventHandler, me));
-                        $panel.addClass('ui-panel-animate');
-                    }
+                    $contentWrap.removeClass('ui-panel-contentWrap').off(transitionEnd, $.proxy(me._eventHandler, me));
+                    $panel.addClass('ui-panel-animate');
                 }
                 me.$panelMask && me.$panelMask.css({     //panel mask状态初始化
                     'left': 'auto',
-                    'right': 'auto'
+                    'right': 'auto',
+                    'height': document.body.clientHeight
                 });
-            } else {
-                dis === 'reveal' && $contentWrap.css('position', me.contPosition).removeClass('ui-panel-contentWrap');   //打开状态时加上position relative，关闭状态时还原position
             }
             return me;
         },
@@ -202,14 +188,17 @@
         _eventHandler: function (e) {
             var me = this,
                 data = me._data,
+                scrollMode = data.scrollMode,
                 eventName = me.state() ? 'open' : 'close';
 
             switch (e.type) {
                 case 'click':
                 case 'swipeLeft':
                 case 'swipeRight':
-                case 'scrollStop':
                     me.close();
+                    break;
+                case 'scrollStop':
+                    scrollMode === 'fix' ? me.root().css('top', $(window).scrollTop()) : me.close();
                     break;
                 case transitionEnd:
                     me.trigger(eventName, [data.display, data.position]);
