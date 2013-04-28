@@ -67,7 +67,10 @@
             me.displayFn = me._setDisplay();
             me.$contentWrap.addClass('ui-panel-animate');
             me.root().on(transitionEnd, $.proxy(me._eventHandler, me)).hide();  //初始状态隐藏panel
-            data.dismissible && me.$panelMask.hide().on('click', $.proxy(me._eventHandler, me));    //绑定mask上的关闭事件
+            if (data.dismissible) {
+                me.$panelMask.hide().on('click', $.proxy(me._eventHandler, me));    //绑定mask上的关闭事件
+                $(window).on('ortchange', $.proxy(me._eventHandler, me));
+            }
             data.scrollMode !== 'follow' && $(document).on('scrollStop', $.proxy(me._eventHandler, me));
         },
         /**
@@ -202,6 +205,9 @@
                     break;
                 case transitionEnd:
                     me.trigger(eventName, [data.display, data.position]);
+                    break;
+                case 'ortchange':   //增加转屏时对mask的处理
+                    me.$panelMask.css('height', document.body.clientHeight);
                     break;
             }
         },
