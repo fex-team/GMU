@@ -164,18 +164,16 @@
                 $panel = me.root(),
                 $contentWrap = me.$contentWrap,
                 addCls = 'ui-panel-' + dis + ' ui-panel-' + pos,
-                removeCls = 'ui-panel-' + data.display + ' ui-panel-' + data.position + 'ui-panel-animate';
+                removeCls = 'ui-panel-' + data.display + ' ui-panel-' + data.position + ' ui-panel-animate';
 
             if (isOpen) {
                 $panel.removeClass(removeCls).addClass(addCls).show();
                 data.scrollMode === 'fix' && $panel.css('top', $(window).scrollTop());    //fix模式下
                 me._initPanelPos(dis, pos);      //panel及contentWrap位置初始化
                 if (dis === 'reveal') {
-                    me.contPosition = $contentWrap.css('position');
-                    $contentWrap.addClass('ui-panel-contentWrap');
-                    $contentWrap.on(transitionEnd, $.proxy(me._eventHandler, me));    //reveal模式下panel不触发transitionEnd
+                    $contentWrap.addClass('ui-panel-contentWrap').on(transitionEnd, $.proxy(me._eventHandler, me));    //reveal模式下panel不触发transitionEnd;
                 } else {
-                    $contentWrap.off(transitionEnd, $.proxy(me._eventHandler, me));
+                    $contentWrap.removeClass('ui-panel-contentWrap').off(transitionEnd, $.proxy(me._eventHandler, me));
                     $panel.addClass('ui-panel-animate');
                 }
                 me.$panelMask && me.$panelMask.css({     //panel mask状态初始化
@@ -183,8 +181,6 @@
                     'right': 'auto',
                     'height': document.body.clientHeight
                 });
-            } else {
-                dis === 'reveal' && $contentWrap.css('position', me.contPosition).removeClass('ui-panel-contentWrap');   //打开状态时加上position relative，关闭状态时还原position
             }
             return me;
         },

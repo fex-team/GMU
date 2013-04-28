@@ -5,7 +5,7 @@
 
 .ui-panel-contentWrap{
     position: relative;
-    z-index: 100;
+    z-index: 1;
 }
 
 .ui-panel.ui-panel-right{
@@ -23,7 +23,7 @@
     z-index: 1001;
 }
 .ui-panel.ui-panel-reveal{
-    z-index: -1;
+    z-index: 0;
 }
 
 .ui-panel-animate{
