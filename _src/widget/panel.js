@@ -1,7 +1,6 @@
 /**
  * @file panel组件
- * @ignore
- * @desc <qrcode align="right" title="Live Demo">../gmu/_examples/widget/panel/panel.html</qrcode>
+ * @desc <qrcode align="right" title="Live Demo">../gmu/_examples/widget/panel/panel_position.html</qrcode>
  * 面板组件
  * @name Panel
  * @import core/touch.js, core/zepto.ui.js
@@ -69,6 +68,7 @@
             me.root().on(transitionEnd, $.proxy(me._eventHandler, me)).hide();  //初始状态隐藏panel
             data.dismissible && me.$panelMask.hide().on('click', $.proxy(me._eventHandler, me));    //绑定mask上的关闭事件
             data.scrollMode !== 'follow' && $(document).on('scrollStop', $.proxy(me._eventHandler, me));
+            $(window).on('ortchange', $.proxy(me._eventHandler, me));
         },
         /**
          * 生成display模式函数
@@ -203,6 +203,10 @@
                 case transitionEnd:
                     me.trigger(eventName, [data.display, data.position]);
                     break;
+                case 'ortchange':   //增加转屏时对mask的处理
+                    me.$panelMask && me.$panelMask.css('height', document.body.clientHeight);
+                    scrollMode === 'fix' && me.root().css('top', $(window).scrollTop());     //转并重设top值
+                    break;
             }
         },
         /**
@@ -255,6 +259,7 @@
             this.maskTimer && clearTimeout(this.maskTimer);
             this.$contentWrap.removeClass('ui-panel-animate');
             $(document).off('scrollStop', this._eventHandler);
+            $(window).off('ortchange', this._eventHandler);
             return this.$super('destroy');
         }
         /**
