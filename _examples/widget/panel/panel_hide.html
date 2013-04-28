@@ -105,11 +105,11 @@
             scrollMode: 'hide'
         });
 
-        $('#scroll-disappear').on('tap', function (e) {
+        $('#scroll-disappear').on('click', function (e) {
             $('.panel').panel('toggle');
         });
 
-        $('#stop-close').on('tap', function (e) {
+        $('#stop-close').on('click', function (e) {
             $('.panel').on('beforeopen', function (event) {
                 event.preventDefault();
             })
