@@ -55,11 +55,11 @@ function a() {
 //错误
 function a() {
 
-	var v1 = 1;
-	var v2 = 2;
-	var v3 = 3;
+    var v1 = 1;
+    var v2 = 2;
+    var v3 = 3;
 
-	statement;
+    statement;
 }
 
 //错误
@@ -248,11 +248,11 @@ switch( condition ) {
 ```javascript
 //正确
 var myString = 'A rather long string of English text, an error message ' +
-			 'actually that just keeps going and going -- an error ' +
-			 'message to make the Energizer bunny blush (right through ' +
-			 'those Schwarzenegger shades)! Where was I? Oh yes, ' +
-			 'you\'ve got an error and all the extraneous whitespace is ' +
-			 'just gravy.  Have a nice day.';
+             'actually that just keeps going and going -- an error ' +
+             'message to make the Energizer bunny blush (right through ' +
+             'those Schwarzenegger shades)! Where was I? Oh yes, ' +
+             'you\'ve got an error and all the extraneous whitespace is ' +
+             'just gravy.  Have a nice day.';
 
 //错误
 var myString = 'A rather long string of English text, an error message \
@@ -362,26 +362,26 @@ var arr = [1,2,3,4];
 2-1.  构造器采用驼峰式命名，并且首字母大写。如：
 ```javascript
 function DialogManager ( config ) {
-	statement;
+    statement;
 }
 ```
 
 2-2. 枚举类型变量采用驼峰式命名，并且首字母大写。属性名单词全部大写，单词间以下划线分隔。如：
 ```javascript
 var QueueError = {
-	QUEUE_LIMIT_EXCEEDED: -100,
-	FILE_EXCEEDS_SIZE_LIMIT: -110,
-	ZERO_BYTE_FILE: -120,
-	INVALID_FILETYPE: -130
+    QUEUE_LIMIT_EXCEEDED: -100,
+    FILE_EXCEEDS_SIZE_LIMIT: -110,
+    ZERO_BYTE_FILE: -120,
+    INVALID_FILETYPE: -130
 };
 ```
 
 2-3. 对象的属性或方法名采用小驼峰式(lower camel-case)，如"init", "bindEvent", "updatePosition"：
 ```javascript
 Dialog.prototype = {
-	init: function () {},
-	bindEvent: function () {},
-	updatePosition: function () {}
+    init: function () {},
+    bindEvent: function () {},
+    updatePosition: function () {}
 };
 ```
 
@@ -405,7 +405,7 @@ function Dialog( config ) {
 2-6. 方法的返回值如果是布尔值，则必须以is、can、has、should等为前缀
 ```javascript
 function isGroupId( id ) {
-	return (id + '').indexOf( 'G' ) > 0;
+    return (id + '').indexOf( 'G' ) > 0;
 }
 ```
 
