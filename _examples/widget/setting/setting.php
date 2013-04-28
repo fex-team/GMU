@@ -52,7 +52,7 @@ $arr = array(
     ),
     'panel' => array(
         "name" => 'Panel',
-        "description" => '面板切换组件',
+        "description" => '面板组件',
         "group" => 'Components',
         "icon" => 'panel.png',
         "href" => 'panel/panel_position.html',
