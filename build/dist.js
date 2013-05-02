@@ -174,7 +174,8 @@
                 }
 
                 // 查找themes
-                glob.sync(cssPath.replace(/\.css$/, '\\.*\\.css'), {cwd: cssPrefix})
+                glob.sync(cssPath.replace(/\.css$/, '\\.*\\.css'),
+                        {cwd: cssPrefix})
                     .forEach(function (item) {
                         var m = item.match(/\.([^\.]*)\.css$/i);
                         m && (css[m[1]] = item );
@@ -199,7 +200,7 @@
 
                                 .forEach(function (item) {
                                     var m = item.match(/\.([^\.]*)\.css$/i);
-                                    m && (css[m[1]] = item );
+                                    m && (ret[m[1]] = item );
                                 });
                             return ret;
                         });
@@ -266,7 +267,6 @@
                     return;
                 }
 
-                //jsFiles.push( item.path.replace(/([^\/]+)\/([^\/]+)\.js/, '$1:$2'));
                 jsFiles.push( item.path );
 
                 js += '/*!' + item.path + '*/\n' +
@@ -353,17 +353,18 @@
         models.forEach(cssRender);
 
         banner = opt.banner
-            .replace(/@version/g, pkg.version);
+            .replace(/@version/ig, pkg.version);
 
         dest = opt.dest;
         file.write(dest, 
-                banner.replace(/@files/g, jsFiles.join(', ')) + '\n' + js);
+                banner.replace(/@files/ig, jsFiles.join(', ')) + '\n' + js);
 
         console.log('生成 %s 成功， 大小为: %s ', dest, file.caculateSize(dest));
 
         minDest = dest.replace(/\.js$/, '.min.js');
         file.write(minDest, 
-                banner.replace(/@files/g, jsFiles.join(', ')) + '\n' + file.minify(dest));
+                banner.replace(/@files/g, jsFiles.join(', ')) + 
+                    '\n' + file.minify(dest));
         console.log('生成 %s 成功， 大小为: %s ', minDest, file.caculateSize(minDest));
 
         // 复制图片
@@ -412,13 +413,15 @@
 
         //如果node build dist后面还带其他参数，则只收集指定的文件。
         for( ; i < len-1; i++ ) {
-            files.push('widget/' + this.args[i].replace(/(\.|\$\-)/, '\\$1') + '*.js');
+            files.push('widget/' + this.args[i].replace(/(\.|\$\-)/, '\\$1') + 
+                '*.js');
         }
 
         return q
             .fcall(concatZepto)
             .then(minifyZepto)
-            .then(helper.curry(collectComponents, exclude, files.length ? files : null))
+            .then(helper.curry(collectComponents, exclude, 
+                files.length ? files : null))
             .then(buildComponents)
             .then(helper.curry(concatComponents, theme));
     };
