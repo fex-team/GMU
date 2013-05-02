@@ -18,5 +18,11 @@
 
     "fis": {
         "dest": "dist/fis/gmu_@version"
+    },
+
+    "jshint": {
+        "src": [
+            "build/*.js"
+        ]
     }
 }
