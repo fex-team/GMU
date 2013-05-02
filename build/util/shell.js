@@ -12,6 +12,8 @@
             parts = cmd.split(/\s+/g),
             p = spawn(parts.shift(), parts);
 
+        //todo handle this after thread to be closes.
+
         p.stdout.on('data', function (data) {
             deferred.resolve(data.toString().trim());
         });
