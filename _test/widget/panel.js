@@ -289,9 +289,9 @@ test("事件: beforeopen, open, beforeclose, close", function(){
             setTimeout(function(){
             	$('#panel').panel('destroy');  
             	start();
-            }, 500);  
-        }, 500);
-    }, 500);
+            }, 600);  
+        }, 600);
+    }, 800);
 });
 
 test("基本操作：点击页面非panel位置，panel关闭（dismissible）", function(){
@@ -333,20 +333,8 @@ test("基本操作：panel上面左/右滑动可正常关闭panel（swipeClose�
     setTimeout(function () {
         equal($('#panel').panel('state'), true, 'panel已经打开');
         equal($('#panel').css($.fx.cssPrefix + 'transform'), 'translate3d(0px, 0px, 0px)', "panel已经打开");
-        
-        ta.touchstart($('#panel')[0], {
-            touches:[{
-                pageX: 100,
-                pageY: 0
-            }]
-        });
-        ta.touchmove($('#panel')[0], {
-            touches:[{
-                pageX: 50,
-                pageY: 0
-            }]
-        });
-        ta.touchend($('#panel')[0]);
+
+        ta.swipeLeft($('#panel')[0]);
 
         setTimeout(function () {
             equal($('#panel').panel('state'), false, '向左滑动后panel关闭');
@@ -360,7 +348,7 @@ test("基本操作：panel上面左/右滑动可正常关闭panel（swipeClose�
 test("基本操作：页面滚动过程的，panel的三种模式正常（scrollMode）", function(){
     stop();
     $("<div id='page2' ></div>").appendTo('body');
-    $('<div id="contWrap2" style="height:1000px; width: 100%;">这是panel相对的内容</div>').appendTo('#page2');
+    $('<div id="contWrap2" style="height:1500px; width: 100%;">这是panel相对的内容</div>').appendTo('#page2');
     $('<div id="panel2"></div>').append(
         '<ul>' +
             '<li>目录目录目录</li>' +
@@ -373,7 +361,7 @@ test("基本操作：页面滚动过程的，panel的三种模式正常（scroll
     ).appendTo('#page2');
 
     $("<div id='page3' ></div>").appendTo('body');
-    $('<div id="contWrap3" style="height:1000px; width: 100%;">这是panel相对的内容</div>').appendTo('#page3');
+    $('<div id="contWrap3" style="height:1500px; width: 100%;">这是panel相对的内容</div>').appendTo('#page3');
     $('<div id="panel3"></div>').append(
         '<ul>' +
             '<li>目录目录目录</li>' +
@@ -420,7 +408,7 @@ test("基本操作：页面滚动过程的，panel的三种模式正常（scroll
 
                     setTimeout(function () {
                         window.scrollTo(0, 300);
-//                        ta.scrollStop(document);
+                        ta.scrollStop(document);
 
                         setTimeout(function () {
                             equal($('#panel3').panel('state'), true, 'fix模式：滚动过程中panel未隐藏');
@@ -432,10 +420,59 @@ test("基本操作：页面滚动过程的，panel的三种模式正常（scroll
                             start();
                         }, 1000);
                     }, 400);
-                }, 100);
+                }, 200);
             }, 400);
-        }, 100);
+        }, 200);
     }, 400);
+});
+
+test("window resize", function(){
+    expect(6);
+    stop();
+    $("#page").remove();
+    ua.frameExt(function(w, f){
+    	var me = this;
+    	ua.loadcss(["reset.css", "widget/panel/panel.css", "widget/panel/panel.default.css"], function(){
+    		$(f).css("background-color","red")
+			w.$('body').append("<div id='page' ></div>");
+			w.$('#page').append('<div id="panel""></div>');
+			w.$('#panel').append(
+			'<ul>' +
+			    '<li>目录目录目录</li>' +
+			    '<li>目录目录目录</li>' +
+			    '<li>目录目录目录</li>' +
+			    '<li>目录目录目录</li>' +
+			    '<li>目录目录目录</li>' +
+			    '<li>目录目录目录</li>' +
+			    '</ul>'
+			);
+			w.$('#page').append('<div id="contWrap" style="height:1000px; width: 100%;">这是panel相对的内容</div>');
+			w.$('body').css('overflow-x', 'hidden');
+	
+			w.$('#panel').panel().panel('open');
+			w.$('#panel').panel('data', 'scrollMode', 'fix');
+			
+	        setTimeout(function(){
+	        	var width1 = w.$('#panel').width();
+				equals(w.$(".ui-panel-dismiss").width(), 300 - width1, "The mask width is right");
+				equals(w.$(".ui-panel-dismiss").height(), 150, "The mask height is right");
+				equals(w.$('#panel').offset().top, 0, "The panel top is right");
+	
+				w.scrollTo(0, 100);
+	        	$(f).css("height", 300).css("width", 600);
+	        	w.$("body").css("height", 300).css("width", 600);
+	             
+	            setTimeout(function(){
+	            	equals(w.$(".ui-panel-dismiss").width(), 600 - width1, "The mask width is right");
+					equals(w.$(".ui-panel-dismiss").height(), 300, "The mask height is right");
+					approximateEqual(w.$('#panel').offset().top, 100, "The panel top is right");
+	            	
+	                w.$("#panel").panel('destroy');
+	                setTimeout(me.finish, 300);
+	            }, 800);
+	        }, 500);
+    	}, w);
+    })
 });
 
 test("destroy", function(){

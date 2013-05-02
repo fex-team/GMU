@@ -134,7 +134,7 @@ test("position", function(){
 	ok(ua.isShown(gotop._el[0]), "The gotop shows");
 	equals(gotop._el.offset().height, tablet?60:50, "The gotop height is right");
 	equals(gotop._el.offset().width, tablet ? 60 : 50, "The gotop width is right");
-	equals(gotop._el.offset().left, $("html").offset().width - (tablet ? 60:50) - 30, "The gotop left is right");
+	approximateEqual(gotop._el.offset().left, $("html").offset().width - (tablet ? 60:50) - 30, "The gotop left is right");
 	equals(gotop._el.offset().top, document.documentElement.clientHeight -(tablet ? 60 :50) - 20, "The gotop top is right");
 	gotop.destroy();
     start();
@@ -214,7 +214,7 @@ test("show() & hide()", function(){
 	ok(ua.isShown(gotop._el[0]), "The gotop shows");
 	equals(gotop._el.offset().height, (tablet ? 60 :50), "The gotop height is right");
 	equals(gotop._el.offset().width, (tablet ? 60 :50), "The gotop width is right");
-	equals(gotop._el.offset().left, $("html").offset().width - (tablet ? 60 :50) - 10, "The gotop left is right");
+	approximateEqual(gotop._el.offset().left, $("html").offset().width - (tablet ? 60 :50) - 10, "The gotop left is right");
 	equals(gotop._el.offset().top, document.documentElement.clientHeight -	(tablet ? 60 :50) - 10, "The gotop top is right");
 	equals(gotop._el.find('div').css("background-position"), "50% 50%", "The position is right");
 	equals(gotop._el.find('div').css("-webkit-background-size"), tablet?"22px 18px":"18px 15px", "The position is right");
@@ -303,7 +303,6 @@ test("fix && ortchange 转屏", function(){
     	var me = this;
         ua.loadcss(["reset.css", "widget/gotop/gotop.css"], function(){
         	w.$("body").css("height", 150);
-        	$(f).css({width:300, height:150});
         	for (i = 0; i < 200; i++) {
     	        w.$("body").append("<li>" + i + "</li>");
     	    }
@@ -316,9 +315,8 @@ test("fix && ortchange 转屏", function(){
                 equals(gotop._el.offset().left, 300 - 10 - (tablet ? 60 : 50), "The left is right");
                 equals(gotop._el.offset().top, w.pageYOffset + 150 - 10 -
 		                (tablet ? 60 : 50), "The top is right");
-                $(f).css({width:150, height:300});
-                w.$("body").css("height", 300);
-                ta.trigger("ortchange", w);
+                $(f).css("width", 150).css("height", 300);
+                w.$("body").css("width", 150).css("height", 300);
                 setTimeout(function(){
                     ok(!ua.isShown(gotop._el[0]), "The gotop hides");
                     w.scrollTo(0, 400);
