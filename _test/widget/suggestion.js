@@ -343,7 +343,6 @@ test('posAdapt=true(window resize)', function() {
                 setTimeout(function() {
                     equals(sugg._data.wrapper.offset().top, w.$(input1).offset().top + w.$(input1).offset().height + 10, "在input之下显示正确");
                     $(f).css("height", 400);
-                    $.support.orientation && $(window).trigger("ortchange");
                     setTimeout(function() {
                         equals(sugg._data.wrapper.offset().top, w.$(input1).offset().top - sugg._data.wrapper.offset().height - 10, "在input之上显示正确");
                         sugg.destroy();
@@ -386,7 +385,6 @@ test('posAdapt=false(window resize)', function() {
                 setTimeout(function() {
                     equals(sugg._data.wrapper.offset().top, w.$(input1).offset().top + w.$(input1).offset().height + 10, "在input之下显示正确");
                     $(f).css("height", 400);
-                    $.support.orientation && $(window).trigger("ortchange");
                     setTimeout(function() {
                         equals(sugg._data.wrapper.offset().top, w.$(input1).offset().top + w.$(input1).offset().height + 10, "在input之下显示正确");
                         sugg.destroy();
@@ -429,7 +427,6 @@ test('posAdapt=false(window resize)', function() {
                 setTimeout(function() {
                     equals(sugg._data.wrapper.offset().top, w.$(input1).offset().top + w.$(input1).offset().height + 10, "在input之下显示正确");
                     $(f).css("height", 400);
-                    $.support.orientation && $(window).trigger("ortchange");
                     setTimeout(function() {
                         equals(sugg._data.wrapper.offset().top, w.$(input1).offset().top + w.$(input1).offset().height + 10, "在input之下显示正确");
                         sugg.destroy();

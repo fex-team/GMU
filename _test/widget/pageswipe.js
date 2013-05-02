@@ -21,9 +21,9 @@ test("setup, 默认参数", function() {
         ok(ua.isShown(pageswipe._el[0]), "The pageswipe shows");
         equals(pageswipe._el.find(".ui-pageswipe-wheel .ui-pageswipe-content").length, 1 , "The content is right");
         equals(pageswipe._el.find(".ui-pageswipe-wheel .ui-pageswipe-index").length, 1 , "The index is right");
-        equals(pageswipe._el.find(".ui-pageswipe-content").width(), window.innerWidth, "The content is right");
+        equals(pageswipe._el.find(".ui-pageswipe-content").width(), document.documentElement.clientWidth, "The content is right");
         equals(pageswipe._el.find(".ui-pageswipe-content").height(), 400, "The content is right");
-        equals(pageswipe._el.find(".ui-pageswipe-index").width(), window.innerWidth - 55, "The content is right");
+        equals(pageswipe._el.find(".ui-pageswipe-index").width(), document.documentElement.clientWidth - 55, "The content is right");
         equals(pageswipe._el.find(".ui-pageswipe-index").height(), 400, "The content is right");
         pageswipe.destroy();
         start();
@@ -41,9 +41,9 @@ test("setup, 自定义参数", function() {
     ok(ua.isShown(pageswipe._el[0]), "The pageswipe shows");
     equals(pageswipe._el.find(".ui-pageswipe-wheel .ui-pageswipe-content").length, 1 , "The content is right");
     equals(pageswipe._el.find(".ui-pageswipe-wheel .ui-pageswipe-index").length, 1 , "The index is right");
-    equals(pageswipe._el.find(".ui-pageswipe-content").width(), window.innerWidth, "The content is right");
+    equals(pageswipe._el.find(".ui-pageswipe-content").width(), document.documentElement.clientWidth, "The content is right");
     equals(pageswipe._el.find(".ui-pageswipe-content").height(), 400, "The content is right");
-    equals(pageswipe._el.find(".ui-pageswipe-index").width(), window.innerWidth - 40, "The content is right");
+    equals(pageswipe._el.find(".ui-pageswipe-index").width(), document.documentElement.clientWidth - 40, "The content is right");
     equals(pageswipe._el.find(".ui-pageswipe-index").height(), 400, "The content is right");
     pageswipe.destroy();
 });
@@ -57,20 +57,20 @@ test("点击切换按钮", function() {
     }).pageswipe('this');
     ua.click($('.switch')[0]);
     setTimeout(function(){
-        equals($('.ui-pageswipe-content').offset().left, -(window.innerWidth - 55),"The picture slide");
+        equals($('.ui-pageswipe-content').offset().left, -(document.documentElement.clientWidth - 55),"The picture slide");
         equals($('.ui-pageswipe-index').offset().left, 55,"The picture slide");
         ua.click($('.switch')[0]);
         setTimeout(function(){
             equals($('.ui-pageswipe-content').offset().left, 0,"The picture slide");
-            equals($('.ui-pageswipe-index').offset().left, window.innerWidth,"The picture slide");
+            equals($('.ui-pageswipe-index').offset().left, document.documentElement.clientWidth,"The picture slide");
             ua.click($('.switch')[0]);
             setTimeout(function(){
-                equals($('.ui-pageswipe-content').offset().left, -(window.innerWidth - 55),"The picture slide");
+                equals($('.ui-pageswipe-content').offset().left, -(document.documentElement.clientWidth - 55),"The picture slide");
                 equals($('.ui-pageswipe-index').offset().left, 55,"The picture slide");
                 ta.touchstart($('.ui-pageswipe-content')[0]);
                 setTimeout(function(){
                     equals($('.ui-pageswipe-content').offset().left, 0,"The picture slide");
-                    equals($('.ui-pageswipe-index').offset().left, window.innerWidth,"The picture slide");
+                    equals($('.ui-pageswipe-index').offset().left, document.documentElement.clientWidth,"The picture slide");
                     pageswipe.destroy();
                     start();
                 }, 550);
@@ -95,7 +95,7 @@ test("full setup", function() {
     }).pageswipe('this');
     ua.click($('.switch')[0]);
     setTimeout(function(){
-        equals($('.ui-pageswipe-content').offset().left, -(window.innerWidth - 55),"The picture slide");
+        equals($('.ui-pageswipe-content').offset().left, -(document.documentElement.clientWidth - 55),"The picture slide");
         equals($('.ui-pageswipe-index').offset().left, 55,"The picture slide");
         pageswipe.destroy();
         start();
@@ -111,20 +111,20 @@ test("show(), hide(), toggle()", function() {
     }).pageswipe('this');
     pageswipe.show();
     setTimeout(function () {
-    	approximateEqual($('.ui-pageswipe-content').offset().left, -(window.innerWidth - 40),1,"The picture slide");
+    	approximateEqual($('.ui-pageswipe-content').offset().left, -(document.documentElement.clientWidth - 40),1,"The picture slide");
 	    approximateEqual($('.ui-pageswipe-index').offset().left, 40,1,"The picture slide");
         pageswipe.toggle();
         setTimeout(function () {
         	equals($('.ui-pageswipe-content').offset().left, 0,"The picture slide");
-            equals($('.ui-pageswipe-index').offset().left, window.innerWidth,"The picture slide");
+            equals($('.ui-pageswipe-index').offset().left, document.documentElement.clientWidth,"The picture slide");
             pageswipe.toggle();
             setTimeout(function () {
-            	equals($('.ui-pageswipe-content').offset().left, -(window.innerWidth - 40),"The picture slide");
+            	equals($('.ui-pageswipe-content').offset().left, -(document.documentElement.clientWidth - 40),"The picture slide");
                 equals($('.ui-pageswipe-index').offset().left, 40,"The picture slide");
                 pageswipe.hide();
                 setTimeout(function () {
                 	equals($('.ui-pageswipe-content').offset().left, 0,"The picture slide");
-                    equals($('.ui-pageswipe-index').offset().left, window.innerWidth,"The picture slide");
+                    equals($('.ui-pageswipe-index').offset().left, document.documentElement.clientWidth,"The picture slide");
                     pageswipe.destroy();
                     start();
 	            }, 500);
@@ -150,8 +150,7 @@ test("屏幕旋转", function() {
 		        approximateEqual(w.$('.ui-pageswipe-index').offset().left, 55,1,"The picture slide");
 	
 	            $(f).css("width", 150).css("height", 300);
-				var e = $.support.orientation ? 'orientationchange' : 'resize';
-				ta.trigger(e, w);
+	            w.$("body").css("width", 150).css("height", 300);
 				
 				setTimeout(function () {
 					pageswipe.show();
