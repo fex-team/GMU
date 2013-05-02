@@ -105,11 +105,11 @@
             scrollMode: 'hide'
         });
 
-        $('#scroll-disappear').on('tap', function (e) {
+        $('#scroll-disappear').on('click', function (e) {
             $('.panel').panel('toggle');
         });
 
-        $('#stop-close').on('tap', function (e) {
+        $('#stop-close').on('click', function (e) {
             $('.panel').on('beforeopen', function (event) {
                 event.preventDefault();
             })
@@ -120,7 +120,7 @@
 
 <!--demo公用头部展示所用js，可以不用加载 begin-->
 <script id="bootstrap" src="../../example.js" type="text/javascript"
-        data-page="panel组件|panel.html, panel多种打开模式|panel_position.html, panel页面滚动关闭|panel_disappear.html, panel是iscroll|panel_iscroll.html"></script>
+        data-page="panel组件|panel.html, panel多种打开模式|panel_position.html, panel页面滚动关闭|panel_hide.html, panel是iscroll|panel_iscroll.html"></script>
 <!--demo公用头部展示所用js end-->
 
 </body>
