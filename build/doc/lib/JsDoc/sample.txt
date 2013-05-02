@@ -1,0 +1,555 @@
+#语法说明#
+
+代码注释中可以使用一下标签来丰富文档，一下演示了如何使用标签来输出标题，段落，换行，列表，表格等内容。
+
+##标题##
+只需要在一段文本前加#号即可, 接个#号就是标题几
+<code type="text">
+## 标题2
+
+### 标题3
+
+##### 标题5
+</code>
+等价于
+<code type="html">
+<h2>标题2</h2>
+
+<h3>标题3</h3>
+
+<h5>标题5</h5>
+</code>
+
+文档推荐从h2开始, 避免使用h1, 推荐使用严格型方式来输出标题
+<code type="text">
+## 标题2 ##
+
+### 标题3 ###
+
+##### 标题5 #####
+</code>
+
+---
+##段落##
+一个空行即为一个段落
+<code type="text">
+第一个段落
+
+第二个段落
+</code>
+
+等价于
+
+<code type="html">
+<p>第一个段落</p>
+
+<p>第二个段落</p>
+</code>
+
+---
+##换行##
+换行将会创建一个<br />
+<code type="text">
+第一行文字
+第二行文字
+</code>
+等价于
+<code type="html">
+<p>第一行文字<br />
+第二行文字</p>
+</code>
+
+---
+##链接##
+''基本语法''
+
+其中Title是可选的
+<code type="text">
+[example](http://url.com/ "Title")
+</code>
+等价于
+<code>
+<a href="http://url.com/" title="Title">example</a>
+</code>
+还可以设置属性
+<code type="text">
+[example](http://url.com/ "Title"###target="_blank" style="width:100%;")
+</code>
+等价于
+<code>
+<a href="http://url.com/" title="Title" target="_blank" style="width:100%;">example</a>
+</code>
+如果需要链接到某个js文件下的某个方法，可以这样写
+<code type="text">
+[on](zepto.js#on)
+</code>
+
+---
+##强调##
+支持 **粗体**, //斜体//, __下划线__ , ''关键字''和--删除--格式文字.
+同时可以结合起来用--**__//''四种结合体''//__**--.
+代码为
+<code type="text">
+支持 **粗体**, //斜体//, __下划线__ , ''关键字''和--删除--格式文字.
+同时可以结合起来用--**__//''四种结合体''//__**--.
+</code>
+
+---
+##引用##
+我觉得我们可以这样做
+
+> 不，我不觉得
+
+>> 嗯，我觉得可以
+
+> 真的？
+
+>> 对！
+
+>>> 好吧，那我们就这么做
+
+代码为
+<code type="text">
+我觉得我们可以这样做
+
+> 不，我不觉得
+
+>> 嗯，我觉得可以
+
+> 真的？
+
+>> 对！
+
+>>> 好吧，那我们就这么做
+</code>
+
+---
+##列表##
+###有序列表###
+1. 有序列表
+2. 有序列表
+代码为
+<code type="text">
+1. 有序列表
+2. 有序列表
+</code>
+
+###无序列表###
+* 无序列表
+* 无序列表
+代码为
+<code type="text">
+* 无序列表
+* 无序列表
+</code>
+也可以是
+<code type="text">
++ 无序列表
++ 无序列表
+</code>
+或者
+<code type="text">
+- 无序列表
+- 无序列表
+</code>
+
+###结合着使用###
+1. 数字内容1
+    数字内容1，第二行
+    * 无序列表
+    * 无序列表
+2. 数字内容2
+    * 无序列表
+    * 无序列表
+    * 子级数字列表
+        1. 数字列表
+        2. 数字列表
+3. 数字内容3
+    * 无序列表
+    * 无序列表
+        无序列表第二行
+
+4. 数字内容4
+
+代码为
+<code type="text">
+1. 数字内容1
+    数字内容1，第二行
+    * 无序列表
+    * 无序列表
+2. 数字内容2
+    * 无序列表
+    * 无序列表
+    * 子级数字列表
+        1. 数字列表
+        2. 数字列表
+3. 数字内容3
+    * 无序列表
+    * 无序列表
+        无序列表第二行
+
+4. 数字内容4
+</code>
+
+---
+##水平线##
+三个以上破折号“－”或“星号”
+<code type="text">
+---
+
+* * *
+</code>
+等价于
+<code type="html">
+<hr />
+
+<hr />
+</code>
+
+---
+##表格##
+
+^ 表格标题1       ^ 表格标题2         ^ 表格标题3           ^
+| 表格内容        | 表格内容          |表格内容             |
+| 表格内容        | 表格内容          |表格内容             |
+| 表格内容        | 表格内容表格内容                       ||
+| 表格内容        | 表格内容          |表格内容             |
+代码为
+<code type="text">
+^ 表格标题1       ^ 表格标题2         ^ 表格标题3           ^
+| 表格内容        | 表格内容          |表格内容             |
+| 表格内容        | 表格内容          |表格内容             |
+| 表格内容        | 表格内容表格内容                       ||
+| 表格内容        | 表格内容          |表格内容             |
+</code>
+
+标题用^包起来，普通的用|包起来
+其他例子
+|              ^ Heading 1            ^ Heading 2          ^
+^ Heading 3    | Row 1 Col 2          | Row 1 Col 3        |
+^ Heading 4    | no colspan this time |                    |
+^ Heading 5    | Row 2 Col 2          | Row 2 Col 3        |
+代码为
+<code type="text">
+|              ^ Heading 1            ^ Heading 2          ^
+^ Heading 3    | Row 1 Col 2          | Row 1 Col 3        |
+^ Heading 4    | no colspan this time |                    |
+^ Heading 5    | Row 2 Col 2          | Row 2 Col 3        |
+</code>
+
+当内容为:::时，表示忽略这个单元格
+
+^ Heading 1      ^ Heading 2                  ^ Heading 3          ^
+| Row 1 Col 1    | this cell spans vertically | Row 1 Col 3        |
+| Row 2 Col 1    | :::                        | Row 2 Col 3        |
+| Row 3 Col 1    | :::                        | Row 2 Col 3        |
+代码为
+<code type="text">
+^ Heading 1      ^ Heading 2                  ^ Heading 3          ^
+| Row 1 Col 1    | this cell spans vertically | Row 1 Col 3        |
+| Row 2 Col 1    | :::                        | Row 2 Col 3        |
+| Row 3 Col 1    | :::                        | Row 2 Col 3        |
+</code>
+
+可以用一下方式设置代码对齐
+
+^           Table with alignment           ^^^
+|         right|    center    |left          |
+|left          |         right|    center    |
+| xxxxxxxxxxxx | xxxxxxxxxxxx | xxxxxxxxxxxx |
+<code type="text">
+^           Table with alignment           ^^^
+|         right|    center    |left          |
+|left          |         right|    center    |
+| xxxxxxxxxxxx | xxxxxxxxxxxx | xxxxxxxxxxxx |
+</code>
+
+---
+##不格式化##
+<code type="text">当使用<nowiki>包起来是时不解析任何内容 比如：</code>
+<nowiki>**__//''四种结合体''//__**
+###三级标题###
+</nowiki>
+
+也可以使用转义如
+<code type="text">
+\*\*23\*\*
+</code>
+\*\*23\*\*
+可以转义的符号有
+1. \*
+2. \\
+3. \+
+4. \-
+5. \[
+6. \]
+7. \_
+8. \.
+9. \-
+9. \^
+10. \'
+11. \/
+12. \#
+
+
+---
+##代码高亮##
+<code type="text">
+用<code></code>包起来即可，可以通过type来设置语言,如
+<code type="text">code</code>
+目前只支持javascript,html,text和css四种
+</code>
+<code type="html">
+<!--setup方式，即html写在页面上，content传入的是css selector时即采取此种方式，但html结构需符合要求-->
+   <div id="box1"class="ui-navigator">
+       <div class="ui-navigator-fix"><a href="javascript:;">fix1</a></div>
+       <div class="ui-navigator-wrap" style="overflow: hidden">
+           <ul class="ui-navigator-list clearfix">
+               <li><a href="#test1">首页</a></li>
+               <li><a href="#test2">电影</a></li>
+               <li class="cur"><a href="#test3">电视剧</a></li>
+               <li><a href="javascript:;">动漫</a></li>
+               <li><a href="javascript:;">综艺</a></li>
+               <li><a href="javascript:;">美女</a></li>
+               <li><a href="javascript:;">搞笑剧</a></li>
+               <li><a href="javascript:;">个人中心</a></li>
+           </ul>
+       </div>
+   </div>
+</code>
+
+<code>//不指定就是javascript内容
+$.ui.navigator("#box1", {
+      content:".ui-navigator-wrap",
+      fixContent:".ui-navigator-fix",
+      defTab:2
+ });
+ //render方式，即html写在页面上，content传入的是css selector时即采取此种方式，但html结构需符合要求
+ $.ui.navigator({
+      container:"#box4",
+      content:[
+          {text:"首页", url:"http://gmu.baidu.com"},
+          {text:"电影", url:"index#movie"},
+          {text:"电视剧", url:"index#tv"},
+          {text:"动漫", url:"index#movie"},
+          {text:"综艺", url:"index#movie"},
+          {text:"美女", url:"javascript:;"},
+          {text:"搞笑剧", url:"javascript:;"},
+          {text:"个人中心1", url:"http://gmu.baidu.com"},
+          {text:"个人中心2", url:"http://gmu.baidu.com"},
+      ],
+      fixContent:[
+          {text:"fix1", url:"javascript:;", pos:"right"}
+       ],
+     defTab:1,
+      instanceId:"instance2"
+ });
+ //render方式创建tab，setup类似
+ $.ui.navigator("#box6", {
+      content:[
+          {text:"我要提问", url:"javascript:;"},
+    {text:"我要回答", url:"javascript:;"},
+          {text:"我要知道", url:"javascript:;"}
+      ],
+      isSwipe:false,
+      defTab:1
+ });
+ </code>
+
+<code type="css">
+body {
+    background: #fff;
+}
+a, a:visited {
+    color: #4f9efc;
+}
+a:active, a:hover {
+    color: #85bcfc;
+}
+</code>
+---
+##二维码链接##
+<qrcode style="width:134px;" title="Baidu">http://www.baidu.com</qrcode>
+代码
+<code type="text">
+<qrcode style="width:134px;" title="Baidu">http://www.baidu.com</qrcode>
+</code>
+***
+##选项卡##
+<tabs>
+| 选项卡1 | 选项卡2 | 外部链接打开Baidu link:http://www.baidu.com | Javascript弹出Baidu javascript:http://www.baidu.com | 选项卡3 |
+
+选项卡1内容
+-----
+选项卡2内容
+-----
+选项卡3内容
+</tabs>
+代码为
+<code type="text">
+<tabs>
+| 选项卡1 | 选项卡2 | 外部链接打开Baidu link:http://www.baidu.com | Javascript弹出Baidu javascript:http://www.baidu.com | 选项卡3 |
+
+选项卡1内容
+-----
+选项卡2内容
+-----
+选项卡3内容
+</tabs>
+</code>
+**复杂应用**
+
+一级tabs用五个\-分隔，即\-\-\-\-\-，二级为六个，三级为7个，依次递加。
+
+<tabs class="code">
+| html代码 | javascript代码 | tabs内嵌 | 表格 |
+<code type="html">
+<!--setup方式，即html写在页面上，content传入的是css selector时即采取此种方式，但html结构需符合要求-->
+   <div id="box1"class="ui-navigator">
+       <div class="ui-navigator-fix"><a href="javascript:;">fix1</a></div>
+       <div class="ui-navigator-wrap" style="overflow: hidden">
+           <ul class="ui-navigator-list clearfix">
+               <li><a href="#test1">首页</a></li>
+               <li><a href="#test2">电影</a></li>
+               <li class="cur"><a href="#test3">电视剧</a></li>
+               <li><a href="javascript:;">动漫</a></li>
+               <li><a href="javascript:;">综艺</a></li>
+               <li><a href="javascript:;">美女</a></li>
+               <li><a href="javascript:;">搞笑剧</a></li>
+               <li><a href="javascript:;">个人中心</a></li>
+           </ul>
+       </div>
+   </div>
+</code>
+-----
+<code>//不指定就是javascript内容
+$.ui.navigator("#box1", {
+      content:".ui-navigator-wrap",
+      fixContent:".ui-navigator-fix",
+      defTab:2
+ });
+ //render方式，即html写在页面上，content传入的是css selector时即采取此种方式，但html结构需符合要求
+ $.ui.navigator({
+      container:"#box4",
+      content:[
+          {text:"首页", url:"http://gmu.baidu.com"},
+          {text:"电影", url:"index#movie"},
+          {text:"电视剧", url:"index#tv"},
+          {text:"动漫", url:"index#movie"},
+          {text:"综艺", url:"index#movie"},
+          {text:"美女", url:"javascript:;"},
+          {text:"搞笑剧", url:"javascript:;"},
+          {text:"个人中心1", url:"http://gmu.baidu.com"},
+          {text:"个人中心2", url:"http://gmu.baidu.com"},
+      ],
+      fixContent:[
+          {text:"fix1", url:"javascript:;", pos:"right"}
+       ],
+     defTab:1,
+      instanceId:"instance2"
+ });
+ //render方式创建tab，setup类似
+ $.ui.navigator("#box6", {
+      content:[
+          {text:"我要提问", url:"javascript:;"},
+    {text:"我要回答", url:"javascript:;"},
+          {text:"我要知道", url:"javascript:;"}
+      ],
+      isSwipe:false,
+      defTab:1
+ });
+ </code>
+-----
+<tabs>
+| 选项卡1 | 选项卡2 | 外部链接打开Baidu link:http://www.baidu.com | Javascript弹出Baidu javascript:http://www.baidu.com | 选项卡3 |
+
+选项卡1内容
+------
+选项卡2内容
+------
+选项卡3内容
+</tabs>
+-----
+^ 表格标题1       ^ 表格标题2         ^ 表格标题3           ^
+| 表格内容        | 表格内容          |表格内容             |
+| 表格内容        | 表格内容          |表格内容             |
+| 表格内容        | 表格内容表格内容                       ||
+| 表格内容        | 表格内容          |表格内容             |
+</tabs>
+***
+## 代码演示 ##
+<codepreview href="../ui/demo/webapp/button.html">
+../ui/demo/webapp/button.html
+../ui/src/css/webapp/button.css
+</codepreview>
+***
+##老版本语法兼容##
+
+这个是一个描述示例，所有以下这些语法，在所有的@desc中都可以使用
+
+换行将会创建一个<br />
+这个是第二行文字
+
+换行加一个空行将会创建一个段落
+**粗体** *斜体* ***关键字***
+
+#一级标题#
+##二级标题##
+###三级标题###
+####四级标题####
+#####五级标题#####
+######六级标题######
+
+###无序列表###
+- Unordered list item
+- Unordered list item
+- Unordered list item
+- Unordered list item
+- Unordered list item
+
+###有序列表###
++ Ordered list item
++ Ordered list item
++ Ordered list item
++ Ordered list item
++ Ordered list item
+
+###链接###
+- {@link $.proxy}
+- {@link[http://www.baidu.com] Baidu}
+
+<code type="text">
+##老版本语法兼容##
+这个是一个描述示例，所有以下这些语法，在所有的@desc中都可以使用
+
+换行将会创建一个<br />
+这个是第二行文字
+
+换行加一个空行将会创建一个段落
+**粗体** *斜体* ***关键字***
+
+#一级标题#
+##二级标题##
+###三级标题###
+####四级标题####
+#####五级标题#####
+######六级标题######
+
+###无序列表###
+- Unordered list item
+- Unordered list item
+- Unordered list item
+- Unordered list item
+- Unordered list item
+
+###有序列表###
++ Ordered list item
++ Ordered list item
++ Ordered list item
++ Ordered list item
++ Ordered list item
+
+###链接###
+- {@link $.proxy}
+- {@link[http://www.baidu.com] Baidu}
+</code>

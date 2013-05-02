@@ -26,7 +26,7 @@
         })();
         
     $.ui = $.ui || {
-        version: '2.0.4',
+        version: '2.0.5',
 
         guid: _guid,
 
@@ -173,9 +173,12 @@
                 obj = record( el, name ) || $.ui[name]( el, $.extend( $.isPlainObject(opts) ? opts : {}, {
                     setup: true
                 } ) );
-
-                ret = $.isString( opts ) && $.isFunction( obj[ opts ] ) ? obj[opts].apply(obj, args) : undefined;
-
+                if ($.isString( opts )) {
+                    if (!$.isFunction( obj[ opts ] ) && opts !== 'this') {
+                        throw new Error(name + '组件没有此方法');    //当不是取方法是，抛出错误信息
+                    }
+                    ret = $.isFunction( obj[ opts ] ) ? obj[opts].apply(obj, args) : undefined;
+                }
                 if( ret !== undefined && ret !== obj || opts === "this" && ( ret = obj ) ) {
                     return false;
                 }
@@ -235,7 +238,7 @@
                 var result = fn.apply( me );
                 if(result && $.isPlainObject(result) ){
                     var plugins = me._data.disablePlugin;
-                    if( !plugins || $.isString(plugins) && !~plugins.indexOf() ){
+                    if( !plugins || $.isString(plugins) && !~plugins.indexOf(result.pluginName) ){
                         delete result.pluginName;
                         $.each(result,function( key, val ){
                             var orgFn;

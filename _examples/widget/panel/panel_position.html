@@ -108,33 +108,27 @@
             contentWrap: $('.cont')
         });
 
-        $('#push-left').on('tap', function (e) {
-            e.stopPropagation();
+        $('#push-left').on('click', function () {
             $('.panel').panel('toggle', 'push', 'left');
         });
 
-        $('#overlay-left').on('tap', function (e) {
-            e.stopPropagation();
+        $('#overlay-left').on('click', function () {
             $('.panel').panel('toggle', 'overlay', 'left');
         });
 
-        $('#reveal-left').on('tap', function (e) {
-            e.stopPropagation();
+        $('#reveal-left').on('click', function () {
             $('.panel').panel('toggle', 'reveal', 'left');
         });
 
-        $('#push-right').on('tap', function (e) {
-            e.stopPropagation();
+        $('#push-right').on('click', function () {
             $('.panel').panel('toggle', 'push', 'right');
         });
 
-        $('#overlay-right').on('tap', function (e) {
-            e.stopPropagation();
+        $('#overlay-right').on('click', function () {
             $('.panel').panel('toggle', 'overlay', 'right');
         });
 
-        $('#reveal-right').on('tap', function (e) {
-            e.stopPropagation();
+        $('#reveal-right').on('click', function () {
             $('.panel').panel('toggle', 'reveal', 'right');
         });
     }(Zepto));
@@ -142,7 +136,7 @@
 
 <!--demo公用头部展示所用js，可以不用加载 begin-->
 <script id="bootstrap" src="../../example.js" type="text/javascript"
-        data-page="panel组件|panel.html, panel多种打开模式|panel_position.html, panel页面滚动关闭|panel_disappear.html, panel是iscroll|panel_iscroll.html"></script>
+        data-page="panel组件|panel.html, panel多种打开模式|panel_position.html, panel页面滚动关闭|panel_hide.html, panel是iscroll|panel_iscroll.html"></script>
 <!--demo公用头部展示所用js end-->
 
 </body>

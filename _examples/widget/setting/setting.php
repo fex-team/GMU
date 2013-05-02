@@ -50,12 +50,21 @@ $arr = array(
         "icon" => 'tabs.png',
         "href" => 'tabs/tabs.html'
     ),
-    'datepicker' => array(
-        "name" => 'Datepicker',
+    'panel' => array(
+        "name" => 'Panel',
+        "description" => '面板组件',
+        "group" => 'Components',
+        "icon" => 'panel.png',
+        "href" => 'panel/panel_position.html',
+        'newIcon' => 'new.png'
+    ),
+    'calendar' => array(
+        "name" => 'Calendar',
         "description" => '日历控件',
         "group" => 'Components',
         "icon" => 'tabs.png',
-        "href" => 'datepicker/datepicker.html'
+        "href" => 'calendar/calendar.html',
+        'newIcon' => 'new.png'
     ),
     'toolbar' => array(
         "name" => 'Toolbar',
@@ -91,13 +100,6 @@ $arr = array(
         "group" => 'Components',
         "icon" => 'button.png',
         "href" => 'button/button.html'
-    ),
-    'pageswipe' => array(
-        "name" => 'Pageswipe',
-        "description" => '页面切换',
-        "group" => 'Components',
-        "icon" => 'slider.png',
-        "href" => 'pageswipe/pageswipe.html'
     ),
     'imglazyload' => array(
         "name" => 'Imagelazyload',

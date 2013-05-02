@@ -1,0 +1,70 @@
+body {
+    background: #fff;
+}
+a, a:visited {
+    color: #4f9efc;
+}
+a:active, a:hover {
+    color: #85bcfc;
+}
+
+hr {
+    height: 1px;
+    border: 0;
+    padding: 0;
+    margin: 35px 0 0 0;
+    background-image: -moz-linear-gradient(0 0 0deg, rgba(133, 194, 254, 0.0) 0%, rgba(79, 166, 254, 0.33) 50%, rgba(133, 194, 254, 0.0) 100%);
+    background-image: -webkit-gradient(linear, left top, right top, from(rgba(133, 194, 254, 0.0)), color-stop(0.5, rgba(79, 166, 254, 0.33)), to(rgba(133, 194, 254, 0.0)));
+}
+pre {
+    background: #f5fafe;
+    border: 2px solid #e4edfb;
+}
+p > code, li > code {
+    border: 1px solid #eee;
+}
+
+#sidebar {
+    border-right: 1px solid rgba(208, 229, 253, 1);
+    background-color: #eaf4fe;
+    background-image: -moz-linear-gradient(0 0 0deg, transparent 0%, rgba(234, 244, 254, 0.0) 92%, rgba(208, 229, 253, 0.7) 100%);
+    background-image: -webkit-gradient(linear, left top, right top, from(transparent), color-stop(0.92, transparent), color-stop(0.9201, rgba(234, 244, 254, 0.0)), to(rgba(208, 229, 253, 0.7)));
+}
+
+ul.signature li .return {
+    color: gray;
+}
+
+.method .warning a {
+    color: #700;
+}
+
+.method .version{
+    background: #bce1fe;
+}
+
+span.code {
+    border: 1px solid #e8f5ff;
+    background-color: #f5fafe;
+}
+
+.themes-list ul {
+    background: rgba(234, 244, 254, 0.8);
+    border: 1px solid #BCD3F4;
+    -webkit-box-shadow: 2px 2px 5px #e4effc;
+    box-shadow: 2px 2px 5px #e4effc;
+}
+
+.themes-list ul li a {
+    border: 1px solid #cccccc;
+    background: #d5e8fe;
+}
+
+.result-list li.active a {
+     background-color: #4F9EFC;
+ }
+
+.collapsed #sidebar {
+    border-bottom: 1px solid rgba(208, 229, 253, 1);
+}
+

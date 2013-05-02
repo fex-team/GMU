@@ -1,6 +1,6 @@
-.idea
-.idea/*
-gmu_webapp2.0.0.zip
 .DS_Store
-node_moudules
-dist
+/.idea
+/gmu_webapp2.0.0.zip
+/node_modules
+/dist
+/doc

@@ -1,0 +1,124 @@
+.ui-calendar {
+    width: 100%;
+    line-height: 25px;
+    font-size: 14px;
+}
+
+.ui-calendar-header {
+    color: #545454;
+    text-align: center;
+    padding: 3px 0;
+}
+
+.ui-calendar-header a {
+    color: #545454;
+    text-decoration: none;
+    display: inline-block;
+    padding: 5px;
+    margin: 0 5px;
+    text-align: center;
+    border-radius: 3px;
+    line-height: 1.0;
+}
+.ui-calendar-header a.ui-state-hover {
+    background-color: #ccc;
+}
+.ui-calendar-header .ui-calendar-title {
+    text-align: center;
+    display: inline-block;
+}
+
+.ui-calendar-calendar {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.ui-calendar-calendar th, .ui-calendar-calendar td {
+    text-align: center;
+    color: #000;
+    background: #f5f5f5;
+    border: 1px solid #fff;
+    font-weight: normal;
+}
+
+.ui-calendar-calendar thead tr {
+    border: 1px solid #fff;
+}
+
+.ui-calendar-calendar thead th {
+    color: #fff;
+    background: #b6b6b6;
+}
+
+.ui-calendar-calendar a {
+    text-decoration: none;
+    color:#000;
+    display: block;
+}
+
+.ui-calendar-calendar tr.ui-calendar-gap td {
+    line-height: 5px;
+    font-size: 0;
+    border: none;
+    background: transparent;
+}
+
+.ui-calendar-calendar td.ui-calendar-unSelectable {
+    color: #e1e1e1;
+}
+
+.ui-calendar-calendar td.ui-calendar-today {
+    background: #FBF9EE;
+}
+.ui-calendar-calendar td.ui-calendar-current-day {
+    background: #b6b6b6;
+    font-weight: bold;
+    border-color: #fff;
+}
+
+.ui-calendar-calendar td.ui-state-hover {
+    background: #ccc;
+}
+
+.ui-slideup .header {
+    line-height: 43px;
+    height: 43px;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    opacity: 0.9;
+    background: url(./calendar-header.png) repeat-x;
+    overflow: hidden;
+}
+.ui-slideup .ok-btn, .ui-slideup .no-btn {
+    position: absolute;
+    top: 7px;
+    height: 20px;
+    line-height: 20px;
+    padding: 0 5px;
+    margin: 0;
+    border-width: 5px;
+    font-size: 12px;
+    font-weight: bold;
+    text-shadow: rgba(0, 0, 0, 0.8) 0 -1px 0;
+    color: white;
+    text-decoration: none;
+    display: block;
+}
+.ui-slideup .ok-btn {
+    right: 7px;
+    float: right;
+    -webkit-border-image: url(done.png) 5;
+}
+.ui-slideup .no-btn {
+    left: 7px;
+    float: left;
+    -webkit-border-image: url(cancel.png) 5;
+}
+.ui-slideup .ok-btn.ui-state-hover, .ui-slideup .no-btn.ui-state-hover{
+    opacity: 0.4;
+}
+.ui-slideup .frame {
+    background: #e1e1e1;
+    padding: 5px;
+}
+

@@ -1,3 +1,6 @@
+/**
+ * @fileOverview 文件操作方法集合。
+ */
 (function() {
 	"use strict";
 
@@ -43,32 +46,62 @@
 	//如果文件夹不存在，尝试创建它
 
 	function mkdir(dirPaths, mode) {
+
+        // Set directory mode in a strict-mode-friendly way.
+        /*jshint eqnull:true */
+        if (mode == null) {
+            mode = parseInt('0777', 8) & (~process.umask());
+        }
+
 		return callEach(dirPaths, function(dirPath) {
-			var paths,
-			subpath;
 
-			// Set directory mode in a strict-mode-friendly way.
-			/*jshint eqnull:true */
-			if (mode == null) {
-				mode = parseInt('0777', 8) & (~process.umask());
-			}
+            dirPath = dirPath.split(/[\/\\]/g);
+            dirPath.push('');
 
-			paths = dirPath.split(/[\/\\]/g).reduce(function(parts, part) {
-				parts += path.sep + part;
-				subpath = path.resolve(parts);
+            dirPath.reduce(function(parts, part) {
+                var subPath;
 
-				if (!exists(subpath)) {
+				subPath = path.resolve(parts);
+
+				if (!exists(subPath)) {
 
 					try {
-						fs.mkdirSync(subpath, mode);
+						fs.mkdirSync(subPath, mode);
 					} catch (e) {
-						throw new Error("创建目录\"" + subpath + "\"失败(错误代码：" + e.code + ")");
+						throw new Error("创建目录\"" + subPath + "\"失败(错误代码：" + e.code + ")");
 					}
 				}
-				return parts;
+				return parts + path.sep + part;
 			});
 		});
 	}
+
+    function rmdir( dirPaths ) {
+        var rm = function( item ){
+            var stat,
+                children;
+
+            if( !exists(item) ) return ;
+
+            stat = fs.statSync(item);
+
+            if( stat.isDirectory() ) {
+                children = fs.readdirSync(item);
+
+                children
+                    .map(function( child ){
+                        return item + path.sep + child;
+                    })
+                    .forEach(rm);
+
+                fs.rmdirSync(item);
+            } else if(stat.isFile() ) {
+                fs.unlinkSync(item);
+            }
+        }
+
+        return callEach(dirPaths, rm);
+    }
 
 	function caculateSize(files) {
 		return callEach(files, function(file) {
@@ -97,16 +130,18 @@
 	}
 
 	function write(filename, content, file_encoding) {
+        mkdir(path.dirname(filename));
 		return fs.writeFileSync(filename, content, file_encoding || FILE_ENCODING);
 	}
 
 	//expose
-	exports.concat = concat;
-	exports.minify = minify;
-	exports.mkdir = mkdir;
-	exports.caculateSize = caculateSize;
-	exports.exists = exists;
-	exports.read = read;
-	exports.write = write;
+    exports.concat       = concat;
+    exports.minify       = minify;
+    exports.mkdir        = mkdir;
+    exports.rmdir        = rmdir;
+    exports.caculateSize = caculateSize;
+    exports.exists       = exists;
+    exports.read         = read;
+    exports.write        = write;
 
 })();
