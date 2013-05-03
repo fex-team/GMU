@@ -252,7 +252,6 @@ if($.os.ios && canShow){
                 equals(add2desktop._el.offset().top, 150 - 70 - 12, 'the top is right');
                 equals(add2desktop._el.offset().left, 300 * 0.5 - 92,'the left is right');
                 $(f).css("position", "absolute").css("left", 0).css("top", 0).css("height",400).css("width", 300);
-                $.support.orientation ? ta.orientationchange(w) : ta.resize(w);
                 setTimeout(function(){
                     equals(add2desktop._el.css("display"), "block", "The add2desktop is show");
                     equals(add2desktop._el.width() , 187 , "the width is ok");

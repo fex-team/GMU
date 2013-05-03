@@ -259,7 +259,6 @@ test("window resize", function(){
 	        	equals(w.$('.ui-slideup').offset().height + w.$('.ui-slideup').offset().top, w.innerHeight, 'position is right');
 	
 	        	$(f).css("position", "absolute").css("left", 0).css("top", 0).css("height", 800).css("width", 600);
-	            $.support.orientation ? ta.orientationchange(w) : ta.resize(w);
 	             
 	            setTimeout(function(){
 	            	equals(w.$('.ui-slideup').offset().height + w.$('.ui-slideup').offset().top, w.innerHeight, 'position is right');
@@ -271,6 +270,7 @@ test("window resize", function(){
     	}, w);
     })
 });
+
 test("method: destroy",function(){
     ua.destroyTest(function(w,f){
     	var me = this;

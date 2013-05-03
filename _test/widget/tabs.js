@@ -231,8 +231,6 @@ test("屏幕旋转  & 接口(refresh)", function(){
 				equals(w.$(".ui-tabs-content", tabs._el).height(), w.$(".ui-tabs-panel", tabs._el).height() + 1, "The height is right");
 				
 				$(f).css("width", 150).css("height", 300);
-				var e = $.support.orientation ? 'orientationchange' : 'resize';
-				ta.trigger(e, w);
 				setTimeout(function(){
 					equals(w.$(".ui-tabs-content", tabs._el).height(), w.$(".ui-tabs-panel", tabs._el).height() + 1, "The height is right");
 					

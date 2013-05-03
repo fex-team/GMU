@@ -230,7 +230,7 @@ test('content()', function(){
 });
 
 test('window resize', function(){
-    expect(30);
+    expect(20);
     stop();
     ua.frameExt(function(w, f){
         var me = this;
@@ -253,8 +253,8 @@ test('window resize', function(){
                 equals(d.data('_mask').height(), $(f).height()-1, "The height is right");
                 equals(d.data('_mask').offset().left, 0, "The left is right");
                 equals(d.data('_mask').offset().top, 0, "The top is right");
-                $(f).css("position", "absolute").css("left", 0).css("top", 0).css("height", 600).css("width", 300);
-                $.support.orientation ? ta.orientationchange(w) : ta.resize(w);
+                $(f).css("height", 300).css("width", 150);
+                w.$("body").css("height", 300).css("width", 150);
                 setTimeout(function(){
                     equals(d.data('_wrap').css("display"), "block", "The dialog is show");
                     equals(d.data('_wrap').width(), 200, "The width is right");
@@ -266,22 +266,8 @@ test('window resize', function(){
                     equals(d.data('_mask').height(), $(f).height()-($.browser.uc?2:1), "The height is right");
                     equals(d.data('_mask').offset().left, 0, "The left is right");
                     equals(d.data('_mask').offset().top, 0, "The top is right");
-                    $(f).css("position", "absolute").css("left", 0).css("top", 0).css("height", 300).css("width", 600);
-                    $.support.orientation ? ta.orientationchange(w) : ta.resize(w);
-                    setTimeout(function(){
-                        equals(d.data('_wrap').css("display"), "block", "The dialog is show");
-                        equals(d.data('_wrap').width(), 200, "The width is right");
-                        equals(d.data('_wrap').height(), 100, "The height is right");
-                        equals(d.data('_wrap').offset().left, parseInt(($(f).width() - d.data('_wrap').width()) / 2), "The left is right");
-                        ok(d.data('_wrap').offset().top == parseInt((300 - d.data('_wrap').height()) / 2) || d.data('_wrap').offset().top == parseInt((300 - d.data('_wrap').height()) / 2), "The top is right");
-                        equals(d.data('_mask').css("display"), "block", "The mask shows");
-                        equals(d.data('_mask').width(), $(f).width(), "The width is right");
-                        equals(d.data('_mask').height(), 600-($.browser.uc?3:2), "The height is right"); //mask高度取clientHeight和scrollHeight之中的较大值，竖屏转横屏后，mask会把页面下方撑出一段空白区域，这个不修复
-                        equals(d.data('_mask').offset().left, 0, "The left is right");
-                        equals(d.data('_mask').offset().top, 0, "The top is right");
-                        d.destroy();
-                        me.finish();
-                    }, 500);
+                    d.destroy();
+                    me.finish();
                 }, 500);
             }, 300)
         }, w);
