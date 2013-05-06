@@ -18,13 +18,14 @@
      * - --''refresh''--     {Boolean}              --(可选, 默认值:false)是否是更新操作，若是页面追加图片，可以将该参数设为true--（该参数已经删除，无需使用该参数，可以同样为追加的图片增加延迟加载）
      * - ''innerScroll''     {Boolean}              (可选, 默认值:false)是否是内滚，若内滚，则不绑定eventName事件，用户需在外部绑定相应的事件，可调$.fn.imglazyload.detect去检测图片是否出现在container中
      * - ''isVertical''      {Boolean}              (可选, 默认值:true)是否竖滚
-     * - ''startload''       {Function}             (可选, 默认值:null)开始加载前的事件，该事件作为参数。
      *
      * **events**
      * - ''startload'' 开始加载图片
      * - ''loadcomplete'' 加载完成
      * - ''error'' 加载失败
      *
+     * 使用img标签作为初始标签时，placeHolder无效，可考虑在img上添加class来完成placeHolder效果，加载完成后移除。使用其他元素作为初始标签时，placeHolder将添加到标签内部，并在图片加载完成后替换。
+     * 原始标签中以\"data-\"开头的属性会自动添加到加载后的图片中，故有自定义属性需要放在图片中的可以考虑以data-开头
      * @example $('.lazy-load').imglazyload();
      * $('.lazy-load').imglazyload().on('error', function (e) {
      *     e.preventDefault();      //该图片不再加载
@@ -40,8 +41,7 @@
                 placeHolder:'',
                 eventName:'scrollStop',
                 innerScroll: false,
-                isVertical: true,
-                startload: null
+                isVertical: true
             }, opts),
             $viewPort = $(opts.container),
             isVertical = opts.isVertical,
@@ -101,11 +101,8 @@
             }
         }
 
-        function _addPlsHolder (holder) {
-            var $pedding = $(pedding);
-            if ($plsHolder) {
-                isImg ? $pedding.after(holder).hide() : $pedding.append(holder);    //若为img，则追加到img后边并将img隐藏，若是不是img，则直接append
-            }
+        function _addPlsHolder () {
+            !isImg && $plsHolder && $(pedding).append($plsHolder);   //若是不是img，则直接append
         }
 
         $(document).ready(function () {    //页面加载时条件检测
