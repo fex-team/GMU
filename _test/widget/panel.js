@@ -42,8 +42,7 @@ test("多实例 & 默认options & 自定义options", function(){
 		        display: 'overlay',
 		        scrollMode: 'hide',
 		        dismissible: false,
-		        swipeClose: false,
-		        animate: false
+		        swipeClose: false
 		    }).panel('this');
 
 		    equal($('.ui-panel').length, 2, "两个panel创建了");
@@ -53,7 +52,6 @@ test("多实例 & 默认options & 自定义options", function(){
 		    equals(panel1.$contentWrap.attr('id'), "contWrap", "option contentWrap 正确");
 			equals(panel1.$contentWrap.parent().attr("id"), "page", "option contentWrap 正确");
 			equals(panel1._data.scrollMode, "follow", "option scrollMode 正确");
-			equals(panel1._data.animate, true, "option animate 正确");
 			equals(panel1._data.display, "push", "option display 正确");
 			equals(panel1._data.position, "right", "option position 正确");
 			equals(panel1._data.dismissible, true, "option dismissible 正确");
@@ -63,7 +61,6 @@ test("多实例 & 默认options & 自定义options", function(){
 			equal(panel2.$contentWrap.parent().attr("id"), "page2", "panel2 contentWrap 正确");
 		    equal(panel2._data.dismissible, false, 'panel2 dismissible正确');
 		    equal(panel2._data.swipeClose, false, 'panel2 swipeClose正确');
-		    equal(panel2._data.animate, false, 'panel2 animate正确');
 		    equal(panel2._data.scrollMode, "hide", "panel2 scrollMode 正确");
 		    equal(panel2._data.display, 'overlay', 'panel2 display正确');
 		    equal(panel2._data.position, 'left', 'panel2 position正确');
@@ -86,15 +83,12 @@ test("参数: contentWrap(zepto)", function(){
     $("#contWrap1").remove();
 });
 
-test("参数: annimate(默认) & display(默认) & position(默认)", function(){
+test("参数: display(默认) & position(默认)", function(){
     var panel = $('#panel').panel({
     }).panel('this');
-    var width1 = $('#panel').width();
 
-    equal($('#panel').css($.fx.cssPrefix + 'transform'), 'translate3d(' + width1 + 'px, 0px, 0px)', "transform值正确");
-    equal(panel.$contentWrap.css($.fx.cssPrefix + 'transform'), 'translate3d(0px, 0px, 0px)', "transform值正确");
-    
     $('#panel').panel('open');
+    var width1 = $('#panel').width();
     
     equal($('#panel').hasClass('ui-panel-right'), true, "open后：ui-panel-right值正确");
     equal($('#panel').hasClass('ui-panel-push'), true, "open后：ui-panel-push值正确");
@@ -111,22 +105,19 @@ test("参数: annimate(默认) & display(默认) & position(默认)", function()
     $('#panel').panel('destroy');
 });
 
-test("参数: annimate(false) & display(默认) & position(left)", function(){
+test("参数: display(默认) & position(left)", function(){
     var panel = $('#panel').panel({
     	animate: false,
     	position: 'left'
     }).panel('this');
-    var width1 = $('#panel').width();
 
-    equal($('#panel').css($.fx.cssPrefix + 'transform'), 'translate3d(' + -width1 + 'px, 0px, 0px)', "transform值正确");
-    equal(panel.$contentWrap.css($.fx.cssPrefix + 'transform'), 'translate3d(0px, 0px, 0px)', "transform值正确");
-    
     $('#panel').panel('open');
+    var width1 = $('#panel').width();
     
     equal($('#panel').hasClass('ui-panel-left'), true, "open后：ui-panel-left值正确");
     equal($('#panel').hasClass('ui-panel-push'), true, "open后：ui-panel-push值正确");
-    equal($('#panel').hasClass('ui-panel-animate'), false, "open后：ui-panel-animate值正确");
-    equal(panel.$contentWrap.hasClass('ui-panel-animate'), false, "open后：ui-panel-animate值正确");
+    equal($('#panel').hasClass('ui-panel-animate'), true, "open后：ui-panel-animate值正确");
+    equal(panel.$contentWrap.hasClass('ui-panel-animate'), true, "open后：ui-panel-animate值正确");
     equal($('#panel').css($.fx.cssPrefix + 'transform'), 'translate3d(0px, 0px, 0px)', "open后：transform值正确");
     equal(panel.$contentWrap.css($.fx.cssPrefix + 'transform'), 'translate3d(' + width1 + 'px, 0px, 0px)', "open后：transform值正确");
     
@@ -138,16 +129,13 @@ test("参数: annimate(false) & display(默认) & position(left)", function(){
     $('#panel').panel('destroy');
 });
 
-test("参数: annimate(默认) & display(overlay) & position(默认)", function(){
+test("参数: display(overlay) & position(默认)", function(){
     var panel = $('#panel').panel({
     	display: 'overlay'
     }).panel('this');
-    var width1 = $('#panel').width();
     
-    equal($('#panel').css($.fx.cssPrefix + 'transform'), 'translate3d(' + width1 + 'px, 0px, 0px)', "transform值正确");
-    equal(panel.$contentWrap.css($.fx.cssPrefix + 'transform'), 'translate3d(0px, 0px, 0px)', "transform值正确");
-
     $('#panel').panel('open');
+    var width1 = $('#panel').width();
     
     equal($('#panel').hasClass('ui-panel-right'), true, "open后：ui-panel-right值正确");
     equal($('#panel').hasClass('ui-panel-overlay'), true, "open后：ui-panel-overlay值正确");
@@ -164,17 +152,14 @@ test("参数: annimate(默认) & display(overlay) & position(默认)", function(
     $('#panel').panel('destroy');
 });
 
-test("参数: annimate(默认) & display(overlay) & position(left)", function(){
+test("参数: display(overlay) & position(left)", function(){
     var panel = $('#panel').panel({
     	display: 'overlay',
     	position: 'left'
     }).panel('this');
-    var width1 = $('#panel').width();
     
-    equal($('#panel').css($.fx.cssPrefix + 'transform'), 'translate3d(' + -width1 + 'px, 0px, 0px)', "transform值正确");
-    equal(panel.$contentWrap.css($.fx.cssPrefix + 'transform'), 'translate3d(0px, 0px, 0px)', "transform值正确");
-
     $('#panel').panel('open');
+    var width1 = $('#panel').width();
     
     equal($('#panel').hasClass('ui-panel-left'), true, "open后：ui-panel-left值正确");
     equal($('#panel').hasClass('ui-panel-overlay'), true, "open后：ui-panel-overlay值正确");
@@ -191,16 +176,13 @@ test("参数: annimate(默认) & display(overlay) & position(left)", function(){
     $('#panel').panel('destroy');
 });
 
-test("参数: annimate(默认) & display(reveal) & position(默认)", function(){
+test("参数: display(reveal) & position(默认)", function(){
     var panel = $('#panel').panel({
     	display: 'reveal'
     }).panel('this');
-    var width1 = $('#panel').width();
     
-    equal($('#panel').css($.fx.cssPrefix + 'transform'), 'translate3d(0px, 0px, 0px)', "transform值正确");
-    equal(panel.$contentWrap.css($.fx.cssPrefix + 'transform'), 'translate3d(0px, 0px, 0px)', "transform值正确");
-
     $('#panel').panel('open');
+    var width1 = $('#panel').width();
     
     equal($('#panel').hasClass('ui-panel-right'), true, "open后：ui-panel-right值正确");
     equal($('#panel').hasClass('ui-panel-reveal'), true, "open后：ui-panel-reveal值正确");
@@ -217,17 +199,14 @@ test("参数: annimate(默认) & display(reveal) & position(默认)", function()
     $('#panel').panel('destroy');
 });
 
-test("参数: annimate(默认) & display(reveal) & position(left)", function(){
+test("参数: display(reveal) & position(left)", function(){
     var panel = $('#panel').panel({
     	display: 'reveal',
     	position: 'left'
     }).panel('this');
-    var width1 = $('#panel').width();
 
-    equal($('#panel').css($.fx.cssPrefix + 'transform'), 'translate3d(0px, 0px, 0px)', "transform值正确");
-    equal(panel.$contentWrap.css($.fx.cssPrefix + 'transform'), 'translate3d(0px, 0px, 0px)', "transform值正确");
-    
     $('#panel').panel('open');
+    var width1 = $('#panel').width();
     
     equal($('#panel').hasClass('ui-panel-left'), true, "open后：ui-panel-left值正确");
     equal($('#panel').hasClass('ui-panel-reveal'), true, "open后：ui-panel-reveal值正确");
@@ -247,12 +226,10 @@ test("参数: annimate(默认) & display(reveal) & position(left)", function(){
 test("接口: open, close, toggle, state", function(){
     var panel = $('#panel').panel({
     }).panel('this');
-    var width1 = $('#panel').width();
-
-    equal($('#panel').css($.fx.cssPrefix + 'transform'), 'translate3d(' + width1 + 'px, 0px, 0px)', "初始化：transform值正确");
-    equal(panel.$contentWrap.css($.fx.cssPrefix + 'transform'), 'translate3d(0px, 0px, 0px)', "初始化：transform值正确");
 
     $('#panel').panel('open', 'reveal');
+    var width1 = $('#panel').width();
+    
     equal($('#panel').hasClass('ui-panel-right'), true, "open后：ui-panel-right值正确");
     equal($('#panel').hasClass('ui-panel-reveal'), true, "open后：ui-panel-push值正确");
     equal($('#panel').css($.fx.cssPrefix + 'transform'), 'translate3d(0px, 0px, 0px)', "open后：transform值正确");
@@ -284,7 +261,8 @@ test("接口: open, close, toggle, state", function(){
 });
 
 test("事件: beforeopen, open, beforeclose, close", function(){
-    expect(7);
+    expect(6);
+    stop();
 
     $('#panel').on('beforeopen open beforeclose close', function (e) {
         switch(e.type) {
@@ -301,14 +279,19 @@ test("事件: beforeopen, open, beforeclose, close", function(){
                 ok(true, 'close trigger');
                 break;
         }
-    }).panel({
-    	animate: false
-    });;
+    }).panel();;
 
     $('#panel').panel('open', 'reveal', 'left');
-    $('#panel').panel('close');
-    $('#panel').panel('open', 'overlay', 'right');
-    $('#panel').panel('destroy');            
+    setTimeout(function(){
+    	$('#panel').panel('close');
+        setTimeout(function(){
+        	$('#panel').panel('open', 'overlay', 'right');
+            setTimeout(function(){
+            	$('#panel').panel('destroy');  
+            	start();
+            }, 600);  
+        }, 600);
+    }, 800);
 });
 
 test("基本操作：点击页面非panel位置，panel关闭（dismissible）", function(){
@@ -316,13 +299,13 @@ test("基本操作：点击页面非panel位置，panel关闭（dismissible）",
     $('#panel').panel({
         contentWrap: '#contWrap'
     });
-    var width1 = $('#panel').width(),
-        $btn = $('<button id="btn"></button> ').appendTo('#contWrap').on('click', function () {
+    var $btn = $('<button id="btn"></button> ').appendTo('#contWrap').on('click', function () {
             $('#panel').panel('toggle');
         });
 
     equal($('.ui-panel-dismiss').length, 1, "dismiss mask存在");
     ua.click($btn[0]);
+    var width1 = $('#panel').width();
 
     setTimeout(function () {
         equal($('#panel').panel('state'), true, '点击不在panel中的按钮后，panel打开');
@@ -343,26 +326,15 @@ test("基本操作：panel上面左/右滑动可正常关闭panel（swipeClose�
     $('#panel').panel({
         contentWrap: '#contWrap'
     });
-    var width1 = $('#panel').width();
     
     $('#panel').panel('open', 'overlay', 'left');
+    var width1 = $('#panel').width();
+    
     setTimeout(function () {
         equal($('#panel').panel('state'), true, 'panel已经打开');
         equal($('#panel').css($.fx.cssPrefix + 'transform'), 'translate3d(0px, 0px, 0px)', "panel已经打开");
-        
-        ta.touchstart($('#panel')[0], {
-            touches:[{
-                pageX: 100,
-                pageY: 0
-            }]
-        });
-        ta.touchmove($('#panel')[0], {
-            touches:[{
-                pageX: 50,
-                pageY: 0
-            }]
-        });
-        ta.touchend($('#panel')[0]);
+
+        ta.swipeLeft($('#panel')[0]);
 
         setTimeout(function () {
             equal($('#panel').panel('state'), false, '向左滑动后panel关闭');
@@ -376,7 +348,7 @@ test("基本操作：panel上面左/右滑动可正常关闭panel（swipeClose�
 test("基本操作：页面滚动过程的，panel的三种模式正常（scrollMode）", function(){
     stop();
     $("<div id='page2' ></div>").appendTo('body');
-    $('<div id="contWrap2" style="height:1000px; width: 100%;">这是panel相对的内容</div>').appendTo('#page2');
+    $('<div id="contWrap2" style="height:1500px; width: 100%;">这是panel相对的内容</div>').appendTo('#page2');
     $('<div id="panel2"></div>').append(
         '<ul>' +
             '<li>目录目录目录</li>' +
@@ -389,7 +361,7 @@ test("基本操作：页面滚动过程的，panel的三种模式正常（scroll
     ).appendTo('#page2');
 
     $("<div id='page3' ></div>").appendTo('body');
-    $('<div id="contWrap3" style="height:1000px; width: 100%;">这是panel相对的内容</div>').appendTo('#page3');
+    $('<div id="contWrap3" style="height:1500px; width: 100%;">这是panel相对的内容</div>').appendTo('#page3');
     $('<div id="panel3"></div>').append(
         '<ul>' +
             '<li>目录目录目录</li>' +
@@ -436,11 +408,11 @@ test("基本操作：页面滚动过程的，panel的三种模式正常（scroll
 
                     setTimeout(function () {
                         window.scrollTo(0, 300);
-//                        ta.scrollStop(document);
+                        ta.scrollStop(document);
 
                         setTimeout(function () {
                             equal($('#panel3').panel('state'), true, 'fix模式：滚动过程中panel未隐藏');
-                            equal($('#panel3').css('position'), 'fixed', 'fix模式：滚动过程中panel是fix的');
+                            equal($('#panel3').css('position'), 'absolute', 'fix模式：滚动过程中panel是fix的');
                             approximateEqual($('#panel3').offset().top, 300, 'fix模式，panel不跟随滚动');
                             $('#panel3').panel('destroy');
                             window.scrollTo(0, 0);
@@ -448,10 +420,59 @@ test("基本操作：页面滚动过程的，panel的三种模式正常（scroll
                             start();
                         }, 1000);
                     }, 400);
-                }, 100);
+                }, 200);
             }, 400);
-        }, 100);
+        }, 200);
     }, 400);
+});
+
+test("window resize", function(){
+    expect(6);
+    stop();
+    $("#page").remove();
+    ua.frameExt(function(w, f){
+    	var me = this;
+    	ua.loadcss(["reset.css", "widget/panel/panel.css", "widget/panel/panel.default.css"], function(){
+    		$(f).css("background-color","red")
+			w.$('body').append("<div id='page' ></div>");
+			w.$('#page').append('<div id="panel""></div>');
+			w.$('#panel').append(
+			'<ul>' +
+			    '<li>目录目录目录</li>' +
+			    '<li>目录目录目录</li>' +
+			    '<li>目录目录目录</li>' +
+			    '<li>目录目录目录</li>' +
+			    '<li>目录目录目录</li>' +
+			    '<li>目录目录目录</li>' +
+			    '</ul>'
+			);
+			w.$('#page').append('<div id="contWrap" style="height:1000px; width: 100%;">这是panel相对的内容</div>');
+			w.$('body').css('overflow-x', 'hidden');
+	
+			w.$('#panel').panel().panel('open');
+			w.$('#panel').panel('data', 'scrollMode', 'fix');
+			
+	        setTimeout(function(){
+	        	var width1 = w.$('#panel').width();
+				equals(w.$(".ui-panel-dismiss").width(), 300 - width1, "The mask width is right");
+				equals(w.$(".ui-panel-dismiss").height(), 150, "The mask height is right");
+				equals(w.$('#panel').offset().top, 0, "The panel top is right");
+	
+				w.scrollTo(0, 100);
+	        	$(f).css("height", 300).css("width", 600);
+	        	w.$("body").css("height", 300).css("width", 600);
+	             
+	            setTimeout(function(){
+	            	equals(w.$(".ui-panel-dismiss").width(), 600 - width1, "The mask width is right");
+					equals(w.$(".ui-panel-dismiss").height(), 300, "The mask height is right");
+					approximateEqual(w.$('#panel').offset().top, 100, "The panel top is right");
+	            	
+	                w.$("#panel").panel('destroy');
+	                setTimeout(me.finish, 300);
+	            }, 800);
+	        }, 500);
+    	}, w);
+    })
 });
 
 test("destroy", function(){
