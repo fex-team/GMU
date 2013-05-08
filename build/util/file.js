@@ -134,6 +134,32 @@
 		return fs.writeFileSync(filename, content, file_encoding || FILE_ENCODING);
 	}
 
+    function loadConfig(src) {
+        var content = read(src),
+            id = 0,
+            protect = {};
+
+        //js不支持平衡组，所以只能先把引号里面的内容先保护好
+        content = content
+            .replace(/("|').*?\1/g, function(m0){
+                protect[id] = m0;
+                return '\u0019'+(id++)+'\u0019';
+            });
+
+        //去掉注释
+        content = content
+            .replace(/\s*\/\/.*$/gm, '')
+            .replace(/\/\*[\s\S]*?\*\//g, '');
+
+        //还原受保护的内容
+        content = content
+            .replace(/\u0019(\d+)\u0019/g, function( m0, m1 ) {
+                return protect[m1];
+            });
+
+        return JSON.parse(content);
+    }
+
 	//expose
     exports.concat       = concat;
     exports.minify       = minify;
@@ -143,5 +169,6 @@
     exports.exists       = exists;
     exports.read         = read;
     exports.write        = write;
+    exports.loadConfig   = loadConfig;
 
 })();

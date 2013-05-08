@@ -10,16 +10,25 @@
     module.exports = function (cmd) {
         var deferred = Q.defer(),
             parts = cmd.split(/\s+/g),
-            p = spawn(parts.shift(), parts);
+            p = spawn(parts.shift(), parts),
+            stdout = new Buffer(''),
+            stderr = new Buffer('');
 
-        //todo handle this after thread to be closes.
-
-        p.stdout.on('data', function (data) {
-            deferred.resolve(data.toString().trim());
+        p.stdout.on('data', function (buf) {
+            stdout = Buffer.concat([stdout, new Buffer(buf)]);
         });
 
         p.stderr.on('data', function (data) {
-            deferred.reject(data.toString().trim());
+            stderr = Buffer.concat([stderr, new Buffer(buf)]);
+        });
+
+        p.on('close', function(code) {
+            stderr = stderr.toString();
+            if( stderr ) {
+                deferred.reject( stderr );
+            } else {
+                deferred.resolve(stdout.toString().trim());
+            }
         });
 
         return deferred.promise;

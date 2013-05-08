@@ -10,11 +10,10 @@
     width: 100%;
     left: 0;
 }
-
-.ui-slidup-wrap {
+.ui-slideup-wrap {
     position: absolute;
     left: 0;
-    z-index: 150;
+    z-index: 1200;
     width: 100%;
     background: rgba(255, 255, 255, 0.4);
     overflow: hidden;

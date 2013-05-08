@@ -16,9 +16,16 @@
         return shell('which php')
             .then(function(value){
                 var phpFile = path.resolve('build/doc/index.php');
+
+                if( !value ) {
+                    throw new Error("PHP没有安装，或不在$PATH中，不能生成doc");
+                }
+
                 return shell(value + ' '+phpFile);
             }).then(function( result ){
                 console.log(result);
+            }).fail(function(reason){
+                console.log(reason);
             });
     };
 

@@ -39,7 +39,7 @@
         minimatch = require('minimatch'),
         file = require('./util/file'),
         helper = require('./util/helper'),
-        config =  require('./config.json').dist,
+        config =  file.loadConfig('build/config.json').dist,
         run;
 
     // 合并zepto文件
