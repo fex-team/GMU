@@ -21,8 +21,9 @@
     },
 
     "jshint": {
-        "src": [
-            "build/*.js"
-        ]
+        "core": {
+            "src": ["_src/core/**.js", "_src/widget/**.js"],
+            "config": ".jshintrc"
+        }
     }
 }
