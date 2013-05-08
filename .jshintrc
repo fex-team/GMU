@@ -19,14 +19,14 @@
     "noempty"       : true,     // true: Prohibit use of empty blocks
     "nonew"         : false,    // true: Prohibit use of constructors for side-effects (without assignment)
     "plusplus"      : false,    // true: Prohibit use of `++` & `--`
-    "quotmark"      : "single",    // Quotation mark consistency:
+    "quotmark"      : "single", // Quotation mark consistency:
                                 //   false    : do nothing (default)
                                 //   true     : ensure whatever is used is consistent
                                 //   "single" : require single quotes
                                 //   "double" : require double quotes
     "undef"         : true,     // true: Require all non-global variables to be declared (prevents global leaks)
     "unused"        : true,     // true: Require all defined variables be used
-    "strict"        : true,     // true: Requires all functions run in ES5 Strict Mode
+    "strict"        : false,    // true: Requires all functions run in ES5 Strict Mode
     "trailing"      : false,    // true: Prohibit trailing whitespaces
     "maxparams"     : false,    // {int} Max number of formal params allowed per function
     "maxdepth"      : false,    // {int} Max depth of nested blocks (within functions)
@@ -50,7 +50,7 @@
     "iterator"      : false,     // true: Tolerate using the `__iterator__` property
     "lastsemic"     : false,     // true: Tolerate omitting a semicolon for the last statement of a 1-line block
     "laxbreak"      : false,     // true: Tolerate possibly unsafe line breakings
-    "laxcomma"      : false,     // true: Tolerate comma-first style coding
+    "laxcomma"      : false,     // true: latedef comma-first style coding
     "loopfunc"      : false,     // true: Tolerate functions being defined in loops
     "multistr"      : false,     // true: Tolerate multi-line strings
     "proto"         : false,     // true: Tolerate using the `__proto__` property
@@ -83,5 +83,10 @@
     "white"         : false,    // true: Check against strict whitespace and indentation rules
 
     // Custom Globals
-    "predef"        : [ ]       // additional predefined global variables
+    "predef"        : [ ],       // additional predefined global variables
+
+    // new options in jsbint
+    "zepto" : true,
+    "assignvarfirst" : true,  // 赋值的变量应该放在非赋值的前面
+    "varnewline": true // 变量申明，要求每个变量独占一行
 }
