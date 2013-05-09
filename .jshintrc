@@ -88,5 +88,6 @@
     // new options in jsbint
     "zepto" : true,
     "assignvarfirst" : true,  // 赋值的变量应该放在非赋值的前面
-    "varnewline": true // 变量申明，要求每个变量独占一行
+    "varnewline": true, // 变量申明，要求每个变量独占一行
+    "strictchain": true // 严格的链式调用，查看规范1-5-1。
 }
