@@ -74,7 +74,11 @@ class GMU2FIS {
         $zipObj = $this->_zipObj;
         $content = '';
         foreach($component['dependences'] as $require) {
-            $content .= 'require(\'gmu:'.$this->getNameByPath($require).'\');'."\n";
+            if( $this->getNameByPath($require) === 'zepto' ) {
+                $content .= 'var Zepto = require(\'gmu:'.$this->getNameByPath($require).'\');'."\n";
+            } else {
+                $content .= 'require(\'gmu:'.$this->getNameByPath($require).'\');'."\n";
+            }
         }
         $content.=$component['content']."\nexports = ".$component['export'].";";
         $zipObj->addFromString($component['name'].'/'.$component['component'].'.js', $content);
