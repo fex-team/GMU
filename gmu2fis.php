@@ -289,7 +289,8 @@ class GMU2FIS {
                 continue;
             }
             $basename = basename($file);
-            if(!preg_match('/^zepto\.(.+)\.js$/', $basename, $match))continue;
+            if(!preg_match('/^zepto\.(.+)\.js$/', $basename, $match) && $basename !== 'touch.js')continue;
+            $match[1] = isset($match[1])?$match[1]:'touch';
             $export = '';
             foreach($exportsRule as $key=>$val){
                 $export = $val;
