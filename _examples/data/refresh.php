@@ -1,4 +1,5 @@
 <?php
+header('Content-Type: application/json');
 sleep(2);
 $data = array();
 
