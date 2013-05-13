@@ -74,7 +74,11 @@ class GMU2FIS {
         $zipObj = $this->_zipObj;
         $content = '';
         foreach($component['dependences'] as $require) {
-            $content .= 'require(\'gmu:'.$this->getNameByPath($require).'\');'."\n";
+            if( $this->getNameByPath($require) === 'zepto' ) {
+                $content .= 'var Zepto = require(\'gmu:'.$this->getNameByPath($require).'\');'."\n";
+            } else {
+                $content .= 'require(\'gmu:'.$this->getNameByPath($require).'\');'."\n";
+            }
         }
         $content.=$component['content']."\nexports = ".$component['export'].";";
         $zipObj->addFromString($component['name'].'/'.$component['component'].'.js', $content);
@@ -289,7 +293,8 @@ class GMU2FIS {
                 continue;
             }
             $basename = basename($file);
-            if(!preg_match('/^zepto\.(.+)\.js$/', $basename, $match))continue;
+            if(!preg_match('/^zepto\.(.+)\.js$/', $basename, $match) && $basename !== 'touch.js')continue;
+            $match[1] = isset($match[1])?$match[1]:'touch';
             $export = '';
             foreach($exportsRule as $key=>$val){
                 $export = $val;

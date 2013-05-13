@@ -3,30 +3,33 @@
  * 程序依赖linux/unix系统，需要php已经安装，并暴露php命令。
  */
 (function(){
-    "use strict";
+    'use strict';
 
     var shell = require('./util/shell'),
-        path = require('path');
+        path = require('path'),
+        run;
 
 
     //提供直接调用
-    var run = exports.run = function() {
+    run = exports.run = function() {
 
         //todo 改成node全权负责生成
         return shell('which php')
-            .then(function(value){
-                var phpFile = path.resolve('build/doc/index.php');
+                .then(function(value){
+                    var phpFile = path.resolve('build/doc/index.php');
 
-                if( !value ) {
-                    throw new Error("PHP没有安装，或不在$PATH中，不能生成doc");
-                }
+                    if( !value ) {
+                        throw new Error('PHP没有安装，或不在$PATH中，不能生成doc');
+                    }
 
-                return shell(value + ' '+phpFile);
-            }).then(function( result ){
-                console.log(result);
-            }).fail(function(reason){
-                console.log(reason);
-            });
+                    return shell(value + ' '+phpFile);
+                })
+                .then(function( result ){
+                    console.log(result);
+                })
+                .fail(function(reason){
+                    console.log(reason);
+                });
     };
 
     //标记是一个task
@@ -35,7 +38,7 @@
 
     exports.init = function(cli) {
         cli.command('doc')
-            .description('生成静态文本')
-            .action(run.bind(cli));
+                .description('生成静态文本')
+                .action(run.bind(cli));
     };
 })();
