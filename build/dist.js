@@ -230,7 +230,7 @@
 
                                 .forEach(function (item) {
                                     var m = item.match(/\.([^\.]*)\.css$/i);
-                                    m && (ret[m[1]] = item );
+                                    m && ~opt.aviableThemes.indexOf(m[1]) && (ret[m[1]] = item );
                                 });
                             return ret;
                         });
@@ -371,6 +371,7 @@
             destDir,
             image,
             newName,
+            renderedImages,
             banner;
 
         //生成hash表
@@ -403,19 +404,23 @@
         //如果images目录已经存在，则删除，否则images目录下会自动生成很多新文件。
         file.rmdir(destDir + 'images');
 
+        renderedImages = {};
         for (image in images) {
             
             if( images.hasOwnProperty( image ) ) {
                 newName = path.basename(image);
 
                 // 如果文件名已经占用，则换个名字
-                // todo 如果是同一文件则不换名字
                 while (file.exists(destDir + 'images/' + newName)) {
+                    if( renderedImages[newName] === images[image] ) {
+                        break;
+                    }
                     newName = newName
                             .replace(/(?:-(\d+))?\.(png|jpg|jpeg|gif)$/i,
                                     replaceFn);
                 }
 
+                renderedImages[newName] = images[image];
                 file.write(destDir + 'images/' + newName, 
                         file.read(images[image]));
 

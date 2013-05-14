@@ -12,6 +12,7 @@
             "all": ["widget/**.js", "core/imglazyload.js"],
             "dest": "dist/gmu.js",
             "exclude": [],
+            "aviableThemes": ["default", "blue"],
             "banner": "/* Gmu v@version - @files */"
         }
     },
