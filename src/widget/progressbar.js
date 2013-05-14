@@ -4,7 +4,7 @@
  * @name Progressbar
  * @desc <qrcode align="right" title="Live Demo">../gmu/_examples/widget/progresssbar/progresssbar.html</qrcode>
  * 提供一个可调整百分比的进度条
- * @import core/touch.js, core/zepto.extend.js, core/zepto.ui.js
+ * @import core/touch.js, core/extend.js, core/ui.js
  */
 
 (function($, undefined) {

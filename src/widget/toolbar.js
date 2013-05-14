@@ -4,7 +4,7 @@
  * @name Toolbar
  * @desc <qrcode align="right" title="Live Demo">../gmu/_examples/widget/toolbar/toolbar.html</qrcode>
  * 工具栏组件
- * @import core/zepto.extend.js, core/zepto.ui.js, core/zepto.fix.js, core/zepto.highlight.js
+ * @import core/extend.js, core/ui.js, core/fix.js, core/highlight.js
  */
 (function($) {
     /**

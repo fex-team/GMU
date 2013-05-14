@@ -3,7 +3,7 @@
  * @name Dropmenu － 内滚插件
  * @desc <qrcode align="right" title="Live Demo">../gmu/_examples/widget/dropmenu/dropmenu_iscroll.html</qrcode>
  * @short Dropmenu.iscroll
- * @import widget/dropmenu.js, core/zepto.iscroll.js
+ * @import widget/dropmenu.js, core/iscroll.js
  */
 (function($, undefined){
     $.ui.dropmenu.register(function(){

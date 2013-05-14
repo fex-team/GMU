@@ -1,8 +1,8 @@
 /**
  *  @file 基于Zepto的位置设置获取组件
- *  @name zepto.position
+ *  @name position
  *  @desc 定位插件
- *  @import core/zepto.extend.js
+ *  @import core/extend.js
  */
 //offset
 (function($, undefined){

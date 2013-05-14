@@ -3,7 +3,7 @@
  * @name Suggestion
  * @desc <qrcode align="right" title="Live Demo">../gmu/_examples/widget/suggestion/suggestion_setup.html</qrcode>
  * 搜索建议组件
- * @import core/touch.js, core/zepto.ui.js, core/zepto.iscroll.js, core/zepto.highlight.js
+ * @import core/touch.js, core/ui.js, core/iscroll.js, core/highlight.js
  */
 (function($, undefined){
     /**

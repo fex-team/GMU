@@ -2,7 +2,7 @@
  * @file Calendar － Picker插件
  * @name Calendar － Picker插件
  * @short Calendar.picker
- * @import widget/calendar.js, core/zepto.highlight.js
+ * @import widget/calendar.js, core/highlight.js
  * @desc 默认的Calendar组件，只是在指定容器上生成日历功能，与表单元素的交互功能在此插件中体现.
  *
  * selector将会被认为是可赋值对象，当确认按钮点击后，所选的日期会赋值给selector。

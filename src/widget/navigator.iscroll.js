@@ -3,7 +3,7 @@
  * @name Navigator.iscroll
  * @desc <qrcode align="right" title="Live Demo">../gmu/_examples/webapp/naivgator/navigator.html</qrcode>
  * navigator iscroll插件，可滚动导航栏
- * @import core/zepto.iscroll.js, widget/navigator.js
+ * @import core/iscroll.js, widget/navigator.js
  */
 
 (function ($, undefined) {

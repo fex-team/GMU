@@ -4,7 +4,7 @@
  * @desc <qrcode align="right" title="Live Demo">../gmu/_examples/widget/refresh/refresh_iscroll.html</qrcode>
  * 拉动加载更多iscroll插件
  * @short Refresh.iscroll
- * @import core/zepto.iscroll.js, widget/refresh.js
+ * @import core/iscroll.js, widget/refresh.js
  */
 
 (function($, undefined) {

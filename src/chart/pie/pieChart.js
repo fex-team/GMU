@@ -3,7 +3,7 @@
  * @name PieChart
  * @desc <qrcode align="right" title="Live Demo">../gmu/_examples/chart/piechart/piechart_demo.html</qrcode>
  * 柱状图
- * @import core/zepto.js, core/zepto.extend.js, core/zepto.ui.js, chart/base/Chart.js
+ * @import zepto.js, core/extend.js, core/ui.js, chart/base/Chart.js
  */
 (function(){
     /**

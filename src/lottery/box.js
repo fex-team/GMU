@@ -2,7 +2,7 @@
  * @file luckchest.js
  * @name LuckChest
  * @desc 宝箱抽奖
- * @import core/zepto.js, core/zepto.core.js, core/zepto.ui.js, core/zepto.fx.js
+ * @import zepto.js, core/ui.js, core/fx.js
  */
 
 (function($){
