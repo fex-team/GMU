@@ -1,5 +1,5 @@
 /**
- * @import core/zepto.js
+ * @import zepto.js
  */
 //     Zepto.js
 //     (c) 2010-2012 Thomas Fuchs

@@ -3,7 +3,7 @@
  * @name Quickdelete
  * @desc <qrcode align="right" title="Live Demo">../gmu/_examples/widget/suggestion/suggestion_setup.html</qrcode>
  * 快速删除组件
- * @import core/zepto.ui.js
+ * @import core/ui.js
  */
 (function($) {
     /**

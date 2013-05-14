@@ -3,7 +3,7 @@
  * @name Dropmenu
  * @desc <qrcode align="right" title="Live Demo">../gmu/_examples/widget/dropmenu/dropmenu.html</qrcode>
  * 下拉菜单组件
- * @import core/zepto.ui.js, core/zepto.highlight.js
+ * @import core/ui.js, core/highlight.js
  * @importCSS icons.css
  */
 (function ($, undefined) {

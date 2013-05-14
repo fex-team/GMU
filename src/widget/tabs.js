@@ -3,7 +3,7 @@
  * @desc 选项卡组件
  * @name Tabs
  * @desc <qrcode align="right" title="Live Demo">../gmu/_examples/widget/tabs/tabs.html</qrcode>
- * @import core/touch.js, core/zepto.ui.js,core/zepto.highlight.js
+ * @import core/touch.js, core/ui.js,core/highlight.js
  * @importCSS transitions.css, loading.css
  */
 (function ($, undefined) {

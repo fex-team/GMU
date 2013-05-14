@@ -7,8 +7,9 @@
  * ====================================================================
  * 默认会把所有的组件打包，如果指向打包部分组件可以采用如下命令
  *
- * * `node build dist refresh` 这样只会打包refresh组件（包括它的依赖）。
- * * `node build dist refresh.iOS5` 这样只会打包refresh.iOS5组件（包括它的依赖）。
+ * * `node build dist widget/refresh.js` 这样只会打包refresh组件（包括它的依赖）。
+ * * `node build dist widget/refresh.iOS5.js` 这样只会打包refresh.iOS5组件（包括它的依赖）。
+ * * `node build dist widget/**.js` 这样用来打包所有组件
  *
  * 另外还可以过滤掉部分组件如.
  *
@@ -26,6 +27,8 @@
 (function () {
     'use strict';
 
+    require('shelljs/global');
+
     var
         // q 是一个实现了promise/A+规范的js库
         // 主要用来优化异步操作代码
@@ -42,6 +45,28 @@
         config =  file.loadConfig('build/config.json').dist,
         run;
 
+    // 初始化子仓库
+    function initSubmodules(){
+        cd(path.dirname(__dirname));
+        exec("git submodule init");
+        exec("git submodule update");
+    }
+
+    function describe_version( root ) {
+        var desc;
+
+        desc = exec("git --git-dir='" + (root + '/.git') + "' describe --tags HEAD", {
+            silent: true
+        });
+
+        if (desc.code === 0) {
+            return desc.output.replace(/\s+$/, '');
+        } else {
+            return 'unkown';
+        }
+    };
+
+
     // 合并zepto文件
     function concatZepto() {
         var opt = config.zepto,
@@ -50,12 +75,15 @@
 
         files = files.split(/\s+/g)
             .map(function (file) {
-                return opt.path + file + '.js';
+                return opt.path + '/src/' + file + '.js';
             });
 
-        file.concat(files, dest, opt.banner);
+        file.concat(files, dest, opt.banner
+                .replace(/@version/g, describe_version( opt.path ))
+                .replace(/@files/g, opt.files)
+                );
 
-        console.log('生成 %s 成功， 大小为: %s ', dest, file.caculateSize(dest));
+        console.log('✓ 生成 %s - %s ', dest, file.caculateSize(dest));
     }
 
     // 用uglify压缩zepto文件
@@ -64,8 +92,10 @@
             minDest = opt.dest
                 .replace(/\.js$/, '.min.js');
 
-        file.write(minDest, opt.banner + '\n' + file.minify(opt.dest));
-        console.log('生成 %s 成功， 大小为: %s ', minDest, file.caculateSize(minDest));
+        file.write(minDest, opt.banner
+                .replace(/@version/g, describe_version( opt.path ))
+                .replace(/@files/g, opt.files) + '\n' + file.minify(opt.dest));
+        console.log('✓ 生成 %s - %s ', minDest, file.caculateSize(minDest));
     }
 
     // 收集需要处理的js文件
@@ -200,7 +230,7 @@
 
                                 .forEach(function (item) {
                                     var m = item.match(/\.([^\.]*)\.css$/i);
-                                    m && (ret[m[1]] = item );
+                                    m && ~opt.aviableThemes.indexOf(m[1]) && (ret[m[1]] = item );
                                 });
                             return ret;
                         });
@@ -341,6 +371,7 @@
             destDir,
             image,
             newName,
+            renderedImages,
             banner;
 
         //生成hash表
@@ -359,13 +390,13 @@
         file.write(dest, 
                 banner.replace(/@files/ig, jsFiles.join(', ')) + '\n' + js);
 
-        console.log('生成 %s 成功， 大小为: %s ', dest, file.caculateSize(dest));
+        console.log('✓ 生成 %s - %s ', dest, file.caculateSize(dest));
 
         minDest = dest.replace(/\.js$/, '.min.js');
         file.write(minDest, 
                 banner.replace(/@files/g, jsFiles.join(', ')) + 
                     '\n' + file.minify(dest));
-        console.log('生成 %s 成功， 大小为: %s ', minDest, file.caculateSize(minDest));
+        console.log('✓ 生成 %s - %s ', minDest, file.caculateSize(minDest));
 
         // 复制图片
         destDir = path.dirname(dest) + path.sep;
@@ -373,19 +404,23 @@
         //如果images目录已经存在，则删除，否则images目录下会自动生成很多新文件。
         file.rmdir(destDir + 'images');
 
+        renderedImages = {};
         for (image in images) {
             
             if( images.hasOwnProperty( image ) ) {
                 newName = path.basename(image);
 
                 // 如果文件名已经占用，则换个名字
-                // todo 如果是同一文件则不换名字
                 while (file.exists(destDir + 'images/' + newName)) {
+                    if( renderedImages[newName] === images[image] ) {
+                        break;
+                    }
                     newName = newName
                             .replace(/(?:-(\d+))?\.(png|jpg|jpeg|gif)$/i,
                                     replaceFn);
                 }
 
+                renderedImages[newName] = images[image];
                 file.write(destDir + 'images/' + newName, 
                         file.read(images[image]));
 
@@ -398,7 +433,7 @@
         dest = dest.replace(/\.js$/, '.css');
         file.write(dest, 
                 banner.replace(/@files/g, cssFiles.join(', ')) + '\n' + css);
-        console.log('生成 %s 成功， 大小为: %s ', dest, file.caculateSize(dest));
+        console.log('✓ 生成 %s - %s ', dest, file.caculateSize(dest));
     }
 
     // 提供直接调用
@@ -413,12 +448,12 @@
 
         //如果node build dist后面还带其他参数，则只收集指定的文件。
         for( ; i < len-1; i++ ) {
-            files.push('widget/' + this.args[i].replace(/(\.|\$\-)/, '\\$1') + 
-                '*.js');
+            files.push(this.args[i].replace(/(\.|\$\-)/, '\\$1'));
         }
 
         return q
-            .fcall(concatZepto)
+            .fcall(initSubmodules)
+            .then(concatZepto)
             .then(minifyZepto)
             .then(helper.curry(collectComponents, exclude, 
                 files.length ? files : null))

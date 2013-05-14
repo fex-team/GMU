@@ -4,7 +4,7 @@
  * @name Slider
  * @desc <qrcode align="right" title="Live Demo">../gmu/_examples/widget/slider/slider.html</qrcode>
  * 图片轮播组件
- * @import core/touch.js, core/zepto.extend.js, core/zepto.ui.js
+ * @import core/touch.js, core/extend.js, core/ui.js
  */
 
 (function($, undefined) {

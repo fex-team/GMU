@@ -5,31 +5,19 @@
 (function(){
     'use strict';
 
-    var shell = require('./util/shell'),
-        path = require('path'),
+    var path = require('path'),
         run;
 
+    require('shelljs/global');
 
     //提供直接调用
     run = exports.run = function() {
+        var phpPath = which('php');
+        if(!phpPath) {
+            throw new Error('✗ PHP没有安装，或不在$PATH中，不能生成doc');
+        }
 
-        //todo 改成node全权负责生成
-        return shell('which php')
-                .then(function(value){
-                    var phpFile = path.resolve('build/doc/index.php');
-
-                    if( !value ) {
-                        throw new Error('PHP没有安装，或不在$PATH中，不能生成doc');
-                    }
-
-                    return shell(value + ' '+phpFile);
-                })
-                .then(function( result ){
-                    console.log(result);
-                })
-                .fail(function(reason){
-                    console.log(reason);
-                });
+        exec(phpPath + " " + path.resolve('build/doc/index.php') );
     };
 
     //标记是一个task

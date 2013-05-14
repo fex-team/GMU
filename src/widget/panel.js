@@ -3,7 +3,7 @@
  * @desc <qrcode align="right" title="Live Demo">../gmu/_examples/widget/panel/panel_position.html</qrcode>
  * 面板组件
  * @name Panel
- * @import core/touch.js, core/zepto.ui.js
+ * @import core/touch.js, core/ui.js
  */
 (function ($, undefined) {
     var cssPrefix = $.fx.cssPrefix,

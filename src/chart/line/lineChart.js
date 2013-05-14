@@ -3,7 +3,7 @@
  * @name LineChart
  * @desc <qrcode align="right" title="Live Demo">../gmu/_examples/chart/linechart/linechart.html</qrcode>
  * 折线图
- * @import core/zepto.js, core/zepto.extend.js, core/zepto.ui.js, chart/base/Chart.js
+ * @import zepto.js, core/extend.js, core/ui.js, chart/base/Chart.js
  */
 (function(){
     /**

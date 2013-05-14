@@ -1,17 +1,18 @@
 {
     "dist": {
         "zepto": {
-            "path": "_src/core/zepto/",
+            "path": "src/zepto",
             "files": "polyfill zepto detect event ajax form fx",
             "dest": "dist/zepto.js",
-            "banner": "/* Zepto v1.0-1-ga3cab6c - polyfill zepto detect event ajax form fx - zeptojs.com/license */"
+            "banner": "/* Zepto @version - @files - zeptojs.com/license */"
         },
         "gmu": {
-            "path": "_src",
+            "path": "src",
             "cssPath": "assets",
-            "all": ["widget/**.js"],
+            "all": ["widget/**.js", "core/imglazyload.js"],
             "dest": "dist/gmu.js",
-            "exclude": ["core/zepto.js", "core/zepto.fx.js"],
+            "exclude": [],
+            "aviableThemes": ["default", "blue"],
             "banner": "/* Gmu v@version - @files */"
         }
     },

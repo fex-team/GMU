@@ -2,7 +2,7 @@
  * @file wheel.js
  * @name FortuneWheel
  * @desc 转盘抽奖
- * @import core/zepto.js, core/zepto.core.js, core/zepto.ui.js, core/zepto.fx.js
+ * @import zepto.js, core/ui.js, core/fx.js
  */
 (function($){
     $.ui.define('fortunewheel',{

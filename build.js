@@ -42,7 +42,7 @@
                 process.exit(0);
             }
         }).fail(function (reason) {
-            console.error(reason);
+            console.error(reason.message);
         });
 
 })();
