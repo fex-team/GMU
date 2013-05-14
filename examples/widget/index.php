@@ -94,10 +94,10 @@ foreach ($setting as $item) {
         }
     </style>
 
-    <script type="text/javascript" src="../../_src/core/zepto.js"></script>
-    <script type="text/javascript" src="../../_src/core/zepto.extend.js"></script>
-    <script type="text/javascript" src="../../_src/core/zepto.ui.js"></script>
-    <script type="text/javascript" src="../../_src/core/zepto.highlight.js"></script>
+    <script type="text/javascript" src="../../dist/zepto.js"></script>
+    <script type="text/javascript" src="../../src/core/extend.js"></script>
+    <script type="text/javascript" src="../../src/core/ui.js"></script>
+    <script type="text/javascript" src="../../src/core/highlight.js"></script>
     <script type="text/javascript">
         (function ($) {
             $(function(){$('.thelist ul li').highlight('ui-state-hover');});
@@ -130,7 +130,7 @@ foreach ($setting as $item) {
 <link rel="stylesheet" type="text/css" href="../../assets/widget/toolbar/toolbar.blue.css">
 <script id="bootstrap" src="../example.js"
         type="text/javascript"
-        data-jspath = '../../_src/'
+        data-jspath = '../../src/'
         data-csspath = '../../assets/'
         data-backurl="../../"
         data-page="">

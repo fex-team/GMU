@@ -54,13 +54,13 @@
         backUrl: $('#bootstrap').attr('data-backurl') || '../..',
         pages: ($('#bootstrap').attr('data-page') || '').split(','),
         basePath: {
-            js: $('#bootstrap').attr('data-jspath') || '../../../_src/' ,
+            js: $('#bootstrap').attr('data-jspath') || '../../../src/' ,
             css: $('#bootstrap').attr('data-csspath') || '../../../assets/'
         },
         requires: {
             css: ['icons.default.css', 'widget/button/button.css', 'widget/button/button.default.css', 'widget/dropmenu/dropmenu.css',
                 'widget/dropmenu/dropmenu.default.css', 'widget/toolbar/toolbar.css', 'widget/toolbar/toolbar.default.css'],
-            js: ['core/touch.js', 'core/zepto.highlight.js', 'core/zepto.fix.js', 'widget/button.js', 'widget/dropmenu.js', 'widget/toolbar.js']
+            js: ['core/touch.js', 'core/highlight.js', 'core/fix.js', 'widget/button.js', 'widget/dropmenu.js', 'widget/toolbar.js']
         },
         initHeader: function () {
             var that = this,
