@@ -300,7 +300,8 @@
                 jsFiles.push( item.path );
 
                 js += '/*!' + item.path + '*/\n' +
-                        file.read(prefix + item.path) + '\n';
+                        file.read(prefix + item.path)
+                            .replace(/@version/g, pkg.version) + '\n';
 
                 // 标明已经输出过
                 rendered[item.path] = true;

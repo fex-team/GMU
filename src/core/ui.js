@@ -26,7 +26,7 @@
         })();
         
     $.ui = $.ui || {
-        version: '2.0.5',
+        version: '@version',
 
         guid: _guid,
 
