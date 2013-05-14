@@ -17,7 +17,7 @@
     },
 
     "fis": {
-        "dest": "dist/fis/gmu_@version"
+        "dest": "dist/fis/@version/widget"
     },
 
     "jshint": {
