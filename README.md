@@ -20,27 +20,27 @@ GMU由百度GMU小组开发，基于开源BSD协议，支持商业和非商业�
 </thead>
 <tbody>
   <tr>
-    <td><a href="https://github.com/campaign/gmu/blob/master/_src/core/zepto.fix.js">zepto.fix</a></td>
+    <td><a href="https://github.com/campaign/gmu/blob/master/src/core/fix.js">fix</a></td>
     <td>通用fix方法，实现position:fix效果</td>
   </tr>
   <tr>
-    <td><a href="https://github.com/campaign/gmu/blob/master/_src/core/zepto.highlight.js">zepto.highlight</a></td>
+    <td><a href="https://github.com/campaign/gmu/blob/master/src/core/highlight.js">highlight</a></td>
     <td>点击高亮效果</td>
   </tr>
   <tr>
-    <td><a href="https://github.com/madrobby/zepto/blob/master/src/event.js#files">zepto.imglazyload</a></td>
+    <td><a href="https://github.com/madrobby/zepto/blob/master/src/event.js#files">imglazyload</a></td>
     <td>图片延迟加载，支持iscroll中图片延迟加载</td>
   </tr>
   <tr>
-    <td><a href="https://github.com/campaign/gmu/blob/master/_src/core/zepto.iscroll.js">zepto.iscroll</a></td>
+    <td><a href="https://github.com/campaign/gmu/blob/master/src/core/iscroll.js">iscroll</a></td>
     <td>将<a href="http://cubiq.org/iscroll-4">iScroll 4</a>进行精简，挂载到zepto中，通过<code>$('#iscroll').iScroll()</code>调用</td>
   </tr>
   <tr>
-    <td><a href="https://github.com/campaign/gmu/blob/master/_src/core/zepto.position.js">zepto.position</a></td>
+    <td><a href="https://github.com/campaign/gmu/blob/master/src/core/position.js">position</a></td>
     <td>类似于jquery position，处理元素定位，支持at,my,of,with等参数</td>
   </tr>
   <tr>
-      <td><a href="https://github.com/campaign/gmu/blob/master/_src/core/zepto.location.js">zepto.location</a></td>
+      <td><a href="https://github.com/campaign/gmu/blob/master/src/core/location.js">location</a></td>
       <td>基于百度定位接口，获取当前坐标</td>
     </tr>
 </tbody>
@@ -55,55 +55,55 @@ GMU由百度GMU小组开发，基于开源BSD协议，支持商业和非商业�
     </thead>
     <tbody>
     <tr>
-        <td><a href="https://github.com/campaign/gmu/blob/master/_src/widget/suggestion.js">suggestion</a></td>
+        <td><a href="https://github.com/campaign/gmu/blob/master/src/widget/suggestion.js">suggestion</a></td>
         <td>搜索建议</td>
     </tr>
     <tr>
-        <td><a href="https://github.com/campaign/gmu/blob/master/_src/widget/quickdelete.js">quickdelete</a></td>
+        <td><a href="https://github.com/campaign/gmu/blob/master/src/widget/quickdelete.js">quickdelete</a></td>
         <td>快速删除</td>
     </tr>
     <tr>
-        <td><a href="https://github.com/campaign/gmu/blob/master/_src/widget/tabs.js">tabs</a></td>
+        <td><a href="https://github.com/campaign/gmu/blob/master/src/widget/tabs.js">tabs</a></td>
         <td>tab切换（包括插件tabs.swipe和tabs.ajax）</td>
     </tr>
     <tr>
-        <td><a href="https://github.com/campaign/gmu/blob/master/_src/widget/slider.js">slider</a></td>
+        <td><a href="https://github.com/campaign/gmu/blob/master/src/widget/slider.js">slider</a></td>
         <td>图片轮播（包括插件slider.dynamic）</td>
     </tr>
     <tr>
-        <td><a href="https://github.com/campaign/gmu/blob/master/_src/widget/navigator.js">navigator</a></td>
+        <td><a href="https://github.com/campaign/gmu/blob/master/src/widget/navigator.js">navigator</a></td>
         <td>导航栏（包括插件navigator.iscroll）</td>
     </tr>
     <tr>
-        <td><a href="https://github.com/campaign/gmu/blob/master/_src/widget/dialog.js">dialog</a></td>
+        <td><a href="https://github.com/campaign/gmu/blob/master/src/widget/dialog.js">dialog</a></td>
         <td>对话框（包括插件dialog.position）</td>
     </tr>
     <tr>
-        <td><a href="https://github.com/campaign/gmu/blob/master/_src/widget/panel.js">panel</a></td>
+        <td><a href="https://github.com/campaign/gmu/blob/master/src/widget/panel.js">panel</a></td>
         <td>面板切换</td>
     </tr>
     <tr>
-        <td><a href="https://github.com/campaign/gmu/blob/master/_src/widget/refresh.js">refresh</a></td>
+        <td><a href="https://github.com/campaign/gmu/blob/master/src/widget/refresh.js">refresh</a></td>
         <td>点击刷新，拉动刷新（包括插件refresh.iscroll,refresh.iOS5,refresh.lite）</td>
     </tr>
     <tr>
-        <td><a href="https://github.com/campaign/gmu/blob/master/_src/widget/dropmenu.js">dropmenu</a></td>
+        <td><a href="https://github.com/campaign/gmu/blob/master/src/widget/dropmenu.js">dropmenu</a></td>
         <td>下拉框（包括插件dropmenu.iscroll）</td>
     </tr>
     <tr>
-        <td><a href="https://github.com/campaign/gmu/blob/master/_src/widget/gotop.js">gotop</a></td>
+        <td><a href="https://github.com/campaign/gmu/blob/master/src/widget/gotop.js">gotop</a></td>
         <td>返回顶部（包括插件gotop.iscroll）</td>
     </tr>
     <tr>
-        <td><a href="https://github.com/campaign/gmu/blob/master/_src/widget/progressbar.js">progressbar</a></td>
+        <td><a href="https://github.com/campaign/gmu/blob/master/src/widget/progressbar.js">progressbar</a></td>
         <td>进度条</td>
     </tr>
     <tr>
-        <td><a href="https://github.com/campaign/gmu/blob/master/_src/widget/datepicker.js">datepicker</a></td>
+        <td><a href="https://github.com/campaign/gmu/blob/master/src/widget/datepicker.js">datepicker</a></td>
         <td>日历</td>
     </tr>
     <tr>
-        <td><a href="https://github.com/campaign/gmu/blob/master/_src/widget/button.js">button</a></td>
+        <td><a href="https://github.com/campaign/gmu/blob/master/src/widget/button.js">button</a></td>
         <td>按钮（包括插件button.input）</td>
     </tr>
     </tbody>
@@ -111,6 +111,42 @@ GMU由百度GMU小组开发，基于开源BSD协议，支持商业和非商业�
 
 ###版本说明###
 1. 2.0.3，基于[zepto 1.0rc1](http://zeptojs.com/)开发，包括14个通用UI组件及各组件相关插件   **latest version**
+
+###命令行工具###
+命令行工具提供代码打包，[规范](https://github.com/gmuteam/jsbint/blob/master/standard.md)检测和生成文档功能。命令行工具基于node环境开发，所以需要自行安装node工具。
+
+在使用前需要安装依赖，`npm install`，然后通过`node build`来查看任务
+
+    Usage: build [options] [command]
+
+      Commands:
+
+        dist                   合并代码并采用uglify压缩代码
+        doc                    生成静态API文档
+        fis                    生成fis包
+        jshint                 规范检测工具
+
+      Options:
+
+        -h, --help                output usage information
+        -s, --silent              安静模式，不输出任何调试信息
+        -X, --exclude <files...>  在打包GMU的时候，用来过滤部分文件。
+        -t, --theme <name>        在打包GMU的时候，用来指定打包什么主题。
+
+####1. 打包代码####
+* `node build dist` 合并并压缩zepto/gmu所有代码
+* `node build dist widget/button.js` 只打包button组件
+* `node build dist core/**.js -X "core/iscroll.js"` 打包所有core的js，排除iscroll文件
+
+####2. 代码规范检测####
+gmu所有的代码要求通过[此内定代码规范](https://github.com/gmuteam/jsbint/blob/master/standard.md), 通过以下命令可以得到检测结果
+* `node build jshint` 检测所有src下js代码，将结果打印在控制台
+* `node build jshint src/widget/button.js` 只检测button.js文件
+
+####3. 生成文档####
+通过以下命令可以在doc目录下生成静态文档，也可以[在线查看](http://gmu.baidu.com/doc);
+* `node build doc`
+
 
 ###反馈bug###
 如果您有任何关于GMU或移动前端开发中的问题，可以在QQ群中讨论，也可以通过[git issue](https://github.com/campaign/gmu/issues)给我们反馈bug，我们会尽快解决。
