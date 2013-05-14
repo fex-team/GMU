@@ -135,7 +135,7 @@ foreach($items as $item) {
     copyDir($templateDir.'/'.$item, $outputDir.'/'.$item);
 }
 
-echo "生成API文档成功";
+echo "✓ 生成API文档成功\n";
 
 //清空文件夹
 function emptyDir($dir, $includeSelf = false){
