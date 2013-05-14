@@ -4,7 +4,7 @@
  * @name Gotop － iscroll插件
  * @short Gotop.iscroll
  * @desc <qrcode align="right" title="Live Demo">../gmu/_examples/widget/gotop/gotop_iscroll.html</qrcode>
- * @import core/zepto.iscroll.js, widget/gotop.js
+ * @import core/iscroll.js, widget/gotop.js
  */
 (function($, undefined) {
     /**

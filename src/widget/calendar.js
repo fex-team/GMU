@@ -3,7 +3,7 @@
  * @name Calendar
  * @desc <qrcode align="right" title="Live Demo">../gmu/_examples/widget/calendar/calendar.html</qrcode>
  * 日历组件, 可以用来给一容器生成日历。
- * @import core/touch.js, core/zepto.ui.js, core/zepto.highlight.js
+ * @import core/touch.js, core/ui.js, core/highlight.js
  */
 (function($, undefined) {
     var monthNames = ["01月", "02月", "03月", "04月", "05月", "06月",

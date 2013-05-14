@@ -3,7 +3,7 @@
  * @name Dialog.position
  * @desc <qrcode align="right" title="Live Demo">../gmu/_examples/widget/dialog/dialog_position.html</qrcode>
  * @short Dialog.position
- * @import widget/dialog.js, core/zepto.position.js
+ * @import widget/dialog.js, core/position.js
  */
 (function ($, undefined) {
     /**

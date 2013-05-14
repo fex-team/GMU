@@ -4,7 +4,7 @@
  * @name Navigator
  * @desc <qrcode align="right" title="Live Demo">../gmu/_examples/webapp/navigator/tab.html</qrcode>
  * 导航栏组件
- * @import core/zepto.ui.js
+ * @import core/ui.js
  */
 
 (function ($, undefined) {

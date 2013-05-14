@@ -3,7 +3,7 @@
  * @name Dialog
  * @desc <qrcode align="right" title="Live Demo">../gmu/_examples/widget/dialog/dialog.html</qrcode>
  * 弹出框组件
- * @import core/zepto.ui.js, core/zepto.highlight.js
+ * @import core/ui.js, core/highlight.js
  */
 (function($, undefined) {
     var tpl = {

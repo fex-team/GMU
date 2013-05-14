@@ -18,8 +18,8 @@ require_once "phpqrcode.php";
 $baseDir = dirname(dirname(dirname(__FILE__)));
 
 
-$zeptoDir = $baseDir . "/_src/core/zepto";
-$gmuDir = $baseDir . "/_src";
+$zeptoDir = $baseDir . "/src/zeptodoc";
+$gmuDir = $baseDir . "/src";
 $templateDir = $baseDir."/build/doc/template";
 $outputDir = $baseDir."/doc";
 
@@ -34,24 +34,25 @@ $zeptoDoc = new JsDoc($zeptoDir);
 $zeptoDoc->setData('name', 'Zepto.js');
 $zeptoDoc->setData('title', 'Zepto API');
 $zeptoDoc->setData('desc', 'Zepto是一个轻量级的针对现代浏览器的JS库，兼容jQuery用法');
-$zeptoDoc->setOrder('*zepto.doc.js
-            *zepto.doc.event.js
-            *zepto.doc.ajax.js
-            *zepto.doc.effect.js
-            *zepto.doc.touch.js
+$zeptoDoc->setOrder('core.js
+            event.js
+            ajax.js
+            effect.js
+            touch.js
+            form.js
             ');
 
 
-$gmuDoc = new JsDoc($gmuDir, array('core/zepto/*', 'core/zepto.fx.js'), true);
+$gmuDoc = new JsDoc($gmuDir, array('core/zepto/*', 'core/fx.js'), true);
 $gmuDoc->setData('name', 'GMU 新版API');
 $gmuDoc->setData('title', 'GMU 新版API');
 $gmuDoc->setOrder('
-            core/zepto.extend.js
-            core/zepto.ui.js
-            core/zepto.highlight.js
-            core/zepto.fix.js
-            core/zepto.iscroll.js
-            core/zepto.imglazyload.js
+            core/extend.js
+            core/ui.js
+            core/highlight.js
+            core/fix.js
+            core/iscroll.js
+            core/imglazyload.js
             widget/suggestion.js
             widget/quickdelete.js
             widget/appframe.js
@@ -134,7 +135,7 @@ foreach($items as $item) {
     copyDir($templateDir.'/'.$item, $outputDir.'/'.$item);
 }
 
-echo "生成API文档成功";
+echo "✓ 生成API文档成功\n";
 
 //清空文件夹
 function emptyDir($dir, $includeSelf = false){

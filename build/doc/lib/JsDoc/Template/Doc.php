@@ -183,7 +183,7 @@ class JsDoc_Template_Doc extends JsDoc_Template
     protected function _beforeRender()
     {
         $this->_fileLinks = array(
-            'core/zepto.js' => array(
+            'zepto.js' => array(
                 'link' => '#zeptojs',
                 'text' => 'Zepto',
                 'title' => 'Zepto',
