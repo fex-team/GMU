@@ -77,16 +77,26 @@
     "yui"           : false,    // Yahoo User Interface
 
     // Legacy
-    "nomen"         : true,     // true: Prohibit dangling `_` in variables
+    "nomen"         : false,     // true: Prohibit dangling `_` in variables
     "onevar"        : true,     // true: Allow only one `var` statement per function
     "passfail"      : false,    // true: Stop on first error
-    "white"         : false,    // true: Check against strict whitespace and indentation rules
+    "white"         : true,    // true: Check against strict whitespace and indentation rules
 
     // Custom Globals
     "predef"        : [ ],       // additional predefined global variables
+    "withstmt"    : false, // 不使用width
 
     // new options in jsbint
     "zepto" : true,
     "assignvarfirst" : true,  // 赋值的变量应该放在非赋值的前面
-    "varnewline": true // 变量申明，要求每个变量独占一行
+    "varnewline": true, // 变量申明，要求每个变量独占一行
+    "strictchain": true, // 严格的链式调用，查看规范1-5-1。
+    "strictindent": true, // 严格的缩进，查看规范1-5-2。
+    "operatorend": true, // 当断行是，操作符应该保留在右边
+    "strictlinebreak": true, // 每个区块开始都要有个空行，每个注释前面需要空行 else/catch/while不允许新行
+    "assignthisto"    : "me", //统一将this赋值给me。
+    "assignexceptionto"    : "ex", //统一将this赋值给me。
+    "strictcomment"    : true, // 严格的注释
+    "fileoverview"    : true, // 检测文件注释
+    "novoid"    : true // 不使用void
 }
