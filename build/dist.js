@@ -208,7 +208,7 @@
                         {cwd: cssPrefix})
                     .forEach(function (item) {
                         var m = item.match(/\.([^\.]*)\.css$/i);
-                        m && (css[m[1]] = item );
+                        m && ~opt.aviableThemes.indexOf(m[1]) && (css[m[1]] = item );
                     });
 
                 // 读取文件内容中对css的依赖 格式为：@importCSS loading.css
