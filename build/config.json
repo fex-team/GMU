@@ -23,7 +23,7 @@
 
     "jshint": {
         "core": {
-            "src": ["_src/core/**.js", "_src/widget/**.js"],
+            "src": ["src/core/**.js", "src/widget/**.js"],
             "config": ".jshintrc"
         }
     }
