@@ -1,6 +1,6 @@
 /**
  *  @file 基于Zepto的位置设置获取组件
- *  @name position
+ *  @name Position
  *  @desc 定位插件
  *  @import core/extend.js
  */

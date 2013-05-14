@@ -1,7 +1,7 @@
 /**
  * @file 所有UI组件的基类，通过它可以简单的快速的创建新的组件。
- * @name ui
- * @short ui
+ * @name UI
+ * @short UI
  * @desc 所有UI组件的基类，通过它可以简单的快速的创建新的组件。
  * @import zepto.js, core/extend.js
  */
