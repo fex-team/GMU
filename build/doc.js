@@ -26,7 +26,7 @@
 
     exports.init = function(cli) {
         cli.command('doc')
-                .description('生成静态文本')
+                .description('生成静态API文档')
                 .action(run.bind(cli));
     };
 })();
