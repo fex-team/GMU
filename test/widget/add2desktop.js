@@ -181,7 +181,7 @@ if($.os.ios && canShow){
 	    var w = window.top;
         ua.loadcss(["reset.css", "widget/add2desktop/add2desktop.css"], function(){
             var s2 = w.document.createElement("script");
-            s2.src = "../../../_test/fet/bin/import.php?f=core/zepto.ui,core/zepto.extend,core/zepto.fix,core/zepto.highlight,core/zepto.iscroll,core/zepto.ui,widget/button,widget/dialog,widget/navigator,widget/add2desktop";
+            s2.src = "../../../test/fet/bin/import.php?f=core/zepto.ui,core/zepto.extend,core/zepto.fix,core/zepto.highlight,core/zepto.iscroll,core/zepto.ui,widget/button,widget/dialog,widget/navigator,widget/add2desktop";
             w.document.head.appendChild(s2);
    		    s2.onload = function(){
    		    	var html = "";

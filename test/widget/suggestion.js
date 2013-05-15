@@ -13,7 +13,7 @@ var pad = window.screen.width >= 768 && window.screen.width <= 1024;
 test('默认参数 & container & source & events', function() {
     stop();
     expect(37);
-    ua.loadcss(["reset.css", "widget/suggestion/suggestion.css", "widget/suggestion/suggestion.default.css", "../_test/widget/css/suggestion/suggestion.test.css"], function() {
+    ua.loadcss(["reset.css", "widget/suggestion/suggestion.css", "widget/suggestion/suggestion.default.css", "../test/widget/css/suggestion/suggestion.test.css"], function() {
         var sugg = $.ui.suggestion({
             container: "#sugg-input",
             source: upath + "data/suggestion.php",
