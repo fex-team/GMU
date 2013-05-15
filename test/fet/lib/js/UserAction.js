@@ -816,9 +816,9 @@ var UserAction = {
 		datadir : (function() {
 			var href = '';
 			if(location.href.indexOf("/run.do") > 0) {
-				href = location.href.split("/run.do")[0] + "/_test/fet/data/";
+				href = location.href.split("/run.do")[0] + "/test/fet/data/";
 			} else {
-				href = location.href.split("/_test/")[0] + "/_test/fet/data/";
+				href = location.href.split("/test/")[0] + "/test/fet/data/";
 			}
 			return href;
 		})(),
@@ -831,11 +831,11 @@ var UserAction = {
 					var casepath = p.split('=')[1];  //为了支持xx.xx.js类型的文件名而修改 田丽丽
 					var href = '';
 					if(location.href.indexOf("/run.do") > 0) {
-						href = location.href.split('/run.do')[0] + '/_test/'
+						href = location.href.split('/run.do')[0] + '/test/'
 						+ casepath.substring(0, casepath.lastIndexOf('/'))
 						+ '/';
 					} else {
-						href = location.href.split('/_test/')[0] + '/_test/'
+						href = location.href.split('/test/')[0] + '/test/'
 						+ casepath.substring(0, casepath.lastIndexOf('/'))
 						+ '/';
 					}
@@ -862,10 +862,10 @@ var UserAction = {
 		var srcpath = '';
 		if(location.href.indexOf("/run.do") > 0) {
 			srcpath = location.href.split("/run.do")[0]
-			+ "/_test/fet/bin/import.php";
+			+ "/test/fet/bin/import.php";
 		} else {
-			srcpath =location.href.split("/_test/")[0]
-			+ "/_test/fet/bin/import.php";
+			srcpath =location.href.split("/test/")[0]
+			+ "/test/fet/bin/import.php";
 		}
 		var param0 = src;
 		var ps = {

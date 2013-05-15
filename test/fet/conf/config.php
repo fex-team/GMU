@@ -10,11 +10,11 @@
         /**
          * 源码路径配置，会在所有位置寻找源码
          */
-        public static $srcdir = array( "../../../_src/" );
+        public static $srcdir = array( "../../../src/" );
         /**
          * 测试文件路径配置
          */
-        public static $testdir = "../../../_test/";
+        public static $testdir = "../../../test/";
 
         /**
          * 覆盖率相关源码所在路径
