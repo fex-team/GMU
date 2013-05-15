@@ -770,6 +770,9 @@
                     if( typeof result !== 'undefined' ) {
                         return false;
                     }
+                } else if( method === 'this' ) {
+                    result = instance;
+                    return false;
                 }
             });
 
