@@ -77,14 +77,20 @@ class Analysis{
             foreach(ConfigTest::$srcdir as $i=>$d){
                 if(ConfigTest::$DEBUG)
                     var_dump($d.$path);
-                if(file_exists($d.$path)){
-                    $cnt = file_get_contents($d.$path);
+
+                $filepath = $d.$path;
+                if( $path === 'zepto.js') {
+                    $filepath = dirname($d)."/dist/".$path;
+                }
+                if(file_exists($filepath)){
+                    $cnt = file_get_contents($filepath);
                     $cnt.="\n";//读取文件内容必须加个回车
                     break;
                 }
             }
             //尝试读取cov目录下的文件，如果不存在则忽略
             $covpath = ConfigTest::$covdir.$path;
+            
             if(file_exists($covpath)){
                 if(ConfigTest::$DEBUG)var_dump($covpath);
                 $covcnt = file_get_contents($covpath);

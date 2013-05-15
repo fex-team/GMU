@@ -724,44 +724,62 @@
 
     dummyStyle = null;	// for the sake of it
 
-    if (typeof exports !== 'undefined') exports.iScroll = iScroll;
-    else window.iScroll = iScroll;
+    (function( $, exports ) {
+         var _iScroll = iScroll,
+             record = (function(){
+                var data = {},
+                    id = 0,
+                    iKey = "iScroll"+(+ new Date()); //internal key.
 
-    (function($){
-        if(!$)return;
-        var orgiScroll = iScroll,
-            id = 0,
-            cacheInstance = {};
-        function createInstance(el,options){
-            var uqid = 'iscroll' + id++;
-            el.data('_iscroll_',uqid);
-            return cacheInstance[uqid] = new orgiScroll(el[0],options)
-        }
-        window.iScroll = function(el,options){
-            return createInstance($(typeof el == 'string' ? '#' + el : el),options)
+                return function( obj, val ){
+                    var dkey = obj[ iKey ] || ( obj[ iKey ] = ++id );
+
+                    typeof val !== 'undefined' ?
+                            val ? (data[ dkey ] = val) : delete data[ dkey ] :
+                            null;
+
+                    return data[ dkey ];
+                }
+             })(),
+             getiScroll;
+
+        exports.iScroll = getiScroll = function( el, options ){
+            var el = typeof el === 'string' ? docuent.getElementById( el ) : el;
+
+            return record( el ) || record( el, new _iScroll( el, options ) );
         };
+
+        // 遵循set all get first思想，根据返回值是否为非undefined来断定是否为get
         $.fn.iScroll = function(method){
-            var resultArr = [];
-            this.each(function(i,el){
-                if(typeof method == 'string'){
-                    var instance = cacheInstance[$(el).data('_iscroll_')],pro;
-                    if(instance && (pro = instance[method])){
-                        var result = $.isFunction(pro) ? pro.apply(instance, Array.prototype.slice.call(arguments,1)) : pro;
-                        if(result !== instance && result !== undefined){
-                            resultArr.push(result);
-                        }
+            var args = [].slice.call( arguments, 1),
+                opts = typeof method === 'string' ? {} : method,
+                result,
+                instance;
+
+            this.each(function( i, el ) {
+                instance = getiScroll( el, opts );
+
+                if( typeof method === 'string' &&  typeof instance[ method ] === 'function' ) {
+
+                    result = instance[ method ].apply( instance, args );
+
+                    // 如果调用了的是destroy，则解除el与instance的绑定
+                    method === 'destroy' && record( el, null );
+
+                    // 如果是getter就终端循环
+                    if( typeof result !== 'undefined' ) {
+                        return false;
                     }
-                }else{
-                    if(!$(el).data('_iscroll_'))
-                        createInstance($(el),method)
+                } else if( method === 'this' ) {
+                    result = instance;
+                    return false;
                 }
             });
 
-            return resultArr.length ? resultArr : this;
+            return result ? result : this;
         }
-    })(window.Zepto || null)
 
-
+    })( Zepto, typeof exports !== 'undefined' ? exprots: window );
 
 })(window, document);
 /**

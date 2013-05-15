@@ -59,7 +59,7 @@
     <!--</target>-->
 
     <target name="execute" depends="init,coverage,jslint">
-        <get src="http://${serverip}/${svn.project}/_test/tools/br/runall.php?ci=true--__--cov=true"
+        <get src="http://${serverip}/${svn.project}/test/tools/br/runall.php?ci=true--__--cov=true"
              dest="/tmp/${git.user}_${svn.project}.php"/>
     </target>
     <target name="getreport" depends="init,coverage,jslint,execute">
