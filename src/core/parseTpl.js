@@ -1,6 +1,6 @@
 (function($, undefined) {
     /**
-     * @desc 解析模版
+     * @desc 解析模版tpl
      * @grammar $.parseTpl(str, data)  ⇒ string
      * @name $.parseTpl
      * @example var str = "<p><%=name%></p>",
@@ -16,5 +16,4 @@
         var func = new Function('obj', tmpl);
         return data ? func(data) : func;
     }
-
 })(Zepto)
