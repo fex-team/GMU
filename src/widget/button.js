@@ -1,7 +1,7 @@
 /**
  * @file 按钮组件
  * @name Button
- * @desc <qrcode align="right" title="Live Demo">../gmu/_examples/widget/button/button.html</qrcode>
+ * @desc <qrcode align="right" title="Live Demo">../gmu/examples/widget/button/button.html</qrcode>
  * 按钮组件
  * @import core/extend.js, core/ui.js, core/highlight.js
  * @importCSS icons.css
@@ -42,9 +42,9 @@
      * </code>
      *
      * **Demo**
-     * <codepreview href="../gmu/_examples/widget/button/button.html">
-     * ../gmu/_examples/widget/button/button.html
-     * ../gmu/_examples/widget/button/button_demo.css
+     * <codepreview href="../examples/widget/button/button.html">
+     * ../gmu/examples/widget/button/button.html
+     * ../gmu/examples/widget/button/button_demo.css
      * </codepreview>
      */
     $.ui.define('button', {

@@ -1,7 +1,7 @@
 /**
  * @file 下拉菜单组件
  * @name Dropmenu
- * @desc <qrcode align="right" title="Live Demo">../gmu/_examples/widget/dropmenu/dropmenu.html</qrcode>
+ * @desc <qrcode align="right" title="Live Demo">../gmu/examples/widget/dropmenu/dropmenu.html</qrcode>
  * 下拉菜单组件
  * @import core/ui.js, core/highlight.js
  * @importCSS icons.css
@@ -60,8 +60,8 @@
      * - ''events'' 所有[Trigger Events](#dropmenu_triggerevents)中提及的事件都可以在此设置Hander, 如init: function(e){}。
      *
      * **Demo**
-     * <codepreview href="../gmu/_examples/widget/dropmenu/dropmenu.html">
-     * ../gmu/_examples/widget/dropmenu/dropmenu.html
+     * <codepreview href="../examples/widget/dropmenu/dropmenu.html">
+     * ../gmu/examples/widget/dropmenu/dropmenu.html
      * </codepreview>
      */
     $.ui.define('dropmenu', {

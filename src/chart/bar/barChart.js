@@ -1,7 +1,7 @@
 /**
  * @file
  * @name BarChart
- * @desc <qrcode align="right" title="Live Demo">../gmu/_examples/chart/barchart/barchart_demo.html</qrcode>
+ * @desc <qrcode align="right" title="Live Demo">../gmu/examples/chart/barchart/barchart_demo.html</qrcode>
  * 柱状图
  * @import zepto.js, core/extend.js, core/ui.js, chart/base/Chart.js
  */
@@ -27,9 +27,9 @@
      * - ''gridYStep''          {Number}: (可选)纵轴间隔数。TODO...
      *
      * **Demo**
-     * <codepreview href="../gmu/_examples/chart/barchart/barchart_demo.html">
-     * ../gmu/_examples/chart/barchart/barchart_demo.html
-     * ../gmu/_examples/chart/barchart/barChart.css
+     * <codepreview href="../examples/chart/barchart/barchart_demo.html">
+     * ../gmu/examples/chart/barchart/barchart_demo.html
+     * ../gmu/examples/chart/barchart/barChart.css
      * </codepreview>
      */
      $.ui.define("BarChart", {

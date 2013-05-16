@@ -1,7 +1,7 @@
 /**
  * @file
  * @name LineChart
- * @desc <qrcode align="right" title="Live Demo">../gmu/_examples/chart/linechart/linechart.html</qrcode>
+ * @desc <qrcode align="right" title="Live Demo">../gmu/examples/chart/linechart/linechart.html</qrcode>
  * 折线图
  * @import zepto.js, core/extend.js, core/ui.js, chart/base/Chart.js
  */
@@ -32,9 +32,9 @@
      * - ''touchTimeout''       {Number}  手指按下多少毫秒后进入拖拽模式。
      * 
      * **Demo**
-     * <codepreview href="../gmu/_examples/chart/linechart/linechart_demo.html">
-     * ../gmu/_examples/chart/linechart/linchart_demo.html
-     * ../gmu/_examples/chart/linechart/lineChart.css
+     * <codepreview href="../examples/chart/linechart/linechart_demo.html">
+     * ../gmu/examples/chart/linechart/linchart_demo.html
+     * ../gmu/examples/chart/linechart/lineChart.css
      * </codepreview>
      */
     $.ui.define("LineChart", {
