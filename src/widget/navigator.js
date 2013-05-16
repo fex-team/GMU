@@ -2,7 +2,7 @@
 /**
  * @file 导航栏组件
  * @name Navigator
- * @desc <qrcode align="right" title="Live Demo">../gmu/_examples/webapp/navigator/tab.html</qrcode>
+ * @desc <qrcode align="right" title="Live Demo">../gmu/examples/webapp/navigator/tab.html</qrcode>
  * 导航栏组件
  * @import core/ui.js
  */
@@ -41,8 +41,8 @@
      * </div>
      * </code>
      * **Demo**
-     * <codepreview href="../gmu/_examples/widget/navigator/tab.html">
-     * ../gmu/_examples/widget/navigator/tab.html
+     * <codepreview href="../examples/widget/navigator/tab.html">
+     * ../gmu/examples/widget/navigator/tab.html
      * </codepreview>
      */
     var tmpl = '<% for (var i=0, len=left.length; i<len; i++) { %>'

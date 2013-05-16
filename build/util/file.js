@@ -134,9 +134,8 @@
 		return fs.writeFileSync(filename, content, file_encoding || FILE_ENCODING);
 	}
 
-    function loadConfig(src) {
-        var content = read(src),
-            id = 0,
+    function removeComments( content ) {
+        var id = 0,
             protect = {};
 
         //js不支持平衡组，所以只能先把引号里面的内容先保护好
@@ -157,18 +156,23 @@
                 return protect[m1];
             });
 
-        return JSON.parse(content);
+        return content;
+    }
+
+    function loadConfig( src ) {
+        return JSON.parse( removeComments( read( src ) ) );
     }
 
 	//expose
-    exports.concat       = concat;
-    exports.minify       = minify;
-    exports.mkdir        = mkdir;
-    exports.rmdir        = rmdir;
-    exports.caculateSize = caculateSize;
-    exports.exists       = exists;
-    exports.read         = read;
-    exports.write        = write;
-    exports.loadConfig   = loadConfig;
+    exports.concat         = concat;
+    exports.minify         = minify;
+    exports.mkdir          = mkdir;
+    exports.rmdir          = rmdir;
+    exports.caculateSize   = caculateSize;
+    exports.exists         = exists;
+    exports.read           = read;
+    exports.write          = write;
+    exports.loadConfig     = loadConfig;
+    exports.removeComments = removeComments;
 
 })();

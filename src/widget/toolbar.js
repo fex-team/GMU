@@ -2,7 +2,7 @@
 /**
  * @file 工具栏组件
  * @name Toolbar
- * @desc <qrcode align="right" title="Live Demo">../gmu/_examples/widget/toolbar/toolbar.html</qrcode>
+ * @desc <qrcode align="right" title="Live Demo">../gmu/examples/widget/toolbar/toolbar.html</qrcode>
  * 工具栏组件
  * @import core/extend.js, core/ui.js, core/fix.js, core/highlight.js
  */
@@ -21,9 +21,9 @@
      * - ''btns'' {Array}: (可选)右侧要添加的按钮(Dom节点)
      * - ''useFix'' {Boolean}: (可选)是否使用固顶效果(toolbar 不在页面顶端)
      * **Demo**
-     * <codepreview href="../gmu/_examples/widget/toolbar/toolbar.html">
-     * ../gmu/_examples/widget/toolbar/toolbar.html
-     * ../gmu/_examples/widget/toolbar/toolbar_demo.css
+     * <codepreview href="../examples/widget/toolbar/toolbar.html">
+     * ../gmu/examples/widget/toolbar/toolbar.html
+     * ../gmu/examples/widget/toolbar/toolbar_demo.css
      * </codepreview>
      */
     $.ui.define("toolbar", {

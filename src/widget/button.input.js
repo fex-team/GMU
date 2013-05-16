@@ -2,7 +2,7 @@
  * @file Button － 表单插件
  * @name Button － 表单插件
  * @short Button.input
- * @desc <qrcode align="right" title="Live Demo">../gmu/_examples/widget/button/button_input.html</qrcode>
+ * @desc <qrcode align="right" title="Live Demo">../gmu/examples/widget/button/button_input.html</qrcode>
  * button组件下的表单插件，用来扩展按钮类型，在没有插件的情况，只支持button，加此插件后，可以支持以下类型
  * - ''checkbox'' 复选按钮
  * - ''radio'' 单选按钮
@@ -51,9 +51,9 @@
  * </code>
  *
  * **Demo**
- * <codepreview href="../gmu/_examples/widget/button/button_input.html">
- * ../gmu/_examples/widget/button/button_input.html
- * ../gmu/_examples/widget/button/button_demo.css
+ * <codepreview href="../examples/widget/button/button_input.html">
+ * ../gmu/examples/widget/button/button_input.html
+ * ../gmu/examples/widget/button/button_demo.css
  * </codepreview>
  *
  *

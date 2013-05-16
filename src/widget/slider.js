@@ -2,7 +2,7 @@
 /**
  * @file 图片轮播组件
  * @name Slider
- * @desc <qrcode align="right" title="Live Demo">../gmu/_examples/widget/slider/slider.html</qrcode>
+ * @desc <qrcode align="right" title="Live Demo">../gmu/examples/widget/slider/slider.html</qrcode>
  * 图片轮播组件
  * @import core/touch.js, core/extend.js, core/ui.js
  */
@@ -32,8 +32,8 @@
      * - ''slideend'' {Function}: (可选)页面切换完成(滑动完成)时执行的函数,第1个参数为Event对象,第2个参数为滑动后的page页码
      *
      * **Demo**
-     * <codepreview href="../gmu/_examples/widget/slider/slider.html">
-     * ../gmu/_examples/widget/slider/slider.html
+     * <codepreview href="../examples/widget/slider/slider.html">
+     * ../gmu/examples/widget/slider/slider.html
      * </codepreview>
      */
     $.ui.define('slider', {

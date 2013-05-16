@@ -1,6 +1,6 @@
 /**
  * @file panel组件
- * @desc <qrcode align="right" title="Live Demo">../gmu/_examples/widget/panel/panel_position.html</qrcode>
+ * @desc <qrcode align="right" title="Live Demo">../gmu/examples/widget/panel/panel_position.html</qrcode>
  * 面板组件
  * @name Panel
  * @import core/touch.js, core/ui.js
@@ -29,8 +29,8 @@
      * </code>
      *
      * **Demo**
-     * <codepreview href="../gmu/_examples/widget/panel/panel.html">
-     * ../gmu/_examples/widget/panel/panel.html
+     * <codepreview href="../examples/widget/panel/panel.html">
+     * ../gmu/examples/widget/panel/panel.html
      * </codepreview>
      */
 

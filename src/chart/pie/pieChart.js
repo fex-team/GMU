@@ -1,7 +1,7 @@
 /**
  * @file
  * @name PieChart
- * @desc <qrcode align="right" title="Live Demo">../gmu/_examples/chart/piechart/piechart_demo.html</qrcode>
+ * @desc <qrcode align="right" title="Live Demo">../gmu/examples/chart/piechart/piechart_demo.html</qrcode>
  * 柱状图
  * @import zepto.js, core/extend.js, core/ui.js, chart/base/Chart.js
  */
