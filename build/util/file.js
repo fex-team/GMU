@@ -148,7 +148,17 @@
         //去掉注释
         content = content
             .replace(/\s*\/\/.*$/gm, '')
-            .replace(/\/\*[\s\S]*?\*\//g, '');
+            .replace(/\/\*[\s\S]*?\*\//g, '')
+
+            // 删除空行中的空白字符
+            .replace(/^ +$/gm, '')
+
+            // 删除首尾的空行
+            .replace(/^\n+/, '')
+            .replace(/^\n+/, '')
+
+            // 删除多余的空行
+            .replace(/\n{2,}/g, '\n');
 
         //还原受保护的内容
         content = content

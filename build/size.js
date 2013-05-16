@@ -44,7 +44,7 @@
                         file.write(tmpFile, file.removeComments(file.read(filename)));
                         row.push( file.caculateSize( tmpFile ) );
 
-                        file.write(tmpFile, file.minify(tmpFile));
+                        file.write(tmpFile, file.minify(filename));
                         row.push( file.caculateSize( tmpFile ) );
 
                         return gzfile(tmpFile, tmpFile2)
