@@ -8,8 +8,8 @@
  * selector将会被认为是可赋值对象，当确认按钮点击后，所选的日期会赋值给selector。
  *
  * **Demo**
- * <codepreview href="../gmu/_examples/widget/calendar/calendar_picker.html">
- * ../gmu/_examples/widget/calendar/calendar_picker.html
+ * <codepreview href="../examples/widget/calendar/calendar_picker.html">
+ * ../gmu/examples/widget/calendar/calendar_picker.html
  * </codepreview>
  */
 (function ($) {

@@ -1,7 +1,7 @@
 /**
  * @file 日历组件
  * @name Calendar
- * @desc <qrcode align="right" title="Live Demo">../gmu/_examples/widget/calendar/calendar.html</qrcode>
+ * @desc <qrcode align="right" title="Live Demo">../gmu/examples/widget/calendar/calendar.html</qrcode>
  * 日历组件, 可以用来给一容器生成日历。
  * @import core/touch.js, core/ui.js, core/highlight.js
  */
@@ -52,8 +52,8 @@
      * - ''events'' 所有[Trigger Events](#calendar_triggerevents)中提及的事件都可以在此设置Hander, 如init: function(e){}。
      *
      * **Demo**
-     * <codepreview href="../gmu/_examples/widget/calendar/calendar.html">
-     * ../gmu/_examples/widget/calendar/calendar.html
+     * <codepreview href="../examples/widget/calendar/calendar.html">
+     * ../gmu/examples/widget/calendar/calendar.html
      * </codepreview>
      */
     $.ui.define('calendar', {

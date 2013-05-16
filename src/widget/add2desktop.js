@@ -2,7 +2,7 @@
 /**
  * @file 生成桌面图标组件
  * @name Add2desktop
- * @desc <qrcode align="right" title="Live Demo">../gmu/_examples/widget/add2desktop/add2desktop.html</qrcode>
+ * @desc <qrcode align="right" title="Live Demo">../gmu/examples/widget/add2desktop/add2desktop.html</qrcode>
  * 在iOS中将页面添加为桌面图标(不支持Android系统)
  * @import core/extend.js, core/ui.js, core/fix.js
  */
@@ -23,8 +23,8 @@
      * - ''beforeshow'' {Function}: (可选) 显示前触发的事件，调用e.preventDefault()可以阻止显示
      * - ''afterhide'' {Function}: (可选) 隐藏后触发的事件，可以在这里写LocalStorage的值
      * **Demo**
-     * <codepreview href="../gmu/_examples/widget/add2desktop/add2desktop.html">
-     * ../gmu/_examples/widget/add2desktop/add2desktop.html
+     * <codepreview href="../examples/widget/add2desktop/add2desktop.html">
+     * ../gmu/examples/widget/add2desktop/add2desktop.html
      * </codepreview>
      */
     $.ui.define('add2desktop', {

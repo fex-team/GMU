@@ -2,7 +2,7 @@
  * @file Tabs - 左右滑动手势插件
  * @name Tabs - 左右滑动手势插件
  * @short Tabs.swipe
- * @desc <qrcode align="right" title="Live Demo">../gmu/_examples/widget/tabs/tabs.html</qrcode>
+ * @desc <qrcode align="right" title="Live Demo">../gmu/examples/widget/tabs/tabs.html</qrcode>
  * @import widget/tabs.js
  */
 (function ($, undefined) {
