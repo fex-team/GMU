@@ -1,14 +1,20 @@
 /**
- * @name Trigger Events
- * @theme event
- * @desc 扩展的事件
- * - ***scrollStop*** : 在document上派生的scrollStop事件上，scroll停下来时触发, 考虑前进或者后退后scroll事件不触发情况。
- * @example $(document).on('scrollStop', function () {        //scroll停下来时显示scrollStop
- *     console.log('scrollStop');
- * });
+ * @file 滚动停止事件
+ * @name scrollStop
+ * @short scrollStop
+ * @desc 滚动停止事件
+ * @import zepto.js
  */
 
 (function ($, win) {
+    /**
+     * @name scrollStop
+     * @desc 扩展的事件，滚动停止事件
+     * - ***scrollStop*** : 在document上派生的scrollStop事件上，scroll停下来时触发, 考虑前进或者后退后scroll事件不触发情况。
+     * @example $(document).on('scrollStop', function () {        //scroll停下来时显示scrollStop
+     *     console.log('scrollStop');
+     * });
+     */
 
     function registerScrollStop() {
         $(win).on('scroll', $.debounce(80, function () {

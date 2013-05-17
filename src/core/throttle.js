@@ -1,26 +1,34 @@
 /**
- * @desc 减少执行频率, 多次调用，在指定的时间内，只会执行一次。
- * **options:**
- * - ***delay***: 延时时间
- * - ***fn***: 被稀释的方法
- * - ***debounce_mode***: 是否开启防震动模式, true:start, false:end
- *
- * <code type="text">||||||||||||||||||||||||| (空闲) |||||||||||||||||||||||||
- * X    X    X    X    X    X      X    X    X    X    X    X</code>
- *
- * @grammar $.throttle(delay, fn) ⇒ function
- * @name $.throttle
- * @example var touchmoveHander = function(){
+ * @file 稀释方法
+ * @name support
+ * @short support
+ * @desc 减少对方法、事件的执行频率，多次调用，在指定的时间内只会执行一次
+ * @import zepto.js
+ */
+
+(function ($) {
+    /**
+     * @desc 减少执行频率, 多次调用，在指定的时间内，只会执行一次。
+     * **options:**
+     * - ***delay***: 延时时间
+     * - ***fn***: 被稀释的方法
+     * - ***debounce_mode***: 是否开启防震动模式, true:start, false:end
+     *
+     * <code type="text">||||||||||||||||||||||||| (空闲) |||||||||||||||||||||||||
+     * X    X    X    X    X    X      X    X    X    X    X    X</code>
+     *
+     * @grammar $.throttle(delay, fn) ⇒ function
+     * @name $.throttle
+     * @example var touchmoveHander = function(){
          *     //....
          * }
- * //绑定事件
- * $(document).bind('touchmove', $.throttle(250, touchmoveHander));//频繁滚动，每250ms，执行一次touchmoveHandler
- *
- * //解绑事件
- * $(document).unbind('touchmove', touchmoveHander);//注意这里面unbind还是touchmoveHander,而不是$.throttle返回的function, 当然unbind那个也是一样的效果
- *
- */
-(function ($) {
+     * //绑定事件
+     * $(document).bind('touchmove', $.throttle(250, touchmoveHander));//频繁滚动，每250ms，执行一次touchmoveHandler
+     *
+     * //解绑事件
+     * $(document).unbind('touchmove', touchmoveHander);//注意这里面unbind还是touchmoveHander,而不是$.throttle返回的function, 当然unbind那个也是一样的效果
+     *
+     */
     $.extend($, {
         throttle: function(delay, fn, debounce_mode) {
             var last = 0,
