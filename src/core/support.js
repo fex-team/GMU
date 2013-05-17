@@ -1,20 +1,28 @@
 /**
- * @name $.support
- * @desc 检测设备对某些属性或方法的支持情况
- *
- * **可用属性**
- * - ***orientation*** 检测是否支持转屏事件，UC中存在orientaion，但转屏不会触发该事件，故UC属于不支持转屏事件(iOS 4上qq, chrome都有这个现象)
- * - ***touch*** 检测是否支持touch相关事件
- * - ***cssTransitions*** 检测是否支持css3的transition
- * - ***has3d*** 检测是否支持translate3d的硬件加速
- *
- * @example
- * if ($.support.has3d) {      //在支持3d的设备上使用
- *     console.log('you can use transtion3d');
- * }
+ * @file 支持检测
+ * @name support
+ * @short support
+ * @desc 常用方法、属性支持性检测
+ * @import zepto.js
  */
 
 (function($, undefined) {
+    /**
+     * @name $.support
+     * @desc 检测设备对某些属性或方法的支持情况
+     *
+     * **可用属性**
+     * - ***orientation*** 检测是否支持转屏事件，UC中存在orientaion，但转屏不会触发该事件，故UC属于不支持转屏事件(iOS 4上qq, chrome都有这个现象)
+     * - ***touch*** 检测是否支持touch相关事件
+     * - ***cssTransitions*** 检测是否支持css3的transition
+     * - ***has3d*** 检测是否支持translate3d的硬件加速
+     *
+     * @example
+     * if ($.support.has3d) {      //在支持3d的设备上使用
+     *     console.log('you can use transtion3d');
+     * }
+     */
+
     //检测是否支持position: fixed
     function detectPosFixed () {
 

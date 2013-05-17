@@ -1,20 +1,26 @@
 /**
- * @name $.browser
+ * @file 平台特性检测
+ * @name detect
+ * @short detect
  * @desc 扩展zepto中对browser的检测
- *
- * **可用属性**
- * - ***qq*** 检测qq浏览器
- * - ***chrome*** 检测chrome浏览器
- * - ***uc*** 检测uc浏览器
- * - ***version*** 检测浏览器版本
- *
- * @example
- * if ($.browser.qq) {      //在qq浏览器上打出此log
- *     console.log('this is qq browser');
- * }
+ * @import zepto.js
  */
 
 (function($, navigator) {
+    /**
+     * @name $.browser
+     * @desc 扩展zepto中对browser的检测
+     *
+     * **可用属性**
+     * - ***qq*** 检测qq浏览器
+     * - ***uc*** 检测uc浏览器
+     * - ***version*** 检测浏览器版本
+     *
+     * @example
+     * if ($.browser.qq) {      //在qq浏览器上打出此log
+     *     console.log('this is qq browser');
+     * }
+     */
     var ua = navigator.userAgent,
         na = navigator.appVersion,
         br = $.browser;

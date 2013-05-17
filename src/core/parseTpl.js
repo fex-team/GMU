@@ -1,3 +1,10 @@
+/**
+ * @file 模板解析
+ * @name parseTpl
+ * @short parseTpl
+ * @import zepto.js
+ */
+
 (function($, undefined) {
     /**
      * @desc 解析模版tpl
