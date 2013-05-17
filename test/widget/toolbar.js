@@ -181,7 +181,7 @@ test('window scroll(fix)', function() {
     var w = window.top;
     ua.loadcss(["reset.css", "widget/toolbar/toolbar.css", "widget/toolbar/toolbar.default.css"], function(){
         var s2 = w.document.createElement("script");
-        s2.src = "../../../_test/fet/bin/import.php?f=core/zepto.ui,core/zepto.extend,core/zepto.fix,core/zepto.highlight,core/zepto.iscroll,core/zepto.ui,widget/toolbar";
+        s2.src = "../../../test/fet/bin/import.php?f=core/zepto.ui,core/zepto.extend,core/zepto.fix,core/zepto.highlight,core/zepto.iscroll,core/zepto.ui,widget/toolbar";
         w.document.head.appendChild(s2);
         s2.onload = function(){
             var html = "";
@@ -233,7 +233,7 @@ if((!$.os.phone && !$.os.tablet)||($.os.ios && parseFloat($.os.version) > 5)){
 	    var w = window.top;
 	    ua.loadcss(["reset.css", "widget/toolbar/toolbar.css", "widget/toolbar/toolbar.default.css"], function(){
 	        var s2 = w.document.createElement("script");
-	        s2.src = "../../../_test/fet/bin/import.php?f=core/zepto.ui,core/zepto.extend,core/zepto.fix,core/zepto.highlight,core/zepto.iscroll,core/zepto.ui,widget/toolbar";
+	        s2.src = "../../../test/fet/bin/import.php?f=core/zepto.ui,core/zepto.extend,core/zepto.fix,core/zepto.highlight,core/zepto.iscroll,core/zepto.ui,widget/toolbar";
 	        w.document.head.appendChild(s2);
 	        s2.onload = function(){
 	        	var h = w.document.body.clientHeight;

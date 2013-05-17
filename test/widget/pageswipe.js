@@ -14,7 +14,7 @@ module('webapp.pageswipe', {
 test("setup, 默认参数", function() {
     expect(8);
     stop();
-    ua.loadcss(["reset.css", "widget/pageswipe/pageswipe.css","../_test/widget/css/pageswipe/pageswipe_demo.css"], function() {
+    ua.loadcss(["reset.css", "widget/pageswipe/pageswipe.css","../test/widget/css/pageswipe/pageswipe_demo.css"], function() {
         var pageswipe = $('#pageswipe').pageswipe().pageswipe('this');
         
         equals(pageswipe._data.iconWidth, 55, "The data is right");
@@ -138,7 +138,7 @@ test("屏幕旋转", function() {
     stop();
     ua.frameExt(function(w, f){
 		var me = this;
-    	ua.loadcss(["reset.css", "widget/pageswipe/pageswipe.css","../_test/widget/css/pageswipe/pageswipe_demo.css"], function() {
+    	ua.loadcss(["reset.css", "widget/pageswipe/pageswipe.css","../test/widget/css/pageswipe/pageswipe_demo.css"], function() {
 	    	$("#toolbar, #pageswipe").remove();
 	    	w.$('body').append('<div id="toolbar"><div><span class="switch">切换</span></div></div><div id="pageswipe"><div><p>内容部分</p></div><div>索引</div></div> ');
 	    	
