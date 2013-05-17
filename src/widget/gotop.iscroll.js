@@ -3,7 +3,7 @@
  * @file Gotop - 内滚插件
  * @name Gotop － iscroll插件
  * @short Gotop.iscroll
- * @desc <qrcode align="right" title="Live Demo">../gmu/_examples/widget/gotop/gotop_iscroll.html</qrcode>
+ * @desc <qrcode align="right" title="Live Demo">../gmu/examples/widget/gotop/gotop_iscroll.html</qrcode>
  * @import core/iscroll.js, widget/gotop.js
  */
 (function($, undefined) {
@@ -21,9 +21,9 @@
      * </code>
      * @desc
      * **Demo**
-     * <codepreview href="../gmu/_examples/widget/gotop/gotop_iscroll.html">
-     * ../gmu/_examples/widget/gotop/gotop_iscroll.html
-     * ../gmu/_examples/widget/gotop/gotop_demo.css
+     * <codepreview href="../examples/widget/gotop/gotop_iscroll.html">
+     * ../gmu/examples/widget/gotop/gotop_iscroll.html
+     * ../gmu/examples/widget/gotop/gotop_demo.css
      * </codepreview>
      */
     $.ui.gotop.register(function(){

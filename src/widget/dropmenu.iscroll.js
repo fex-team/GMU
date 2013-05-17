@@ -1,7 +1,7 @@
 /**
  * @file Dropmenu － 内滚插件
  * @name Dropmenu － 内滚插件
- * @desc <qrcode align="right" title="Live Demo">../gmu/_examples/widget/dropmenu/dropmenu_iscroll.html</qrcode>
+ * @desc <qrcode align="right" title="Live Demo">../gmu/examples/widget/dropmenu/dropmenu_iscroll.html</qrcode>
  * @short Dropmenu.iscroll
  * @import widget/dropmenu.js, core/iscroll.js
  */
@@ -46,8 +46,8 @@
      *
      * @desc
      * **Demo**
-     * <codepreview href="../gmu/_examples/widget/dropmenu/dropmenu_iscroll.html">
-     * ../gmu/_examples/widget/dropmenu/dropmenu_iscroll.html
+     * <codepreview href="../examples/widget/dropmenu/dropmenu_iscroll.html">
+     * ../gmu/examples/widget/dropmenu/dropmenu_iscroll.html
      * </codepreview>
      */
 })(Zepto);

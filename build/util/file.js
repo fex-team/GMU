@@ -134,9 +134,8 @@
 		return fs.writeFileSync(filename, content, file_encoding || FILE_ENCODING);
 	}
 
-    function loadConfig(src) {
-        var content = read(src),
-            id = 0,
+    function removeComments( content ) {
+        var id = 0,
             protect = {};
 
         //js不支持平衡组，所以只能先把引号里面的内容先保护好
@@ -149,7 +148,17 @@
         //去掉注释
         content = content
             .replace(/\s*\/\/.*$/gm, '')
-            .replace(/\/\*[\s\S]*?\*\//g, '');
+            .replace(/\/\*[\s\S]*?\*\//g, '')
+
+            // 删除空行中的空白字符
+            .replace(/^ +$/gm, '')
+
+            // 删除首尾的空行
+            .replace(/^\n+/, '')
+            .replace(/^\n+/, '')
+
+            // 删除多余的空行
+            .replace(/\n{2,}/g, '\n');
 
         //还原受保护的内容
         content = content
@@ -157,18 +166,23 @@
                 return protect[m1];
             });
 
-        return JSON.parse(content);
+        return content;
+    }
+
+    function loadConfig( src ) {
+        return JSON.parse( removeComments( read( src ) ) );
     }
 
 	//expose
-    exports.concat       = concat;
-    exports.minify       = minify;
-    exports.mkdir        = mkdir;
-    exports.rmdir        = rmdir;
-    exports.caculateSize = caculateSize;
-    exports.exists       = exists;
-    exports.read         = read;
-    exports.write        = write;
-    exports.loadConfig   = loadConfig;
+    exports.concat         = concat;
+    exports.minify         = minify;
+    exports.mkdir          = mkdir;
+    exports.rmdir          = rmdir;
+    exports.caculateSize   = caculateSize;
+    exports.exists         = exists;
+    exports.read           = read;
+    exports.write          = write;
+    exports.loadConfig     = loadConfig;
+    exports.removeComments = removeComments;
 
 })();

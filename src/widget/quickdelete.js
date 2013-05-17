@@ -1,7 +1,7 @@
 /**
  * @file 快速删除组件
  * @name Quickdelete
- * @desc <qrcode align="right" title="Live Demo">../gmu/_examples/widget/suggestion/suggestion_setup.html</qrcode>
+ * @desc <qrcode align="right" title="Live Demo">../gmu/examples/widget/suggestion/suggestion_setup.html</qrcode>
  * 快速删除组件
  * @import core/ui.js
  */
@@ -22,8 +22,8 @@
      * <input type="text" id="input">
      * </code>
      * **Demo**
-     * <codepreview href="../gmu/_examples/widget/suggestion/suggestion_setup.html">
-     * ../gmu/_examples/widget/suggestion/suggestion_setup.html
+     * <codepreview href="../examples/widget/suggestion/suggestion_setup.html">
+     * ../gmu/examples/widget/suggestion/suggestion_setup.html
      * </codepreview>
      */
     $.ui.define('quickdelete', {

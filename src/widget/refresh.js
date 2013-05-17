@@ -1,7 +1,7 @@
 /**
  * @file 加载更多组件
  * @name Refresh
- * @desc <qrcode align="right" title="Live Demo">../gmu/_examples/widget/refresh/refresh.html</qrcode>
+ * @desc <qrcode align="right" title="Live Demo">../gmu/examples/widget/refresh/refresh.html</qrcode>
  * 加载更多组件
  * @import core/ui.js
  * @importCSS loading.css
@@ -29,8 +29,8 @@
      * </code>
      * @notice 此组件不支持render模式，只支持setup模式
      * @desc **Demo**
-     * <codepreview href="../gmu/_examples/widget/refresh/refresh.html">
-     * ../gmu/_examples/widget/refresh/refresh.html
+     * <codepreview href="../examples/widget/refresh/refresh.html">
+     * ../gmu/examples/widget/refresh/refresh.html
      * </codepreview>
      */
     $.ui.define('refresh', {
@@ -206,8 +206,8 @@
          *
          * statechnage事件可以用来DIY按钮样式，包括各种状态。组件内部通过了一套，如果statechange事件被阻止了，组件内部的将不会执行。
          * 如:
-         * <codepreview href="../gmu/_examples/widget/refresh/refresh_iscroll_custom.html">
-         * ../gmu/_examples/widget/refresh/refresh_iscroll_custom.html
+         * <codepreview href="../examples/widget/refresh/refresh_iscroll_custom.html">
+         * ../gmu/examples/widget/refresh/refresh_iscroll_custom.html
          * </codepreview>
          */
 
