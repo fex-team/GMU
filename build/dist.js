@@ -184,8 +184,9 @@
                     depends = matches[1]
 
                         // 多个依赖用道号隔开
-                        .split(/\s*,\s*/g)
-                        .filter(parse);
+                        .split(/\s*,\s*/g);
+
+                    depends.forEach(parse);
                 }
 
                 // 查找css文件，对应的目录在assets目录下面的widgetName/widget.css
@@ -249,6 +250,7 @@
                 return true;
             };
 
+        debugger;
         files.filter(parse);
 
         return ret;
