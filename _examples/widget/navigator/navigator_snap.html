@@ -26,6 +26,13 @@
             line-height: 24px;
             margin-top: 20px;
         }
+        /*#snaptonext:after{
+            display: block;
+            height: 20px;
+            width: 100%;
+            content: '\0020';
+            background: red;
+        }*/
             /** 一级导航样式 */
         .nav-snaptonext {
             width: 100%;
@@ -99,8 +106,8 @@
         function movebarFn($father, ins) {
             var $navList = ins.getNav(),
                 $bar = $('.nav-scrollbar', $father).width($navList.width()).css('-webkit-transform', 'translate3d(' + ins.data('defTab') * 100 + '%, 0, 0)');
-            return function (e, elem) {
-                $bar.css('-webkit-transform', 'translate3d(' + $navList.indexOf($(elem).closest('li').get(0)) * 100 + '%, 0, 0)');
+            return function (index) {
+                $bar.css('-webkit-transform', 'translate3d(' + $navList.eq(index).offset().left + 'px, 0, 0)');
             }
         }
         var i = 0,
@@ -156,7 +163,10 @@
                     pos: 'right'
                 }
             ],
-            viewportCount: 3
+            viewportCount: 3,
+            scrollend: function () {
+                movebar1(this.getCurTab().index);
+            }
         }),
         movebar1 = movebarFn($('#snaptonext'), nav),
         movebar2;
@@ -166,18 +176,23 @@
             if (i >= this.getNav().size() - this.data('viewportCount')) {
                 i = 0;
             }
-        }).on('tabselect', movebar1);
+        }).on('tabselect', function (e, elem, index) {
+                    movebar1(index);
+        });
 
         movebar2 = movebarFn('#snaptopage',
             $('#snaptopage').navigator({
-                viewportCount: 5
-            }).on('snaptonav tabselect', function (e, elem) {
+                viewportCount: 5,
+                scrollend: function () {
+                    movebar2(this.getCurTab().index);
+                }
+            }).on('snaptonav tabselect', function (e, elem, index) {
                 switch(e.type) {
                     case 'snaptonav':
                         $('#snaptopage').navigator('scrollToPage', 2);
                         break;
                     case 'tabselect':
-                        movebar2.call($('#snaptopage').navigator('this'), e, elem);
+                        movebar2(index);
                         break;
                 }
             }).navigator('this')
