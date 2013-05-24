@@ -1,0 +1,12 @@
+.ui-navigator .ui-navigator-wrapper{
+    -webkit-box-flex: 1;
+}
+
+.ui-navigator .ui-navigator-list, .ui-navigator .ui-navigator-fix {
+    display: -webkit-box;
+    -webkit-box-flex: 0;      /*去掉-webkit-box-flex属性，可滑动tab不平分*/
+}
+
+.ui-navigator .ui-navigator-list li{
+    -webkit-box-flex: 0;
+}
