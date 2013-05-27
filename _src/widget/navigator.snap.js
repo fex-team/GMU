@@ -168,11 +168,11 @@
                     data = me._data,
                     iScroll = data.iScroll,
                     num = num || 1,
-                    math = Math;
+                    M = Math;
 
                 typeof isPage === 'boolean' && isPage ?
-                    iScroll.scrollToPage(math.min(data._navNum / data._vpCount.portrait, math.max(0, num)), 0, time ) :
-                    (iScroll.x > iScroll.maxScrollX && iScroll.scrollTo(iScroll.x + (-Math.min(data._navNum, Math.max(0, num)) * data._itemWidth), 0, time || 400));
+                    iScroll.scrollToPage(M.min(data._navNum / data._vpCount.portrait, M.max(0, num)), 0, time ) :
+                    (iScroll.x > iScroll.maxScrollX && iScroll.scrollTo(iScroll.x + (-M.min(data._navNum, M.max(0, num)) * data._itemWidth), 0, time || 400));
                 return me;
             }
         }
