@@ -6,7 +6,7 @@
 
 .ui-navigator .ui-navigator-list, .ui-navigator .ui-navigator-fix {
     display: -webkit-box;
-    -webkit-box-flex: 1;
+    /*-webkit-box-flex: 1;*/
 }
 
 .ui-navigator .ui-navigator-list li{
