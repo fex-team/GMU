@@ -11,6 +11,7 @@
             touchstart: 'mousedown',
             touchend: 'mouseup',
             touchmove: 'mousemove',
+            touchcancel: 'mouseup',
             tap: 'click'
         },
         transFn = function(e) {
