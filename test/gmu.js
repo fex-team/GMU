@@ -110,9 +110,9 @@ test("实例化类", function() {
     });
 
     ok(panel._options.name === 'custom gmu', '实例参数检查：Passed!');
-    ok(panel.template === '<div>Hello {{name}}</div>', '实例类模板检查：Passed!');
-    ok(panel.tpl2html('gmu') === '<div>Hello GMU</div>', '实例类模板解析函数检查：Passed!');
-    ok(panel.show !== undefined, '实例方法检查：Passed!');
+    ok(panel.template === '<div>Hello {{name}}</div>', '实例模板检查：Passed!');
+    ok(panel.tpl2html('gmu') === '<div>Hello GMU</div>', '实例模板解析函数检查：Passed!');
+    ok($jQuery.isFunction(panel.show), '实例方法检查：Passed!');
 
     $('#panel').remove();
 });
@@ -126,13 +126,13 @@ test("DOM options", function() {
     ok(panel._options.name === 'custom gmu', 'DOM options检查：Passed!');
     // ok(panel.template === '<div>Hello {{name}}</div>', '实例类模板检查：Passed!');
     // ok(panel.tpl2html('gmu') === '<div>Hello GMU</div>', '实例类模板解析函数检查：Passed!');
-    // ok(panel.show !== undefined, '实例方法检查：Passed!');
+    // ok($jQuery.isFunction(panel.show), '实例方法检查：Passed!');
 
     $('#panel').remove();
 });
 
 test("类继承 - define方式", function(){
-    expect(5);
+    expect(9);
 
     gmu.define('Dialog', {
         defaultOptions: {
@@ -140,7 +140,8 @@ test("类继承 - define方式", function(){
         },
         init: function(){
             
-        }
+        },
+        title: function(title){}
     }, gmu.Panel);
 
     $(document.body).append('<div id="dialog"></div>');
@@ -149,12 +150,26 @@ test("类继承 - define方式", function(){
     });
 
     ok(dialog._options.name === '对话框', '实例参数检查：Passed!');
-    ok(dialog._options.title === '标题', '实例参数检查：Passed!');
-    ok(dialog.template === '<div>{{name}}</div>', '实例模板检查：Passed!');
-    ok(dialog.tpl2html('gmu') === '<div>gmu</div>', '实例模板解析函数检查：Passed!');
-    ok(dialog.show !== undefined, '实例方法检查：Passed!');
+    ok(dialog._options.title === '标题', '继承自父类的参数检查：Passed!');
+    ok(dialog.template === '<div>{{name}}</div>', '继承自父类的模板检查：Passed!');
+    ok(dialog.tpl2html('gmu') === '<div>gmu</div>', '继承自父类的模板解析函数检查：Passed!');
+    ok($jQuery.isFunction(dialog.show), '继承自父类的方法检查：Passed!');
+    $('#dialog').remove();
 
+    $(document.body).append('<div id="dialog"></div>');
+    var dialog = new gmu.Dialog('#dialog', {
+        name: '对话框',
+        template: '<div>Hello {{name}}</div>',
+        tpl2html: function(name){
+            return this.template.replace('{{name}}', name.toUpperCase());
+        }
+    });
+    ok(dialog.template === '<div>Hello {{name}}</div>', '实例模板检查：Passed!');
+    ok(dialog.tpl2html('gmu') === '<div>Hello GMU</div>', '实例模板解析函数检查：Passed!');
+    ok($jQuery.isFunction(dialog.show), '实例方法检查：Passed!');
+    ok($jQuery.isFunction(dialog.title), '实例方法检查：Passed!');
 
+    $('#dialog').remove();
 });
 
 test("类继承 - inherits方式", function(){
