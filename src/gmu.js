@@ -69,7 +69,7 @@ var gmu = (function(){
         var fn = function(el, options){
             if ($.isPlainObject(el)) {
                 options = el;
-                el = undefined;
+                el = undefined; // TODO 没有传el的情况下，应该创建一个临时的DOM
             }
 
             el && (this.$el = $(el));
@@ -125,6 +125,7 @@ var gmu = (function(){
                 // TODO 测试时需要考虑不是这两种情况的配置
                 var pluginOptions = options[i] || {};
 
+                //TODO 判断插件是否生效的逻辑有问题
                 if(Object.prototype.toString.call(pluginOptions) === '[object Boolean]'){
                     pluginOptions = {enable: pluginOptions};
                 }

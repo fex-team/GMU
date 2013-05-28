@@ -25,7 +25,6 @@ gmu.Base.prototype = {
      * options上回调函数可以通过e.preventDefaualt()来组织事件派发。
      */
     trigger: function(event, data) {
-        // TODO 换成$.isString
         event = Object.prototype.toString.call(event) === '[object String]' ? $.Event(event) : event;
         var onEvent = this._options[event.type],result;
         if(onEvent && $.isFunction(onEvent)){
