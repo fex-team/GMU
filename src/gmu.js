@@ -18,6 +18,9 @@ var gmu = (function(){
     var counter = 0;
     var guid_map = {};
     var staticlist = ['defaultOptions', 'template', 'tpl2html'];    //挂到组件类上的属性、方法
+    var isString = function(obj){
+        return Object.prototype.toString.call(obj) === '[object String]';
+    };
 
     var dataAttr = function(el, attr){
         var attr_name = "data-" + attr;
@@ -38,18 +41,18 @@ var gmu = (function(){
         }
 
         return data;
-    }
+    };
 
     // 从DOM节点上获取配置项
     var getDomOptions = function(el, keys){
-        var _result = {};
+        var _result = {}, data;
 
         if(!el){
             return _result;
         }
 
         for(key in keys){
-            var data = dataAttr(el, key);
+            data = dataAttr(el, key);
             data !== null && (_result[key] = data);
         }
 
@@ -69,7 +72,7 @@ var gmu = (function(){
         var fn = function(el, options){
             if ($.isPlainObject(el)) {
                 options = el;
-                el = undefined; // TODO 没有传el的情况下，应该创建一个临时的DOM
+                el = undefined;
             }
 
             el && (this.$el = $(el));
@@ -95,24 +98,22 @@ var gmu = (function(){
                 me.tpl2html = options.tpl2html;
             }
 
+            //执行父类的构造函数
             superClass.apply(me, [el, options]);
 
             this.superClass = fn.superClass = superClass;
 
             // 初始化配置项监听
-            var call = 0;
             if(fn.optioned){
                 for(opt in fn.optioned){
                     if(options[opt]){
                         $(fn.optioned[opt]).each(function(i, item){
                             if(JSON.stringify(item[0]) === JSON.stringify(options[opt]) || item[0] === '*'){
                                 item[1].call(me);
-                                call++;
                             }
                         });
                     }
                 }
-                delete fn.optioned;
             }
             
             // init方法是类的默认构造函数
@@ -121,18 +122,18 @@ var gmu = (function(){
             // 组件初始化时才挂载插件，这样可以保证不同实例之间相互独立地使用插件
             for (i in fn.plugins) {
                 var plugin = fn.plugins[i];
-                // 插件的配置可能是button: true或者button: {enable: true, text: '确定'}
-                // TODO 测试时需要考虑不是这两种情况的配置
-                var pluginOptions = options[i] || {};
+                // 插件的配置可能是button: true|false或者button: {enable: true|false, text: '确定'}或者button: {text: '确定'}
+                // TODO 插件是否生效的判断标准：https://github.com/gmuteam/GMU/issues/49
+                var pluginOptions = options[i] || {enable: false};
 
-                //TODO 判断插件是否生效的逻辑有问题
                 if(Object.prototype.toString.call(pluginOptions) === '[object Boolean]'){
                     pluginOptions = {enable: pluginOptions};
+                }else if($.isPlainObject(pluginOptions)){
+                    pluginOptions.enable = (pluginOptions.enable === false ? false : true)
                 }
 
                 if(pluginOptions.enable){
                     fn.plugins[i].init.apply(me, pluginOptions);
-                    delete fn.plugins[i].init;
                     $.each(plugin, function(key, val){
                         var originFunction;
 
@@ -189,10 +190,9 @@ var gmu = (function(){
          * @desc 注册插件
          */
         fn.register = function(name, obj){
-            obj.init || (obj.init = function(){
-                console.log('default plugin init');
-            });
+            obj.init === undefined && (obj.init = function(){});
             (fn.plugins || (fn.plugins = {}))[name] = obj;
+            
             return fn;
         };
 
@@ -202,7 +202,7 @@ var gmu = (function(){
          * @desc 从该类继承出一个子类
          */
         fn.inherits = function(name, obj){
-            if(Object.prototype.toString.call(name) === '[object String]'){
+            if(isString(name)){
                 if(gmu[name]){
                     throw new Error('GMU中已存在该组件！'); 
                 }else{
@@ -221,14 +221,12 @@ var gmu = (function(){
         fn.optioned = {};
         // TODO value为Boolean的时候可以兼容插件
         fn.option = function(option, value, method){
-            // jquery callbacks
-
             var covered = false;
 
             fn.defaultOptions[option] = value;
 
             if(!fn.optioned[option]){
-                 fn.optioned[option] = [];
+                fn.optioned[option] = [];
             }
 
             // 如果已存在通配的选项(*)，不能继续添加其他选项，只能覆盖
@@ -262,7 +260,7 @@ var gmu = (function(){
 
                 obj = guid_map[$(el).attr('data-guid')] || new gmu[name]( el, $.extend($.isPlainObject(opts) ? opts : {}, {setup: true}));
 
-                if (Object.prototype.toString.call(opts) === '[object String]') {
+                if (isString(opts)) {
                     if (!$.isFunction( obj[ opts ] ) && opts !== 'this') {
                         throw new Error('组件没有此方法：' + opts);    //当不是取方法时，抛出错误信息
                     }
@@ -303,5 +301,3 @@ var gmu = (function(){
 
 // 向下兼容
 $.ui = gmu;
-
-// 兼容AMD，参考：https://github.com/kissyteam/kissy-mobile/blob/master/mobile/zepto-gfx.cube/index.js

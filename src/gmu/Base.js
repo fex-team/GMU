@@ -4,9 +4,7 @@
  * @class
  * @name gmu.Base
  */
-gmu.Base = function(){
-    // gmu Base constructor
-};
+gmu.Base = function(){};
 
 gmu.Base.prototype = {
 
@@ -26,7 +24,6 @@ gmu.Base.prototype = {
      */
     trigger: function(ev, data) {
         event = Object.prototype.toString.call(ev) === '[object String]' ? $.Event(ev) : ev;
-        console.log(event.type);
         var onEvent = this._options[event.type],result;
         if(onEvent && $.isFunction(onEvent)){
             event.data = data;
@@ -36,6 +33,7 @@ gmu.Base.prototype = {
             }
         }
         this.$el.trigger(event, data);
+        
         return this;
     },
 
@@ -46,6 +44,7 @@ gmu.Base.prototype = {
      */
     on: function(ev, callback) {
         this.$el.on(ev, $.proxy(callback, this));
+
         return this;
     },
 
@@ -57,13 +56,13 @@ gmu.Base.prototype = {
      */
     off: function(ev, callback) {
         // 将_options中的事件配置给删掉
-        // TODO 处理ev为空的情况
         for(i in this._options){
-            if(i === ev || (ev === '' && /.*:.*/.test(i)))
+            if(i === ev || (!ev && /.*:.*/.test(i)))
                 delete this._options[i];
         }
 
         this.$el.off(ev, callback);
+
         return this;
     },
 
@@ -79,6 +78,7 @@ gmu.Base.prototype = {
         this._events || (this._events = {});
         var events = this._events[name] || (this._events[name] = []);
         events.push({callback: callback, context: context, ctx: context || this});
+
         return this;
     },
 
@@ -114,7 +114,7 @@ gmu.Base.prototype = {
     /**
      * @name publish
      * @grammar instance.publish(name) => instance
-     * @desc 解除订阅事件
+     * @desc 派发事件
      */
     publish: function(name) {
         if(!this._events || !name){
@@ -127,6 +127,7 @@ gmu.Base.prototype = {
             while (++i < l)
                 (ev = events[i]).callback.apply(ev.ctx, args);
         };
+
         return this;
     },
 

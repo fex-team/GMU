@@ -65,7 +65,7 @@ test("option拆分", function() {
 });
 
 test("插件", function() {
-    expect(3);
+    expect(4);
 
     gmu.Panel.register('follow', {
         init: function(){
@@ -92,6 +92,7 @@ test("插件", function() {
 
     panel.follow();
     panel.hide();
+    panel.show();
 
     $('#panel').remove();
 });
@@ -223,7 +224,7 @@ test("zeptoLize", function(){
             test_option: 'test'
         },
         init: function(){
-            
+            this.$el = $('<span></span>');
         },
         testfn: function(){
             ok(true, '调用实例方法检查：Passed!');
@@ -252,6 +253,8 @@ test("destroy", function(){
     ok($('#test').attr('data-guid') === null, '组件destroy后，节点gmu-attr属性检查：Passed!');    
 
     $('#test').remove();
+
+    //TODO 检查事件方法属性等是否销毁
 });
 
 test("on off trigger", function(){
@@ -260,30 +263,32 @@ test("on off trigger", function(){
     var flag = 0;
     $(document.body).append('<div id="test"></div>');
     var test = new gmu.test('#test', {
-        plus1: function(){
+        'plus1:test': function(){
             flag = flag + 1;
         }
     });
 
-    test.on('plus1', function(){
+    test.on('plus1:test', function(){
         flag = flag + 1;
     });
-    test.on('plus2', function(){
+    test.on('plus2:test', function(){
         flag = flag + 2;
     });
 
-    test.trigger('plus1').trigger('plus2');
+    test.trigger('plus1:test').trigger('plus2:test');
     ok(flag === 4, "on trigger检查：Passed!");
 
     flag = 0;
-    test.off('plus2');
-    test.trigger('plus1').trigger('plus2');
+    test.off('plus2:test');
+    test.trigger('plus1:test').trigger('plus2:test');
     ok(flag === 2, "off trigger检查：Passed!");
 
     flag = 0;
-    test.off('');
-    test.trigger('plus1').trigger('plus2');
+    test.off();
+    test.trigger('plus1:test').trigger('plus2:test');
     ok(flag === 0, "off trigger检查：Passed!");
+
+    $('#test').remove();
 });
 
 test("subscribe unsubscribe publish", function(){
@@ -293,23 +298,25 @@ test("subscribe unsubscribe publish", function(){
     $(document.body).append('<div id="test"></div>');
     var test = new gmu.test('#test');
 
-    test.subscribe('plus1', function(){
+    test.subscribe('plus1:test', function(){
         flag = flag + 1;
     });
-    test.subscribe('plus2', function(){
+    test.subscribe('plus2:test', function(){
         flag = flag + 2;
     });
 
-    test.publish('plus1').publish('plus2');
+    test.publish('plus1:test').publish('plus2:test');
     ok(flag === 3, "subscribe publish检查：Passed!");
 
     flag = 0;
-    test.unsubscribe('plus2');
-    test.publish('plus1').publish('plus2');
+    test.unsubscribe('plus2:test');
+    test.publish('plus1:test').publish('plus2:test');
     ok(flag === 1, "unsubscribe publish检查：Passed!");
 
     flag = 0;
     test.unsubscribe();
-    test.publish('plus1').publish('plus2');
+    test.publish('plus1:test').publish('plus2:test');
     ok(flag === 0, "unsubscribe publish检查：Passed!");
+
+    $('#test').remove();
 });
