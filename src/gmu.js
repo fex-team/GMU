@@ -294,8 +294,6 @@ var gmu = (function(){
 
         /**
          *  @name guid
-         *  @grammar gmu.guid(name)
-         *  @desc 添加一个模板
          */
         guid: function(){
             return 'GMU__' + (counter++);

@@ -49,22 +49,6 @@ gmu.Base.prototype = {
     },
 
     /**
-     * @name bind
-     * @grammar instance.bind(type, handler) => instance
-     * @desc 给某个元素绑定事件，destroy时会自动解绑
-     */
-    bind: function(el, event, fn){
-        $(el).on(event, fn);
-        
-        !this.disposeProcess && this.disposeProcess = [];
-        this.disposeProcess.unshift(function(){
-            $(el).off(event, fn);
-        });
-        
-        return this;
-    },
-
-    /**
      * @name off
      * @grammar instance.off(type) => instance
      * @grammar instance.off(type, handler) => instance
@@ -147,12 +131,7 @@ gmu.Base.prototype = {
      * @desc 注销组件
      */
     destroy: function() {
-        // TODO setup模式不移除DOM，render模式移除DOM
-
         var me = this;
-        
-        for(var i = 0, l = this.disposeProcess.length; i < l; i ++)
-            this.disposeProcess[i].call(this);
         
         this.trigger('destroy');
     }

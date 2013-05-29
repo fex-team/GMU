@@ -173,9 +173,131 @@ test("类继承 - define方式", function(){
 });
 
 test("类继承 - inherits方式", function(){
+    expect(9);
 
+    gmu.Dialog.inherits('Alert', {
+        defaultOptions: {
+            title: 'Alert'
+        },
+        init: function(){
+            
+        },
+        title: function(title){},
+        content: function(content){}
+    });
+
+    $(document.body).append('<div id="alert"></div>');
+    var alert = new gmu.Alert('#alert', {
+        name: '警告框'
+    });
+
+    ok(alert._options.name === '警告框', '实例参数检查：Passed!');
+    ok(alert._options.title === 'Alert', '继承自父类的参数检查：Passed!');
+    ok(alert.template === '<div>{{name}}</div>', '继承自父类的模板检查：Passed!');
+    ok(alert.tpl2html('gmu') === '<div>gmu</div>', '继承自父类的模板解析函数检查：Passed!');
+    ok($jQuery.isFunction(alert.show), '继承自父类的方法检查：Passed!');
+    $('#alert').remove();
+
+    $(document.body).append('<div id="alert"></div>');
+    var alert = new gmu.Alert('#alert', {
+        name: '对话框',
+        template: '<div>Hello {{name}}</div>',
+        tpl2html: function(name){
+            return this.template.replace('{{name}}', name.toUpperCase());
+        }
+    });
+
+    ok(alert.template === '<div>Hello {{name}}</div>', '实例模板检查：Passed!');
+    ok(alert.tpl2html('gmu') === '<div>Hello GMU</div>', '实例模板解析函数检查：Passed!');
+    ok($jQuery.isFunction(alert.show), '实例方法检查：Passed!');
+    ok($jQuery.isFunction(alert.content), '实例方法检查：Passed!');
+
+    $('#alert').remove();
 });
 
 test("zeptoLize", function(){
+    expect(2);
 
+    gmu.define('test', {
+        defaultOptions: {
+            test_option: 'test'
+        },
+        init: function(){
+            
+        },
+        testfn: function(){
+            ok(true, '调用实例方法检查：Passed!');
+        },
+        testreturn: function(){
+            return 'value';
+        }
+    }, gmu.Panel);
+
+    $(document.body).append('<div id="test"></div>');
+    $('#test').test().test('testfn');
+    ok($('#test').test('testreturn') === 'value', '调用有返回值的实例方法检查：Passed!');
+    $('#test').remove();
+});
+
+
+test("destroy", function(){
+    expect(2);
+
+    $(document.body).append('<div id="test"></div>');
+    var test = new gmu.test('#test');
+
+    ok($('#test').attr('data-guid') !== null, '组件初始化后，节点gmu-attr属性检查：Passed!');
+
+    test.destroy();
+    ok($('#test').attr('data-guid') === null, '组件destroy后，节点gmu-attr属性检查：Passed!');    
+
+    $('#test').remove();
+});
+
+test("on off trigger", function(){
+    expect(2);
+
+    var flag = 0;
+    $(document.body).append('<div id="test"></div>');
+    var test = new gmu.test('#test');
+
+    test.on('plus1', function(){
+        flag = flag + 1;
+    });
+    test.on('plus2', function(){
+        flag = flag + 2;
+    });
+
+    test.trigger('plus1').trigger('plus2');
+    ok(flag === 3, "on trigger检查：Passed!");
+
+    flag = 0;
+
+    test.off('plus2');
+    test.trigger('plus1').trigger('plus2');
+    ok(flag === 1, "off trigger检查：Passed!");
+});
+
+test("subscribe unsubscribe publish", function(){
+    expect(2);
+
+    var flag = 0;
+    $(document.body).append('<div id="test"></div>');
+    var test = new gmu.test('#test');
+
+    test.subscribe('plus1', function(){
+        flag = flag + 1;
+    });
+    test.subscribe('plus2', function(){
+        flag = flag + 2;
+    });
+
+    test.publish('plus1').publish('plus2');
+    ok(flag === 3, "subscribe publish检查：Passed!");
+
+    flag = 0;
+
+    test.unsubscribe('plus2');
+    test.publish('plus1').publish('plus2');
+    ok(flag === 1, "unsubscribe publish检查：Passed!");
 });
