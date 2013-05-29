@@ -17,32 +17,6 @@
     background-color: #e3e3e3;
     text-align: center;
     position: relative;
-    height: 148px;
-    float: left;
+    float:left;
     overflow: hidden;
-}
-
-.ui-slider-item > a {
-    display: block;
-    text-decoration: none;
-}
-
-.ui-slider-item > p {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    text-align: left;
-    pointer-events: none;
-    overflow: hidden;
-    word-break: break-all;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-}
-
-.ui-slider-dots {
-    position: absolute;
-    bottom:6px;
-    right: 0;
-    padding: 0 6px;
-    text-align: right;
 }
