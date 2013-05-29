@@ -47,9 +47,9 @@
         return {
             pluginName: 'snap',
             _init: function () {
-                this._adjustHtml()._reBindEvent()._initOrg();
+                return this._adjustHtml()._rebindEvent()._initOrg();
             },
-            _reBindEvent: function () {
+            _rebindEvent: function () {
                 var me = this,
                     data = me._data;
 
@@ -138,7 +138,6 @@
                     }
                     me.trigger(snapEvent);
                 }
-                return me;
             },
             /**
              * 更新scroller宽度及curbar宽度
