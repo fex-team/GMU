@@ -59,7 +59,7 @@ gmu.Base.prototype = {
         // 将_options中的事件配置给删掉
         // TODO 处理ev为空的情况
         for(i in this._options){
-            if(i === ev)
+            if(i === ev || (ev === '' && /.*:.*/.test(i)))
                 delete this._options[i];
         }
 
