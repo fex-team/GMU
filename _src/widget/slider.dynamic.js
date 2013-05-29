@@ -191,7 +191,7 @@
 
                 group = $el.find( '.ui-slider-group' ).empty();
                 this._content = content = content.concat();
-                this._renderItems( content, index, group, opts );
+                this._renderItems( content, index, group, opts, true );
                 this._items = group.children().toArray();
                 this._initWidth( $el, 1, this.index, true );
 
@@ -200,11 +200,11 @@
                         [ this.index, -1 ] );
             },
 
-            _renderItems: function( content, index, group ) {
+            _renderItems: function( content, index, group, center ) {
                 var arr, 
                     rest;
 
-                arr = content.slice( index, index + 3 );
+                arr = content.slice( index, index + (center ? 2 : 3) );
                 this._active = content[ index ];
                 rest = 3 - arr.length;
                 rest && (arr = content.slice( index - rest, index )
