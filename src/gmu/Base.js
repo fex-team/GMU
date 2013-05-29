@@ -24,8 +24,9 @@ gmu.Base.prototype = {
      * @desc 触发事件, 此trigger会优先把options上的事件回调函数先执行，然后给根DOM派送事件。
      * options上回调函数可以通过e.preventDefaualt()来组织事件派发。
      */
-    trigger: function(event, data) {
-        event = Object.prototype.toString.call(event) === '[object String]' ? $.Event(event) : event;
+    trigger: function(ev, data) {
+        event = Object.prototype.toString.call(ev) === '[object String]' ? $.Event(ev) : ev;
+        console.log(event.type);
         var onEvent = this._options[event.type],result;
         if(onEvent && $.isFunction(onEvent)){
             event.data = data;
@@ -55,6 +56,13 @@ gmu.Base.prototype = {
      * @desc 解绑事件
      */
     off: function(ev, callback) {
+        // 将_options中的事件配置给删掉
+        // TODO 处理ev为空的情况
+        for(i in this._options){
+            if(i === ev)
+                delete this._options[i];
+        }
+
         this.$el.off(ev, callback);
         return this;
     },
@@ -81,10 +89,7 @@ gmu.Base.prototype = {
      */
     unsubscribe: function(name, callback, context) {
         var retain, ev, events, names, i, l, j, k;
-        if (!name){
-            return false;
-        }
-        if (!name && !callback && !context) {
+        if (!name) {
             this._events = {};
             return this;
         }

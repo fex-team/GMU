@@ -255,11 +255,15 @@ test("destroy", function(){
 });
 
 test("on off trigger", function(){
-    expect(2);
+    expect(3);
 
     var flag = 0;
     $(document.body).append('<div id="test"></div>');
-    var test = new gmu.test('#test');
+    var test = new gmu.test('#test', {
+        plus1: function(){
+            flag = flag + 1;
+        }
+    });
 
     test.on('plus1', function(){
         flag = flag + 1;
@@ -269,17 +273,21 @@ test("on off trigger", function(){
     });
 
     test.trigger('plus1').trigger('plus2');
-    ok(flag === 3, "on trigger检查：Passed!");
+    ok(flag === 4, "on trigger检查：Passed!");
 
     flag = 0;
-
     test.off('plus2');
     test.trigger('plus1').trigger('plus2');
-    ok(flag === 1, "off trigger检查：Passed!");
+    ok(flag === 2, "off trigger检查：Passed!");
+
+    flag = 0;
+    test.off('');
+    test.trigger('plus1').trigger('plus2');
+    ok(flag === 0, "off trigger检查：Passed!");
 });
 
 test("subscribe unsubscribe publish", function(){
-    expect(2);
+    expect(3);
 
     var flag = 0;
     $(document.body).append('<div id="test"></div>');
@@ -296,8 +304,12 @@ test("subscribe unsubscribe publish", function(){
     ok(flag === 3, "subscribe publish检查：Passed!");
 
     flag = 0;
-
     test.unsubscribe('plus2');
     test.publish('plus1').publish('plus2');
     ok(flag === 1, "unsubscribe publish检查：Passed!");
+
+    flag = 0;
+    test.unsubscribe();
+    test.publish('plus1').publish('plus2');
+    ok(flag === 0, "unsubscribe publish检查：Passed!");
 });
