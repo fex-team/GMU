@@ -3,7 +3,7 @@
  * @name ortchange
  * @short ortchange
  * @desc 扩展转屏事件orientation，解决原生转屏事件的兼容性问题
- * @import zepto.js, matchMedia.js
+ * @import zepto.js, core/matchMedia.js
  */
 
 $(function () {

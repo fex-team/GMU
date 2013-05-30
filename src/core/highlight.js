@@ -2,7 +2,7 @@
  *  @file 实现了通用highlight方法。
  *  @name Highlight
  *  @desc 点击高亮效果
- *  @import core/extend.js
+ *  @import zepto.js
  */
 (function($) {
     var actElem, inited = false, timer, cls, removeCls = function(){
@@ -29,7 +29,7 @@
                 var $el = $(this);
                 $el.css('-webkit-tap-highlight-color', 'rgba(255,255,255,0)').off('touchstart.highlight');
                 className && $el.on('touchstart.highlight', function() {
-                    timer = $.later(function() {
+                    timer = setTimeout(function() {
                         actElem = $el.attr('highlight-cls', className).addClass(className);
                     }, 100);
                 });
