@@ -2,7 +2,7 @@
  *  @file 基于Zepto的位置设置获取组件
  *  @name Position
  *  @desc 定位插件
- *  @import core/extend.js
+ *  @import zepto.js
  */
 //offset
 (function($, undefined){

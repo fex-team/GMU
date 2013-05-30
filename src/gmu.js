@@ -12,6 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+/**
+ * @import zepto.js
+ */
 
 var gmu = (function(){
 
@@ -76,6 +79,8 @@ var gmu = (function(){
             }
 
             el && (this.$el = $(el));
+            // options中存在container时，覆盖el
+            options && options.container && (el = this.$el = $(options.container));
 
             if(typeof fn.defaultOptions === 'undefined'){
                 fn.defaultOptions = {};
@@ -158,12 +163,12 @@ var gmu = (function(){
 
             var guid = gmu.guid();
             guid_map[guid] = me;
-            el && $(el).attr('data-guid', guid);
+            this.$el.attr('data-guid', guid);
 
             me.on('destroy', function(){
                 guid_map[guid] = null;
                 delete guid_map[guid];
-                $(el).removeAttr('data-guid');
+                this.$el.removeAttr('data-guid');
             });
             
             return me;

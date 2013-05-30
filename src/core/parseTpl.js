@@ -23,4 +23,4 @@
         var func = new Function('obj', tmpl);
         return data ? func(data) : func;
     }
-})(Zepto)
+})(Zepto);
