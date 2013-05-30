@@ -30,7 +30,7 @@
 
     "size": {
         "all": {
-            "src": ["src/core/**.js", "src/widget/**.js"]
+            "src": ["src/core/**.js", "src/widget/**/*.js"]
         }
     }
 }

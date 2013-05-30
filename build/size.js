@@ -33,7 +33,9 @@
             tmpFile2 = '.tmp2',
             row;
 
-        console.log(sprintf('^ %-40s ^ %-10s ^ %-15s ^ %-10s ^ %-15s ^', "File Name", "Original", "Remove Comments", "Uglify", "Uglify & GZ"));
+        if( !files.length ) {
+            return ;
+        }
 
         files
                 .reduce(function( sofar, filename ) {
@@ -53,7 +55,9 @@
                                     console.log(sprintf.apply(null, row));
                                 });
                     });
-                }, q.resolve( true ))
+                }, q.resolve( true ).then(function(){
+                    console.log(sprintf('^ %-40s ^ %-10s ^ %-15s ^ %-10s ^ %-15s ^', "File Name", "Original", "Remove Comments", "Uglify", "Uglify & GZ"));
+                }))
                 .then(function(){
                     file.rmdir(tmpFile);
                     file.rmdir(tmpFile2);
