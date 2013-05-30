@@ -17,6 +17,15 @@ gmu.Base.prototype = {
     init: function(){},
 
     /**
+     *  @name getEl
+     *  @grammar instance.getEl() => $el
+     *  @desc 返回组件的$el
+     */
+    getEl: function(){
+        return this.$el;
+    },
+
+    /**
      * @name trigger
      * @grammar instance.trigger(type[, data]) => instance
      * @desc 触发事件, 此trigger会优先把options上的事件回调函数先执行，然后给根DOM派送事件。

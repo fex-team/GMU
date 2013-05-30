@@ -230,7 +230,6 @@ test("zeptoLize", function(){
             test_option: 'test'
         },
         init: function(){
-            this.$el = $('<span></span>');
         },
         testfn: function(){
             ok(true, '调用实例方法检查：Passed!');

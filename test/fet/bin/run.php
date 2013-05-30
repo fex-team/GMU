@@ -29,7 +29,6 @@ foreach ( $_GET as $key => $paras ) {
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title><?php print( "run case $title" );?></title>
-    <script type="text/javascript" src="../../../dist/zepto.js"></script>
     <?php $c->print_js( $title , $cov ,$release); ?>
     <link rel="stylesheet" href="../lib/css/tangramtest.css">
 </head>
