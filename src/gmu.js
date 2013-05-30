@@ -122,7 +122,7 @@ var gmu = (function(){
             }
             
             // init方法是类的默认构造函数
-            me.init.apply(me, options);
+            me._init.apply(me, options);
 
             // 组件初始化时才挂载插件，这样可以保证不同实例之间相互独立地使用插件
             for (i in fn.plugins) {
@@ -138,7 +138,7 @@ var gmu = (function(){
                 }
 
                 if(pluginOptions.enable){
-                    fn.plugins[i].init.apply(me, pluginOptions);
+                    fn.plugins[i]._init.apply(me, pluginOptions);
                     $.each(plugin, function(key, val){
                         var originFunction;
 
@@ -195,7 +195,7 @@ var gmu = (function(){
          * @desc 注册插件
          */
         fn.register = function(name, obj){
-            obj.init === undefined && (obj.init = function(){});
+            obj._init === undefined && (obj._init = function(){});
             (fn.plugins || (fn.plugins = {}))[name] = obj;
             
             return fn;
@@ -208,7 +208,7 @@ var gmu = (function(){
          */
         fn.inherits = function(name, obj){
             // 子类必须有自己的init(构造函数)，否则会把从父类继承过来的init方法当成自己的构造函数
-            obj.init === undefined && (obj.init = function(){});
+            obj._init === undefined && (obj._init = function(){});
 
             if(isString(name)){
                 if(gmu[name]){
