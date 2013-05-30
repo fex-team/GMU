@@ -207,6 +207,9 @@ var gmu = (function(){
          * @desc 从该类继承出一个子类
          */
         fn.inherits = function(name, obj){
+            // 子类必须有自己的init(构造函数)，否则会把从父类继承过来的init方法当成自己的构造函数
+            obj.init === undefined && (obj.init = function(){});
+
             if(isString(name)){
                 if(gmu[name]){
                     throw new Error('GMU中已存在该组件！'); 
@@ -292,7 +295,18 @@ var gmu = (function(){
                 return;
             }
             gmu[name] = createClass(object, superClass);
+
+            var old = $.fn[name.toLowerCase()];
             _zeptoLize(name);
+
+            /* NO CONFLICT 
+             * var gmuPanel = $.fn.panel.noConflict();
+             * gmuPanel.call(test, 'fnname');
+             */
+            $.fn[name.toLowerCase()].noConflict = function () {
+                $.fn[name.toLowerCase()] = old;
+                return this;
+            }
         },
 
         /**

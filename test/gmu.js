@@ -184,9 +184,6 @@ test("类继承 - inherits方式", function(){
         defaultOptions: {
             title: 'Alert'
         },
-        init: function(){
-            
-        },
         title: function(title){},
         content: function(content){}
     });
