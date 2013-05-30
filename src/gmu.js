@@ -123,8 +123,8 @@ var gmu = (function(){
             for (i in fn.plugins) {
                 var plugin = fn.plugins[i];
                 // 插件的配置可能是button: true|false或者button: {enable: true|false, text: '确定'}或者button: {text: '确定'}
-                // TODO 插件是否生效的判断标准：https://github.com/gmuteam/GMU/issues/49
-                var pluginOptions = options[i] || {enable: false};
+                // 插件默认开启
+                var pluginOptions = (options[i] === undefined ? {enable: true} : options[i]);
 
                 if(Object.prototype.toString.call(pluginOptions) === '[object Boolean]'){
                     pluginOptions = {enable: pluginOptions};

@@ -86,8 +86,7 @@ test("插件", function() {
     $(document.body).append('<div id="panel"></div>');
     var panel = new gmu.Panel('#panel', {
         name: 'custom gmu',
-        display: 'push',
-        follow: true
+        display: 'push'
     });
 
     panel.follow();
@@ -107,7 +106,8 @@ test("实例化类", function() {
         template: '<div>Hello {{name}}</div>',
         tpl2html: function(name){
             return this.template.replace('{{name}}', name.toUpperCase());
-        }
+        },
+        follow: false
     });
 
     ok(panel._options.name === 'custom gmu', '实例参数检查：Passed!');
@@ -122,7 +122,9 @@ test("DOM options", function() {
     expect(1);
     
     $(document.body).append('<div id="panel" data-name="custom gmu"></div>');
-    var panel = new gmu.Panel('#panel');
+    var panel = new gmu.Panel('#panel', {
+        follow: false
+    });
 
     ok(panel._options.name === 'custom gmu', 'DOM options检查：Passed!');
     // ok(panel.template === '<div>Hello {{name}}</div>', '实例类模板检查：Passed!');
@@ -147,7 +149,8 @@ test("类继承 - define方式", function(){
 
     $(document.body).append('<div id="dialog"></div>');
     var dialog = new gmu.Dialog('#dialog', {
-        name: '对话框'
+        name: '对话框',
+        follow: false
     });
 
     ok(dialog._options.name === '对话框', '实例参数检查：Passed!');
@@ -163,7 +166,8 @@ test("类继承 - define方式", function(){
         template: '<div>Hello {{name}}</div>',
         tpl2html: function(name){
             return this.template.replace('{{name}}', name.toUpperCase());
-        }
+        },
+        follow: false
     });
     ok(dialog.template === '<div>Hello {{name}}</div>', '实例模板检查：Passed!');
     ok(dialog.tpl2html('gmu') === '<div>Hello GMU</div>', '实例模板解析函数检查：Passed!');
@@ -189,7 +193,8 @@ test("类继承 - inherits方式", function(){
 
     $(document.body).append('<div id="alert"></div>');
     var alert = new gmu.Alert('#alert', {
-        name: '警告框'
+        name: '警告框',
+        follow: false
     });
 
     ok(alert._options.name === '警告框', '实例参数检查：Passed!');
@@ -205,7 +210,8 @@ test("类继承 - inherits方式", function(){
         template: '<div>Hello {{name}}</div>',
         tpl2html: function(name){
             return this.template.replace('{{name}}', name.toUpperCase());
-        }
+        },
+        follow: false
     });
 
     ok(alert.template === '<div>Hello {{name}}</div>', '实例模板检查：Passed!');
@@ -232,7 +238,7 @@ test("zeptoLize", function(){
         testreturn: function(){
             return 'value';
         }
-    }, gmu.Panel);
+    });
 
     $(document.body).append('<div id="test"></div>');
     $('#test').test().test('testfn');
