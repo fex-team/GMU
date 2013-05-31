@@ -202,8 +202,9 @@ var gmu = (function(){
         };
 
         fn.extend(superClass.prototype);
-
         fn.extend(object);
+        //修正原型链
+        fn.prototype.__proto__ = superClass.prototype;
 
         /**
          * @name register
