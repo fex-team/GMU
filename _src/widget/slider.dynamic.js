@@ -23,7 +23,7 @@
                 var opts = this._data,
                     group;
 
-                if ( opts.content.length < 4 ) {
+                if ( opts.content.length < 3 ) {
                     throw new Error( '以动态模式使用slider，至少需要传入3组数据' );
                 }
 
