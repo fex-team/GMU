@@ -59,6 +59,8 @@
                     console.log(sprintf('^ %-40s ^ %-10s ^ %-15s ^ %-10s ^ %-15s ^', "File Name", "Original", "Remove Comments", "Uglify", "Uglify & GZ"));
                 }))
                 .then(function(){
+
+                    // 删除临时文件
                     file.rmdir(tmpFile);
                     file.rmdir(tmpFile2);
                 });
@@ -102,27 +104,31 @@
                     .all(preset.src.map(function(file) {
                         return q.nfcall(glob, file);
                     }))
+                    .then(function( files ){
+                        return files
 
-                    // 合并，并去重
-                    .then(function(results) {
-
-                        //合并文件
-                        return results
-
-                            // 摊平数组
-                            .reduce(function(prefix, now) {
-                                return prefix.concat(now);
-                            })
-
-                            // 去重
-                            .filter(function(item, i, me) {
-                                return me.indexOf(item) === i;
-                            });
+                        // 摊平数组
+                        .reduce(function(prefix, now) {
+                            return prefix.concat(now);
+                        });
                     });
             }))
             .then(function( files ) {
-                files.forEach(reporter);
-            });
+
+                // 合并，并去重
+                return files
+
+                    // 摊平数组
+                    .reduce(function(prefix, now) {
+                        return prefix.concat(now);
+                    })
+
+                    // 去重
+                    .filter(function(item, i, me) {
+                        return me.indexOf(item) === i;
+                    });
+            })
+            .then(reporter);
     };
 
     //标记是一个task
