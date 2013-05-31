@@ -18,12 +18,32 @@
 
 var gmu = (function(){
 
-    var counter = 0;
-    var guid_map = {};
     var staticlist = ['defaultOptions', 'template', 'tpl2html'];    //挂到组件类上的属性、方法
     var isString = function(obj){
         return Object.prototype.toString.call(obj) === '[object String]';
     };
+    var isNull = function (obj){
+        return obj === null;
+    };
+    var isUndefined = function (obj){
+        return obj === undefined;
+    };
+
+    var record = (function(){
+        var data = {},
+            id = 0,
+            iKey = "GMUWidget" + (+new Date()); //internal key.
+
+        return function(obj, key, val){
+            var dkey = obj[iKey] || (obj[iKey] = ++id),
+                store = data[dkey] || (data[dkey] = {});
+
+            !isUndefined(val) && (store[key] = val);
+            isNull(val) && delete store[key];
+
+            return store[key];
+        }
+    })();
 
     var dataAttr = function(el, attr){
         var attr_name = "data-" + attr;
@@ -161,14 +181,10 @@ var gmu = (function(){
                 }
             }
 
-            var guid = gmu.guid();
-            guid_map[guid] = me;
-            this.$el.attr('data-guid', guid);
+            record(this.$el[0], fn._fullname_, me);
 
             me.on('destroy', function(){
-                guid_map[guid] = null;
-                delete guid_map[guid];
-                this.$el.removeAttr('data-guid');
+                record(this.$el[0], fn._fullname_, null);
             });
             
             return me;
@@ -229,6 +245,7 @@ var gmu = (function(){
         fn.optioned = {};
         // TODO value为Boolean的时候可以兼容插件
         fn.option = function(option, value, method){
+            // TODO value支持function
             var covered = false;
 
             fn.defaultOptions[option] = value;
@@ -266,7 +283,7 @@ var gmu = (function(){
 
             $.each(this, function(i, el){
 
-                obj = guid_map[$(el).attr('data-guid')] || new gmu[name]( el, $.extend($.isPlainObject(opts) ? opts : {}, {setup: true}));
+                obj = record(el, name) || new gmu[name]( el, $.extend($.isPlainObject(opts) ? opts : {}, {setup: true}));
 
                 if (isString(opts)) {
                     if (!$.isFunction( obj[ opts ] ) && opts !== 'this') {
@@ -295,6 +312,7 @@ var gmu = (function(){
                 return;
             }
             gmu[name] = createClass(object, superClass);
+            gmu[name]._fullname_ = name;
 
             var old = $.fn[name.toLowerCase()];
             _zeptoLize(name);
@@ -307,13 +325,6 @@ var gmu = (function(){
                 $.fn[name.toLowerCase()] = old;
                 return this;
             }
-        },
-
-        /**
-         *  @name guid
-         */
-        guid: function(){
-            return 'GMU__' + (counter++);
         }
     };
 })();

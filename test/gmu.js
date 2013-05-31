@@ -244,15 +244,12 @@ test("zeptoLize", function(){
 
 
 test("destroy", function(){
-    expect(2);
+    expect(0);
 
     $(document.body).append('<div id="test"></div>');
     var test = new gmu.test('#test');
 
-    ok($('#test').attr('data-guid') !== null, '组件初始化后，节点gmu-attr属性检查：Passed!');
-
     test.destroy();
-    ok($('#test').attr('data-guid') === null, '组件destroy后，节点gmu-attr属性检查：Passed!');    
 
     $('#test').remove();
 
