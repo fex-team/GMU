@@ -61,7 +61,7 @@
     QUnit.done = function () {
         d.apply( this, arguments );
         //先让window._isFinished改变，然后再判断
-        _done( arguments );
+        /localhost/.test(location.href) < -1 && _done( arguments );
     };
 
 

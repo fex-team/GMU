@@ -151,7 +151,7 @@ test("scroll:图片进入可视区能正确加载 & startLoad", function(){
 
 test("iscroll:初始状态图片在iscroll wrapper区域内能正确加载", function(){
     stop();
-    ua.importsrc('core/zepto.iscroll', function(){
+    ua.importsrc('core/iscroll', function(){
         var viewImages = [],
             $scroller = $('#container'),
             itemH = $('p').height() + $('.ui-imglazyload').height(),
@@ -177,12 +177,12 @@ test("iscroll:初始状态图片在iscroll wrapper区域内能正确加载", fun
             $wrapper.remove();
             start();
         }, 200);
-    }, 'window.iScroll', 'core/zepto.imglazyload');
+    }, 'window.iScroll', 'core/imglazyload');
 });
 
 test("iscroll:滚动过程中在iscroll wrapper区域内能正确加载", function(){
     stop();
-    ua.importsrc('core/zepto.iscroll', function(){
+    ua.importsrc('core/iscroll', function(){
         var viewImages = [],
             $scroller = $('#container'),
             itemH = $('p').height() + $('.ui-imglazyload').height(),
@@ -237,7 +237,7 @@ test("iscroll:滚动过程中在iscroll wrapper区域内能正确加载", functi
                 }, 500);
             }, 300);   
         }, 200);
-    }, 'window.iScroll', 'core/zepto.imglazyload');
+    }, 'window.iScroll', 'core/imglazyload');
 });
 
 test("refresh:增加图片后能正确加载 & error", function(){

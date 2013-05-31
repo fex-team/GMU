@@ -6,7 +6,8 @@
  * @import zepto.js
  */
 
-(function($, navigator) {
+(function( $, navigator ) {
+    
     /**
      * @name $.browser
      * @desc 扩展zepto中对browser的检测
@@ -31,9 +32,9 @@
         },
         ret;
 
-    $.each( detects, function( i, re ){
+    $.each( detects, function( i, re ) {
         
-        if( ret = ua.match(re) ) {
+        if ( (ret = ua.match( re )) ) {
             br[ i ] = true;
             br.version = ret[ 1 ];
 
@@ -43,8 +44,8 @@
     } );
 
     // uc还有一种规则，就是appVersion中带 Uc字符
-    if( !br.uc && /Uc/i.test( navigator.appVersion ) ) {
+    if ( !br.uc && /Uc/i.test( navigator.appVersion ) ) {
         br.uc = true;
     }
 
-})(Zepto, navigator);
+})( Zepto, navigator );

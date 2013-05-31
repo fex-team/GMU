@@ -102,5 +102,4 @@
             return fn === undefined ? $.throttle(250, delay, false) : $.throttle(delay, fn, t === undefined ? false : t !== false);
         }
     });
-
 })(Zepto);

@@ -3,7 +3,7 @@
  * @ignore
  * @name Fx
  * @desc 扩展animate，使其具有队列功能
- * @import core/zepto.js
+ * @import zepto.js
  */
 (function ($, undefined) {
     var speeds = {_default: 400, fast: 200, slow: 600},

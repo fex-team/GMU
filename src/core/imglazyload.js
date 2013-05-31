@@ -2,7 +2,7 @@
  *  @file 基于Zepto的图片延迟加载插件
  *  @name Imglazyload
  *  @desc 图片延迟加载
- *  @import core/extend.js
+ *  @import zepto.js, core/event.scrollStop.js, core/event.ortchange.js
  */
 (function ($) {
     /**
@@ -62,7 +62,7 @@
             return viewTop >= offset[OFFSET.img[0]] - opts.threshold - viewHeight && viewTop <= offset[OFFSET.img[0]] + offset[OFFSET.img[1]];
         }
 
-        pedding = $.slice($(pedding.reverse()).add(this)).reverse();    //更新pedding值，用于在页面追加图片
+        pedding = Array.prototype.slice.call($(pedding.reverse()).add(this), 0).reverse();    //更新pedding值，用于在页面追加图片
         if ($.isFunction($.fn.imglazyload.detect)) {    //若是增加图片，则处理placeHolder
             _addPlsHolder();
             return this;

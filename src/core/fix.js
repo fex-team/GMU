@@ -1,7 +1,7 @@
 /**
  * @file 实现了通用fix方法。
  * @name Fix
- * @import core/extend.js
+ * @import zepto.js
  */
 
 /**
