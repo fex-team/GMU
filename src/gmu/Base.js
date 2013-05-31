@@ -10,11 +10,11 @@ gmu.Base.prototype = {
 
     /**
      *  @override
-     *  @name init
-     *  @grammar instance.init() => instance
+     *  @name _init
+     *  @grammar instance._init() => instance
      *  @desc 组件的初始化方法，子类需要重写该方法
      */
-    init: function(){},
+    _init: function(){},
 
     /**
      *  @name getEl

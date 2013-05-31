@@ -12,7 +12,7 @@ test("创建类", function() {
             tpl2html: function(name){
                 return gmu.Panel.template.replace('{{name}}', name);
             },
-            init: function(){
+            _init: function(){
                 this.trigger('init');
             },
             show: function(){
@@ -68,7 +68,7 @@ test("插件", function() {
     expect(4);
 
     gmu.Panel.register('follow', {
-        init: function(){
+        _init: function(){
             var me = this;
 
             ok(true, "插件初始化检查：Passed!");
@@ -141,7 +141,7 @@ test("类继承 - define方式", function(){
         defaultOptions: {
             title: '标题'
         },
-        init: function(){
+        _init: function(){
             
         },
         title: function(title){}
@@ -226,7 +226,7 @@ test("zeptoLize", function(){
         defaultOptions: {
             test_option: 'test'
         },
-        init: function(){
+        _init: function(){
         },
         testfn: function(){
             ok(true, '调用实例方法检查：Passed!');
