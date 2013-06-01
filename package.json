@@ -16,12 +16,13 @@
     "gitHead": "7f92712020f66940ead10f73c16a03305b03259f",
     "readmeFilename": "README.md",
     "devDependencies": {
-        "jsbint": "https://github.com/gmuteam/jsbint/tarball/master",
-        "q" : "~0.9.2",
-        "glob" : "~3.1.21",
-        "commander": "~1.1.1",
+        "grunt": "~0.4.1",
+        "grunt-contrib-concat": "~0.3.0",
+        "grunt-contrib-uglify": "~0.2.1",
+        "grunt-update-submodules": "~0.2.0",
+        "grunt-jsbint": "~0.0.4",
         "uglify-js": "~2.2.5",
-        "minimatch": "~0.2.11",
-        "shelljs": "~0.1.4"
+        "glob" : "~3.1.21",
+        "zlib-browserify": "0.0.1"
     }
 }
