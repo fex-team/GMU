@@ -60,7 +60,7 @@
                         {cwd: cssPrefix})
                     .forEach(function (item) {
                         var m = item.match(/\.([^\.]*)\.css$/i);
-                        m && ~opts.aviableThemes.indexOf(m[1]) && (css[m[1]] = item );
+                        m && ~opts.availableThemes.indexOf(m[1]) && (css[m[1]] = item );
                     });
 
                 // 读取文件内容中对css的依赖 格式为：@importCSS loading.css
@@ -82,7 +82,7 @@
 
                                 .forEach(function (item) {
                                     var m = item.match(/\.([^\.]*)\.css$/i);
-                                    m && ~opts.aviableThemes.indexOf(m[1]) && (ret[m[1]] = item );
+                                    m && ~opts.availableThemes.indexOf(m[1]) && (ret[m[1]] = item );
                                 });
                             return ret;
                         });

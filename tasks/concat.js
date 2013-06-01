@@ -144,7 +144,7 @@ module.exports = function( grunt ) {
         file.write(dest, 
                 banner.replace(/@files/ig, jsFiles.join(', ')) + '\n' + js.join(opts.separator));
 
-        grunt.log.writeln('✓ 生成 %s - %s ', dest, caculateSize(dest) );
+        grunt.log.writeln('✓ 生成 %s - %s ', dest, String(caculateSize(dest)).green );
 
         // 复制图片
         destDir = path.dirname(dest) + path.sep;
@@ -183,7 +183,7 @@ module.exports = function( grunt ) {
         dest = dest.replace(/\.js$/, '.css');
         file.write(dest, 
                 banner.replace(/@files/g, cssFiles.join(', ')) + '\n' + css );
-        grunt.log.writeln('✓ 生成 %s - %s ', dest, caculateSize(dest));
+        grunt.log.writeln('✓ 生成 %s - %s ', dest, String(caculateSize(dest)).green);
     }
 
     function strReplace( search, replace, subject) {
@@ -229,7 +229,7 @@ module.exports = function( grunt ) {
         var opts = this.options({
                 srcPath: '',
                 cssPath: '',
-                aviableThemes: null,
+                availableThemes: [ 'default', 'blue' ],
                 banner: '',
                 process: false,
                 stripBanner: false,

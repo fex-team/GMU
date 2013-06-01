@@ -21,6 +21,8 @@
         "grunt-contrib-uglify": "~0.2.1",
         "grunt-update-submodules": "~0.2.0",
         "grunt-jsbint": "~0.0.4",
-        "glob" : "~3.1.21"
+        "uglify-js": "~2.2.5",
+        "glob" : "~3.1.21",
+        "zlib-browserify": "0.0.1"
     }
 }

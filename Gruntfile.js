@@ -32,7 +32,6 @@ module.exports = function(grunt) {
             options: {
                 srcPath: 'src/',
                 cssPath: 'assets/',
-                aviableThemes: [ 'default', 'blue' ],
                 banner: '/* Gmu v<%= pkg.version %> - @files */'
             },
 
@@ -44,8 +43,24 @@ module.exports = function(grunt) {
             }
         },
 
+        fis: {
+
+            options: {
+                srcPath: '<%= concat_gmu.options.srcPath %>',
+                cssPath: '<%= concat_gmu.options.cssPath %>'
+            },
+
+            all: {
+                cwd: '<%= fis.options.srcPath %>',
+
+                src: [ 'widget/*.js' ],
+                dest: 'dist/<%= pkg.version %>'
+            }
+        },
+
         uglify: {
             options: {
+                report: 'min',
                 mangle: true
             },
             zepto: {
@@ -71,6 +86,13 @@ module.exports = function(grunt) {
                 jshintrc: '.jshintrc'
             }
         },
+
+        size: {
+            widget: {
+                cwd: 'src/widget/',
+                src: ['**/*.js']
+            }
+        }
     });
 
     // 加载build目录下的所有task
@@ -82,13 +104,12 @@ module.exports = function(grunt) {
     // 负责合并zepto.js
     grunt.loadNpmTasks( 'grunt-contrib-concat' );
 
+    // 负责压缩js
     grunt.loadNpmTasks( 'grunt-contrib-uglify' );
 
+    // 负责代码规范检测
     grunt.loadNpmTasks('grunt-jsbint');
 
     // Default task(s).
     grunt.registerTask('default', ['update_submodules', 'concat', 'concat_gmu', 'uglify']);
-
-    grunt.registerTask('debug', ['jsbint']);
-
 };
