@@ -15,12 +15,11 @@ set_include_path(dirname(__FILE__) . DIRECTORY_SEPARATOR . "lib" . PATH_SEPARATO
 require_once "JsDoc/JsDoc.php";
 require_once "phpqrcode.php";
 
-$baseDir = dirname(dirname(dirname(__FILE__)));
-
+$baseDir = dirname(dirname(dirname(dirname(__FILE__))));
 
 $zeptoDir = $baseDir . "/src/zeptodoc";
 $gmuDir = $baseDir . "/src";
-$templateDir = $baseDir."/build/doc/template";
+$templateDir = $baseDir."/tasks/lib/doc/template";
 $outputDir = $baseDir."/doc";
 
 $themes = array(
