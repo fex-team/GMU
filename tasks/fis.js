@@ -1,22 +1,9 @@
-/**
- * @fileOverview 负责生成fis包。
- * 生成路径 dist/fis/gmu_@version.
- *
- * 未完工。
- */
-(function(){
-    'use strict';
-
-    var dist = require('./dist'),
-        file = require('./util/file'),
-        helper = require('./util/helper'),
-        Q = require('q'),
+module.exports = function( grunt ) {
+    var file = grunt.file,
         path = require('path'),
-        pkg = require("../package"),
-        config = require("./config"),
-        prefix = path.resolve(config.dist.gmu.path) + path.sep,
-        cssPrefix = path.resolve(config.dist.gmu.cssPath) + path.sep,
-        fisBase = path.resolve(config.fis.dest.replace(/@version/ig, pkg.version)) + path.sep,
+        prefix,
+        cssPrefix,
+        fisBase,
         plugins;
 
     function isEmptyObject ( obj ) {
@@ -29,7 +16,7 @@
         plugins = getPlugins(files);
 
         //如果已经存在则删除
-        file.rmdir(fisBase);
+        file.delete(fisBase);
         file.mkdir(fisBase);
 
         files
@@ -216,30 +203,38 @@
         });
     }
 
-    //提供直接调用
-    var run = exports.run = function() {
-        var shell = require('./util/shell.js');
-        return Q
-            .try(dist.getComponents)
-            .then(buildForFis)
-            .then(function () {
-                //shell('cd ' + path.resolve(fisBase, '../..'));
-            })
-            .then(function () {
-                //shell('tar -zcf ' + pkg.version + '.tar.gz ' + pkg.version);
-            })
-            .fail(function(reason){
-                console.log(reason);
+    grunt.registerMultiTask( "fis", function() {
+        var opts = this.options({
+                srcPath: '',
+                cssPath: '',
+                availableThemes: [ 'default', 'blue' ],
+                process: false
+            }),
+            build = require('./lib/parse'),
+            files,
+            components;
+
+        this.files.forEach(function( f ) {
+            var cwd = f.cwd;
+            files = f.src.filter(function( filepath ){
+
+                // Warn on and remove invalid source files (if nonull was set).
+                if ( !grunt.file.exists( cwd + filepath ) ) {
+                    grunt.log.warn( 'Source file "' + filepath + '" not found.' );
+                    return false;
+                } else {
+                    return true;
+                }
             });
-    };
 
-    //标记是一个task
-    exports.task = true;
+            fisBase = path.resolve( f.dest ) + path.sep;
+            prefix = opts.srcPath;
+            cssPrefix = opts.cssPath;
 
+            components = build( opts, files );
+            buildForFis( components );
 
-    exports.init = function(cli) {
-        cli.command('fis')
-            .description('生成fis包')
-            .action(run.bind(cli));
-    };
-})();
+            grunt.log.writeln('✓ fis包生成成功 目录: %s', String(f.dest).green);         
+        });
+    });
+};
