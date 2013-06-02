@@ -175,6 +175,8 @@ test("类继承 - define方式", function(){
     ok($jQuery.isFunction(dialog.title), '实例方法检查：Passed!');
 
     $('#dialog').remove();
+
+    //TODO 检查父类构造器，父类方法(同名、不同名)的调用
 });
 
 test("类继承 - inherits方式", function(){
@@ -319,3 +321,5 @@ test("subscribe unsubscribe publish", function(){
 
     $('#test').remove();
 });
+
+// 复杂继承

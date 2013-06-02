@@ -92,6 +92,8 @@ var gmu = (function(){
             superClass = gmu.Base;
         }
 
+        var constructor = object._init || superClass._init;
+
         var fn = function(el, options){
             if ($.isPlainObject(el)) {
                 options = el;
@@ -141,8 +143,7 @@ var gmu = (function(){
                 }
             }
             
-            // init方法是类的默认构造函数
-            me._init.apply(me, options);
+            constructor.apply(me, options);
 
             // 组件初始化时才挂载插件，这样可以保证不同实例之间相互独立地使用插件
             for (i in fn.plugins) {
