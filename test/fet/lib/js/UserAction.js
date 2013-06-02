@@ -902,10 +902,20 @@ var UserAction = {
 				}
 				p = p[mm[i]];
 			}
-			clearInterval(h);
+			clearInterval(h)
+			h = null;
 			if (callback && 'function' == typeof callback)
 				callback();
 		}, 20);
+
+		// import不到的时候会一直轮询，所以1s之后清除轮询，让用例继续执行
+		setTimeout(function(){
+			if(h !== null){
+				// 抛出异常
+				throw Error('import"' + src + '"失败!');
+				clearInterval(h);
+			}
+		}, 1000);
 	},
 
 	/* 用于加载css文件，如果没有加载完毕则不执行回调函数 */
