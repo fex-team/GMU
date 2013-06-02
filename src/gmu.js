@@ -92,7 +92,7 @@ var gmu = (function(){
             superClass = gmu.Base;
         }
 
-        var constructor = object._init || superClass._init;
+        var constructor = object._init || function(){};
 
         var fn = function(el, options){
             if ($.isPlainObject(el)) {

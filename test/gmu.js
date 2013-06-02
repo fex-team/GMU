@@ -135,7 +135,7 @@ test("DOM options", function() {
 });
 
 test("类继承 - define方式", function(){
-    expect(9);
+    expect(10);
 
     gmu.define('Dialog', {
         defaultOptions: {
@@ -173,14 +173,14 @@ test("类继承 - define方式", function(){
     ok(dialog.tpl2html('gmu') === '<div>Hello GMU</div>', '实例模板解析函数检查：Passed!');
     ok($jQuery.isFunction(dialog.show), '实例方法检查：Passed!');
     ok($jQuery.isFunction(dialog.title), '实例方法检查：Passed!');
+    ok(dialog instanceof gmu.Dialog && dialog instanceof gmu.Panel && dialog instanceof gmu.Base, '继承关系检查：Passed!');
 
     $('#dialog').remove();
 
-    //TODO 检查父类构造器，父类方法(同名、不同名)的调用
 });
 
 test("类继承 - inherits方式", function(){
-    expect(9);
+    expect(10);
 
     gmu.Dialog.inherits('Alert', {
         defaultOptions: {
@@ -217,6 +217,7 @@ test("类继承 - inherits方式", function(){
     ok(alert.tpl2html('gmu') === '<div>Hello GMU</div>', '实例模板解析函数检查：Passed!');
     ok($jQuery.isFunction(alert.show), '实例方法检查：Passed!');
     ok($jQuery.isFunction(alert.content), '实例方法检查：Passed!');
+    ok(alert instanceof gmu.Dialog && alert instanceof gmu.Panel && alert instanceof gmu.Base, '继承关系检查：Passed!');
 
     $('#alert').remove();
 });
@@ -322,4 +323,53 @@ test("subscribe unsubscribe publish", function(){
     $('#test').remove();
 });
 
-// 复杂继承
+test("继承后的方法调用", function(){
+    expect(7);
+
+    gmu.define('Layer', {
+        defaultOptions: {
+            disposeOnHide: true
+        },
+        _init: function(){
+            ok(true, '父类的构造函数调用：Passed!');
+        },
+        show: function(name){
+            ok(true, '父类的方法调用：Passed!');
+        }
+    });
+
+    gmu.Layer.register('follow', {
+        _init: function(){
+            ok(true, '父类的插件构造函数调用：Passed!');
+        },
+        show: function(name){
+            this.origin(name);
+            ok(true, '父类的插件方法调用：Passed!');
+        },
+        hide: function(){
+            ok(true, '父类的插件方法调用：Passed!');
+        }
+    });
+
+    gmu.define('Panel', {
+        defaultOptions: {
+            height: 300,
+            width: 200
+        },
+        _init: function(){
+            ok(true, '子类构造函数调用：Passed!');
+        },
+        show: function(name){
+            this.superClass.prototype.show.apply(this, Array.prototype.slice.call(arguments));
+            ok(true, '子类方法调用：Passed!');
+        }
+    }, gmu.Layer);
+
+    var panel = new gmu.Panel(document.body);
+    panel.show('name', 3);
+    panel.hide();
+
+    panel.destroy();
+
+    // 同名方法的调用顺序：父类方法 => 子类方法 => 父类的插件方法
+});
