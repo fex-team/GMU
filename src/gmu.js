@@ -17,8 +17,8 @@
  */
 
 var gmu = (function(undefined) {
-    // 挂到组件类上的属性、方法
-    var staticlist = [ 'defaultOptions', 'template', 'tpl2html' ],
+        // 挂到组件类上的属性、方法
+    var staticlist = [ 'options', 'template', 'tpl2html' ],
         isString = function( obj ) {
             return Object.prototype.toString.call( obj ) === '[object String]';
         },
@@ -47,7 +47,7 @@ var gmu = (function(undefined) {
 
         dataAttr = function( el, attr ) {
             var attrName = 'data-' + attr,
-                data = $( el ).attr( attrName );
+                data = el.getAttribute( attrName );
 
             if ( typeof data === 'string' ) {
                 try {
@@ -74,13 +74,24 @@ var gmu = (function(undefined) {
                 return _result;
             }
 
+            el = $(el)[0];
+
             for ( var key in keys ) {
+                if( !keys.hasOwnProperty(key) ) {
+                    return;
+                }
                 data = dataAttr( el, key );
                 data !== null && (_result[ key ] = data);
             }
 
             return _result;
         },
+
+        getFnName = function( name ) {
+            return name.replace(/^[a-zA-Z](.*)/, function($1, $2, $3){
+                return $2.toLowerCase() + $3;
+            });
+        };
 
         /**
          * @desc 创建一个类，构造函数默认为init方法, superClass默认为gmu.Base
@@ -103,18 +114,18 @@ var gmu = (function(undefined) {
                     // options中存在container时，覆盖el
                     options && options.container && (el = this.$el = $( options.container ));
 
-                    if(typeof fn.defaultOptions === 'undefined'){
-                        fn.defaultOptions = {};
+                    if(typeof fn.options === 'undefined'){
+                        fn.options = {};
                     }
 
-                    fn.defaultOptions.template = fn.template;
-                    fn.defaultOptions.tpl2html = fn.tpl2html;
+                    fn.options.template = fn.template;
+                    fn.options.tpl2html = fn.tpl2html;
 
                     // 从el上获取option
-                    var dom_options = getDomOptions( el, fn.defaultOptions );
+                    var dom_options = getDomOptions( el, fn.options );
 
                     var me = this;
-                    var options = me._options = $.extend( {}, fn.defaultOptions, dom_options, options );
+                    var options = me._options = $.extend( {}, fn.options, dom_options, options );
 
                     // 将template和tpl2html挂到实例上
                     if( options.template !== undefined ){
@@ -131,10 +142,15 @@ var gmu = (function(undefined) {
 
                     // 初始化配置项监听
                     if( fn.optioned ){
-                        for( opt in fn.optioned ){
+                        for( var opt in fn.optioned ){
+                            if( !fn.optioned.hasOwnProperty(opt) ) {
+                                return;
+                            }
                             if( options[ opt ] ){
                                 $( fn.optioned[ opt ] ).each( function( i, item ){
-                                    if( JSON.stringify( item[0] ) === JSON.stringify( options[ opt ] ) || item[0] === '*' ){
+                                    if ( $.isFunction( item[0] ) &&  item[0].call(me) ) {
+                                        item[ 1 ].call( me );
+                                    } else if ( item[0] === options[ opt ] || item[0] === '*' ){
                                         item[ 1 ].call( me );
                                     }
                                 });
@@ -142,23 +158,17 @@ var gmu = (function(undefined) {
                         }
                     }
                     
-                    constructor.apply( me, options );
+                    constructor.call( me, options );
 
-                    // 组件初始化时才挂载插件，这样可以保证不同实例之间相互独立地使用插件
-                    for ( i in fn.plugins ) {
-                        var plugin = fn.plugins[ i ];
-                        // 插件的配置可能是button: true|false或者button: {enable: true|false, text: '确定'}或者button: {text: '确定'}
-                        // 插件默认开启
-                        var pluginOptions = ( options[i] === undefined ? {enable: true} : options[i] );
-
-                        if ( Object.prototype.toString.call( pluginOptions ) === '[object Boolean]' ){
-                            pluginOptions = {enable: pluginOptions};
-                        }else if ( $.isPlainObject( pluginOptions ) ){
-                            pluginOptions.enable = (pluginOptions.enable === false ? false : true)
+                    // 组件初始化时才挂载插件，这样可以保证不同实例之间相互独立地使用插件，默认开启
+                    for ( var i in fn.plugins ) {
+                        if( !fn.plugins.hasOwnProperty(i) ) {
+                            return;
                         }
+                        var plugin = fn.plugins[ i ];
 
-                        if ( pluginOptions.enable ){
-                            fn.plugins[i]._init.apply( me, pluginOptions );
+                        if ( options[i] !== false ){
+                            fn.plugins[i]._init.call( me );
                             $.each( plugin, function( key, val ) {
                                 var originFunction;
 
@@ -166,14 +176,14 @@ var gmu = (function(undefined) {
                                     me[key] = function() {
                                         var _origin = me.origin;
 
-                                        me.origin = function() {
-                                            originFunction.apply( me, arguments );
-                                        };
-                                        var result = val.apply( me,arguments );
+                                        me.origin = originFunction;
+                                        var result = val.apply( me, arguments );
 
-                                        delete me.origin;
-
-                                        _origin !== undefined && (me.origin = _origin);
+                                        if( _origin !== undefined ) {
+                                            me.origin = _origin;
+                                        } else {
+                                            delete me.origin;
+                                        }
                                         return result;
                                     };
                                 }else{
@@ -203,10 +213,14 @@ var gmu = (function(undefined) {
                 $.extend( fn.prototype, obj );
             };
 
-            fn.extend( superClass.prototype );
+            fn.prototype = Object.create(superClass.prototype);
             fn.extend( object );
-            //修正原型链
-            fn.prototype.__proto__ = superClass.prototype;
+
+            // 可以在方法中通过this.$super(name)方法调用父级方法。如：this.$super('enable');
+            fn.prototype.$super = function( name ) {
+                var fn = superClass.prototype[name];
+                return $.isFunction(fn) ? fn.apply(this, Array.prototype.slice.call(arguments, 1)) : fn;
+            };
 
             /**
              * @name register
@@ -223,21 +237,10 @@ var gmu = (function(undefined) {
             /**
              * @name inherits
              * @grammar fn.inherits({})
-             * @desc 从该类继承出一个子类
+             * @desc 从该类继承出一个子类，不会被挂到gmu命名空间
              */
-            fn.inherits = function( name, obj ){
-                // 子类必须有自己的init(构造函数)，否则会把从父类继承过来的init方法当成自己的构造函数
-                obj._init === undefined && ( obj._init = function(){} );
-
-                if ( isString( name ) ) {
-                    if ( gmu[name] ) {
-                        throw new Error('GMU中已存在该组件！'); 
-                    }else{
-                        return (gmu[name] = createClass(obj, fn));
-                    }
-                }else{  // 如果没有提供name，表示不挂到gmu下
-                    return createClass( obj, fn );
-                }
+            fn.inherits = function( obj ){
+                return createClass( obj, fn );
             };
 
             /**
@@ -248,22 +251,16 @@ var gmu = (function(undefined) {
             fn.optioned = {};
             // TODO value为Boolean的时候可以兼容插件
             fn.option = function( option, value, method ){
-                // TODO value支持function
                 var covered = false;
 
-                fn.defaultOptions[option] = value;
+                fn.options[option] = value;
 
                 if ( !fn.optioned[option] ) {
                     fn.optioned[option] = [];
                 }
 
-                // 如果已存在通配的选项(*)，不能继续添加其他选项，只能覆盖
-                if ( fn.optioned[option].length > 0 && fn.optioned[option][0][0] === '*' && value != '*' ) {
-                    return;
-                }
-
                 $( fn.optioned[option] ).each( function( i, item ){
-                    if ( JSON.stringify(item[0]) === JSON.stringify( value ) ) {
+                    if ( item[0] === value ) {
                         fn.optioned[option][i][1] = method;
                         covered = true;
                     }
@@ -278,7 +275,7 @@ var gmu = (function(undefined) {
         },
 
         _zeptoLize = function( name ){
-            $.fn[name.toLowerCase()] = function( opts ) {
+            $.fn[getFnName( name )] = function( opts ) {
                 var ret,
                     obj,
                     args = Array.prototype.slice.call( arguments, 1 );
@@ -313,18 +310,21 @@ var gmu = (function(undefined) {
             if ( /\./.test( name ) ) {
                 return;
             }
+
+            var fnName = getFnName( name );
+
             gmu[name] = createClass( object, superClass );
             gmu[name]._fullname_ = name;
 
-            var old = $.fn[name.toLowerCase()];
+            var old = $.fn[fnName];
             _zeptoLize( name );
 
             /* NO CONFLICT 
              * var gmuPanel = $.fn.panel.noConflict();
              * gmuPanel.call(test, 'fnname');
              */
-            $.fn[name.toLowerCase()].noConflict = function () {
-                $.fn[name.toLowerCase()] = old;
+            $.fn[fnName].noConflict = function () {
+                $.fn[fnName] = old;
                 return this;
             }
         }

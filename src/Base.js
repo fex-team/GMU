@@ -26,61 +26,11 @@ gmu.Base.prototype = {
     },
 
     /**
-     * @name trigger
-     * @grammar instance.trigger(type[, data]) => instance
-     * @desc 触发事件, 此trigger会优先把options上的事件回调函数先执行，然后给根DOM派送事件。
-     * options上回调函数可以通过e.preventDefaualt()来组织事件派发。
-     */
-    trigger: function(ev, data) {
-        event = Object.prototype.toString.call(ev) === '[object String]' ? $.Event(ev) : ev;
-        var onEvent = this._options[event.type],result;
-        if(onEvent && $.isFunction(onEvent)){
-            event.data = data;
-            result = onEvent.apply(this, [event].concat(data));
-            if(result === false || event.defaultPrevented){
-                return this;
-            }
-        }
-        this.$el.trigger(event, data);
-        
-        return this;
-    },
-
-    /**
      * @name on
-     * @grammar instance.on(type, handler) => instance
-     * @desc 绑定事件
-     */
-    on: function(ev, callback) {
-        this.$el.on(ev, $.proxy(callback, this));
-
-        return this;
-    },
-
-    /**
-     * @name off
-     * @grammar instance.off(type) => instance
-     * @grammar instance.off(type, handler) => instance
-     * @desc 解绑事件
-     */
-    off: function(ev, callback) {
-        // 将_options中的事件配置给删掉
-        for(i in this._options){
-            if(i === ev || (!ev && /.*:.*/.test(i)))
-                delete this._options[i];
-        }
-
-        this.$el.off(ev, callback);
-
-        return this;
-    },
-
-    /**
-     * @name subscribe
-     * @grammar instance.subscribe(name, callback, context) => instance
+     * @grammar instance.on(name, callback, context) => instance
      * @desc 订阅事件
      */
-    subscribe: function(name, callback, context) {
+    on: function(name, callback, context) {
         if(!name){
             return false;
         }
@@ -92,15 +42,21 @@ gmu.Base.prototype = {
     },
 
     /**
-     * @name unsubscribe
-     * @grammar instance.unsubscribe(name, callback, context) => instance
+     * @name off
+     * @grammar instance.off(name, callback, context) => instance
      * @desc 解除订阅事件
      */
-    unsubscribe: function(name, callback, context) {
+    off: function(name, callback, context) {
         var retain, ev, events, names, i, l, j, k;
         if (!name) {
             this._events = {};
             return this;
+        }
+
+        // TODO 如果没有传name，需要将_options中的所有自定义事件监听函数全部删除
+        for(var i in this._options){
+            if(i === ev || (!ev && /.*:.*/.test(i)))
+                delete this._options[i];
         }
 
         if (events = this._events[name]) {
@@ -123,14 +79,27 @@ gmu.Base.prototype = {
     /**
      * @name publish
      * @grammar instance.publish(name) => instance
-     * @desc 派发事件
+     * @desc 派发事件, 此trigger会优先把options上的事件回调函数先执行
+     * options上回调函数可以通过e.preventDefaualt()来阻止事件派发。
      */
-    publish: function(name) {
+     // TODO 如果其中某个事件处理返回false，不继续执行
+    trigger: function(name) {
         if(!this._events || !name){
             return this;
         }
-        var args = Array.prototype.slice.call(arguments, 1);
-        var events = this._events[name];
+
+        var args = Array.prototype.slice.call(arguments, 1),
+            events = this._events[name],
+            opEvent = this._options[name],
+            result;
+
+        if(opEvent && $.isFunction(opEvent)){
+            result = opEvent.apply(this, args);
+            if(result === false){
+                return this;
+            }
+        }
+
         if (events){
             var ev, i = -1, l = events.length;
             while (++i < l)
