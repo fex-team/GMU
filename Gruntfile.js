@@ -107,6 +107,9 @@ module.exports = function(grunt) {
     // 负责压缩js
     grunt.loadNpmTasks( 'grunt-contrib-uglify' );
 
+    // 负责报告文件大小
+    grunt.loadNpmTasks( 'grunt-size' );
+
     // 负责代码规范检测
     grunt.loadNpmTasks('grunt-jsbint');
 
