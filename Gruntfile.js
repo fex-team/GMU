@@ -84,13 +84,18 @@ module.exports = function(grunt) {
             all: ['src/**/*.js'],
             options: {
                 jshintrc: '.jshintrc'
-            }
+            },
         },
 
         size: {
             widget: {
                 cwd: 'src/widget/',
                 src: ['**/*.js']
+            },
+
+            dist: {
+                cwd: 'dist/',
+                src: ['gmu.js', 'zepto.js']
             }
         }
     });
