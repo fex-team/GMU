@@ -19,6 +19,7 @@
     <script type="text/javascript" src="../../../_src/core/zepto.extend.js"></script>
     <script type="text/javascript" src="../../../_src/core/zepto.ui.js"></script>
     <script type="text/javascript" src="../../../_src/widget/slider.js"></script>
+    <script type="text/javascript" src="../../../_src/widget/slider.touch.js"></script>
     <script type="text/javascript" src="../../../_src/widget/slider.dynamic.js"></script>
     <!--组件依赖js end-->
 </head>
@@ -73,18 +74,26 @@
             showDot: false,
             index: preGroup.length,//当前group中的第一个
             content: preGroup.concat(group),//把两个合起来，以方便切换到前一个group
-            slide: function(e, index, active){
+            disableScroll: true,
+            slide: function( e, to, from ){
+                var active = this.active();
+                //显示当前item的信息
+                $('h2.ui-toolbar-title').text(active.group + ' : ' + active.info);
+            },
+
+            init: function() {
+                var active = this.active();
                 //显示当前item的信息
                 $('h2.ui-toolbar-title').text(active.group + ' : ' + active.info);
             }
         });
 
-        slider.on('edge', function (e, prev, active) {
+        slider.on( 'edge', function (e, prev, active) {
             //单到达边缘时，你可以选择扩大图片池子。
-            var content = this.data('content'),
+            var content = this.content(),
                     group = getNextGroup(prev, active);
 
-            this.update(prev ? group.concat(content) : content.concat(group));
+            this.content(prev ? group.concat(content) : content.concat(group));
         });
     });
 
