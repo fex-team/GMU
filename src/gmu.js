@@ -28,7 +28,7 @@ var gmu = (function(undefined) {
         isUndefined = function( obj ) {
             return obj === undefined;
         },
-
+        blankFn = function(){},
         record = (function() {
             var data = {},
                 id = 0,
@@ -88,7 +88,7 @@ var gmu = (function(undefined) {
         },
 
         getFnName = function( name ) {
-            return name.replace(/^[a-zA-Z](.*)/, function($1, $2, $3){
+            return name.replace(/^([a-zA-Z])(.*)/, function($1, $2, $3){
                 return $2.toLowerCase() + $3;
             });
         };
@@ -141,16 +141,14 @@ var gmu = (function(undefined) {
                     this.superClass = fn.superClass = superClass;
 
                     // 初始化配置项监听
-                    if( fn.optioned ){
-                        for( var opt in fn.optioned ){
-                            if( !fn.optioned.hasOwnProperty(opt) ) {
+                    if( fn._optioned ){
+                        for( var opt in fn._optioned ){
+                            if( !fn._optioned.hasOwnProperty(opt) ) {
                                 return;
                             }
                             if( options[ opt ] ){
-                                $( fn.optioned[ opt ] ).each( function( i, item ){
-                                    if ( $.isFunction( item[0] ) &&  item[0].call(me) ) {
-                                        item[ 1 ].call( me );
-                                    } else if ( item[0] === options[ opt ] || item[0] === '*' ){
+                                $( fn._optioned[ opt ] ).each( function( i, item ){
+                                    if ( ($.isFunction( item[0] ) &&  item[0].call(me)) || item[0] === options[ opt ] || item[0] === '*' ) {
                                         item[ 1 ].call( me );
                                     }
                                 });
@@ -193,11 +191,14 @@ var gmu = (function(undefined) {
                         }
                     }
 
+                    // 进行创建DOM等操作
+                    me._create();
+
                     record( this.$el[0], fn._fullname_, me );
 
                     me.on( 'destroy', function() {
                         record(this.$el[0], fn._fullname_, null);
-                    });
+                    } );
                     
                     return me;
                 };
@@ -213,7 +214,7 @@ var gmu = (function(undefined) {
                 $.extend( fn.prototype, obj );
             };
 
-            fn.prototype = Object.create(superClass.prototype);
+            fn.prototype = Object.create( superClass.prototype );
             fn.extend( object );
 
             // 可以在方法中通过this.$super(name)方法调用父级方法。如：this.$super('enable');
@@ -248,25 +249,25 @@ var gmu = (function(undefined) {
              * @grammar fn.option(option, value, method)
              * @desc 扩充组件的配置项
              */
-            fn.optioned = {};
+            fn._optioned = {};
             // TODO value为Boolean的时候可以兼容插件
             fn.option = function( option, value, method ){
                 var covered = false;
 
                 fn.options[option] = value;
 
-                if ( !fn.optioned[option] ) {
-                    fn.optioned[option] = [];
+                if ( !fn._optioned[option] ) {
+                    fn._optioned[option] = [];
                 }
 
-                $( fn.optioned[option] ).each( function( i, item ){
+                $( fn._optioned[option] ).each( function( i, item ){
                     if ( item[0] === value ) {
-                        fn.optioned[option][i][1] = method;
+                        fn._optioned[option][i][1] = method;
                         covered = true;
                     }
                 } );
 
-                !covered && fn.optioned[option].push( [value, method] );
+                !covered && fn._optioned[option].push( [value, method] );
 
                 return fn;
             }

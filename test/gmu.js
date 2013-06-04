@@ -34,13 +34,13 @@ test("创建类", function() {
 });
 
 test("option拆分", function() {
-    expect(2);
+    expect(3);
 
     gmu.Panel.option('display', 'push', function(){
         var me = this;
 
         me.on('show:panel', function(e){
-            ok(e.name === 'default', 'option拆分，参数检查：Passed!');
+            ok(e.name === 'default', 'option拆分检查：Passed!' + 'push');
         });
     });
 
@@ -48,8 +48,27 @@ test("option拆分", function() {
         var me = this;
 
         me.on('show:panel', function(e){
-            ok(e.name === 'default', 'option拆分检查：Passed!');
-            ok(e.name === 'default', 'option拆分，参数检查：Passed!');
+            ok(e.name === 'default', 'option拆分检查：Passed!' + 'overlay');
+        });
+    });
+
+    gmu.Panel.option('display', '*', function(){
+        var me = this;
+
+        me.on('show:panel', function(e){
+            ok(e.name === 'default', 'option拆分检查：Passed!' + '*');
+        });
+    });
+
+    gmu.Panel.option('display', function(){
+        if(this._options.display === 'overlay'){
+            return true;
+        }
+    }, function(){
+        var me = this;
+
+        me.on('show:panel', function(e){
+            ok(e.name === 'default', 'option拆分检查：Passed!' + 'function');
         });
     });
 
@@ -65,7 +84,7 @@ test("option拆分", function() {
 });
 
 test("插件", function() {
-    expect(4);
+    expect(5);
 
     gmu.Panel.register('follow', {
         _init: function(){
@@ -182,7 +201,7 @@ test("类继承 - define方式", function(){
 test("类继承 - inherits方式", function(){
     expect(10);
 
-    gmu.Dialog.inherits('Alert', {
+    var Alert = gmu.Dialog.inherits({
         options: {
             title: 'Alert'
         },
@@ -191,7 +210,7 @@ test("类继承 - inherits方式", function(){
     });
 
     $(document.body).append('<div id="alert"></div>');
-    var alert = new gmu.Alert('#alert', {
+    var alert = new Alert('#alert', {
         name: '警告框',
         follow: false
     });
@@ -204,7 +223,7 @@ test("类继承 - inherits方式", function(){
     $('#alert').remove();
 
     $(document.body).append('<div id="alert"></div>');
-    var alert = new gmu.Alert('#alert', {
+    var alert = new Alert('#alert', {
         name: '对话框',
         template: '<div>Hello {{name}}</div>',
         tpl2html: function(name){
@@ -265,60 +284,30 @@ test("on off trigger", function(){
     var flag = 0;
     $(document.body).append('<div id="test"></div>');
     var test = new gmu.test('#test', {
-        'plus1:test': function(){
+        'plus1': function(){
             flag = flag + 1;
         }
     });
 
-    test.on('plus1:test', function(){
+    test.on('plus1', function(){
         flag = flag + 1;
     });
-    test.on('plus2:test', function(){
+    test.on('plus2', function(){
         flag = flag + 2;
     });
 
-    test.trigger('plus1:test').trigger('plus2:test');
+    test.trigger('plus1').trigger('plus2');
     ok(flag === 4, "on trigger检查：Passed!");
 
     flag = 0;
-    test.off('plus2:test');
-    test.trigger('plus1:test').trigger('plus2:test');
+    test.off('plus2');
+    test.trigger('plus1').trigger('plus2');
     ok(flag === 2, "off trigger检查：Passed!");
 
     flag = 0;
     test.off();
-    test.trigger('plus1:test').trigger('plus2:test');
-    ok(flag === 0, "off trigger检查：Passed!");
-
-    $('#test').remove();
-});
-
-test("on off trigger", function(){
-    expect(3);
-
-    var flag = 0;
-    $(document.body).append('<div id="test"></div>');
-    var test = new gmu.test('#test');
-
-    test.on('plus1:test', function(){
-        flag = flag + 1;
-    });
-    test.on('plus2:test', function(){
-        flag = flag + 2;
-    });
-
-    test.trigger('plus1:test').trigger('plus2:test');
-    ok(flag === 3, "on trigger检查：Passed!");
-
-    flag = 0;
-    test.off('plus2:test');
-    test.trigger('plus1:test').trigger('plus2:test');
+    test.trigger('plus1').trigger('plus2');
     ok(flag === 1, "off trigger检查：Passed!");
-
-    flag = 0;
-    test.off();
-    test.trigger('plus1:test').trigger('plus2:test');
-    ok(flag === 0, "off trigger检查：Passed!");
 
     $('#test').remove();
 });
@@ -327,7 +316,7 @@ test("继承后的方法调用", function(){
     expect(7);
 
     gmu.define('Layer', {
-        options: {
+        options: { 
             disposeOnHide: true
         },
         _init: function(){

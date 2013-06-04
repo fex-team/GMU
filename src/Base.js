@@ -5,7 +5,7 @@
  * @name gmu.Base
  */
 gmu.Base = function(){};
-
+var blankFn = function(){};
 gmu.Base.prototype = {
 
     /**
@@ -15,6 +15,15 @@ gmu.Base.prototype = {
      *  @desc 组件的初始化方法，子类需要重写该方法
      */
     _init: function(){},
+
+    /**
+     *  @override
+     *  @name _create
+     *  @grammar instance._create() => instance
+     *  @desc 组件创建DOM的方法，子类需要重写该方法
+     */
+    _create: function(){},
+
 
     /**
      *  @name getEl
@@ -51,12 +60,6 @@ gmu.Base.prototype = {
         if (!name) {
             this._events = {};
             return this;
-        }
-
-        // TODO 如果没有传name，需要将_options中的所有自定义事件监听函数全部删除
-        for(var i in this._options){
-            if(i === ev || (!ev && /.*:.*/.test(i)))
-                delete this._options[i];
         }
 
         if (events = this._events[name]) {
@@ -106,6 +109,9 @@ gmu.Base.prototype = {
                 (ev = events[i]).callback.apply(ev.ctx, args);
         };
 
+        // triggerHandler不冒泡
+        this.$el.triggerHandler(name, args);
+
         return this;
     },
 
@@ -115,8 +121,17 @@ gmu.Base.prototype = {
      * @desc 注销组件
      */
     destroy: function() {
-        var me = this;
-        
+        // 解绑所有自定义事件
+        this.off();
+        for (var pro in this ) {
+            if ( !$.isFunction(this[pro]) ){
+                delete this[pro];
+            } else {
+                this[pro] = blankFn;
+            }
+        }
+
         this.trigger('destroy');
+        this.disposed = true;
     }
 };
