@@ -1,5 +1,6 @@
 /**
  * @fileoverview slider左右切换组件
+ * @import core/touch.js, core/zepto.ui.js
  */
 (function( $ ) {
 

@@ -1,5 +1,6 @@
 /**
  * @fileoverview slider的手势插件，扩展slider的手指跟随功能
+ * @import widget/slider.js
  */
 (function( $, undefined ) {
     var $doc = $( document );
