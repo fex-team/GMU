@@ -10,9 +10,7 @@
 
     <!--组件依赖css begin-->
     <link rel="stylesheet" type="text/css" href="../../../assets/widget/navigator/navigator.css" />
-    <link rel="stylesheet" type="text/css" href="../../../assets/widget/navigator/navigator.iscroll.css" />
-    <link rel="stylesheet" type="text/css" href="../../../assets/widget/navigator/navigator.default.css" /> <!--皮肤文件，若不使用该皮肤，可以不加载-->
-    <link rel="stylesheet" type="text/css" href="../../../assets/widget/navigator/navigator.iscroll.default.css" /> <!--皮肤文件，若不使用该皮肤，可以不加载-->
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/navigator/navigator.snap.css" /> <!--皮肤文件，若不使用该皮肤，可以不加载-->
     <!--组件依赖css end-->
     <!--组件依赖js begin-->
     <script type="text/javascript" src="../../../_src/core/zepto.js"></script>
@@ -20,14 +18,51 @@
     <script type="text/javascript" src="../../../_src/core/zepto.ui.js"></script>
     <script type="text/javascript" src="../../../_src/core/zepto.iscroll.js"></script>    <!--iScroll-->
     <script type="text/javascript" src="../../../_src/widget/navigator.js"></script>
-    <script type="text/javascript" src="../../../_src/widget/navigator.iscroll.js"></script>  <!--滑动插件-->
+    <script type="text/javascript" src="../../../_src/widget/navigator.snap.js"></script>  <!--滑动插件-->
     <!--组件依赖js end-->
+    <style>
+        h3{
+            height: 24px;
+            line-height: 24px;
+            margin-top: 20px;
+        }
+            /** 一级导航样式 */
+        .nav-snaptonext {
+            width: 100%;
+            background:#f5f5f5;
+        }
+        .nav-snaptonext .ui-navigator-list li{
+            -webkit-box-sizing: border-box;
+        }
+        .nav-snaptonext .ui-navigator-list li a{
+            padding: 0.6em 0;
+            font-size: 18px;
+            color: #707070;
+            text-decoration: none;
+            outline: none;
+            font-family: "微软雅黑" "黑体";
+            text-align: center;
+        }
+        .nav-snaptonext .ui-navigator-list li a.cur{
+            color:#e81459;
+        }
+        .nav-snaptonext .ui-navigator-fix{
+            padding: 1em 16px;
+            display: block;
+            background: url('arr.png') no-repeat;
+            -webkit-background-origin: content-box;
+            -webkit-background-size: 8px 12px;
+        }
+    </style>
 </head>
 
 <body>
-<h3>左右都有fix元素(setup方式创建)</h3>
-<div id="fix-both">
-    <a class="ui-navigator-fixleft" href="#test1">fixleft</a>
+
+<h3>navigator snap demo(render方式创建)</h3>
+<div id="snaptonext" class="nav-snaptonext">
+</div>
+<h3>navigator snap demo(setup方式创建)</h3>
+<div id="snaptopage" class="nav-snaptonext">
     <ul>
         <li><a href="#test1">要闻</a></li>
         <li><a href="javascript:;">国内</a></li>
@@ -44,22 +79,12 @@
         <li><a href="#test11">房产</a></li>
         <li><a href="#test12">汽车</a></li>
     </ul>
-    <a class="ui-navigator-fixright" href="#test1">fixright</a>
+    <a class="ui-navigator-fixright" href="javascript:;"></a>
 </div>
 
-<h3>左/右有多个fix元素(render方式创建)</h3>
-<div id="fix-more"></div>
-
 <script type="text/javascript">
-    (function () {
-        /*组件初始化js begin*/
-        $('#fix-both').navigator({     //左右都有fix元素
-            isScrollToNext: false,      //出现半个tab时，不跳动到下一个tab
-            isShowShadow: false        //不显示左右阴影
-        });
-
-        $.ui.navigator('#fix-more', {    //render方式创建
-            content:[
+    (function ($) {
+        var content = [
                 {
                     text:"电影",
                     url:"#test1"
@@ -105,19 +130,29 @@
                     url:"javascript:;"
                 },
                 {
-                    text:"个人",
-                    url:"#test2",
-                    pos: 'right'
-                },
-                {
-                    text:"登录",
-                    url:"http://www.baidu.com",
+                    text:"",
+                    url: 'javascript:;',
                     pos: 'right'
                 }
-            ]
+            ],
+            nav = $.ui.navigator('#snaptonext', {    //render方式创建
+                content: content,
+                viewportCount: 3
+            });
+
+        nav.on('snaptonav', function () {
+            this.scrollToNav(1);    //每次滚动一个
         });
-        /*组件初始化js end*/
-    })();
+
+        $('#snaptopage').navigator({
+            viewportCount: {
+                portrait: 4,
+                landscape: 7
+            }
+        }).on('snaptonav', function () {
+            $('#snaptopage').navigator('scrollToNav', 1, true);   //每次滚动一屏
+        });
+    })(Zepto);
 </script>
 
 <!--demo公用头部展示所用js，可以不用加载 begin-->

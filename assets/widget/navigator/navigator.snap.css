@@ -1,0 +1,19 @@
+.ui-navigator .ui-navigator-wrapper{
+    -webkit-box-flex: 1;
+}
+
+.ui-navigator .ui-navigator-list li{
+    -webkit-box-flex: 1;
+    width: 0;     /*为了使-webkit-box-flex能够平分，不受内容宽度的影响*/
+}
+.ui-navigator .ui-navigator-scroller{
+    position: relative;
+}
+.ui-navigator .ui-navigator-curbar{
+    height: 0.2em;
+    background: #e81459;
+    position: absolute;
+    bottom: 0;
+    -webkit-transition: -webkit-transform 100ms linear;
+    -webkit-transform: translate3d(0, 0, 0);
+}
