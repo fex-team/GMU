@@ -14,7 +14,7 @@ test("创建类", function() {
             this.trigger('init');
         },
         show: function(){
-            this.trigger('show:panel', {name: 'default'});
+            this.trigger('show', {name: 'default'});
         },
         hide: function(){
             ok(true, '插件方法调用组件同名方法检查：Passed!');
@@ -34,24 +34,24 @@ test("option拆分", function() {
     gmu.Panel.option('display', 'push', function(){
         var me = this;
 
-        me.on('show:panel', function(e){
-            ok(e.name === 'default', 'option拆分检查：Passed!' + 'push');
+        me.on('show', function(e, data){
+            ok(data.name === 'default', 'option拆分检查：Passed!' + 'push');
         });
     });
 
     gmu.Panel.option('display', 'overlay', function(){
         var me = this;
 
-        me.on('show:panel', function(e){
-            ok(e.name === 'default', 'option拆分检查：Passed!' + 'overlay');
+        me.on('show', function(e, data){
+            ok(data.name === 'default', 'option拆分检查：Passed!' + 'overlay');
         });
     });
 
     gmu.Panel.option('display', '*', function(){
         var me = this;
 
-        me.on('show:panel', function(e){
-            ok(e.name === 'default', 'option拆分检查：Passed!' + '*');
+        me.on('show', function(e, data){
+            ok(data.name === 'default', 'option拆分检查：Passed!' + '*');
         });
     });
 
@@ -62,8 +62,8 @@ test("option拆分", function() {
     }, function(){
         var me = this;
 
-        me.on('show:panel', function(e){
-            ok(e.name === 'default', 'option拆分检查：Passed!' + 'function');
+        me.on('show', function(e, data){
+            ok(data.name === 'default', 'option拆分检查：Passed!' + 'function');
         });
     });
 
@@ -291,17 +291,20 @@ test("on off trigger", function(){
         flag = flag + 2;
     });
 
-    test.trigger('plus1').trigger('plus2');
+    test.trigger('plus1');
+    test.trigger('plus2');
     ok(flag === 4, "on trigger检查：Passed!");
 
     flag = 0;
     test.off('plus2');
-    test.trigger('plus1').trigger('plus2');
+    test.trigger('plus1');
+    test.trigger('plus2');
     ok(flag === 2, "off trigger检查：Passed!");
 
     flag = 0;
     test.off();
-    test.trigger('plus1').trigger('plus2');
+    test.trigger('plus1');
+    test.trigger('plus2');
     ok(flag === 1, "off trigger检查：Passed!");
 
     $('#test').remove();
