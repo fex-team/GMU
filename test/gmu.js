@@ -2,35 +2,30 @@ module('GMU底层');
 
 test("创建类", function() {
     expect(4);
-    stop();
-    ua.importsrc('Base', function() {
-        gmu.define('Panel', {
-            options: {
-                name: 'new Class'
-            },
-            template: '<div>{{name}}</div>',
-            tpl2html: function(name){
-                return gmu.Panel.template.replace('{{name}}', name);
-            },
-            _init: function(){
-                this.trigger('init');
-            },
-            show: function(){
-                this.trigger('show:panel', {name: 'default'});
-            },
-            hide: function(){
-                ok(true, '插件方法调用组件同名方法检查：Passed!');
-            }
-        });
+    gmu.define('Panel', {
+        options: {
+            name: 'new Class'
+        },
+        template: '<div>{{name}}</div>',
+        tpl2html: function(name){
+            return gmu.Panel.template.replace('{{name}}', name);
+        },
+        _init: function(){
+            this.trigger('init');
+        },
+        show: function(){
+            this.trigger('show:panel', {name: 'default'});
+        },
+        hide: function(){
+            ok(true, '插件方法调用组件同名方法检查：Passed!');
+        }
+    });
 
-        ok(gmu.Panel !== undefined, '命名空间检查：Passed!');
+    ok(gmu.Panel !== undefined, '命名空间检查：Passed!');
 
-        ok(gmu.Panel.options.name === 'new Class', '默认参数检查：Passed!');
-        ok(gmu.Panel.template === '<div>{{name}}</div>', '默认类模板检查：Passed!');
-        ok(gmu.Panel.tpl2html('gmu') === '<div>gmu</div>', '默认类模板解析函数检查：Passed!');
-
-        start();
-    }, 'gmu.Base');
+    ok(gmu.Panel.options.name === 'new Class', '默认参数检查：Passed!');
+    ok(gmu.Panel.template === '<div>{{name}}</div>', '默认类模板检查：Passed!');
+    ok(gmu.Panel.tpl2html('gmu') === '<div>gmu</div>', '默认类模板解析函数检查：Passed!');
 });
 
 test("option拆分", function() {
