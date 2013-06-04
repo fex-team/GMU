@@ -2,197 +2,224 @@
  * @file Slider － 内容可动态修改插件
  * @name Slider.dynamic
  * @short Slider.dynamic
- * @desc <qrcode align="right" title="Live Demo">../gmu/_examples/widget/slider/slider_dynamic.html</qrcode>
- * 此插件扩充slider， 让内容可以动态修改，在这种模式下，dom个数跟items的个数无关，永远是3个div轮换，对于图片集比较多的图片轮播，采用这种方式。
+ * @desc <qrcode align="right" title="Live Demo">
+ * ../gmu/_examples/widget/slider/slider_dynamic.html</qrcode>
+ * 此插件扩充slider， 让内容可以动态修改，在这种模式下，dom个数跟items的个数无关，
+ * 永远是3个div轮换，对于图片集比较多的图片轮播，采用这种方式。
  * @import widget/slider.js
  */
-(function ($) {
-    var itemRender = function (item) {
-        return '<div class="ui-slider-item">' +
-            '<a href="' + item.href + '"><img lazyload="' + item.pic + '"/></a>' +
-            (item.title ? '<p>' + item.title + '</p>' : '') + '</div>';
-    }
+(function( $ ) {
 
-    $.ui.slider.register(function () {
+    /* jsbint strictchain:false */
+    $.ui.slider.register(function() {
         return {
             pluginName: 'dynamic',
 
-            _setup: function () {
-                throw new Error("This plugin does not support setup mode");
+            _setup: function() {
+                throw new Error( 'This plugin does not support setup mode' );
             },
 
-            _create: function () {
-                var data = this._data, group,
-                    content = data.content;
+            _init: function() {
+                var opts = this._data,
+                    group;
 
-                data.autoPlay = false;//disable auto play
-                data.loop = false;//disable loop
-                data.viewNum = 1; //disable multi items per page.
-                data.showDot = false; // disable dot display.
+                if ( opts.content.length < 3 ) {
+                    throw new Error( '以动态模式使用slider，至少需要传入3组数据' );
+                }
 
-                group = $('<div class="ui-slider-group"></div>');
-                this._renderItems(content, data.index || 0, group, data);
+                opts.autoPlay =    // disable auto play
+                opts.loop =    // disable loop
+                opts.showDot =    // disable dot display.
+                opts.lazyloadImg = false;
+                opts.viewNum = 1;    // disable multiview.
 
-                (this.root() || this.root($('<div></div>')))
-                    .addClass('ui-slider')
-                    .appendTo(data.container || (this.root().parent().length ? '' : document.body))
-                    .html(
-                        $('<div class="ui-slider-wheel"></div>')
-                            .append(group)
-                    );
-                this._addDots();
-            },
+                // 避免外部直接修改，影响内部代码
+                this._content = opts.content.concat();
 
-            _renderItems: function (content, index, group, data) {
-                var arr, active, rest, item, i,
-                    render = data.itemRender || itemRender;//allow customize render
+                group = $( '<div class="ui-slider-group"></div>' );
+                this._renderItems( this._content, opts.index, group, opts );
+                group.appendTo( this.root() );
+                opts.index = this.index;
 
-                arr = content.slice(index, index + 3);
-                this._active = active = content[index];
-                rest = 3 - arr.length;
-                rest && (arr = content.slice(index - rest, index).concat(arr));
-
-                data.index = $.inArray(active, this._pool = arr);
-                this._index = index;
-
-                for (i = 0; i < 3 && (item = arr[i]); i++)
-                    group.append(render(item));
-
-                this._loadImages(group.find('img[lazyload]'));
-            },
-
-            _init: function () {
                 this._initOrg();
-                this._adjustPos();
-                this.trigger('slide', [this._index || 0, this._active]);
+                this._adjustPos( true );
             },
 
-            _transitionEnd: function () {
-                this._transitionEndOrg();
-                this._adjustPos();
+            trigger: function( e, data ) {
+
+                // 当触发slide的时候执行
+                if ( e === 'slide' || e.type === 'slide' ) {
+                    this._active = this._pool[ data[ 0 ] ];
+                    this._dir = data[ 0 ] - data[ 1 ] > 0 ? 1 : -1;
+                }
+                return this.triggerOrg.apply( this, arguments );
             },
 
-            _adjustPos: function () {
-                var data = this._data,
-                    root = this.root(),
-                    content = data.content,
+            _start: function( e ) {
+
+                // 不处理多指
+                if ( e.touches.length > 1 ) {
+                    return;
+                }
+
+                this._adjustPos();
+                this._flag = true;
+
+                return this._startOrg( e );
+            },
+
+            slideTo: function( to ) {
+
+                if ( this.index === to || this.index === this._circle( to ) ) {
+                    return;
+                }
+
+                this._adjustPos();
+                this._flag = true;
+
+                return this.slideToOrg.apply( this, arguments );
+            },
+
+            _tansitionEnd: function( e ) {
+                this._adjustPos();
+                return this._tansitionEndOrg( e );
+            },
+
+            _adjustPos: function( force ) {
+                
+                if ( !force && !this._flag ) {
+                    return;
+                }
+
+                var opts = this._data,
+                    $el = this.root(),
+                    content = this._content,
                     length = content.length,
-                    item, elem, width = data.width,
-                    group = root.find('.ui-slider-group'),
-                    render = data.itemRender || itemRender,
-                    index, pos, delta, next;
+                    group = $el.find( opts.containerSelector ),
+                    render = opts.itemRender || this._itemRender,
+                    index,
+                    delta,
+                    next,
+                    item,
+                    elem;
 
-                index = $.inArray(this._active, content);
-                pos = data.index;
-                delta = pos - 1;
+                index = $.inArray( this._active, content );
+                delta = this.index - 1;
                 next = index + delta;
 
-                if (delta && next < length && next >= 0) {
-                    //need to move
-                    item = content[next];
-                    elem = $(render(item));
-                    this._loadImages(elem.find('img[lazyload]'));
+                if ( delta && next < length && next >= 0 ) {
+                    item = content[ next ];
+                    elem = $( render( item ) );
+                    $.staticCall( this._items[ 1 - delta ], 'remove' );
+                    group[ delta < 0 ? 'prepend' : 'append' ]( elem );
 
-                    group.children().eq(1 - delta)
-                        .remove();
-                    group[delta < 0 ? 'prepend' : 'append'](elem);
+                    this._pool.splice( 1 - delta, 1 );
+                    this._pool[ delta < 0 ? 'unshift' : 'push' ]( item );
 
-                    this._pool.splice(1 - delta, 1);
-                    this._pool[delta < 0 ? 'unshift' : 'push'](item);
-
-                    data.index -= delta;
-                    data.items = group.children().each(function (i) {
-                        this.style.cssText += 'width:' + width + 'px;position:absolute;-webkit-transform:translate3d(' + i * width + 'px,0,0);z-index:' + (900 - i);
-                    });
-                    data.wheel.style.cssText += '-webkit-transition:0ms;-webkit-transform:translate3d(-' + data.index * width + 'px,0,0);';
+                    this.index -= delta;
+                    this._items = group.children().toArray();
+                    this._initWidth( $el, 1, this.index, true );
                 }
-                if (index === 0 || index === length - 1) {
-                    //到达边缘
-                    this.trigger('edge', [index === 0, this._active]);
+
+                // 到达边缘
+                if ( index === 0 || index === length - 1 ) {
+                    this.trigger( 'edge', [ index === 0, this._active ] );
                 }
+
+                this._flag = false;
                 return this;
             },
 
             /**
-             * 轮播位置判断
-             */
-            _move: function (index) {
-                var data = this._data,
-                    _index;
-
-                data.index = index;
-                this._active = this._pool[index];
-                this._index = _index = $.inArray(this._active, data.content);
-
-                this.trigger('slide', [_index, this._active]);
-                data.wheel.style.cssText += '-webkit-transition:' + (data.animationTime || '0') + 'ms;-webkit-transform:translate3d(-' + data.index * data.width + 'px,0,0);';
-            },
-
-            _touchStart: function (e) {
-                var data = this._data,
-                    target, current, matrix;
-
-                this._touchStartOrg.apply(this, arguments);
-                target = -data.index * data.width;
-                matrix = getComputedStyle(data.wheel, null)['webkitTransform'].replace(/[^0-9\-.,]/g, '').split(',');
-                current = +matrix[4];
-                if (target !== current) {
-                    this._adjustPos();
-                }
-            },
-
-            _loadImages: function (imgs) {
-                var data = this._data;
-
-                data.imgZoom && imgs.on('load', function () {
-                    var h = this.height,
-                        w = this.width,
-                        width = data.width,
-                        height = data.height,
-                        min_h = Math.min(h, height),
-                        min_w = Math.min(w, width);
-
-                    $(this).off('load', arguments.callee);
-
-                    this.style.cssText += h / height > w / width ?
-                        ('height:' + min_h + 'px;' + 'width:' + min_h / h * w + 'px;') :
-                        ('height:' + min_w / w * h + 'px;' + 'width:' + min_w + 'px');
-                });
-
-                imgs.each(function () {
-                    this.src = this.getAttribute('lazyload');
-                    this.removeAttribute('lazyload');
-                });
-            },
-
-            /**
-             * @desc 更新内容，直接换掉content中数据，然后重新渲染新设置的内容。在需要延时扩充图片集的情况下使用。
-             * @name update
-             * @grammar update( content ) => self
+             * @desc 获取当前显示的元素索引
+             * @name getIndex
+             * @grammar getIndex() => number
              *  @example
              * //setup mode
-             * $('#slider').slider('update', [item1, item2, item3]);
+             * $('#slider').slider('getIndex');
              *
              * //render mode
              * var demo = $.ui.slider();
-             * demo.update([item1, item2, item3]);
+             * demo.getIndex();
              */
-            update: function (content) {
-                var data = this._data, group, width = data.width,
-                    active,
-                    index = $.inArray(active = this._active, content);
+            getIndex: function() {
+                return $.inArray( this._active, this._content );
+            },
 
-                ~index || (index = data._direction > 0 ? 0 : content.length - 1);
-                group = this.root().find('.ui-slider-group').empty();
-                this._renderItems(data.content = content, index, group, data);
-                data.items = group.children()
-                    .each(function (i) {
-                        this.style.cssText += 'width:' + width + 'px;position:absolute;-webkit-transform:translate3d(' + i * width + 'px,0,0);z-index:' + (900 - i);
-                    });
+            /**
+             * @desc 获取当前显示的元素数据对象
+             * @name active
+             * @grammar active() => Object
+             *  @example
+             * //setup mode
+             * $('#slider').slider('active');
+             *
+             * //render mode
+             * var demo = $.ui.slider();
+             * demo.active();
+             */
+            active: function() {
+                return this._active;
+            },
+
+            /**
+             * @desc 获取内容或者更新内容，直接换掉content中数据，然后重新渲染新设置的内容。在需要延时扩充图片集的情况下使用。
+             * @name content
+             * @grammar content( content ) => self
+             * @example
+             * //setup mode
+             * $('#slider').slider('content', [item1, item2, item3]);
+             *
+             * //render mode
+             * var demo = $.ui.slider();
+             * demo.content([item1, item2, item3]);
+             */
+            content: function( content ) {
+
+                // getter
+                if ( !$.isArray( content ) ) {
+                    return this._content.concat();
+                }
+
+                var opts = this._data,
+                    active = this._active,
+                    index = $.inArray( active, content ),
+                    $el = this.root(),
+                    group;
+
+                ~index || (index = this._dir > 0 ? 0 : content.length - 1);
+
+                group = $el.find( '.ui-slider-group' ).empty();
+                this._content = content = content.concat();
+                this._renderItems( content, index, group, opts, true );
+                this._items = group.children().toArray();
+                this._initWidth( $el, 1, this.index, true );
 
                 this._adjustPos();
-                active !== this._active && this.trigger('slide', [index || 0, this._active]);
+                active !== this._active && this.trigger( 'slide', 
+                        [ this.index, -1 ] );
+            },
+
+            _renderItems: function( content, index, group, center ) {
+                var arr, 
+                    rest;
+
+                arr = content.slice( index, index + (center ? 2 : 3) );
+                this._active = content[ index ];
+                rest = 3 - arr.length;
+                rest && (arr = content.slice( index - rest, index )
+                        .concat( arr ));
+                this.index = rest;
+                this._createItems( group, this._pool = arr );
+            },
+
+            _itemRender: function( item ) {
+                return '<div class="ui-slider-item">' +
+                    '<a href="' + item.href + '">' +
+                    '<img src="' + item.pic + '"/></a>' +
+                    (item.title ? '<p>' + item.title + '</p>' : '') +
+                    '</div>';
             }
         };
     });
-})(Zepto);
+})( Zepto );

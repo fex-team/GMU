@@ -1,6 +1,6 @@
 {
     "name": "Gmu",
-    "version": "2.0.5",
+    "version": "2.0.6",
     "description": "A simple ui framework based on Zepto",
     "repository": {
         "type": "git",
