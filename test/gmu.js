@@ -2,54 +2,68 @@ module('GMU底层');
 
 test("创建类", function() {
     expect(4);
-    stop();
-    ua.importsrc('gmu/Base', function() {
-        gmu.define('Panel', {
-            defaultOptions: {
-                name: 'new Class'
-            },
-            template: '<div>{{name}}</div>',
-            tpl2html: function(name){
-                return gmu.Panel.template.replace('{{name}}', name);
-            },
-            _init: function(){
-                this.trigger('init');
-            },
-            show: function(){
-                this.publish('show:panel', {name: 'default'});
-            },
-            hide: function(){
-                ok(true, '插件方法调用组件同名方法检查：Passed!');
-            }
-        });
+    gmu.define('Panel', {
+        options: {
+            name: 'new Class'
+        },
+        template: '<div>{{name}}</div>',
+        tpl2html: function(name){
+            return gmu.Panel.template.replace('{{name}}', name);
+        },
+        _init: function(){
+            this.trigger('init');
+        },
+        show: function(){
+            this.trigger('show', {name: 'default'});
+        },
+        hide: function(){
+            ok(true, '插件方法调用组件同名方法检查：Passed!');
+        }
+    });
 
-        ok(gmu.Panel !== undefined, '命名空间检查：Passed!');
+    ok(gmu.Panel !== undefined, '命名空间检查：Passed!');
 
-        ok(gmu.Panel.defaultOptions.name === 'new Class', '默认参数检查：Passed!');
-        ok(gmu.Panel.template === '<div>{{name}}</div>', '默认类模板检查：Passed!');
-        ok(gmu.Panel.tpl2html('gmu') === '<div>gmu</div>', '默认类模板解析函数检查：Passed!');
-
-        start();
-    }, 'gmu.Base');
+    ok(gmu.Panel.options.name === 'new Class', '默认参数检查：Passed!');
+    ok(gmu.Panel.template === '<div>{{name}}</div>', '默认类模板检查：Passed!');
+    ok(gmu.Panel.tpl2html('gmu') === '<div>gmu</div>', '默认类模板解析函数检查：Passed!');
 });
 
 test("option拆分", function() {
-    expect(2);
+    expect(3);
 
     gmu.Panel.option('display', 'push', function(){
         var me = this;
 
-        me.subscribe('show:panel', function(e){
-            ok(e.name === 'default', 'option拆分，参数检查：Passed!');
+        me.on('show', function(e, data){
+            ok(data.name === 'default', 'option拆分检查：Passed!' + 'push');
         });
     });
 
     gmu.Panel.option('display', 'overlay', function(){
         var me = this;
 
-        me.subscribe('show:panel', function(e){
-            ok(e.name === 'default', 'option拆分检查：Passed!');
-            ok(e.name === 'default', 'option拆分，参数检查：Passed!');
+        me.on('show', function(e, data){
+            ok(data.name === 'default', 'option拆分检查：Passed!' + 'overlay');
+        });
+    });
+
+    gmu.Panel.option('display', '*', function(){
+        var me = this;
+
+        me.on('show', function(e, data){
+            ok(data.name === 'default', 'option拆分检查：Passed!' + '*');
+        });
+    });
+
+    gmu.Panel.option('display', function(){
+        if(this._options.display === 'overlay'){
+            return true;
+        }
+    }, function(){
+        var me = this;
+
+        me.on('show', function(e, data){
+            ok(data.name === 'default', 'option拆分检查：Passed!' + 'function');
         });
     });
 
@@ -65,7 +79,7 @@ test("option拆分", function() {
 });
 
 test("插件", function() {
-    expect(4);
+    expect(5);
 
     gmu.Panel.register('follow', {
         _init: function(){
@@ -135,10 +149,10 @@ test("DOM options", function() {
 });
 
 test("类继承 - define方式", function(){
-    expect(9);
+    expect(10);
 
     gmu.define('Dialog', {
-        defaultOptions: {
+        options: {
             title: '标题'
         },
         _init: function(){
@@ -173,15 +187,17 @@ test("类继承 - define方式", function(){
     ok(dialog.tpl2html('gmu') === '<div>Hello GMU</div>', '实例模板解析函数检查：Passed!');
     ok($jQuery.isFunction(dialog.show), '实例方法检查：Passed!');
     ok($jQuery.isFunction(dialog.title), '实例方法检查：Passed!');
+    ok(dialog instanceof gmu.Dialog && dialog instanceof gmu.Panel && dialog instanceof gmu.Base, '继承关系检查：Passed!');
 
     $('#dialog').remove();
+
 });
 
 test("类继承 - inherits方式", function(){
-    expect(9);
+    expect(10);
 
-    gmu.Dialog.inherits('Alert', {
-        defaultOptions: {
+    var Alert = gmu.Dialog.inherits({
+        options: {
             title: 'Alert'
         },
         title: function(title){},
@@ -189,7 +205,7 @@ test("类继承 - inherits方式", function(){
     });
 
     $(document.body).append('<div id="alert"></div>');
-    var alert = new gmu.Alert('#alert', {
+    var alert = new Alert('#alert', {
         name: '警告框',
         follow: false
     });
@@ -202,7 +218,7 @@ test("类继承 - inherits方式", function(){
     $('#alert').remove();
 
     $(document.body).append('<div id="alert"></div>');
-    var alert = new gmu.Alert('#alert', {
+    var alert = new Alert('#alert', {
         name: '对话框',
         template: '<div>Hello {{name}}</div>',
         tpl2html: function(name){
@@ -215,6 +231,7 @@ test("类继承 - inherits方式", function(){
     ok(alert.tpl2html('gmu') === '<div>Hello GMU</div>', '实例模板解析函数检查：Passed!');
     ok($jQuery.isFunction(alert.show), '实例方法检查：Passed!');
     ok($jQuery.isFunction(alert.content), '实例方法检查：Passed!');
+    ok(alert instanceof gmu.Dialog && alert instanceof gmu.Panel && alert instanceof gmu.Base, '继承关系检查：Passed!');
 
     $('#alert').remove();
 });
@@ -223,7 +240,7 @@ test("zeptoLize", function(){
     expect(2);
 
     gmu.define('test', {
-        defaultOptions: {
+        options: {
             test_option: 'test'
         },
         _init: function(){
@@ -244,15 +261,12 @@ test("zeptoLize", function(){
 
 
 test("destroy", function(){
-    expect(2);
+    expect(0);
 
     $(document.body).append('<div id="test"></div>');
     var test = new gmu.test('#test');
 
-    ok($('#test').attr('data-guid') !== null, '组件初始化后，节点gmu-attr属性检查：Passed!');
-
     test.destroy();
-    ok($('#test').attr('data-guid') === null, '组件destroy后，节点gmu-attr属性检查：Passed!');    
 
     $('#test').remove();
 
@@ -265,60 +279,84 @@ test("on off trigger", function(){
     var flag = 0;
     $(document.body).append('<div id="test"></div>');
     var test = new gmu.test('#test', {
-        'plus1:test': function(){
+        'plus1': function(){
             flag = flag + 1;
         }
     });
 
-    test.on('plus1:test', function(){
+    test.on('plus1', function(){
         flag = flag + 1;
     });
-    test.on('plus2:test', function(){
+    test.on('plus2', function(){
         flag = flag + 2;
     });
 
-    test.trigger('plus1:test').trigger('plus2:test');
+    test.trigger('plus1');
+    test.trigger('plus2');
     ok(flag === 4, "on trigger检查：Passed!");
 
     flag = 0;
-    test.off('plus2:test');
-    test.trigger('plus1:test').trigger('plus2:test');
+    test.off('plus2');
+    test.trigger('plus1');
+    test.trigger('plus2');
     ok(flag === 2, "off trigger检查：Passed!");
 
     flag = 0;
     test.off();
-    test.trigger('plus1:test').trigger('plus2:test');
-    ok(flag === 0, "off trigger检查：Passed!");
+    test.trigger('plus1');
+    test.trigger('plus2');
+    ok(flag === 1, "off trigger检查：Passed!");
 
     $('#test').remove();
 });
 
-test("subscribe unsubscribe publish", function(){
-    expect(3);
+test("继承后的方法调用", function(){
+    expect(7);
 
-    var flag = 0;
-    $(document.body).append('<div id="test"></div>');
-    var test = new gmu.test('#test');
-
-    test.subscribe('plus1:test', function(){
-        flag = flag + 1;
+    gmu.define('Layer', {
+        options: { 
+            disposeOnHide: true
+        },
+        _init: function(){
+            ok(true, '父类的构造函数调用：Passed!');
+        },
+        show: function(name){
+            ok(true, '父类的方法调用：Passed!');
+        }
     });
-    test.subscribe('plus2:test', function(){
-        flag = flag + 2;
+
+    gmu.Layer.register('follow', {
+        _init: function(){
+            ok(true, '父类的插件构造函数调用：Passed!');
+        },
+        show: function(name){
+            this.origin(name);
+            ok(true, '父类的插件方法调用：Passed!');
+        },
+        hide: function(){
+            ok(true, '父类的插件方法调用：Passed!');
+        }
     });
 
-    test.publish('plus1:test').publish('plus2:test');
-    ok(flag === 3, "subscribe publish检查：Passed!");
+    gmu.define('Panel', {
+        options: {
+            height: 300,
+            width: 200
+        },
+        _init: function(){
+            ok(true, '子类构造函数调用：Passed!');
+        },
+        show: function(name){
+            this.$super('show', name);
+            ok(true, '子类方法调用：Passed!');
+        }
+    }, gmu.Layer);
 
-    flag = 0;
-    test.unsubscribe('plus2:test');
-    test.publish('plus1:test').publish('plus2:test');
-    ok(flag === 1, "unsubscribe publish检查：Passed!");
+    var panel = new gmu.Panel(document.body);
+    panel.show('name', 3);
+    panel.hide();
 
-    flag = 0;
-    test.unsubscribe();
-    test.publish('plus1:test').publish('plus2:test');
-    ok(flag === 0, "unsubscribe publish检查：Passed!");
+    panel.destroy();
 
-    $('#test').remove();
+    // 同名方法的调用顺序：父类方法 => 子类方法 => 父类的插件方法
 });

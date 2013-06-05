@@ -84,13 +84,18 @@ module.exports = function(grunt) {
             all: ['src/**/*.js'],
             options: {
                 jshintrc: '.jshintrc'
-            }
+            },
         },
 
         size: {
             widget: {
                 cwd: 'src/widget/',
                 src: ['**/*.js']
+            },
+
+            dist: {
+                cwd: 'dist/',
+                src: ['gmu.js', 'zepto.js']
             }
         }
     });
@@ -106,6 +111,9 @@ module.exports = function(grunt) {
 
     // 负责压缩js
     grunt.loadNpmTasks( 'grunt-contrib-uglify' );
+
+    // 负责报告文件大小
+    grunt.loadNpmTasks( 'grunt-size' );
 
     // 负责代码规范检测
     grunt.loadNpmTasks('grunt-jsbint');
