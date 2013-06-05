@@ -1,3 +1,10 @@
+/**
+ * @file 搜索建议 - posAdapt
+ * @name Suggestion - posAdapt
+ * @desc <qrcode align="right" title="Live Demo">../gmu/examples/widget/suggestion/suggestion_setup.html</qrcode>
+ * 搜索建议 - 位置自适应插件，主要需求用于当sug放在页面底部时，需将sug翻转到上面来显示
+ * @import widget/suggestion/suggestion.js
+ */
 (function ($, win) {
     gmu.suggestion.register('posAdapt', {
         _checkPos: function () {

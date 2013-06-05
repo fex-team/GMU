@@ -3,7 +3,7 @@
  * @name Suggestion
  * @desc <qrcode align="right" title="Live Demo">../gmu/examples/widget/suggestion/suggestion_setup.html</qrcode>
  * 搜索建议组件
- * @import core/touch.js, core/ui.js, core/iscroll.js, core/highlight.js
+ * @import core/touch.js
  */
 (function ($, win) {
     var guid = 0;
@@ -29,7 +29,7 @@
             'focus': function () {
                 this._showList().trigger('open');
             },
-            'input': function () {
+            'input': function () {    //考虑到在手机上输入比较慢，故进行稀释处理
                 this._showList();
             },
             'touchstart': function (e) {
@@ -40,13 +40,15 @@
                     $input = me.getEl(),
                     $elem = $(e.target);
 
-                if ($elem.hasClass('ui-suggestion-plus')) {
+                if ($elem.hasClass('ui-suggestion-plus')) {     //点击加号，input值上框
                     $input.val($elem.attr('data-item'));
-                } else {
+                } else if ($.contains(me.$wrapper, $elem.get(0))){    //点击sug item
                     setTimeout(function () {    //防止使用tap造成穿透
                         $input.val($elem.text());
                         me.trigger('select', [$elem]).hide().$form.submit();
                     }, 400);
+                } else {       //点击sug外围，sug关闭
+                    me.hide();
                 }
             },
             'click': function (e) {
@@ -92,6 +94,7 @@
             me.splitor = encodeURIComponent(',');     //localStorage中数据分隔符
             opts.isCache && (me.cacheData = {});
             $form.size() && (me.$form = $form.on('submit.suggestion', eventHandler));
+            opts.autoClose && $(document).on('tap' + ns, eventHandler);
             me._initDom().getEl().on('focus' + ns + ' input' + ns, eventHandler);
             me.$content.on('touchstart' + ns + ' tap' + ns, eventHandler).find('li').highlight('ui-suggestion-highlight');      //注册tap事件由于中文输入法时，touch事件不能submit
             me.$btn.on('click' + ns, eventHandler);
@@ -174,26 +177,46 @@
         _cacheData: function (key, value) {      //setter, getter
             return value !== undefined ? this.cacheData[key] = value : this.cacheData[key];
         },
+        /**
+         * @desc 获取input值
+         * @name value
+         * @grammar value() => string
+         * @example $('#input').suggestion('value');
+         */
         value: function () {
             return this.getEl().val();
         },
+
+        /**
+         * @desc 设置|获取|清空历史记录
+         * @name history
+         * @grammer history => self|string
+         * @example
+         * $('#input').suggestion('history')   //返回当前localstorage中history值
+         * $('#input').suggestion('history', 'aa')   //为history增加'aa'值
+         * instance.history(null)     //清空当前sug的history
+         * */
         history: function (value) {      //value:null，清除sug历史记录，value非null为存取
             return value === null ? win.confirm('清除全部查询历史记录？') && (this._localStorage(value), this.hide()) : this._localStorage(value);
         },
+
+        /**
+         * @desc 显示sug
+         * @name show
+         * @grammer show() => self
+         * */
         show: function () {
             this.$wrapper.show();
             return this;
         },
+
+        /**
+         * @desc 隐藏sug
+         * @name hide
+         * @grammer hide() => self
+         * */
         hide: function () {
             this.$wrapper.hide();
-            return this;
-        },
-        focus: function () {
-            this.getEl().get(0).focus();
-            return this;
-        },
-        blur: function () {
-            this.getEl().get(0).blur();
             return this;
         }
     });
