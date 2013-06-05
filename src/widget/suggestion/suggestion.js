@@ -1,8 +1,17 @@
+/**
+ * @file 搜索建议组件
+ * @name Suggestion
+ * @desc <qrcode align="right" title="Live Demo">../gmu/examples/widget/suggestion/suggestion_setup.html</qrcode>
+ * 搜索建议组件
+ * @import core/touch.js, core/ui.js, core/iscroll.js, core/highlight.js
+ */
 (function ($, win) {
+    var guid = 0;
+
     gmu.define('suggestion', {
         //必传项:
         //container,source，其container为input或者其他可编辑文本框
-        defaultOptions: {
+        options: {
             listCount: 5,
             isCache: true,
             isHistory: true,     //isStorage
@@ -52,18 +61,18 @@
                 }
             }
         },
-        _create: function () {
+        _initDom: function () {    //无setup模式
             var me = this,
-                $input = me.getEl().attr('autocomplete', 'off'),
-                $parent = $input.parent();
+                $input = me.getEl().attr('autocomplete', 'off');
 
-            $parent.is('.ui-suggestion-mask') ? (me.$mask = $parent) : $input.wrap(me.$mask = $('<div class="ui-suggestion-mask"></div>'));
-            me.$mask.append('<div class="ui-suggestion">' +
+            $input.wrap(me.$mask = $('<div class="ui-suggestion-mask"></div>'));
+            //考虑到不涉及到动态渲染数据，故没有采用template
+            me.$mask.append('<div id="ui-suggestion-"' + (guid++) + 'class="ui-suggestion">' +
                 '<div class="ui-suggestion-content"></div>' +
                 '<div class="ui-suggestion-button">' +
                 '<span class="ui-suggestion-clear">清除历史记录</span>' +
                 '<span class="ui-suggestion-close">关闭</span></div></div>');
-            me.$wrapper = me.$mask.find('.ui-suggestion').css('top', $input.height());
+            me.$wrapper = me.$mask.find('.ui-suggestion').css('top', $input.height() + parseInt($input.css('top')));
             me.$content = me.$wrapper.find('.ui-suggestion-content');
             me.$btn = me.$wrapper.find('.ui-suggestion-button');
             me.$clearBtn = me.$btn.find('.ui-suggestion-clear');
@@ -71,23 +80,21 @@
 
             return me;
         },
-        _setup: function () {
-            return this._create();
-        },
-        _init: function () {
+        _create: function () {
             var me = this,
                 opts = me._options,
                 $form = $(opts.form || me.getEl().closest('form')),
                 hs = opts.historyShare,
+                ns = '.suggestion',
                 eventHandler = $.proxy(me._eventHandler, me);
 
-            me.key = hs ? (($.type(hs) === 'boolean' ? '' : hs + '-') + 'SUG-Sharing-History') : me.getEl().attr('data-guid');
+            me.key = hs ? (($.type(hs) === 'boolean' ? '' : hs + '-') + 'SUG-Sharing-History') : me.getEl().attr('id');
             me.splitor = encodeURIComponent(',');     //localStorage中数据分隔符
             opts.isCache && (me.cacheData = {});
-            me._create().getEl().on('focus.suggestion input.suggestion', eventHandler);
             $form.size() && (me.$form = $form.on('submit.suggestion', eventHandler));
-            me.$content.on('touchstart.suggestion, tap.suggestion', eventHandler).find('li').highlight('ui-suggestion-highlight');      //注册tap事件由于中文输入法时，touch事件不能submit
-            me.$btn.on('click.suggestion', eventHandler);
+            me._initDom().getEl().on('focus' + ns + ' input' + ns, eventHandler);
+            me.$content.on('touchstart' + ns + ' tap' + ns, eventHandler).find('li').highlight('ui-suggestion-highlight');      //注册tap事件由于中文输入法时，touch事件不能submit
+            me.$btn.on('click' + ns, eventHandler);
             me.on('destroy', function () {
                 $form.size() && $form.off('.suggestion');
                 me.$wrapper.children().off('.suggestion').remove();
@@ -97,6 +104,10 @@
 
             return me;
         },
+        /**
+         * 展示suglist，分为query存在和不存在
+         * @private
+         */
         _showList: function () {
             var me = this,
                 query = me.value(),
@@ -106,6 +117,7 @@
             if (query) {      //当query不为空，即input或focus时,input有值
                 (data = me._cacheData(query)) ?
                     me._render(data, query) :
+                    //用户自己发送请求或直接本地数据处理，可以在sendRequest中处理，因需求不大，故暂不实现source为数据对象时，对数据筛选的逻辑
                     $.isFunction(sendRequest) ? sendRequest.call(me, query, me._render) : me.trigger('sendRequst', query);
             } else {      //query为空，即刚开始focus时，读取localstorage中的数据渲染
                 (data = me._localStorage()) ? me._render({s: data.split(me.splitor)}) : me.hide();
@@ -117,6 +129,12 @@
                 renderList = me._options.renderList;
             return $.isFunction(renderList) ? me._fillWrapper(renderList.call(me, data.s, query) || '', query) : me.trigger('renderList', [data.s, query]);
         },
+        /**
+         * 根据数据填充sug wrapper
+         * @listHtml 填充的sug片段，默认为'<ul><li>...</li>...</ul>'
+         * @query query数据
+         * @private
+         */
         _fillWrapper: function (listHtml, query) {
             this.$clearBtn[query ? 'hide' : 'show']();      //数据不是来自历史记录时隐藏清除历史记录按钮
             listHtml ? (this.$content.html(listHtml), this.show()) : this.hide();
