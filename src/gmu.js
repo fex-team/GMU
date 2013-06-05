@@ -336,7 +336,13 @@
 $.ui = gmu;
 
 (function(gmu) {
-    var blankFn = function(){};
+    var blankFn = function(){},
+        Event = function( name ) {
+            return {
+                type: name,
+                returnValue: true
+            };
+        };
     /**
      * GMU组件的基类
      * @class
@@ -421,25 +427,25 @@ $.ui = gmu;
 
         /**
          * @name publish
-         * @grammar instance.publish(name) => instance
+         * @grammar instance.publish(name) => {Boolean}
          * @desc 派发事件, 此trigger会优先把options上的事件回调函数先执行
-         * options上回调函数可以通过e.preventDefaualt()来阻止事件派发。
+         * options上回调函数可以通过设置event.defaultPrevented = false来阻止事件继续派发。
          */
-         // TODO 如果其中某个事件处理返回false，不继续执行
         trigger: function( name ) {
             if ( !this._events || !name ) {
                 return this;
             }
 
-            var args = Array.prototype.slice.call( arguments, 1 ),
+            var event = Event(name),
+                args = [event].concat( Array.prototype.slice.call( arguments, 1 ) ),
                 events = this._events[name],
                 opEvent = this._options[name],
                 result;
 
             if ( opEvent && $.isFunction( opEvent ) ) {
-                result = opEvent.apply( this, args );
-                if(result === false){
-                    return this;
+                opEvent.apply( this, args );
+                if(event.defaultPrevented === true){
+                    return false;
                 }
             }
 
@@ -452,7 +458,7 @@ $.ui = gmu;
             // triggerHandler不冒泡
             this.$el.triggerHandler( name, args );
 
-            return this;
+            return event.returnValue;
         },
 
         /**
