@@ -54,7 +54,7 @@ module.exports = function(grunt) {
                 cwd: '<%= fis.options.srcPath %>',
 
                 src: [ 'widget/*.js' ],
-                dest: 'dist/<%= pkg.version %>'
+                dest: 'dist/fis/<%= pkg.version %>/widget'
             }
         },
 
