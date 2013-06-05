@@ -18,7 +18,7 @@ module.exports = function( grunt ) {
         //如果已经存在则删除
         file.delete(fisBase);
         file.mkdir(fisBase);
-
+console.log(files);
         files
             /*.filter(function( item ){
              return item.path !== 'core/zepto.js';
@@ -36,7 +36,7 @@ module.exports = function( grunt ) {
             ['js', 'css'].forEach(function (type) {
                 read = fd.read;
                 if (read && read[type]) {
-                    buffer = (read[type + 'desp'] ? read[type + 'desp'].join(';\n') : '') + file.read(read[type]) + '\n' + (read[type + 'exports'] ? read[type + 'exports'] : '');
+                    buffer = (read[type + 'desp'] ? read[type + 'desp'].join('\n') : '') + file.read(read[type]) + '\n' + (read[type + 'exports'] ? read[type + 'exports'] : '');
                     //收集图片写入fis中
                     type === 'css' && (buffer = renderImages(buffer, path.dirname(read[type]), path.dirname(fisBase + fd.write[type])));
                     file.write(fisBase + fd.write[type], buffer);
@@ -76,13 +76,13 @@ module.exports = function( grunt ) {
             write = {};
 
         if(fis.base) {
-            read.js = prefix + item.path;
+            read.js = /^zepto.js$/i.test(item.path) ? path.resolve(config.dist.zepto.dest) : (prefix + item.path);
             read.jsdesp = [];
             read.jsexports = fis.exports;
             item.dependencies && item.dependencies.forEach(function (desp) {
                 var desPath = parsePath(desp).require;
                 if (desPath) {
-                    read.jsdesp.push("require('gmu:" + desPath + "')");
+                    read.jsdesp.push("require('gmu:" + desPath + "');");
                 }
             });
             write.js = fis.base + '.js';
@@ -95,10 +95,12 @@ module.exports = function( grunt ) {
             if (item.css.dependencies) {    //生成commoncss
                 read.comcss = [];
                 write.comcss = [];
+                read.cssdesp = [];
                 item.css.dependencies.forEach(function (desp) {
                     for (var theme in desp) {
                         if (desp.hasOwnProperty(theme)) {
                             read.comcss.push(cssPrefix + desp[theme]);
+                            read.cssdesp.push("@import url('/static/common/lib/gmu/commoncss/" + desp[theme] + "');");
                             write.comcss.push('commoncss' + path.sep + path.basename(desp[theme]));
                         }
                     }
@@ -124,7 +126,7 @@ module.exports = function( grunt ) {
                 read[skin] = {};
                 write[skin] = {};
                 if (!fis.plugin) {
-                    read[skin].buffer = "exports = require('gmu:" + fis.require + "')";
+                    read[skin].buffer = "exports = require('gmu:" + fis.require + "');";
                     write[skin].js = fis.base + path.sep + fis.name + '.' + skin + '.js';
                     read[skin].css = cssPrefix + item.css[skin];
                     write[skin].css = fis.base + path.sep + fis.name + '.' + skin + '.css';
@@ -148,30 +150,28 @@ module.exports = function( grunt ) {
     }
 
     function parsePath (spath, skin) {
-        var matches = spath.match(/([^\/]+)\/([^\/]+)\.js$/i),
+        var matches = spath.match(/(?:([^\/]+)\/)?([^\/]+)\.js$/i),
             fis = {},
             fnArr;
 
         if (matches) {
             fnArr = matches[2].split('.');
-            fis.require = (matches[1] === 'widget' ? fnArr[0] : (fnArr.length > 1 ? 'base' : 'zepto')) + (fnArr.length > 1 ? path.sep + fnArr[1] : '');
-            fis.base = (matches[1] === 'widget' ? fnArr[0] : 'base') + path.sep + (fnArr.length > 1 ? ( fnArr[1] + path.sep + fnArr[1] ) : fnArr[0]);
-            if (skin) {
-                fis.base =  fnArr[0] + ('.' + skin);
+            if (matches[1] === 'widget') {
+                fis.base = fnArr[0] + path.sep + (fnArr.length > 1 ? ( fnArr[1] + path.sep + fnArr[1] ) : fnArr[0]);
+                fis.require = fnArr[0] + (fnArr.length > 1 ? path.sep + fnArr[1] : '');
+                fis.exports = 'exports=' + ('Zepto.ui.' + fnArr[0]) + ';';
+                fis.plugin = fnArr.length > 1 ? fnArr[1] : '';
+                skin && (fis.base =  fnArr[0] + ('.' + skin));
+            } else if (matches[1] === 'core') {
+                fis.require = 'base' + path.sep + (fnArr.length > 1 ?  fnArr[1] : fnArr[0]);
+                fis.base = 'base' + path.sep + (fnArr.length > 1 ? (fnArr[1] + path.sep + fnArr[1]) : (fnArr[0] + path.sep + fnArr[0]));
+                fis.exports = 'exports=Zepto;';
+            } else if (!matches[1] && matches[2] === 'zepto'){
+                fis.require = 'zepto';
+                fis.base = 'zepto' + path.sep + 'zepto';
+                fis.exports = 'exports=Zepto;';
             }
-            fis.exports = 'exports=' + (matches[1] === 'widget' ? ('Zepto.ui.' + fnArr[0]) : 'Zepto') + ';';
             fis.name = fnArr[0];
-            fis.plugin = (matches[1] === 'widget' && fnArr.length > 1) ? fnArr[1] : '';
-            if (matches[1] === 'core' && fnArr.length === 1) {   //针对touch.js和zepto.js特殊处理
-                switch (fnArr[0]) {
-                    case 'touch':
-                        fis.base = 'base' + path.sep + fnArr[0] + path.sep + fnArr[0];
-                        break;
-                    case 'zepto':
-                        fis.base = fnArr[0] + path.sep + fnArr[0];
-                        break;
-                }
-            }
         }
 
         return fis;
@@ -190,16 +190,21 @@ module.exports = function( grunt ) {
             }
         });
         return plugins;
-
     }
 
     function renderImages (content, rpath, wpath) {
-        var url;
+        var url, replace;
 
         return content.replace(/url\(((['"]?)(?!data)([^'"\n]+?)\2)\)/ig, function () {
             url = arguments[3];
-            file.write(path.resolve(wpath + path.sep + path.basename(url)), file.read(path.resolve(rpath + path.sep + url)));
-            return 'url(' + path.basename(url) + ')';
+            if (/\.[png|jpg|jpeg|gif]/i.test(url)) {
+                file.write(path.resolve(wpath + path.sep + path.basename(url)), file.read(path.resolve(rpath + path.sep + url)));
+                replace = 'url(' + path.basename(url) + ')';
+            } else {
+                replace = arguments[0];
+            }
+
+            return replace;
         });
     }
 
