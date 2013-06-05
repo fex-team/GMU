@@ -304,7 +304,7 @@
         };
 
     window.gmu = {
-        version: '2.1.0.0',
+        version: '@version',
 
         /**
          *  @desc 定义一个gmu组件，只支持单继承
