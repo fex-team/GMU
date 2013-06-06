@@ -397,7 +397,7 @@ window.gmu.$.ui = gmu;
                 false === opEvent.apply( this, args ) && (evt.stopPropagation(), evt.preventDefault());
             }
 
-            gmu.event.trigger.apply(this, arguments);
+            gmu.event.trigger.apply(this, args);
 
             // triggerHandler不冒泡
             this.$el.triggerHandler( evt, args );
