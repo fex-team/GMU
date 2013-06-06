@@ -468,4 +468,4 @@ window.gmu.$.ui = gmu;
             this.disposed = true;
         }
     };
-})(window.gmu);
+})(window.gmu, window.gmu.$);
