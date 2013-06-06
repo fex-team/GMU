@@ -13,23 +13,19 @@
 
 .ui-suggestion ul li{
 	border-bottom: 1px solid #e7e7e7;
-    padding: 0.6em 0px;
+    padding: 0.5em 10px;
 }
 
-.ui-suggestion .ui-suggestion-result{
-	padding: 0 10px;
-}
 
-.ui-suggestion .ui-suggestion-result:active, .ui-suggestion-result-highlight{
+.ui-suggestion-highlight{
 	background: #ededed;
 }
 
-.ui-suggestion .ui-suggestion-result span{
+.ui-suggestion ul li span{
 	color: #878787;
 }
 
 .ui-suggestion .ui-suggestion-button{
-	border-top: 1px solid #e7e7e7;
 	background: #f7f7f7;
 	height: 33px;
 	line-height: 33px;
@@ -44,11 +40,11 @@
     cursor: pointer;
 }
 
-.ui-suggestion-button span:first-child{
+.ui-suggestion-button span.ui-suggestion-clear{
 	border-right: 1px solid #e7e7e7;
 }
 
-.ui-suggestion-button span:last-child{
+.ui-suggestion-button span.ui-suggestion-close{
  	border-left: 1px solid #e7e7e7;
 }
 
