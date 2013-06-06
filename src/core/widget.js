@@ -1,6 +1,6 @@
 /**
  * @file gmu底层，定义了创建gmu组件的方法
- * @import zepto.js, core/gmu.js
+ * @import zepto.js, core/gmu.js, core/event.js
  */
 
 (function( gmu, $, undefined ) {
@@ -322,13 +322,7 @@
 window.gmu.$.ui = gmu;
 
 (function( gmu ) {
-    var blankFn = function(){},
-        Event = function( name ) {
-            return {
-                type: name,
-                returnValue: true
-            };
-        };
+    var blankFn = function(){};
 
     /**
      * GMU组件的基类
@@ -370,82 +364,44 @@ window.gmu.$.ui = gmu;
          * @grammar instance.on(name, callback, context) => instance
          * @desc 订阅事件
          */
-        on: function( name, callback, context ) {
-            if ( !name ) {
-                return false;
-            }
-            this._events || (this._events = {});
-            var events = this._events[name] || (this._events[name] = []);
-            events.push({callback: callback, context: context, ctx: context || this});
+        on: gmu.event.on,
 
-            return this;
-        },
+        /**
+         * @name on
+         * @grammar instance.one(name, callback, context) => instance
+         * @desc 订阅事件（只执行一次）
+         */
+        one: gmu.event.on,
 
         /**
          * @name off
          * @grammar instance.off(name, callback, context) => instance
          * @desc 解除订阅事件
          */
-        off: function( name, callback, context ) {
-            var retain, ev, events, names, i, l, j, k;
-            if ( !name ) {
-                this._events = {};
-                return this;
-            }
-
-            if ( events = this._events[name] ) {
-                this._events[name] = retain = [];
-                if ( callback || context ) {
-                    for ( j = 0, k = events.length; j < k; j++ ) {
-                        ev = events[j];
-                        if ( (callback && callback !== ev.callback && callback !== ev.callback._callback) ||
-                            (context && context !== ev.context) ) {
-                            retain.push(ev);
-                        }
-                    }
-                }
-                if (!retain.length) {
-                    delete this._events[name];
-                }
-            }
-
-            return this;
-        },
+        off: gmu.event.off,
 
         /**
-         * @name publish
-         * @grammar instance.publish(name) => {Boolean}
+         * @name trigger
+         * @grammar instance.trigger(name) => {Boolean}
          * @desc 派发事件, 此trigger会优先把options上的事件回调函数先执行
-         * options上回调函数可以通过设置event.defaultPrevented = false来阻止事件继续派发。
+         * options上回调函数可以通过调用event.preventDefault()来阻止事件继续派发。
          */
         trigger: function( name ) {
-            if ( !this._events || !name ) {
-                return this;
-            }
-
-            var event = Event(name),
-                args = [event].concat( Array.prototype.slice.call( arguments, 1 ) ),
-                events = this._events[name],
-                opEvent = this._options[name],
-                result;
+            var evt = new gmu.Event(name),
+                args = [evt].concat( Array.prototype.slice.call( arguments, 1 ) ),
+                opEvent = this._options[name];
 
             if ( opEvent && $.isFunction( opEvent ) ) {
-                opEvent.apply( this, args );
-                if(event.defaultPrevented === true){
-                    return false;
-                }
+                // 如果返回值是false,相当于执行stopPropagation()和preventDefault();
+                false === opEvent.apply( this, args ) && (evt.stopPropagation(), evt.preventDefault());
             }
 
-            if ( events ) {
-                var ev, i = -1, l = events.length;
-                while (++i < l)
-                    (ev = events[i]).callback.apply( ev.ctx, args );
-            };
+            gmu.event.trigger.apply(this, arguments);
 
             // triggerHandler不冒泡
-            this.$el.triggerHandler( name, args );
+            this.$el.triggerHandler( evt, args );
 
-            return event.returnValue;
+            return this;
         },
 
         /**
