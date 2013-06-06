@@ -3,7 +3,7 @@
  * @import core/gmu.js, zepto.js
  */
 
-(function( gmu, undefined ) {
+(function( gmu, $, undefined ) {
 
     // 工具集
     var util = {
@@ -316,10 +316,10 @@
             return this;
         }
     };
-})(window.gmu);
+})( window.gmu, window.gmu.$ );
 
 // 向下兼容
-$.ui = gmu;
+window.gmu.$.ui = gmu;
 
 (function( gmu ) {
     var blankFn = function(){},
@@ -329,6 +329,7 @@ $.ui = gmu;
                 returnValue: true
             };
         };
+
     /**
      * GMU组件的基类
      * @class

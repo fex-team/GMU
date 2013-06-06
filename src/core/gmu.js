@@ -18,5 +18,6 @@
 */
 
 var gmu = gmu || {
-    varsion: '@version'
+    varsion: '@version',
+    $: window.Zepto
 };
