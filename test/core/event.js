@@ -86,7 +86,7 @@ test( 'trigger argmenuts', function(){
 } );
 
 test('binding unbinding with context', function(){
-    expect(8);
+    expect(10);
 
     var obj = {},
         foo = {counter:0};
@@ -130,10 +130,18 @@ test('binding unbinding with context', function(){
     obj.on('event', fn1, foo);
     obj.on('event', fn2, foo);
     obj.trigger('event');
-    equal( foo.counter, 7, '计数应该增长到8' );
+    equal( foo.counter, 7, '计数应该增长到7' );
     obj.off('event');
     obj.trigger('event');
     equal( foo.counter, 7, '计数应该保持不变' );
+
+    obj.on('event', fn1, foo);
+    obj.on('event', fn2, foo);
+    obj.trigger('event');
+    equal( foo.counter, 9, '计数应该增长到9' );
+    obj.off(null, null, foo );
+    obj.trigger('event');
+    equal( foo.counter, 9, '计数应该保持不变' );
 
 });
 
