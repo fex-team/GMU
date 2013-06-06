@@ -1,6 +1,6 @@
 /**
  * @file gmu底层，定义了创建gmu组件的方法
- * @import core/gmu.js, zepto.js
+ * @import zepto.js, core/gmu.js
  */
 
 (function( gmu, $, undefined ) {
