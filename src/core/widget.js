@@ -384,7 +384,8 @@ window.gmu.$.ui = gmu;
          * @name trigger
          * @grammar instance.trigger(name) => {Boolean}
          * @desc 派发事件, 此trigger会优先把options上的事件回调函数先执行
-         * options上回调函数可以通过调用event.preventDefault()来阻止事件继续派发。
+         * options上回调函数可以通过调用event.stopPropagation()来阻止事件系统继续派发,
+         * 或者调用event.preventDefault()阻止后续事件执行
          */
         trigger: function( name ) {
             var evt = new gmu.Event(name),
