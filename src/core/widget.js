@@ -367,11 +367,11 @@ window.gmu.$.ui = gmu;
         on: gmu.event.on,
 
         /**
-         * @name on
+         * @name one
          * @grammar instance.one(name, callback, context) => instance
          * @desc 订阅事件（只执行一次）
          */
-        one: gmu.event.on,
+        one: gmu.event.one,
 
         /**
          * @name off
