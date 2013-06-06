@@ -391,7 +391,7 @@ window.gmu.$.ui = gmu;
          * 或者调用event.preventDefault()阻止后续事件执行
          */
         trigger: function( name ) {
-            var evt = util.isString( name ) ? new gmu.Event(name) : name,
+            var evt = typeof name === 'string' ? new gmu.Event(name) : name,
                 args = [evt].concat( Array.prototype.slice.call( arguments, 1 ) ),
                 opEvent = this._options[name];
 
