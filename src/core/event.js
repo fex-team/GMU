@@ -2,7 +2,7 @@
  * @fileoverview Event相关
  * @import core/gmu.js
  */
- (function( gmu, $ ) {
+(function( gmu, $ ) {
     var slice = [].slice,
         separator = /\s+/,
 
