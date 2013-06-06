@@ -46,14 +46,16 @@ gmu.$ = Zepto;
         };
     }
 
-    function findHandlers( arr, name, ns, callback, context ) {
-        var matcher;
+    function findHandlers( arr, name, callback, context ) {
+        var matcher,
+            obj;
 
-        ns && (matcher = matcherFor( ns ));
+        obj = parse( name );
+        obj.ns && (matcher = matcherFor( obj.ns ));
         return arr.filter(function( handler ) {
             return handler && 
-                    (!name || handler.e === name) &&
-                    (!ns || matcher.test( handler.ns )) &&
+                    (!obj.e || handler.e === obj.e) &&
+                    (!obj.ns || matcher.test( handler.ns )) &&
                     (!callback || handler.cb === callback ||
                     handler.cb._cb === callback) &&
                     (!context || handler.ctx === context);
@@ -121,7 +123,7 @@ gmu.$ = Zepto;
             eachEvent( name, callback, function( name, callback ) {
                 var once = function() {
                         me.off( name, once );
-                        callback.apply( context || me, arguments );
+                        return callback.apply( context || me, arguments );
                     };
                 
                 once._cb = callback;
@@ -144,9 +146,7 @@ gmu.$ = Zepto;
             }
 
             eachEvent( name, callback, function( name, callback ) {
-                var obj = parse( name );
-
-                findHandlers( events, obj.e, obj.ns, callback, context )
+                findHandlers( events, name, callback, context )
                         .forEach(function( handler ) {
                             delete events[ handler.id ];
                         });
@@ -174,7 +174,7 @@ gmu.$ = Zepto;
             evt.args = args;    // handler中可以直接通过e.args获取trigger数据
             args.unshift( evt );
 
-            events = findHandlers( this._events, evt.type, '' );
+            events = findHandlers( this._events, evt.type );
 
             if ( events ) {
                 len = events.length;
