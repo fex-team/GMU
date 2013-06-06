@@ -1,6 +1,6 @@
 /**
  * @fileoverview Event相关
- * @import zepto.js, core/gmu.js
+ * @import core/gmu.js
  */
 (function( gmu, $ ) {
     var slice = [].slice,
@@ -91,8 +91,6 @@
             
             eachEvent( name, callback, function( name, callback ) {
                 var handler = parse( name );
-
-                name = handler.e;
 
                 handler.cb = callback;
                 handler.ctx = context;

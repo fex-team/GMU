@@ -322,7 +322,10 @@
 window.gmu.$.ui = gmu;
 
 (function( gmu ) {
-    var blankFn = function(){};
+    var blankFn = function() {
+
+        },
+        event = gmu.event;
 
     /**
      * GMU组件的基类
@@ -339,7 +342,7 @@ window.gmu.$.ui = gmu;
          *  @grammar instance._init() => instance
          *  @desc 组件的初始化方法，子类需要重写该方法
          */
-        _init: function(){},
+        _init: blankFn,
 
         /**
          *  @override
@@ -347,7 +350,7 @@ window.gmu.$.ui = gmu;
          *  @grammar instance._create() => instance
          *  @desc 组件创建DOM的方法，子类需要重写该方法
          */
-        _create: function(){},
+        _create: blankFn,
 
 
         /**
@@ -361,34 +364,34 @@ window.gmu.$.ui = gmu;
 
         /**
          * @name on
-         * @grammar instance.on(name, callback, context) => instance
+         * @grammar instance.on(name, callback, context) => self
          * @desc 订阅事件
          */
-        on: gmu.event.on,
+        on: event.on,
 
         /**
          * @name on
-         * @grammar instance.one(name, callback, context) => instance
+         * @grammar instance.one(name, callback, context) => self
          * @desc 订阅事件（只执行一次）
          */
-        one: gmu.event.on,
+        one: event.one,
 
         /**
          * @name off
-         * @grammar instance.off(name, callback, context) => instance
+         * @grammar instance.off(name, callback, context) => self
          * @desc 解除订阅事件
          */
-        off: gmu.event.off,
+        off: event.off,
 
         /**
          * @name trigger
-         * @grammar instance.trigger(name) => {Boolean}
+         * @grammar instance.trigger( name ) => self
          * @desc 派发事件, 此trigger会优先把options上的事件回调函数先执行
          * options上回调函数可以通过调用event.stopPropagation()来阻止事件系统继续派发,
          * 或者调用event.preventDefault()阻止后续事件执行
          */
         trigger: function( name ) {
-            var evt = new gmu.Event(name),
+            var evt = util.isString( name ) ? new gmu.Event(name) : name,
                 args = [evt].concat( Array.prototype.slice.call( arguments, 1 ) ),
                 opEvent = this._options[name];
 
