@@ -1,15 +1,8 @@
 /**
  * @fileoverview Event相关
- * @import zepto.js
+ * @import zepto.js, core/gmu.js
  */
-// 测试用的,测试完删除
-var gmu = window.gmu || {};
-gmu.$ = Zepto;
-
-/* global gmu*/
-(function( ns, $ ) {
-    $ = $ || ns.$;
-
+ (function( gmu, $ ) {
     var slice = [].slice,
         separator = /\s+/,
 
@@ -19,9 +12,7 @@ gmu.$ = Zepto;
 
         returnTrue = function() {
             return true;
-        },
-
-        api;
+        };
 
     function eachEvent( events, callback, iterator ) {
 
@@ -63,7 +54,7 @@ gmu.$ = Zepto;
     }
 
     function Event( type, props ) {
-        if ( !this instanceof Event ) {
+        if ( !(this instanceof Event) ) {
             return new Event( type, props );
         }
 
@@ -86,7 +77,7 @@ gmu.$ = Zepto;
         }
     };
 
-    api = {
+    gmu.event = {
 
         on: function( name, callback, context ) {
             var me = this,
@@ -196,6 +187,5 @@ gmu.$ = Zepto;
     };
 
     // expose
-    ns.Event = Event;
-    ns.event = api;
-})( gmu );
+    gmu.Event = Event;
+})( gmu, gmu.$ );
