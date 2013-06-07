@@ -18,6 +18,22 @@
 */
 
 var gmu = gmu || {
-    varsion: '@version',
-    $: window.Zepto
+    version: '@version',
+    $: window.Zepto,
+
+    // 调用此方法，可以减小重复实例化Zepto的开销。
+    staticCall: (function( $ ) {
+        var proto = $.fn,
+            slice = [].slice,
+
+            // 公用此zepto实例
+            instance = $();
+
+        instance.length = 1;
+
+        return function( item, fn ) {
+            instance[ 0 ] = item;
+            return proto[ fn ].apply( instance, slice.call( arguments, 2 ) );
+        };
+    })( Zepto )
 };
