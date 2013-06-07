@@ -318,3 +318,15 @@ test('return false', function(){
     ok(e.isPropagationStopped(), '事件被停止蔓延');
 });
 
+test("event functions are chainable", function() {
+    var obj = $.extend({}, gmu.event);
+    var obj2 = $.extend({}, gmu.event);
+    var fn = function() {};
+    equal(obj, obj.trigger('noeventssetyet'), 'ok');
+    equal(obj, obj.off('noeventssetyet'), 'ok');
+    equal(obj, obj.on('a', fn), 'ok');
+    equal(obj, obj.one('c', fn), 'ok');
+    equal(obj, obj.trigger('a'), 'ok');
+    equal(obj, obj.off('a c'), 'ok');
+  });
+
