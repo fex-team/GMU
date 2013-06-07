@@ -18,7 +18,7 @@
                 cb = 'suggestion_' + (+new Date());      //以date作为后缀，应该不会重复，故不作origin
 
             if (query) {
-                url += (!~url.indexOf("?") ? '?' : '') + '&' + opts.queryKey + '=' + encodeURIComponent(query);
+                url = (url + '&' + opts.queryKey + '=' + encodeURIComponent(query)).replace(/[&?]{1,2}/, '?');
                 !~url.indexOf('&' + opts.cbKey) && (url += '&' + opts.cbKey + '=' + cb);
                 param && (url += '&' + param);
                 window[cb] = function(data) {
