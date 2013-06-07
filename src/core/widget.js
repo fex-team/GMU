@@ -166,7 +166,7 @@
                         for( var opt in fn._optioned ){
                             if ( fn._optioned.hasOwnProperty(opt) && options[ opt ] ) {
                                 $( fn._optioned[ opt ] ).each( function( i, item ){
-                                    if ( ($.isFunction( item[0] ) &&  item[0].call(me)) || item[0] === options[ opt ] || item[0] === '*' ) {
+                                    if ( item[0] === '*' || ($.isFunction( item[0] ) &&  item[0].call(me)) || item[0] === options[ opt ] ) {
                                         item[ 1 ].call( me );
                                     }
                                 });
@@ -180,7 +180,6 @@
                     for ( var i in fn.plugins ) {
                         var plugin = fn.plugins[ i ];
                         if( fn.plugins.hasOwnProperty( i ) && options[ i ] !== false ){
-                            fn.plugins[ i ]._init.call( me );
                             $.each( plugin, function( key, val ) {
                                 var originFunction;
 
@@ -203,11 +202,14 @@
                                     me[ key ] = val;
                                 }
                             });
+
+                            fn.plugins[ i ]._init.call( me );
                         }
                     }
 
                     // 进行创建DOM等操作
                     me._create();
+                    me.trigger('ready');
 
                     record( this.$el[ 0 ], fn._fullname_, me );
 
@@ -259,8 +261,6 @@
                 _optioned: {},
                 option: function( option, value, method ){
                     var covered = false;
-
-                    fn.options[option] = value;
 
                     if ( !fn._optioned[option] ) {
                         fn._optioned[option] = [];
