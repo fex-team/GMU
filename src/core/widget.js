@@ -128,6 +128,11 @@
 
             var widgetInit = object._init || util.blankFn,
                 fn = function( el, options ) {
+
+                    if ( !(this instanceof fn) ) {
+                        return new fn( el, options );
+                    }
+
                     var me = this;
 
                     if ( $.isPlainObject( el ) ) {
@@ -166,7 +171,7 @@
                         for( var opt in fn._optioned ){
                             if ( fn._optioned.hasOwnProperty(opt) && options[ opt ] ) {
                                 $( fn._optioned[ opt ] ).each( function( i, item ){
-                                    if ( ($.isFunction( item[0] ) &&  item[0].call(me)) || item[0] === options[ opt ] || item[0] === '*' ) {
+                                    if ( ($.isFunction( item[0] ) && item[0].call(me)) || item[0] === options[ opt ] || item[0] === '*' ) {
                                         item[ 1 ].call( me );
                                     }
                                 });
