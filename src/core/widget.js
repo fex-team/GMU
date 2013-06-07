@@ -180,7 +180,6 @@
                     for ( var i in fn.plugins ) {
                         var plugin = fn.plugins[ i ];
                         if( fn.plugins.hasOwnProperty( i ) && options[ i ] !== false ){
-                            fn.plugins[ i ]._init.call( me );
                             $.each( plugin, function( key, val ) {
                                 var originFunction;
 
@@ -203,11 +202,14 @@
                                     me[ key ] = val;
                                 }
                             });
+
+                            fn.plugins[ i ]._init.call( me );
                         }
                     }
 
                     // 进行创建DOM等操作
                     me._create();
+                    me.trigger('ready');
 
                     record( this.$el[ 0 ], fn._fullname_, me );
 
