@@ -10,7 +10,7 @@ before_script:
     - cd ../
     - sudo mv GMU /var/www/
     - cd /var/www/GMU
-
+    - grunt update_submodules concat
 
 
 script:
