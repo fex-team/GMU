@@ -98,10 +98,11 @@ module.exports = function(grunt) {
                 src: ['gmu.js', 'zepto.js']
             }
         }
+        
     });
 
     // 加载build目录下的所有task
-    grunt.loadTasks('tasks');
+    grunt.loadTasks( 'tasks' );
 
     // 负责初始化和更新submodule
     grunt.loadNpmTasks('grunt-update-submodules');
@@ -116,8 +117,9 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks( 'grunt-size' );
 
     // 负责代码规范检测
-    grunt.loadNpmTasks('grunt-jsbint');
+    grunt.loadNpmTasks( 'grunt-jsbint' );
 
     // Default task(s).
-    grunt.registerTask('default', ['update_submodules', 'concat', 'concat_gmu', 'uglify']);
+    grunt.registerTask( 'default', ['update_submodules', 'concat', 'concat_gmu', 'uglify'] );
+
 };
