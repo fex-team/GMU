@@ -3,7 +3,7 @@
  * @name Suggestion
  * @desc <qrcode align="right" title="Live Demo">../gmu/_examples/widget/suggestion/suggestion_setup.html</qrcode>
  * 搜索建议组件
- * @import core/touch.js, core/zepto.ui.js, core/zepto.iscroll.js, core/zepto.highlight.js
+ * @import core/touch.js, core/zepto.ui.js, core/zepto.highlight.js
  */
 (function($, undefined){
     /**
@@ -26,7 +26,7 @@
      * - ''autoClose''        {Boolean}:                   (可选)点击input之外自动关闭
      * - ''usePlus''          {Boolean}:                   (可选)是否启用+号
      * - ''status''           {Boolean}:                   (可选)是否开启事件，可在close时设为false，则下次sug不再弹出
-     * - ''useIscroll''      {Boolean}:                   (可选)是否启用iscroll，启用则sug可内滚
+     * - ''useIscroll''       {Boolean}:                   (可选)是否启用iscroll，启用则sug可内滚
      * - ''height''           {Number}:                    (可选)设置高度
      * - ''width''            {Number}:                    (可选)设置宽度
      * - ''minChars''         {Number}:                    (可选, 默认: 0)最小输入字符: 0
@@ -53,9 +53,6 @@
             listCount: 50,
             isCache: true,
             isStorage: true,
-            minChars: 0,
-            maxChars: 1000,
-            useIscroll: true,
             offset: {x: 0, y: 0, w: 0},
             confirmClearHistory: true
         },
@@ -64,33 +61,43 @@
             var me = this,
                 expando = +new Date(),
                 maskID = 'ui-input-mask-' + expando,
-                sugID = me.data('id', "ui-suggestion-" + $.ui.guid()),
+                sugID = "ui-suggestion-" + $.ui.guid(),
                 $input = me.root($(me.data('container'))).attr("autocomplete", "off"),
                 formID = me.data('formID'),
-                $maskElem = $input.parent();
+                shareName = me.data('shareName'),
+                $maskElem, $wrapper;
 
             me.data({
                 inputWidth: $input.get(0).offsetWidth,
                 cacheData: {},
-                form: formID ? $(formID) : $input.closest('form')
+                form: formID ? $(formID) : $input.closest('form'),
+                key: me.data('isSharing') ? (shareName ? (shareName + '-') : '' + 'SUG-Sharing-History') : sugID,
+                splitor: encodeURIComponent(',')
             });
-            if ($maskElem.attr('class') != 'ui-input-mask') {
-                $maskElem = $('<div id="' + maskID + '" class="ui-input-mask"></div>').appendTo($input.parent()).append($input);
-            }
-            me.data('maskElem', $maskElem);
-            me.data('wrapper', $('<div id="' + sugID + '" class="ui-suggestion"><div class="ui-suggestion-content"><div class="ui-suggestion-scroller"></div></div><div class="ui-suggestion-button"></div></div>').appendTo($maskElem));
-            me._initSuggestionOffset();
+            $input.wrap($maskElem = $('<div id="' + maskID + '" class="ui-input-mask"></div>'));
+            $maskElem.append($wrapper = $('<div id="' + sugID + '" class="ui-suggestion"><div class="ui-suggestion-content"><div class="ui-suggestion-scroller"></div></div><div class="ui-suggestion-button"></div></div>'));
+            me.data({
+                maskElem: $maskElem,
+                wrapper: $wrapper,
+                content: $wrapper.find('.ui-suggestion-content'),
+                scroller: $wrapper.find('.ui-suggestion-scroller'),
+                button: $wrapper.find('.ui-suggestion-button').append('<span>清除历史记录</span><span>关闭</span>'),
+                clearBtn: $wrapper.find('span:first-child'),
+                closeBtn: $wrapper.find('span:last-child')
+            });
         },
 
         _init: function() {
             var me = this,
                 $input = me.root(),
                 form = me.data('form'),
+                $wrapper = me.data('wrapper'),
                 eventHandler = $.proxy(me._eventHandler, me);
 
-            me.data('wrapper').on('touchstart', eventHandler);
+            $wrapper.css('top', $input.height() + parseInt($wrapper.css('top'))).on('touchstart', eventHandler);
             form.length && form.on('submit', eventHandler);
-            $input.on('focus input', eventHandler).parent().on('touchstart', eventHandler);
+            me._bindSuggestionListEvent()._bindCloseEvent();    //事件改为代理，不用每次渲染list都去重新绑定事件
+            $input.on('focus input', eventHandler);
             $(window).on('ortchange', eventHandler);
             me.data('autoClose') && $(document).on('tap', eventHandler);
             me.on('destroy', function() {
@@ -101,82 +108,14 @@
                 clearTimeout(me.data('timeId'));
                 clearTimeout(me.data('hideTimer'));
                 $maskElem.find('*').off();
-                me.data('iScroll') && me.data('iScroll').destroy();
                 $maskElem.off().remove();
-            })._setSize();
+            });
         },
 
         _setup: function(){
             var me = this;
             me.data('container', me.root()); // add container
             me._create();
-        },
-
-        /** 
-         * 初始化属性
-         * @private
-         */
-        _initSuggestionOffset: function() {
-            var me = this, width,
-                $elem = me.data('wrapper'),
-                $input = me.root(),
-                customOffset = me.data('offset'),
-                border = 2 * parseInt($elem.css('border-left-width') || 0);
-                
-            me.data('pos', $input.height() + (customOffset.y || 0));
-            me.data('realWidth', (me.data('width') || $input.width()) - border);
-            $elem.css({
-                position: 'absolute',
-                left: customOffset.x || 0
-            });
-            return me;
-        },
-
-        /** 
-         * 设置size
-         * @private
-         */
-        _setSize: function() {
-            var me = this,
-                width = me.data('realWidth'),
-                additionWidth = me.root().parent().width() - me.data('inputWidth');
-            me.data('wrapper').css('width', width + additionWidth);
-            return me;
-        },
-
-        /**
-         * 适配位置
-         * @private
-         */
-        _posAdapt: function(dps) {
-            var me = this;
-            dps ? me._setPos().data('timeId', $.later(function() {
-                me._setPos();
-            }, 200, true)) : clearInterval(me.data('timeId'));
-            return me;
-        },
-
-        /**
-         * 设置位置
-         * @private
-         */
-        _setPos: function() {
-            var me = this,
-                win = window,
-                $elem = me.data('wrapper'),
-                $input = me.root(),
-                height = parseFloat($elem.height()),
-                customOffset = me.data('offset'),
-                pos =  parseFloat(me.data('pos')),
-                uVal = $input.offset().top - win.pageYOffset,
-                dVal = $(win).height() - uVal;
-
-            if (me.data('posAdapt') && uVal > dVal) {
-                $elem.css('top', -height - (customOffset.y || 0) + 'px');
-            } else {
-                $elem.css('top', pos);
-            }
-            return me;
         },
     
         /** 
@@ -204,17 +143,10 @@
             if (!me.data('status')) return;
             switch (type) {
                 case 'focus':
-                    me._setSize()._showList()._setPos().trigger('open');
+                    me._showList().trigger('open');
                     break;
-                case 'touchstart':
-                case 'mousedown':
-                    if (!e.formDelete) break;
-                    e.preventDefault();
                 case 'input':
                     me._showList();
-                    break;
-                case 'ortchange':
-                    me._setSize()._setPos();
                     break;
                 case 'submit':       //form提交时能存储历史记录
                     me.data('isStorage') && me._localStorage(me.getValue());
@@ -234,10 +166,7 @@
                 query = me.getValue(),
                 data = me._localStorage();
 
-            if (query !== '' && (query.length < parseFloat(me.data('minChars')) || query.length > parseFloat(me.data('maxChars')))) {
-                return me;
-            }
-            return query ? me._change(query) : data ? me._render(null, {s: data.split(encodeURIComponent(','))}) : me.hide();
+            return query ? me._change(query) : data ? me._render(null, {s: data.split(me.data('splitor'))}) : me.hide();
         },
         
         /** 
@@ -246,17 +175,18 @@
          */
         _bindSuggestionListEvent: function() {
             var me = this,
+                $content = me.data('content'),
                 $input =  me.root();
-            me.data('wrapper').find(".ui-suggestion-result").on('tap', function(e) {
-                var elem = e.target, that = this;
+            $content.on('tap', function(e) {
+                var elem = e.target;
                 setTimeout(function(){
                     if (elem && elem.className == 'ui-suggestion-plus') {
                         $input.val(elem.getAttribute('data-item')).trigger('input');
-                    } else {
-                        me._select(that)._submit();
+                    } else if ($.contains($content.get(0), elem)){
+                        me._select(elem);
                     }
                 }, 400);
-            }).highlight('ui-suggestion-result-highlight');
+            });
             return me;
         },
 
@@ -265,16 +195,15 @@
          * @private
          */
         _bindCloseEvent: function() {
-            var me = this,
-                $wrapper = me.data('wrapper');
+            var me = this;
 
-            $wrapper.find('span:first-child').on('click', function() {
+            me.data('clearBtn').on('click', function() {
                 $.later(function(){
                     me.clearHistory();
                 }, $.os.android?200:0);
             });
 
-            $wrapper.find('span:last-child').on('click', function() {
+            me.data('closeBtn').on('click', function() {
                 me.hide().leaveInput().trigger('close');
             });
             return me;
@@ -328,36 +257,21 @@
          */
         _render: function(query, data) {
             var me = this, html,
-                $elem = me.data('wrapper'),
-                $content = $elem.find('.ui-suggestion-content'),
-                $button = $elem.find('.ui-suggestion-button'),
-                renderList = me.data('renderList'),
-                renderEvent = me.data('renderEvent'),
-                clearBox = '<span style="display:none;"></span><span>关闭</span>';
+                $content = me.data('content'),
+                $scroller = me.data('scroller'),
+                $clearBtn = me.data('clearBtn'),
+                renderList = me.data('renderList');
 
-            query === null && (clearBox = '<span>清除历史记录</span><span>关闭</span>');
+            $clearBtn[query === null ? 'show' : 'hide']();
             html = renderList ? renderList.apply(me, [query, data]) : me._renderList(query, data);
 
             if (html) {
-                $content.find('*').off(); // unbind all events in sug list
-                $content.find('.ui-suggestion-scroller').html(html);
-                $button.find('*').off();
-                $button.html(clearBox);
-                renderEvent ? renderEvent.apply(me) : me._bindSuggestionListEvent();
-                me._bindCloseEvent()._show();
-                if (me.data('useIscroll')) {
-                    data.s.length >= 2 ? $content.css('height', me.data('height') || 66) : $content.css('height', 38);
-                    var iscroll = (me.data('iScroll') || me.data('iScroll', new iScroll($content.get(0), {
-                        topOffset: 0,
-                        hScroll: false,
-                        vScrollbar: false,
-                        hScrollbar: false
-                    })));
-                    iscroll.scrollTo(0, 0);
-                    iscroll.refresh();
-                } else {
-                    $content.on('touchstart', function(e){e.preventDefault()});
-                }
+                $scroller.html(html);
+                $content
+                    .on('touchstart', function(e){e.preventDefault()})
+                    .find('.ui-suggestion-result')
+                    .highlight('ui-suggestion-result-highlight');
+                me._show();
             } else me.hide();
             
             return me;
@@ -392,33 +306,18 @@
         _htmlEncode: function(str){
             return $('<div></div>').text(str).html();
         },
-        
-        /** 
-         * 提交搜索提示
-         * @private
-         */
-        _submit: function() {
-            var me = this,
-                keyValue = me.root().val();
-
-            me.trigger("submit");
-            if(!me.data('submit') && !(me._callbacks && me._callbacks.submit))
-                window.location = 'http://www.baidu.com/s?wd=' + encodeURIComponent(keyValue);
-            return me;
-        },
-            
 
         /** 
          * 选择搜索提示
          * @private
          */
-        _select: function(target) {
+        _select: function(elem) {
             var me = this,
-                targetContent = target.textContent;
+                $form = me.data('form');
 
-            me.root().val(targetContent);
-            me.data('isStorage') && me._localStorage(targetContent);
-            return me.trigger("select", target).hide();
+            me.root().val($(elem).text());
+            $form.length && $form.submit().trigger('submit');
+            return me.trigger("select", elem).hide();
         },      
 
         /** 
@@ -438,21 +337,21 @@
          */
         _localStorage: function(value) {
             var me = this,
+                splitor = me.data('splitor'),
+                id = me.data('key'),
                 ret,
                 localdata,
-                data,
-                shareName = me.data('shareName'),
-                id = me.data('isSharing') ? shareName ? shareName + '-SUG-Sharing-History' : 'SUG-Sharing-History' : me.data('id');
+                data;
 
             try{
                 if (value === null) window.localStorage[id] = "";
-                else if (value !== undefined) {
+                else if (value !== undefined && value !== '') {
                     localdata = window.localStorage[id];
-                    data = localdata ? localdata.split(encodeURIComponent(',')) : [];
+                    data = localdata ? localdata.split(splitor) : [];
 
                     if (!~$.inArray(value, data) ) {
                         data.unshift(value);
-                        window.localStorage[id] = data.join(encodeURIComponent(','));
+                        window.localStorage[id] = data.join(splitor);
                     }
                 }
                 ret = window.localStorage[id];
@@ -472,7 +371,6 @@
                 me.data('hideTimer', null);
             }
             me.data('wrapper').css("display", "block");
-            me.data('posAdapt') && me._posAdapt(1);
             return me.trigger('show');
         },  
 
@@ -487,7 +385,7 @@
                 me.data('wrapper').css("display", "none");
                 me.data('hideTimer', null);
             }, 200));
-            return me._posAdapt(0).trigger('hide');
+            return me.trigger('hide');
         },
 
         /**
