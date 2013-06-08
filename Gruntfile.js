@@ -97,6 +97,17 @@ module.exports = function(grunt) {
                 cwd: 'dist/',
                 src: ['gmu.js', 'zepto.js']
             }
+        },
+
+        qunit: {
+            options: {
+                url: 'http://localhost/gmu/test/fet/bin/run.php?case='
+            },
+            
+            modules: {
+                cwd: 'test/',
+                src: [ '**/*.js', '!fet/**/*.js', '!mindmap/**/*.js' ]
+            }
         }
         
     });
@@ -121,5 +132,7 @@ module.exports = function(grunt) {
 
     // Default task(s).
     grunt.registerTask( 'default', ['update_submodules', 'concat', 'concat_gmu', 'uglify'] );
+
+    grunt.registerTask( 'test', ['qunit']);
 
 };
