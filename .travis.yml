@@ -8,4 +8,5 @@ before_script:
     - sudo service apache2 restart
 
 script:
-  - phantomjs run.js http://localhost
+    - mv jianling/GMU /etc/apache2/sites-available/GMU
+    - phantomjs run.js http://localhost/GMU/test.html
