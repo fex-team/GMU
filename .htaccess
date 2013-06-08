@@ -1,0 +1,9 @@
+<IfModule mime_module>
+    AddType application/x-httpd-php5 .php
+</IfModule>
+
+<IfModule dir_module>
+    DirectoryIndex index.php index.html
+</IfModule>
+
+Action application/x-httpd-php5 "/phpenv/php-cgi"
