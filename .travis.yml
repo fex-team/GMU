@@ -7,9 +7,9 @@ before_script:
     - sudo apt-get install apache2
     - sudo service apache2 restart
     - cd ../
-    - sudo mkdir /etc/apache2/sites-available/default/GMU
-    - sudo mv GMU /etc/apache2/sites-available/default/GMU
-    - cd /etc/apache2/sites-available/default/GMU
+    - sudo mkdir /var/www/GMU
+    - sudo mv GMU /var/www/GMU
+    - cd /var/www/GMU
 
 script:
     - phantomjs run.js http://localhost/GMU/test.html
