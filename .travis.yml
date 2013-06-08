@@ -3,5 +3,9 @@ language: node_js
 node_js:
   - 0.8
 
+before_script:
+    - sudo apt-get install apache2
+    - sudo service apache2 restart
+
 script:
-  - node test/test.js
+  - phantomjs run.js http://localhost
