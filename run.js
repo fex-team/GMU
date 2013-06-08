@@ -84,17 +84,22 @@
         } else {
             waitFor(function(){
                 return page.evaluate(function(){
-                    var el = document.body;
-                    if (el) {
+                    var el = document.getElementById('qunit-testresult');
+                    if (el && el.innerText.match('completed')) {
                         return true;
                     }
                     return false;
                 });
             }, function(){
-                page.evaluate(function(){
-                    console.log(document.body.innerHTML);
+                var failedNum = page.evaluate(function(){
+                    var el = document.getElementById('qunit-testresult');
+                    console.log(el.innerText);
+                    try {
+                        return el.getElementsByClassName('failed')[0].innerHTML;
+                    } catch (e) { }
+                    return 10000;
                 });
-                phantom.exit(0);
+                phantom.exit((parseInt(failedNum, 10) > 0) ? 1 : 0);
             });
         }
     });
