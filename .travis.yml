@@ -5,7 +5,7 @@ node_js:
 
 before_script:
     - sudo apt-get install apache2
-    - sugo apt-get install php5
+    - sudo apt-get install php5
     - sudo service apache2 restart
     - cd ../
     - sudo mv GMU /var/www/
