@@ -15,6 +15,7 @@
 /**
  * 声明gmu命名空间
  * @namespace gmu
+ * @import zepto.js
 */
 
 var gmu = gmu || {

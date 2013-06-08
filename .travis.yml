@@ -15,4 +15,4 @@ before_script:
 
 
 script:
-    - phantomjs run.js http://localhost/GMU/test/fet/bin/run.php?case=core/widget
+    - phantomjs ./test/fet/tools/phantom-run.js
