@@ -7,8 +7,7 @@ before_script:
     - sudo apt-get install apache2
     - sudo service apache2 restart
     - cd ../
-    - sudo mkdir /var/www/GMU
-    - sudo mv GMU /var/www/GMU
+    - sudo mv GMU /var/www/
     - cd /var/www/GMU
 
 script:
