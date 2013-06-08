@@ -10,6 +10,7 @@ before_script:
     - cd ../
     - sudo mv GMU /var/www/
     - cd /var/www/GMU
+    - npm install -g grunt-cli
     - grunt update_submodules concat
 
 
