@@ -97,11 +97,8 @@ module.exports = function(grunt) {
                 cwd: 'dist/',
                 src: ['gmu.js', 'zepto.js']
             }
-        },
-
-        qunit: {
-            files: ['./test/core/*.js']
         }
+        
     });
 
     // 加载build目录下的所有task
@@ -123,6 +120,6 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks( 'grunt-jsbint' );
 
     // Default task(s).
-    grunt.registerTask( 'default', ['update_submodules', 'concat', 'concat_gmu', 'uglify', 'qunit'] );
+    grunt.registerTask( 'default', ['update_submodules', 'concat', 'concat_gmu', 'uglify'] );
 
 };

@@ -41,6 +41,12 @@
         }
     };
 
+    var modules = require('./modules.js'),
+        currentModuleIndex = -1,
+        totalModules = modules.length,
+        runedModules = 0,
+        failedModules = 0;
+
     function waitFor(testFx, onReady, timeOutMillis) {
         var maxtimeOutMillis = timeOutMillis ? timeOutMillis : 30001, //< Default Max Timout is 3s
             start = new Date().getTime(),
@@ -103,17 +109,6 @@
             }
         });
     }
-
-    var modules = [
-                    'core/event',
-                    'core/widget'
-                  ];
-
-    var currentModuleIndex = -1;
-
-    var totalModules = modules.length;
-    var runedModules = 0;
-    var failedModules = 0;
 
     doTest();
 })();
