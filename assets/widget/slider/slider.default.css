@@ -1,5 +1,4 @@
-
-.ui-slider {
+.ui-slider-item {
     height: 148px;
 }
 
@@ -7,15 +6,37 @@
     background:#E7E7E7 url(ui-slider-imgbg.png) center center no-repeat;
 }
 
+.ui-slider-item > a {
+    display: block;
+    text-decoration: none;
+    /*由于slide-item有3d属性，导致android上最后一个overflow:hidden无效，所以给子集也加个overflow:hidden;*/
+    width: 100%;
+    overflow: hidden;
+}
+
 .ui-slider-item > p {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    text-align: left;
+    pointer-events: none;
+    overflow: hidden;
+    word-break: break-all;
+    white-space: nowrap;
+    text-overflow: ellipsis;
     color: #fff;
     background: rgba(0, 0, 0, 0.5);
     padding: 6px 0;
     text-indent: 10px;
 }
-
-
-.ui-slider-dots b {
+.ui-slider-dots {
+    position: absolute;
+    bottom: 6px;
+    right: 0;
+    padding: 0 6px;
+    text-align: right;
+}
+.ui-slider-dots > b {
     display: inline-block;
     margin: 0 4px;
     width: 6px;
@@ -24,44 +45,43 @@
     background: rgba(144, 144, 144, 0.8);
 }
 
-.ui-slider-dots .ui-slider-dot-select {
+.ui-slider-dots .ui-state-active {
     background: #fff;
 }
 
 .ui-slider-pre, .ui-slider-next {
     position: absolute;
     z-index: 99;
+    width: 50px;
+    height: 60px;
+    top:50%;
+    left: 0;
+    margin-top: -30px;
+    outline: none;
+}
+.ui-slider-next {
+    right: 0;
+    left: auto;
+}
+.ui-slider-pre:after, .ui-slider-next:after {
+    position: absolute;
     width: 20px;
     height: 40px;
-    top:50%;
-    margin-top: -35px;
     background: rgba(0, 0, 0, 0.3) url(ui-slider-arrow.png) no-repeat;
     background-size: 35px 15px;
     outline: none;
-}
-.ui-slider-pre b, .ui-slider-next b {
+    content: '\0020';
     display: inline-block;
-    width:50px;
-    height:60px;
-    position: relative;
-    top:-10px;
-}
-
-.ui-slider-pre b {
-    left:0;
-}
-.ui-slider-next b {
-    left:-30px;
-}
-.ui-slider-pre {
     background-position: 3px center;
     left: 0;
+    top: 50%;
+    margin-top: -20px;
     border-radius: 0 20px 20px 0;
 }
-
-.ui-slider-next {
+.ui-slider-next:after {
     background-position: -18px center;
     right: 0;
+    left: auto;
     border-radius: 20px 0 0 20px;
 }
 
@@ -82,33 +102,5 @@
         width: .5em;
         height: .5em;
         border-radius: .25em;
-    }
-    .ui-slider-pre, .ui-slider-next {
-        width: 24px;
-        height: 48px;
-        top:50%;
-        margin-top: -42px;
-        background-size: 42px 18px;
-    }
-    .ui-slider-pre b, .ui-slider-next b {
-        width:60px;
-        height:72px;
-        top:-12px;
-    }
-
-    .ui-slider-pre b {
-        left:0;
-    }
-    .ui-slider-next b {
-        left:-36px;
-    }
-    .ui-slider-pre {
-        background-position: 3px center;
-        border-radius: 0 24px 24px 0;
-    }
-
-    .ui-slider-next {
-        background-position: -22px center;
-        border-radius: 24px 0 0 24px;
     }
 }
