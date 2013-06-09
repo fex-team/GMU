@@ -5,14 +5,27 @@
  * 搜索建议option: renderList，提供默认列表渲染，若需要自己渲染sug列表，即renderList为Function类型，则该文件可以不用引
  * @import widget/suggestion/suggestion.js
  */
-(function ($) {
-    gmu.suggestion.option('renderList', function () {
-        return $.type(this._options.renderList) === 'function';
-    }, function () {
-        var _xssFilter = function (str) {
-                return $('<div></div>').text(str).html();
+(function( $ ) {
+
+    /*
+     * 默认以jsonp发送请求，当用户在option中配置了renderList时
+     * 需要调用用e.preventDefault来阻默认请求数据方法
+     * sendRequest( e, sugs, query , callback )
+     * @e 事件对象
+     * @sugs sug list数据item
+     * @query 发送请求的query
+     * @callback 列表渲染完成后的回调函数
+     * */
+    gmu.suggestion.option( 'renderList', function() {
+
+        // 当renderList不是Function类型时，该option操作生效
+        return $.type( this._options.renderList ) !== 'function';
+
+    }, function() {
+        var _xssFilter = function( str ) {
+                return $( '<div></div>' ).text( str ).html();
             };
-        this._renderList = function (sugs, query) {
+        this._renderList = function( sugs, query ) {
             var me = this,
                 opts = me._options,
                 listCount = opts.listCount,
@@ -22,28 +35,41 @@
                 len,
                 i;
 
-            if (!sugs || !sugs.length) {
+            if ( !sugs || !sugs.length ) {
                 me.hide();
                 return html;
             }
-            sugs = sugs.slice(0, listCount);
-            query = _xssFilter(query || '');     //防止xss注入，通过text()方法转换一下
-            //sug列表渲染比较频繁，故不采用模板来解析
-            for (i = 0, len = sugs.length; i < len, sug = sugs[i]; i++) {
-                query && (sug = $.trim(sug).replace(query, '<span>' + query + '</span>'));    //若是query为空则不需要进行替换
-                usePlus && (sug += '<div class="ui-suggestion-plus" data-item="' + sug + '"></div>');     //usePlus为true时
-                html.push('<li>' + sug + '</li>');
+
+            sugs = sugs.slice( 0, listCount );
+
+            // 防止xss注入，通过text()方法转换一下
+            query = _xssFilter( query || '' );
+
+            // sug列表渲染比较频繁，故不采用模板来解析
+            for ( i = 0, len = sugs.length; i < len; i++ ) {
+                sug = sugs[ i ];
+
+                // 若是query为空则不需要进行替换
+                query && (sug = $.trim( sug )
+                        .replace( query, '<span>' + query + '</span>' ));
+
+                usePlus &&
+                        (sug += '<div class="ui-suggestion-plus" data-item="' +
+                        sug + '"></div>');
+                html.push( '<li>' + sug + '</li>' );
             }
+
             return html;
-        }
-        this.on('renderList', function (e) {
-            e.preventDefault();
-            var sugs = e.data[0],
-                query = e.data[1],
-                ret = this._renderList(sugs, query);
+        };
 
-            return this._fillWrapper(ret.length ? '<ul>' + this._renderList(sugs, query).join(' ') + '</ul>' : '', query);     //回调渲染suglist
-        });
-    });
+        this.on( 'renderList', function( e, sugs, query, callback ) {
+            var ret = this._renderList( sugs, query );
 
-})(Zepto);
+            // 回调渲染suglist
+            return callback( ret.length ?
+                    '<ul>' + this._renderList( sugs, query ).join( ' ' ) +
+                    '</ul>' : '', query );
+        } );
+    } );
+
+})( gmu.$ );

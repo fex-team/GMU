@@ -6,21 +6,23 @@
  * 来存入数据，故需要兼容老的历史数据。该配置项为true，则开启数据兼容处理
  * @import widget/suggestion/suggestion.js
  */
-(function ($, win) {
-    gmu.suggestion.option('compatData', true, function () {
+(function( $, win ) {
 
-        this.subscribe('compatData.suggestion', function () {
+    gmu.suggestion.option( 'compatData', true, function() {
+
+        this.on( 'compatData.suggestion', function() {
             var me = this,
                 key = me.key,
-                localdata = win.localStorage[key],
+                localdata = win.localStorage[ key ],
                 dataArr;
 
-            if (localdata && !~localdata.indexOf('\u001e')) {     //兼容老数据，以前以“,”分隔localstorage中的数据，现在改为encodeURIComponent(',')分隔
+            // 兼容老数据，以前以“,”分隔localstorage中的数据，现在改为encodeURIComponent(',')分隔
+            if ( localdata && !~localdata.indexOf( '\u001e' ) ) {
                 localdata = localdata + '\u001e';
-                dataArr = localdata.split(',');
-                win.localStorage[key] = dataArr.join(key);
+                dataArr = localdata.split( ',' );
+                win.localStorage[ key ] = dataArr.join( key );
             }
-        });
+        } );
 
-    });
-})(Zepto, window);
+    } );
+})( gmu.$, window );

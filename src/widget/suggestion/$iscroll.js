@@ -5,35 +5,54 @@
  * 搜索建议 - iscroll插件，当sug列表需要人滚时需要加载该插件
  * @import widget/suggestion/suggestion.js
  */
-(function ($) {
-    gmu.suggestion.register('iscroll', {
-        _init: function () {
+(function( gmu, $ ) {
+
+    // 当sug可以内滚时，默认options.height值设为66
+    gmu.suggestion.options.height = 66;
+
+    gmu.suggestion.register( 'iscroll', {
+
+        _init: function() {
             var me = this,
                 opts = me._options;
 
-            me.$content
-                .wrapInner(me.$scroller = $('<div class="ui-suggestion-scroller"></div>'))
-                .height(opts.height || 66)
-                .iScroll({
-                    hScroll: false,
-                    onRefresh: function () {
-                        this.y && this.scrollTo(0, 0);    //更新iScroll时滚回顶部
-                    }
-                });
+            me.on( 'ready', function() {
+                me.$scroller =
+                        $( '<div class="ui-suggestion-scroller"></div>' );
+                me.$content
+                        .wrapInner( me.$scroller )
+                        .height( opts.height )
+                        .iScroll({
+                            hScroll: false,
+
+                            onRefresh: function() {
+
+                                // 更新iScroll时滚回顶部
+                                this.y && this.scrollTo( 0, 0 );
+                            }
+                        });
+            } );
 
             return me;
         },
-        _fillWrapper: function (listHtml, query) {
-            var me = this;
 
-            me.$clearBtn[query ? 'hide' : 'show']();      //数据不是来自历史记录时隐藏清除历史记录按钮
-            if (listHtml) {
-                me.show().$scroller.html(listHtml);
-                me.$content.iScroll('refresh');
+        /**
+         * 复写_fillWrapper方法，数据及按钮调整顺序
+         * */
+        _fillWrapper: function( listHtml, query ) {
+
+            // 数据不是来自历史记录时隐藏清除历史记录按钮
+            this.$clearBtn[ query ? 'hide' : 'show' ]();
+
+            if ( listHtml ) {
+                this.show().$scroller.html( listHtml );
+                this.$content.iScroll( 'refresh' );
             } else {
-                me.hide();
+                this.hide();
             }
-            return me;
+
+            return this;
         }
-    });
-})(Zepto);
+    } );
+
+})( gmu, gmu.$ );
