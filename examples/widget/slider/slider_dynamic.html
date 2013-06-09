@@ -15,11 +15,17 @@
     <!--组件依赖css end-->
     <!--组件依赖js begin-->
     <script type="text/javascript" src="../../../dist/zepto.js"></script>
-    <script type="text/javascript" src="../../../src/core/touch.js"></script>      <!--新版zepto合并版中不包括touch.js-->
-    <script type="text/javascript" src="../../../src/core/extend.js"></script>
-    <script type="text/javascript" src="../../../src/core/ui.js"></script>
-    <script type="text/javascript" src="../../../src/widget/slider.js"></script>
-    <script type="text/javascript" src="../../../src/widget/slider.dynamic.js"></script>
+    <script type="text/javascript" src="../../../src/extend/touch.js"></script>
+    <script type="text/javascript" src="../../../src/extend/matchMedia.js"></script>
+    <script type="text/javascript" src="../../../src/extend/event.ortchange.js"></script>
+    <script type="text/javascript" src="../../../src/extend/parseTpl.js"></script>
+    <script type="text/javascript" src="../../../src/core/gmu.js"></script>
+    <script type="text/javascript" src="../../../src/core/event.js"></script>
+    <script type="text/javascript" src="../../../src/core/widget.js"></script>
+    <script type="text/javascript" src="../../../src/widget/slider/slider.js"></script>
+    <script type="text/javascript" src="../../../src/widget/slider/arrow.js"></script>
+    <script type="text/javascript" src="../../../src/widget/slider/$touch.js"></script>
+    <script type="text/javascript" src="../../../src/widget/slider/$dynamic.js"></script>
     <!--组件依赖js end-->
 </head>
 <body>
@@ -31,9 +37,8 @@
 
     function getNextGroup(prev, active) {
         uid ++;
-        //模拟生成Group信息。
-        console.log(prev);//是前面到头，还是后面到头？
-        console.log(active);//也许你需要知道当前的item来获取下一组
+        
+        // 模拟生成Group信息。
         var num = Math.max(Math.min(9, Math.round(Math.random() * 9)), 3),
                 i = 0,
                 group = [],
@@ -68,32 +73,29 @@
     //上一个group
     preGroup = getNextGroup();
 
-    $(document).one('headready', function(){//等demo的公共头部完工了
-        slider = $.ui.slider('#slider', {
-            showDot: false,
-            index: preGroup.length,//当前group中的第一个
-            content: preGroup.concat(group),//把两个合起来，以方便切换到前一个group
-            slide: function(e, index, active){
-                //显示当前item的信息
-                $('h2.ui-toolbar-title').text(active.group + ' : ' + active.info);
-            }
-        });
+    slider = new $.ui.Slider( '#slider', {
+        index: preGroup.length,//当前group中的第一个
+        content: preGroup.concat(group),//把两个合起来，以方便切换到前一个group
+        slide: function(e, index, active){
+            //显示当前item的信息
+            $('h2.ui-toolbar-title').text(active.group + ' : ' + active.info);
+        }
+    });
 
-        slider.on('edge', function (e, prev, active) {
-            //单到达边缘时，你可以选择扩大图片池子。
-            var content = this.data('content'),
-                    group = getNextGroup(prev, active);
+    slider.on('edge', function (e, prev, active) {
+        //单到达边缘时，你可以选择扩大图片池子。
+        var content = this.content(),
+            group = getNextGroup(prev, active);
 
-            this.update(prev ? group.concat(content) : content.concat(group));
-        });
+        this.content(prev ? group.concat(content) : content.concat(group));
     });
 
     //FYI：如果item里面的结构不合意，可以转入一个itemRender为key的Fn给构造器.
 </script>
 
 <!--demo公用头部展示所用js，可以不用加载 begin-->
-<script id="bootstrap" src="../../example.js" type="text/javascript"
-        data-page="图片轮播|slider.html,无缝滑动|slider_loop.html,显示多张图片|slider_multiview.html,动态加载图片|slider_dynamic.html"></script>
+<!--script id="bootstrap" src="../../example.js" type="text/javascript"
+        data-page="图片轮播|slider.html,无缝滑动|slider_loop.html,显示多张图片|slider_multiview.html,动态加载图片|slider_dynamic.html"></script-->
 <!--demo公用头部展示所用js end-->
 </body>
 </html>
