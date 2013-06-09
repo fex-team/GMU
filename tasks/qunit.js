@@ -168,7 +168,7 @@ module.exports = function(grunt) {
                 var url = options.url + module.replace(/\.js$/i, '');
 
                 var basename = path.basename(url);
-                grunt.verbose.subhead('Testing ' + url).or.write('Testing ' + url);
+                grunt.verbose.subhead( 'Testing ' + module + ' ' ).or.write('Testing ' + module + ' ' );
 
                 // Reset current module.
                 currentModule = null;
