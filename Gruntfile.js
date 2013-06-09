@@ -107,6 +107,11 @@ module.exports = function(grunt) {
             modules: {
                 cwd: 'test/',
                 src: [ '**/*.js', '!fet/**/*.js', '!mindmap/**/*.js' ]
+            },
+
+            slider: {
+                cwd: 'test/',
+                src: 'widget/slider/*.js'
             }
         }
         

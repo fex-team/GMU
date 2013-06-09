@@ -19,9 +19,6 @@
 
             // 是否连续滑动
             loop: false,
-
-            // 是否阻止事件冒泡
-            stopPropagation: false,
             
             // 动画执行速度
             speed: 400,
@@ -128,13 +125,12 @@
 
             // width没有变化不需要重排
             if ( !force && (width = $el.width()) === this.width ) {
-                return this;
+                return;
             }
 
             this.width = width;
             this._arrange( width, index );
             this.height = $el.height();
-            return this;
         },
 
         // 重排items
@@ -143,6 +139,7 @@
                 i = 0,
                 item,
                 len;
+
             this._slidePos = new Array( items.length );
 
             for ( len = items.length; i < len; i++ ) {

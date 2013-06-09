@@ -18,6 +18,16 @@
         delta,
         moved;
 
+    // 提供默认options
+    $.extend( gmu.Slider.options, {
+
+        // 是否阻止事件冒泡
+        stopPropagation: false,
+
+        // 是否阻止滚动
+        disableScroll: false
+    } );
+
 
     gmu.Slider.register( 'touch', {
         _init: function() {

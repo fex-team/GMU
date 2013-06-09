@@ -387,7 +387,10 @@ window.gmu.$.ui = gmu;
         trigger: function( name ) {
             var evt = typeof name === 'string' ? new gmu.Event(name) : name,
                 args = [evt].concat( Array.prototype.slice.call( arguments, 1 ) ),
-                opEvent = this._options[name];
+                opEvent = this._options[name],
+
+                // 先存起来，否则在下面使用的时候，可能已经被destory给删除了。
+                $el = this.getEl();
 
             if ( opEvent && $.isFunction( opEvent ) ) {
                 // 如果返回值是false,相当于执行stopPropagation()和preventDefault();
@@ -397,7 +400,7 @@ window.gmu.$.ui = gmu;
             gmu.event.trigger.apply(this, args);
 
             // triggerHandler不冒泡
-            this.$el.triggerHandler( evt, args );
+            $el.triggerHandler( evt, args );
 
             return this;
         },
@@ -408,6 +411,10 @@ window.gmu.$.ui = gmu;
          * @desc 注销组件
          */
         destroy: function() {
+
+            // 让外部先destroy
+            this.trigger( 'destroy' );
+            
             // 解绑所有自定义事件
             this.off();
             for (var pro in this ) {
@@ -418,8 +425,7 @@ window.gmu.$.ui = gmu;
                 }
             }
 
-            this.trigger( 'destroy' );
-            this.disposed = true;
+            this.destroyed = true;
         }
     };
 })(window.gmu, window.gmu.$);
