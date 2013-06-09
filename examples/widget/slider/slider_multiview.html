@@ -13,10 +13,17 @@
     <!--组件依赖css end-->
     <!--组件依赖js begin-->
     <script type="text/javascript" src="../../../dist/zepto.js"></script>
-    <script type="text/javascript" src="../../../src/core/touch.js"></script>      <!--新版zepto合并版中不包括touch.js-->
-    <script type="text/javascript" src="../../../src/core/extend.js"></script>
-    <script type="text/javascript" src="../../../src/core/ui.js"></script>
-    <script type="text/javascript" src="../../../src/widget/slider.js"></script>
+    <script type="text/javascript" src="../../../src/extend/touch.js"></script>
+    <script type="text/javascript" src="../../../src/extend/matchMedia.js"></script>
+    <script type="text/javascript" src="../../../src/extend/event.ortchange.js"></script>
+    <script type="text/javascript" src="../../../src/extend/parseTpl.js"></script>
+    <script type="text/javascript" src="../../../src/core/gmu.js"></script>
+    <script type="text/javascript" src="../../../src/core/event.js"></script>
+    <script type="text/javascript" src="../../../src/core/widget.js"></script>
+    <script type="text/javascript" src="../../../src/widget/slider/slider.js"></script>
+    <script type="text/javascript" src="../../../src/widget/slider/arrow.js"></script>
+    <script type="text/javascript" src="../../../src/widget/slider/$touch.js"></script>
+    <script type="text/javascript" src="../../../src/widget/slider/$multiview.js"></script>
     <!--组件依赖js end-->
 </head>
 <body>
@@ -24,10 +31,10 @@
 <div id="slider" style="height: 140px;"></div>
 <script>
     //创建slider组件
-    var slider = $.ui.slider('#slider', {
+    var slider = new $.ui.Slider('#slider', {
         autoPlay:false,
-        showArr:false,
         viewNum:3,
+        travelSize: 3,
         content:[
             {
                 href: "http://www.baidu.com",
@@ -72,8 +79,8 @@
 </script>
 
 <!--demo公用头部展示所用js，可以不用加载 begin-->
-<script id="bootstrap" src="../../example.js" type="text/javascript"
-        data-page="图片轮播|slider.html,无缝滑动|slider_loop.html,显示多张图片|slider_multiview.html,动态加载图片|slider_dynamic.html"></script>
+<!--script id="bootstrap" src="../../example.js" type="text/javascript"
+        data-page="图片轮播|slider.html,无缝滑动|slider_loop.html,显示多张图片|slider_multiview.html,动态加载图片|slider_dynamic.html"></script-->
 <!--demo公用头部展示所用js end-->
 </body>
 </html>
