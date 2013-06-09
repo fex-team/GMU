@@ -49,10 +49,10 @@
     override( 'log', function( result, message ) {
         var actual, expected;
 
-        if ( !result ) {
-            actual = message.match(/result:(.*)$/)[1];
-            expected = message.match(/expected:(.*)result/)[1];
-            message = message.replace(/expected:.*$/, '');
+        if ( !result && /^(.*?),\s*expected:(.*?)result:(.*?)$/i.test(message) ) {
+            expected = RegExp.$2;
+            actual = RegExp.$3;
+            message = RegExp.$1;
         }
 
         // to do
