@@ -52,9 +52,11 @@ module.exports = function(grunt) {
         }
     };
 
-    var outputRows = function(rows) {
+    var outputRows = function(rows, wrap) {
         var maxLen = [],
             strs = [],
+            newvalue,
+            text,
             str,
             sep;
 
@@ -74,7 +76,13 @@ module.exports = function(grunt) {
             sep = i === 0 ? '^' : '|';
             str = sep + ' ';
             row.forEach(function(cell, j) {
-                str += sprintf('%-' + maxLen[j] + 's', cell) + ' ' + sep + ' ';
+                newvalue = wrap ? wrap( cell, i, j ) : cell;
+                text = sprintf('%-' + maxLen[j] + 's', cell);
+                if( newvalue !== cell ) {
+                    text = text.replace( cell, newvalue );
+                }
+
+                str += text + ' ' + sep + ' ';
             });
 
             strs.push(str);
@@ -125,7 +133,7 @@ module.exports = function(grunt) {
         }
     });
 
-    phantomjs.on('qunit.done', function(failed, passed, total, duration) {
+    phantomjs.on('qunit.done', function(failed, passed, total, duration, covData) {
         phantomjs.halt();
         status.failed += failed;
         status.passed += passed;
@@ -140,11 +148,18 @@ module.exports = function(grunt) {
                 grunt.log.ok();
             }
         }
-    });
+        if ( covData ) {
+            grunt.log.writeln('覆盖率树出结果');
+            outputRows( covData, function( value, x, y) {
+                if( x === 1 ) {
+                    return String(value).red;
+                } else if( x===0 ) {
+                    return String(value).green;
+                }
 
-    phantomjs.on('smart_cov.info', function( data ){
-        grunt.log.writeln('\n覆盖率树出结果');
-        outputRows( data );
+                return value;
+            } );
+        }
     });
 
     // Built-in error handlers.
