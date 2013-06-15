@@ -189,7 +189,6 @@ module.exports = function(grunt) {
 
                 inject: asset('tasks/lib/bridge.js'),
 
-                // Explicit non-file URLs to test.
                 url: 'http://localhost:8000/test/fet/bin/run.php?case='
             });
 
@@ -218,7 +217,7 @@ module.exports = function(grunt) {
 
             // Process each filepath in-order.
             grunt.util.async.forEachSeries(files, function(module, next) {
-                var url = options.url + module.replace(/\.js$/i, '');
+                var url = options.url + module.replace(/\.js$/i, '' );
 
                 options.cov && (url += '&cov=true');
 

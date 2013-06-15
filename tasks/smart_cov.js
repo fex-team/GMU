@@ -3,7 +3,7 @@ module.exports = function( grunt ) {
         cliPath = path.resolve('./node_modules/smart-cov/lib/cli.js'),
         file = grunt.file;
     
-    grunt.registerTask( "smart_cov", function() {
+    grunt.registerTask( 'smart_cov', function() {
         var opts = this.options({
                 src: '',
                 dest: ''
@@ -18,7 +18,7 @@ module.exports = function( grunt ) {
         }
 
         grunt.util.spawn({
-            cmd: "node",
+            cmd: 'node',
             args: [ cliPath, 'instrument', path.resolve(opts.src), '-o', path.resolve(opts.dest) ]
         }, function( error, result ) {
             if ( error ) {
