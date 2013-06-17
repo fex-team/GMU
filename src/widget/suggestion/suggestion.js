@@ -47,7 +47,7 @@
             renderList: null
         },
 
-        eventHandler: {
+        eventMap: {
             submit: function() {
                 this._options.isHistory &&
                         this._localStorage( this.value() ).trigger( 'submit' );
@@ -139,7 +139,7 @@
                 opts = me._options,
                 $form = $( opts.form || me.getEl().closest( 'form' ) ),
                 hs = opts.historyShare,
-                ns = '.suggestion',
+                ns = me.ns = '.suggestion',
                 eventHandler = $.proxy( me._eventHandler, me );
 
             me.key = hs ?
@@ -223,7 +223,7 @@
         },
 
         _eventHandler: function( e ) {
-            this.eventHandler[ e.type.split( '.' )[ 0 ] ].call( this, e );
+            this.eventMap[ e.type.split( '.' )[ 0 ] ].call( this, e );
         },
 
         _localStorage: function( value ) {
