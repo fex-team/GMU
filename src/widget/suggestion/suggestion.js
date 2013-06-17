@@ -238,7 +238,8 @@
                 } else if ( value === null ) {    // setter clear
                     localStorage[ key ] = '';
                 } else if ( value ) {    // setter
-                    data = (localStorage[ key ] || '').split( splitor );
+                    data = localStorage[ key ] ?
+                            localStorage[ key ].split( splitor ) : [];
 
                     if ( !~$.inArray( value, data ) ) {    // 数据去重处理
                         data.unshift( value );

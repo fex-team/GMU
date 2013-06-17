@@ -66,7 +66,7 @@
             var ret = this._renderList( sugs, query );
 
             // 回调渲染suglist
-            return callback( ret.length ?
+            return callback.call( this, ret.length ?
                     '<ul>' + this._renderList( sugs, query ).join( ' ' ) +
                     '</ul>' : '', query );
         } );

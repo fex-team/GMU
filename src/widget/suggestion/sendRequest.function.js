@@ -46,8 +46,8 @@
                 window[ cb ] = function( data ) {
 
                     // 渲染数据并缓存请求数据
-                    callback( data, query );
-                    cacheData( query, data );
+                    callback.call( me, data, query );
+                    cacheData.call( me, query, data );
                     delete window[ cb ];
                 };
                 $.ajax({
