@@ -11,20 +11,26 @@
 
     <!--组件依赖css begin-->
     <link rel="stylesheet" type="text/css" href="../../../assets/widget/suggestion/suggestion.css" />
-    <link rel="stylesheet" type="text/css" href="../../../assets/widget/quickdelete/quickdelete.css" />   <!--快速删除组件css，配合suggestion使用-->
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/suggestion/$quickdelete.css" />   <!--快速删除组件css，配合suggestion使用-->
     <link rel="stylesheet" type="text/css" href="../../../assets/widget/suggestion/suggestion.default.css" />    <!--皮肤文件，若不使用该皮肤，可以不加载-->
     <!--组件依赖css end-->
 
     <!--组件依赖js begin-->
     <script type="text/javascript" src="../../../dist/zepto.js"></script>
-    <script type="text/javascript" src="../../../src/core/touch.js"></script>      <!--新版zepto合并版中不包括touch.js-->
-    <script type="text/javascript" src="../../../src/gmu.js"></script>
-    <script type="text/javascript" src="../../../src/gmu/Base.js"></script>
-    <script type="text/javascript" src="../../../src/core/highlight.js"></script>
+
+    <!--gmu extend文件-->
+    <script type="text/javascript" src="../../../src/extend/touch.js"></script>      <!--新版zepto合并版中不包括touch.js-->
+    <script type="text/javascript" src="../../../src/extend/highlight.js"></script>
+
+    <!--gmu base文件-->
+    <script type="text/javascript" src="../../../src/core/gmu.js"></script>
+    <script type="text/javascript" src="../../../src/core/event.js"></script>
+    <script type="text/javascript" src="../../../src/core/widget.js"></script>
+
     <script type="text/javascript" src="../../../src/widget/suggestion/suggestion.js"></script>
-    <script type="text/javascript" src="../../../src/widget/suggestion/renderList.function.js"></script>
-    <script type="text/javascript" src="../../../src/widget/suggestion/sendRequest.function.js"></script>
-    <script type="text/javascript" src="../../../src/widget/suggestion/compatData.true.js"></script>
+    <script type="text/javascript" src="../../../src/widget/suggestion/sendRequest.Function.js"></script>
+    <script type="text/javascript" src="../../../src/widget/suggestion/renderList.Function.js"></script>
+    <script type="text/javascript" src="../../../src/widget/suggestion/$quickdelete.js"></script>
     <!--组件依赖js end-->
 </head>
 <body>

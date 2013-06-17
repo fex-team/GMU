@@ -1,74 +1,12 @@
 <!doctype html>
 <html>
 <head>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0">
-	<meta charset="utf-8">
-	<title>sug关闭后不再出现</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0">
+    <meta charset="utf-8">
+    <title>suggestion</title>
     <!--demo展示所用css，不用关心 begin-->
     <link rel="stylesheet" type="text/css" href="../../../assets/reset.css" />
-    <style>
-        /** suggestion */
-        .search {
-            position: relative;
-            padding: 0 5px 5px 5px;
-            background: #F3F3F3;
-            display: -webkit-box;
-            -webkit-box-pack: start;
-            z-index: 99;
-        }
-
-        .search input {
-            border: none;
-            border-radius: 0;
-            background: none;
-            -webkit-appearance: none;
-            font-size: 16px;
-            vertical-align: middle;
-        }
-
-        .search-input {
-            -webkit-box-flex: 1;
-            border: 1px solid #9a9a9a;
-            background: #fff url(ipt.png) 0 0 no-repeat;
-            border-radius: 2px 0 0 2px;
-        }
-
-        .search-input input {
-            width: 100%;
-            height: 39px;
-            padding: 0 0px;
-        }
-
-        .search-button {
-            border: 1px solid #888888;
-            border-left: none;
-            border-radius: 0 2px 2px 0;
-            z-index: 0;
-        }
-
-        .search-button input {
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            line-height: 39px;
-            height: 39px;
-            padding: 0 3px;
-            font-weight: bold;
-            font-size: 16px;
-            color: #000;
-            margin: 0;
-            border: 0 none transparent;
-            border-radius: 0 !important;
-            background: -moz-linear-gradient(-90deg,#f7f7f7,#dfdfdf);
-            background: -o-linear-gradient(-90deg,#f7f7f7,#dfdfdf);
-            background: -webkit-gradient(linear,left top,left bottom,from(#f7f6f6),to(#dfdfdf));
-            filter: progid : DXImageTransform.Microsoft.gradient(startColorstr=#f7f7f7,endColorstr=#dfdfdf);
-            cursor: pointer;
-        }
-
-        .search-button-hover{
-            background: -webkit-gradient(linear,left top,left bottom,from(#dfdfdf),to(#f7f6f6)) !important;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="suggestion_demo.css" />
     <!--demo展示所用css end-->
 
     <!--组件依赖css begin-->
@@ -76,14 +14,22 @@
     <link rel="stylesheet" type="text/css" href="../../../assets/widget/quickdelete/quickdelete.css" />   <!--快速删除组件css，配合suggestion使用-->
     <link rel="stylesheet" type="text/css" href="../../../assets/widget/suggestion/suggestion.default.css" />    <!--皮肤文件，若不使用该皮肤，可以不加载-->
     <!--组件依赖css end-->
+
     <!--组件依赖js begin-->
     <script type="text/javascript" src="../../../dist/zepto.js"></script>
-    <script type="text/javascript" src="../../../src/core/touch.js"></script>      <!--新版zepto合并版中不包括touch.js-->
-    <script type="text/javascript" src="../../../src/core/extend.js"></script>
-    <script type="text/javascript" src="../../../src/core/ui.js"></script>
-    <script type="text/javascript" src="../../../src/core/iscroll.js"></script>   <!--iScroll-->
-    <script type="text/javascript" src="../../../src/widget/quickdelete.js"></script>     <!--快速删除组件，配合suggestion使用-->
-    <script type="text/javascript" src="../../../src/widget/suggestion.js"></script>
+
+    <!--gmu extend文件-->
+    <script type="text/javascript" src="../../../src/extend/touch.js"></script>      <!--新版zepto合并版中不包括touch.js-->
+    <script type="text/javascript" src="../../../src/extend/highlight.js"></script>
+
+    <!--gmu base文件-->
+    <script type="text/javascript" src="../../../src/core/gmu.js"></script>
+    <script type="text/javascript" src="../../../src/core/event.js"></script>
+    <script type="text/javascript" src="../../../src/core/widget.js"></script>
+
+    <script type="text/javascript" src="../../../src/widget/suggestion/suggestion.js"></script>
+    <script type="text/javascript" src="../../../src/widget/suggestion/sendRequest.Function.js"></script>
+    <script type="text/javascript" src="../../../src/widget/suggestion/renderList.Function.js"></script>
     <!--组件依赖js end-->
 </head>
 <body>
@@ -97,18 +43,16 @@
 <script type="text/javascript">
     (function () {
         $('#input').suggestion({
-            usePlus: true,
-            source: "../../data/suggestion.php",
-            close: function () {        //关闭按钮点击一次后，sug不再出现
-                this.data('status', false);
-            }
-        }).quickdelete();
+            source: "../../data/suggestion.php"
+        }).on('close', function () {
+            $('#input').suggestion('destroy');
+        });
     })();
 </script>
 
 <!--demo公用头部展示所用js，可以不用加载 begin-->
-<script id="bootstrap" src="../../example.js" type="text/javascript"
-        data-page="sug(setup模式)|suggestion_setup.html, sug(render方式)|suggestion_render.html, sug(共享localstorage)|suggestion_share.html, sug(自定义提交的form)|suggestion_submit.html,sug(关闭后不再出现)|suggestion_close.html"></script>
+<!--<script id="bootstrap" src="../../example.js" type="text/javascript"
+        data-page="sug(setup模式)|suggestion_setup.html, sug(render方式)|suggestion_render.html, sug(共享localstorage)|suggestion_share.html, sug(自定义提交的form)|suggestion_submit.html,sug(关闭后不再出现)|suggestion_close.html"></script>-->
 <!--demo公用头部展示所用js end-->
 
 </body>
