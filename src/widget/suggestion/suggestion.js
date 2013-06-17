@@ -165,7 +165,7 @@
 
             me.on( 'destroy', function() {
                 $form.size() && $form.off( '.suggestion' );
-                me.getEl.off('.suggestion');
+                me.getEl().off('.suggestion');
                 me.$wrapper.children().off( '.suggestion' ).remove();
                 me.$wrapper.off( '.suggestion' ).remove();
                 me.$mask.off( '.suggestion' ).replaceWith( me.getEl() );
@@ -190,33 +190,32 @@
                  * 用户自己发送请求或直接本地数据处理，可以在sendRequest中处理
                  * 故暂不实现source为数据对象时，对数据筛选的逻辑
                  */
-                (data = me._cacheData( query )) ? me._render( data, query ) :
-                        me.trigger( 'sendRequst',
+                (data = me._cacheData( query )) ? me._render( query, data ) :
+                        me.trigger( 'sendRequest',
                         query, me._render, me._cacheData );
             } else {
 
                 // query为空，即刚开始focus时，读取localstorage中的数据渲染
                 (data = me._localStorage()) ?
-                        me._render({s: data.split( me.splitor )}) : me.hide();
+                        me._render( query, data.split( me.splitor ) ) : me.hide();
             }
 
             return me;
         },
 
-        _render: function( data, query ) {
-            this.trigger( 'renderList', data.s, query, this._fillWrapper );
+        _render: function( query, data ) {
+            this.trigger( 'renderList', data, query, this._fillWrapper );
         },
 
         /**
          * 根据数据填充sug wrapper
          * @listHtml 填充的sug片段，默认为'<ul><li>...</li>...</ul>'
-         * @query query数据
          * @private
          */
-        _fillWrapper: function( listHtml, query ) {
+        _fillWrapper: function( listHtml ) {
 
             // 数据不是来自历史记录时隐藏清除历史记录按钮
-            this.$clearBtn[ query ? 'hide' : 'show' ]();
+            this.$clearBtn[ this.value() ? 'hide' : 'show' ]();
             listHtml ? (this.$content.html( listHtml ), this.show()) :
                     this.hide();
             return this;

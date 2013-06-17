@@ -24,7 +24,7 @@
 
     }, function() {
 
-        this.on( 'sendRequst', function( e, query, callback, cacheData ) {
+        this.on( 'sendRequest', function( e, query, callback, cacheData ) {
             var me = this,
                 opts = me._options,
                 url = opts.source,
@@ -45,11 +45,25 @@
 
                 window[ cb ] = function( data ) {
 
-                    // 渲染数据并缓存请求数据
-                    callback.call( me, data, query );
-                    cacheData.call( me, query, data );
+                    /*
+                    * 渲染数据并缓存请求数据
+                    * 返回的数据格式如下：
+                    * {
+                    *     q: "a",
+                    *     p: false,
+                    *     s: ["angelababy", "akb48", "after school",
+                    *     "android", "angel beats!", "a pink", "app"]
+                    * }
+                    */
+                    callback.call( me, query, data.s );
+
+                    // 缓存请求的query
+                    cacheData.call( me, query, data.s );
+
                     delete window[ cb ];
                 };
+
+                // 以jsonp形式发送请求
                 $.ajax({
                     url: url,
                     dataType: 'jsonp'

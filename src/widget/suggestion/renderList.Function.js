@@ -25,7 +25,7 @@
         var _xssFilter = function( str ) {
                 return $( '<div></div>' ).text( str ).html();
             };
-        this._renderList = function( sugs, query ) {
+        this._renderList = function( query, sugs ) {
             var me = this,
                 opts = me._options,
                 listCount = opts.listCount,
@@ -62,13 +62,12 @@
             return html;
         };
 
-        this.on( 'renderList', function( e, sugs, query, callback ) {
-            var ret = this._renderList( sugs, query );
+        this.on( 'renderList', function( e, data, query, callback ) {
+            var ret = this._renderList( query, data );
 
             // 回调渲染suglist
             return callback.call( this, ret.length ?
-                    '<ul>' + this._renderList( sugs, query ).join( ' ' ) +
-                    '</ul>' : '', query );
+                        '<ul>' + ret.join( ' ' ) + '</ul>' : '' );
         } );
     } );
 
