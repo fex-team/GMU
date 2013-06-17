@@ -149,7 +149,7 @@ module.exports = function(grunt) {
             }
         }
         if ( covData ) {
-            grunt.log.writeln('覆盖率树出结果');
+            grunt.log.writeln('覆盖率输出结果');
             outputRows( covData, function( value, x, y) {
                 if( x === 1 ) {
                     return String(value).red;
