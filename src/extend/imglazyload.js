@@ -2,7 +2,7 @@
  *  @file 基于Zepto的图片延迟加载插件
  *  @name Imglazyload
  *  @desc 图片延迟加载
- *  @import zepto.js, core/event.scrollStop.js, core/event.ortchange.js
+ *  @import zepto.js, extend/event.scrollStop.js, extend/event.ortchange.js
  */
 (function ($) {
     /**
