@@ -99,14 +99,27 @@ module.exports = function(grunt) {
             }
         },
 
+        smart_cov: {
+            options: {
+                src: 'src',
+                dest: 'src_cov'
+            }
+        },
+
         qunit: {
             options: {
-                url: 'http://localhost/gmu/test/fet/bin/run.php?case='
+                url: 'http://localhost/gmu/test/fet/bin/run.php?case=',
+                cov: true
             },
             
             modules: {
                 cwd: 'test/',
                 src: [ '**/*.js', '!fet/**/*.js', '!mindmap/**/*.js' ]
+            },
+
+            slider: {
+                cwd: 'test/',
+                src: 'widget/slider/*.js'
             }
         }
         
@@ -116,7 +129,7 @@ module.exports = function(grunt) {
     grunt.loadTasks( 'tasks' );
 
     // 负责初始化和更新submodule
-    grunt.loadNpmTasks('grunt-update-submodules');
+    grunt.loadNpmTasks( 'grunt-update-submodules' );
 
     // 负责合并zepto.js
     grunt.loadNpmTasks( 'grunt-contrib-concat' );
@@ -133,6 +146,6 @@ module.exports = function(grunt) {
     // Default task(s).
     grunt.registerTask( 'default', ['update_submodules', 'concat', 'concat_gmu', 'uglify'] );
 
-    grunt.registerTask( 'test', ['qunit']);
+    grunt.registerTask( 'cov', [ 'smart_cov', 'qunit' ]);
 
 };
