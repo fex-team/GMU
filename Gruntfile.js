@@ -120,6 +120,11 @@ module.exports = function(grunt) {
             slider: {
                 cwd: 'test/',
                 src: 'widget/slider/*.js'
+            },
+
+            core: {
+                cwd: 'test/',
+                src: 'core/*.js'
             }
         }
         
