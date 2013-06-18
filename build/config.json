@@ -9,7 +9,7 @@
         "gmu": {
             "path": "_src",
             "cssPath": "assets",
-            "all": ["widget/**.js"],
+            "all": ["widget/gotop.js", "widget/slider.touch.js", "widget/refresh.lite.js", "widget/navigator.snap.js"],
             "dest": "dist/gmu.js",
             "exclude": ["core/zepto.js", "core/zepto.fx.js"],
             "banner": "/* Gmu v@version - @files */"
@@ -17,7 +17,7 @@
     },
 
     "fis": {
-        "dest": "dist/fis/gmu_@version"
+        "dest": "dist/fwidget/refresh.lite.jsis/gmu_@version"
     },
 
     "jshint": {
