@@ -65,7 +65,27 @@ page.onUrlChanged = function(newUrl) {
   sendMessage('onUrlChanged', newUrl);
 };
 
-var coverage = {};
+var coverageFile = options.coverageFile;
+function saveCoverage( data ) {
+  var content;
+  try {
+    content = JSON.stringify( data );
+    coverageFile && fs.write( coverageFile, content);
+  } catch( ex ) {
+    // do nothing
+  }
+}
+
+function getCoverage() {
+  var ret = {},
+    content;
+  try {
+    content = coverageFile && fs.read( coverageFile );
+    ret =  content ? JSON.parse( content ) : ret;
+  } finally {
+    return ret;
+  }
+}
 
 // The client page must send its messages via alert(jsonstring).
 page.onAlert = function(str) {
@@ -76,7 +96,7 @@ page.onAlert = function(str) {
     inject();
     return;
   } else if( str === 'fetchCoverage' ) {
-    page.evaluateJavaScript( 'window["__coverage__"] = ' + JSON.stringify( coverage ));
+    options.cov && page.evaluateJavaScript( 'window["__coverage__"] = ' + JSON.stringify( getCoverage() ));
     return;
   }
   // Otherwise, parse the specified message string and send it back to grunt.
@@ -85,8 +105,8 @@ page.onAlert = function(str) {
     ret = JSON.parse( str );
 
     // 更新coverage
-    if( ret[0] === 'updateCoverage' ) {
-      coverage = ret[1];
+    if( options.cov && ret[0] === 'updateCoverage' ) {
+      saveCoverage( ret[1] );
     }
 
     sendMessage(JSON.parse(str));
