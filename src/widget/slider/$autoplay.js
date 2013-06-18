@@ -13,7 +13,10 @@
     gmu.Slider.register( 'autoplay', {
         _init: function() {
             var me = this;
-            me.on( 'slideend ready', me.resume );
+            me.on( 'slideend ready', me.resume )
+
+                    // 清除timer
+                    .on( 'destory', me.stop );
 
             // 避免滑动时，自动切换
             me.getEl()

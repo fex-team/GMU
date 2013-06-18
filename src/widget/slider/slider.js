@@ -265,6 +265,10 @@
             return this;
         },
 
+        getIndex: function() {
+            return this.index;
+        },
+
         destroy: function() {
             this._container.off( transitionEnd + '.slider', 
                     this._tansitionEnd );
