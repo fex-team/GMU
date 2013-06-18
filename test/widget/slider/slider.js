@@ -39,7 +39,6 @@
                 '</div></div>').appendTo( fixture ),
             instance;
 
-        // general mode
         instance = new gmu.Slider( dom );
         ok( dom.hasClass( 'ui-slider' ), '外层dom class name正确' );
         ok( dom.find('.ui-slider-group').children().hasClass( 'ui-slider-item' ),
@@ -87,6 +86,23 @@
         equal( container.children().get(1), child2, '如果没有指定容器，跟元素下的孩子节点将作为可滚动item' );
 
         dom.slider('destroy').remove();
+    } );
+
+    test( '通过ul实例化', function() {
+        expect( 2 );
+
+        var dom = $('<ul>' +
+                '<li> item 1</li>' +
+                '<li> item 2</li>' +
+                '<li> item 3</li>' +
+                '<li> item 4</li>' +
+                '</ul>').appendTo( fixture ),
+            items;
+
+        dom.slider();
+
+        ok( dom.hasClass('ui-slider-group'), 'ok' );
+        ok( dom.parent().hasClass('ui-slider'), 'ok' );
     } );
 
     test( '其他dom结构初始化检测', function() {
