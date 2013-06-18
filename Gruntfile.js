@@ -112,7 +112,7 @@ module.exports = function(grunt) {
                 cov: true
             },
             
-            modules: {
+            all: {
                 cwd: 'test/',
                 src: [ '**/*.js', '!fet/**/*.js', '!mindmap/**/*.js' ]
             },
@@ -149,8 +149,10 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks( 'grunt-jsbint' );
 
     // Default task(s).
-    grunt.registerTask( 'default', ['update_submodules', 'concat', 'concat_gmu', 'uglify'] );
+    grunt.registerTask( 'default', [ 'jsbint:all', 'update_submodules', 'concat',
+            'concat_gmu', 'uglify', 'smart_cov', 'qunit:all'] );
 
-    grunt.registerTask( 'cov', [ 'smart_cov', 'qunit' ]);
+    grunt.registerTask( 'test', [ 'update_submodules', 'concat', 'concat_gmu',
+            'smart_cov', 'qunit:all' ]);
 
 };
