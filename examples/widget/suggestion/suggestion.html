@@ -28,8 +28,8 @@
     <script type="text/javascript" src="../../../src/core/widget.js"></script>
 
     <script type="text/javascript" src="../../../src/widget/suggestion/suggestion.js"></script>
-    <script type="text/javascript" src="../../../src/widget/suggestion/sendRequest.Function.js"></script>
-    <script type="text/javascript" src="../../../src/widget/suggestion/renderList.Function.js"></script>
+    <script type="text/javascript" src="../../../src/widget/suggestion/sendRequest.js"></script>
+    <script type="text/javascript" src="../../../src/widget/suggestion/renderList.js"></script>
     <script type="text/javascript" src="../../../src/widget/suggestion/$quickdelete.js"></script>
     <!--组件依赖js end-->
 </head>
@@ -45,8 +45,7 @@
     (function () {
 
         $('#input').suggestion({
-            source: "../../data/suggestion.php",
-            usePlus: true
+            source: "../../data/suggestion.php"
         });
 
     })();

@@ -28,11 +28,11 @@
     <script type="text/javascript" src="../../../src/core/widget.js"></script>
 
     <script type="text/javascript" src="../../../src/widget/suggestion/suggestion.js"></script>
-    <script type="text/javascript" src="../../../src/widget/suggestion/sendRequest.Function.js"></script>
-    <script type="text/javascript" src="../../../src/widget/suggestion/renderList.Function.js"></script>
+    <script type="text/javascript" src="../../../src/widget/suggestion/sendRequest.js"></script>
+    <script type="text/javascript" src="../../../src/widget/suggestion/renderList.js"></script>
     <!--组件依赖js end-->
 </head>
-<body>
+<body style="height: 250px;">
 <form action="http://www.baidu.com/s" method="get">
     <div class="search">
         <div class="search-input"><input type="text" id="input" name="wd"></div>
@@ -45,7 +45,8 @@
 
         gmu.suggestion({
             container: '#input',
-            source: "../../data/suggestion.php"
+            source: "../../data/suggestion.php",
+            autoClose: true
         });
 
     })();

@@ -6,6 +6,8 @@
  * @import widget/suggestion/suggestion.js
  */
 (function( $, win ) {
+    var reverse = Array.prototype.reverse;
+
     gmu.suggestion.register( 'posAdapt', {
 
         _checkPos: function() {
@@ -16,17 +18,21 @@
             return $( win ).height() - upDis < sugH && upDis >= sugH;
         },
 
-        _renderList: function( sugs, query ) {
-            var ret = this.origin( sugs, query );
+        _fillWrapper: function( listHtml ) {
+            var me = this,
+                $list;
 
-            if ( this._checkPos() ) {
+            me.origin( listHtml );
 
-                // sug list反转
-                ret = ret.reverse();
-                this.$btn.prependTo( this.$wrapper );    // 调整按钮位置
+            if ( me.isShow && me._checkPos() ) {
+                $list = ($list = me.$content.children()).length === 1 ?
+                        $list.children() : $list;
+
+                reverse.call( $list );    // sug list反转
+                me.$btn.prependTo( me.$wrapper );    // 调整按钮位置
             }
 
-            return ret;
+            return this;
         },
 
         show: function() {

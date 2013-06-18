@@ -8,11 +8,12 @@
  */
 (function( $, win ) {
 
+    gmu.suggestion.options.compatData = true;
+
     gmu.suggestion.option( 'compatData', true, function() {
 
         this.on( 'compatData.suggestion', function() {
-            var me = this,
-                key = me.key,
+            var key = this.key,
                 localdata = win.localStorage[ key ],
                 dataArr;
 

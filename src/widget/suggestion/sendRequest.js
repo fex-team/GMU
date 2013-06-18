@@ -17,6 +17,19 @@
     * @callback 渲染数据的回调函数
     * @cacheData 缓存query list的回调方法
     * */
+
+    $.extend( gmu.suggestion.options, {
+
+        // 发送请求时query的key值
+        queryKey: 'wd',
+
+        // 发送请求时callback的name
+        cbKey: 'cb',
+
+        // 自定义发送请求函数，可以覆盖默认发送请求的方法
+        sendRequest: null
+    } );
+
     gmu.suggestion.option( 'sendRequest', function() {
 
         // 当sendRequest不是Function类型时，该option操作生效

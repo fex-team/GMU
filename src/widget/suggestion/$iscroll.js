@@ -17,12 +17,16 @@
                 opts = me._options;
 
             me.on( 'ready', function() {
+
+                // 增加一层scroller结构
                 me.$scroller =
                         $( '<div class="ui-suggestion-scroller"></div>' );
+
                 me.$content
                         .wrapInner( me.$scroller )
                         .height( opts.height )
                         .iScroll({
+
                             hScroll: false,
 
                             onRefresh: function() {
@@ -47,6 +51,7 @@
             if ( listHtml ) {
                 this.show().$scroller.html( listHtml );
                 this.$content.iScroll( 'refresh' );
+
             } else {
                 this.hide();
             }

@@ -1,8 +1,8 @@
 /**
- * @file 搜索建议 - quickdelete
- * @name Suggestion - iscroll
- * @desc <qrcode align="right" title="Live Demo">../gmu/examples/widget/suggestion/suggestion_setup.html</qrcode>
- * 搜索建议 - iscroll插件，当sug列表需要人滚时需要加载该插件
+ * @file 搜索建议 - quickdelete插件
+ * @name Suggestion - quickdelete
+ * @desc 原来的quickdelete组件，现作为suggestion的插件
+ * 以input作为container，原来的size,offset参数均在样式中处理，不单独提供参数
  * @import widget/suggestion/suggestion.js
  */
 (function( gmu, $ ) {
