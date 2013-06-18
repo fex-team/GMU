@@ -31,7 +31,7 @@
      * - ''usePlus''        {Boolean}: (可选)是否启用+号，默认：true
      * - --''status''--   该参数已经去掉，若需要点击关闭后不再出现sug，可在外部close事件中调用destroy
      * - --''useIscroll''--  该参数已经去掉，若需sug内滚，加载$iscroll插件即可
-     * - ''height'' {Number}: (可选)设置高度，该参数在使用iscroll的插件中生效，否则根据''listCount''确定
+     * - --''height''--  该参数已经去掉，通过listCount确定高度
      * - --''width''--  宽度参数已去掉，在样式中设定
      * - --''minChars''--   该参数已经去掉
      * - --''maxChars''--   该参数已经去掉

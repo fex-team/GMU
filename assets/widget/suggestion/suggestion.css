@@ -16,10 +16,6 @@
     -webkit-box-sizing: border-box;
 }
 
-.ui-suggestion .ui-suggestion-scroller{
-    min-height: 33px;
-}
-
 .ui-suggestion ul li{
 	position: relative;
 }

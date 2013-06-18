@@ -7,14 +7,10 @@
  */
 (function( gmu, $ ) {
 
-    // 当sug可以内滚时，默认options.height值设为66
-    gmu.suggestion.options.height = 66;
-
     gmu.suggestion.register( 'iscroll', {
 
         _init: function() {
-            var me = this,
-                opts = me._options;
+            var me = this;
 
             me.on( 'ready', function() {
 
@@ -22,9 +18,9 @@
                 me.$scroller =
                         $( '<div class="ui-suggestion-scroller"></div>' );
 
+                // 初始化iScroll，若需要设置wrapper高度，可在样式中设max-height
                 me.$content
                         .wrapInner( me.$scroller )
-                        .height( opts.height )
                         .iScroll({
 
                             hScroll: false,
