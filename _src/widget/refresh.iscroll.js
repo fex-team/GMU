@@ -81,8 +81,10 @@
                                 downRefreshed = data['_downRefreshed'],
                                 upStatus = me._status('up'),
                                 downStatus = me._status('down');
+                                upEnable = data['_upEnable'],
+                                downEnable = data['_downEnable'];
 
-                            if (up && !upStatus || down && !downStatus || this.maxScrollY >= 0) return;    //上下不能同时加载 trace:FEBASE-775，当wrapper > scroller时，不进行加载 trace:FEBASE-774
+                            if (up && !upStatus && !!upEnable || down && !downStatus && !!downEnable || this.maxScrollY >= 0) return;    //上下不能同时加载 trace:FEBASE-775，当wrapper > scroller时，不进行加载 trace:FEBASE-774
                             if (downStatus && down && !downRefreshed && this.y < (this.maxScrollY - threshold)) {    //下边按钮，上拉加载
                                 me._setMoveState('down', 'beforeload', 'pull');
                             } else if (upStatus && up && !upRefreshed && this.y > threshold) {     //上边按钮，下拉加载
