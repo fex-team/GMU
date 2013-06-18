@@ -3,7 +3,7 @@
  * @name Slider
  * @desc <qrcode align="right" title="Live Demo">../gmu/examples/widget/slider/slider.html</qrcode>
  * 图片轮播组件
- * @import extend/touch.js, extend/event.ortchange.js, extend/parseTpl.js, core/widget.js
+ * @import extend/touch.js, extend/event.ortchange.js, core/widget.js
  */
 (function( gmu, $, undefined ) {
     var cssPrefix = $.fx.cssPrefix,
@@ -37,15 +37,6 @@
                     '<img src="<%= pic %>" alt="" /></a>' +
                     '<% if( title ) { %><p><%= title %></p><% } %>' +
                     '</div>'
-        },
-
-        tpl2html: function( subpart, data ) {
-            var tpl = this.template;
-
-            tpl =  typeof subpart === 'string' ? tpl[ subpart ] :
-                    ((data = subpart), subpart);
-            
-            return data ? $.parseTpl( tpl, data ) : tpl;
         },
 
         _create: function() {

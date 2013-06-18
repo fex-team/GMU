@@ -360,3 +360,27 @@ test("继承后的方法调用", function(){
 
     // 同名方法的调用顺序：父类方法 => 子类方法 => 父类的插件方法
 });
+
+test('tpl2html', function(){
+    expect(3);
+    
+    var instance;
+
+    gmu.define( 'TestWidget', {
+        template: 'a is <%= a %>'
+    } );
+
+    instance = new gmu.TestWidget(document.body);
+
+    equal( instance.tpl2html(), 'a is <%= a %>', '当不传入data时template原文返回' );
+    equal( instance.tpl2html({a: 3}), 'a is 3', 'ok');
+    instance.destroy();
+
+    instance = new gmu.TestWidget(document.body, {
+        template: {
+            c: 'c is <%= c %>'
+        }
+    });
+    equal( instance.tpl2html('c', {c: 4}), 'c is 4', 'ok' );
+    instance.destroy();
+});

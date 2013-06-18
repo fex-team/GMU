@@ -39,7 +39,6 @@
                 '</div></div>').appendTo( fixture ),
             instance;
 
-        // general mode
         instance = new gmu.Slider( dom );
         ok( dom.hasClass( 'ui-slider' ), '外层dom class name正确' );
         ok( dom.find('.ui-slider-group').children().hasClass( 'ui-slider-item' ),
