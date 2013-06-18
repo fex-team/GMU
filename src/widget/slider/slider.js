@@ -54,7 +54,11 @@
                 opts = me._options;
 
             me.index = opts.index;
+
+            // 初始dom结构
             me._initDom( $el, opts );
+
+            // 更新width
             me._initWidth( $el, me.index );
             me._container.on( transitionEnd + '.slider',
                     $.proxy( me._tansitionEnd, me ) );
@@ -115,10 +119,9 @@
                     .toArray();
 
             this.trigger( 'done.dom', $el.addClass( 'ui-slider' ), opts );
-            return this;
         },
 
-        // 根据opts.content里面的数据挨个render插入到container中
+        // 根据items里面的数据挨个render插入到container中
         _createItems: function( container, items ) {
             var i = 0,
                 len = items.length;
@@ -192,17 +195,19 @@
         },
 
         _circle: function( index, arr ) {
-            arr = arr || this._items;
+            var len;
 
-            // <<4 用来实现 x 16 的效果，减少返回值是负值的可能
-            return ((arr.length << 4) + index) % arr.length;
+            arr = arr || this._items;
+            len = arr.length;
+
+            return (index % len + len) % arr.length;
         },
 
         _tansitionEnd: function( e ) {
 
             // ~~用来类型转换，等价于parseInt( str, 10 );
             if ( ~~e.target.getAttribute( 'data-index' ) !== this.index ) {
-                return false;
+                return;
             }
             
             this.trigger( 'slideend', this.index );

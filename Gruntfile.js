@@ -28,7 +28,6 @@ module.exports = function(grunt) {
         },
 
         concat_gmu: {
-
             options: {
                 srcPath: 'src/',
                 cssPath: 'assets/',
@@ -44,7 +43,6 @@ module.exports = function(grunt) {
         },
 
         fis: {
-
             options: {
                 srcPath: '<%= concat_gmu.options.srcPath %>',
                 cssPath: '<%= concat_gmu.options.cssPath %>'
@@ -60,9 +58,9 @@ module.exports = function(grunt) {
 
         uglify: {
             options: {
-                report: 'min',
                 mangle: true
             },
+
             zepto: {
                 options: {
                     banner: '<%= concat.zepto.options.banner%>'
@@ -71,6 +69,7 @@ module.exports = function(grunt) {
                 src: 'dist/zepto.js',
                 dest: 'dist/zepto.min.js'
             },
+
             gmu: {
                 options: {
                     banner: '/* Gmu v<%= pkg.version %> */\n'
@@ -81,10 +80,13 @@ module.exports = function(grunt) {
         },
 
         jsbint: {
-            all: ['src/**/*.js'],
             options: {
                 jshintrc: '.jshintrc'
             },
+
+            all: ['src/**/*.js'],
+            
+            slider: ['src/widget/slider/*.js']
         },
 
         size: {
