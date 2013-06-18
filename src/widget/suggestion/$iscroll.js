@@ -31,6 +31,11 @@
                                 this.y && this.scrollTo( 0, 0 );
                             }
                         });
+
+                // 调用iscroll的destroy
+                me.on( 'destroy', function() {
+                    me.$content.iScroll('destroy');
+                } );
             } );
 
             return me;
