@@ -91,6 +91,9 @@ module.exports = function(grunt) {
         grunt.log.writeln(strs.join('\n'));
     }
 
+    var coverage;
+    var coverageRender = require('./lib/cov_render.js');
+
     // QUnit hooks.
     phantomjs.on('qunit.moduleStart', function(name) {
         unfinished[name] = true;
@@ -148,18 +151,10 @@ module.exports = function(grunt) {
                 grunt.log.ok();
             }
         }
-        if ( covData ) {
-            grunt.log.writeln('覆盖率输出结果');
-            outputRows( covData, function( value, x, y) {
-                if( x === 1 ) {
-                    return String(value).red;
-                } else if( x===0 ) {
-                    return String(value).green;
-                }
+    });
 
-                return value;
-            } );
-        }
+    phantomjs.on('updateCoverage', function( data ) {
+        coverage = data;
     });
 
     // Built-in error handlers.
@@ -188,6 +183,7 @@ module.exports = function(grunt) {
                 timeout: 5000,
 
                 inject: asset('tasks/lib/bridge.js'),
+                phantomScript: asset('tasks/lib/phantom.js'),
 
                 url: 'http://localhost:8000/test/fet/bin/run.php?case='
             });
@@ -199,6 +195,10 @@ module.exports = function(grunt) {
             total: 0,
             duration: 0
         };
+
+
+
+        coverage = null;
 
         this.files.forEach(function(f) {
 
@@ -256,6 +256,20 @@ module.exports = function(grunt) {
                 } else {
                     grunt.verbose.writeln();
                     grunt.log.ok(status.total + ' assertions passed (' + status.duration + 'ms)');
+
+                    // output coverage;
+                    if ( coverage ) {
+                        grunt.log.writeln('\n覆盖率输出结果');
+                        outputRows( coverageRender(coverage), function( value, x, y) {
+                            if( x === 1 ) {
+                                return String(value).red;
+                            } else if( x===0 ) {
+                                return String(value).green;
+                            }
+
+                            return value;
+                        } );
+                    }
                 }
                 // All done!
                 done();

@@ -1,6 +1,6 @@
 /**
  * @file gmu底层，定义了创建gmu组件的方法
- * @import core/gmu.js, core/event.js
+ * @import core/gmu.js, core/event.js, extend/parseTpl.js
  */
 
 (function( gmu, $, undefined ) {
@@ -400,9 +400,27 @@ window.gmu.$.ui = gmu;
             gmu.event.trigger.apply(this, args);
 
             // triggerHandler不冒泡
-            $el.triggerHandler( evt, args );
+            $el && $el.triggerHandler( evt, args );
 
             return this;
+        },
+
+        /**
+         * @name tpl2html
+         * @grammar instance.tpl2html() => String
+         * @grammar instance.tpl2html( data ) => String
+         * @grammar instance.tpl2html( subpart, data ) => String
+         * @desc 将template输出成html字符串，当传入 data 时，html将通过$.parseTpl渲染。
+         * template支持指定subpart, 当无subpart时，template本身将为模板，当有subpart时，
+         * template[subpart]将作为模板输出。
+         */
+        tpl2html: function( subpart, data ) {
+            var tpl = this.template;
+
+            tpl =  typeof subpart === 'string' ? tpl[ subpart ] :
+                    ((data = subpart), tpl);
+            
+            return data ? $.parseTpl( tpl, data ) : tpl;
         },
 
         /**
