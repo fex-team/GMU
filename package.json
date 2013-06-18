@@ -25,6 +25,7 @@
     "uglify-js": "~2.2.5",
     "glob": "~3.1.21",
     "grunt-lib-phantomjs": "~0.3.0",
-    "smart-cov": "~1.2.2"
+    "smart-cov": "~1.2.2",
+    "temporary": "0.0.5"
   }
 }
