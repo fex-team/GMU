@@ -20,8 +20,8 @@
 
             // 避免滑动时，自动切换
             me.getEl()
-                    .on( 'touchstart', $.proxy( me.stop, me ) )
-                    .on( 'touchend', $.proxy( me.resume, me ) );
+                    .on( 'touchstart.slider', $.proxy( me.stop, me ) )
+                    .on( 'touchend.slider', $.proxy( me.resume, me ) );
         },
 
         /**
@@ -34,7 +34,7 @@
 
             if ( opts.autoPlay && !me._timer ) {
                 me._timer = setTimeout( function() {
-                    me.next();
+                    me.slideTo( me.index + 1 );
                     me._timer = null;
                 }, opts.interval );
             }
