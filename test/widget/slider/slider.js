@@ -119,6 +119,30 @@
         dom.slider('destroy').remove();
     } );
 
+    test( 'Render 内容 & template', function() {
+        expect( 3 );
+
+        var dom = $('<div></div>').appendTo( fixture ),
+            items;
+
+        dom.slider({
+            content: [
+                { key: 1},
+                { key: 2},
+                { key: 3}
+            ],
+            template: {
+                item: '<div class="ui-slider-item">I am item <%= key %></div>',
+            }
+        });
+
+        items = dom.find('.ui-slider-item');
+
+        equal( items.eq(0).text(), 'I am item 1', 'ok');
+        equal( items.eq(1).text(), 'I am item 2', 'ok');
+        equal( items.eq(2).text(), 'I am item 3', 'ok');
+    } );
+
     test( 'loop条件检测', function(){
         var dom = $('<div>' +
                 '<div> item 1</div>' +
@@ -157,17 +181,29 @@
     } );
 
     test( 'width 在ortchange的时候应该自动更新', function() {
+        expect(3);
         var dom = $('<div>' +
                 '<div> item 1</div>' +
-                '</div>').appendTo( fixture );
+                '</div>').appendTo( fixture ),
+            instance,
+            _arrange;
 
         dom.css( 'width', 200 );
         dom.slider();
         equal( dom.find('.ui-slider-item').width(), 200, '可滑item,与根节点宽度保持一致' );
 
+        instance = dom.slider( 'this' );
+        _arrange = instance._arrange;
+        instance._arrange = function() {
+            ok( true, 'ok');
+            return _arrange.apply( this, arguments );
+        };
+
         dom.css( 'width', 300 );
         $(window).trigger('ortchange');
         equal( dom.find('.ui-slider-item').width(), 300, 'ortchange后，宽度更新' );
+        
+        $(window).trigger('ortchange');
 
         dom.slider('destroy').remove();
     } );
@@ -212,4 +248,67 @@
             start();
         } );
     } );
+
+    test( 'prev', function() {
+        stop();
+
+        var dom = $('<div>' +
+                '<div> item 1</div>' +
+                '<div> item 2</div>' +
+                '<div> item 3</div>' +
+                '<div> item 4</div>' +
+                '</div>').appendTo( fixture ),
+            pos = dom.offset().left,
+            items;
+
+        dom.slider({index: 1});
+
+        items = dom.find('.ui-slider-item');
+        equal( items.eq(1).offset().left, pos, '当前第二个可见' );
+        ok( items.eq(0).offset().left < pos, '当前第一在左边');
+
+        dom.slider( 'prev');
+        dom.slider( 'one', 'slideend', function() {
+            ok( items.eq(1).offset().left > pos, '当前第二个滑到右边');
+            equal( items.eq(0).offset().left, pos, '第一个可见' );
+
+            dom.slider( 'prev');
+            equal( this.getIndex(), 0, 'still 0');
+
+
+            dom.slider('destroy').remove();
+            start();
+        } );
+    });
+
+    test( 'next', function() {
+        stop();
+
+        var dom = $('<div>' +
+                '<div> item 1</div>' +
+                '<div> item 2</div>' +
+                '<div> item 3</div>' +
+                '<div> item 4</div>' +
+                '</div>').appendTo( fixture ),
+            pos = dom.offset().left,
+            items;
+
+        dom.slider({index: 2});
+
+        items = dom.find('.ui-slider-item');
+        equal( items.eq(2).offset().left, pos, '当前第三个可见' );
+        ok( items.eq(3).offset().left > pos, '当前第四在右边');
+
+        dom.slider( 'next');
+        dom.slider( 'one', 'slideend', function() {
+            ok( items.eq(2).offset().left < pos, '当前第三个滑到左边');
+            equal( items.eq(3).offset().left, pos, '第四个可见' );
+
+            dom.slider( 'next');
+            equal( this.getIndex(), 3, 'still 3');
+
+            dom.slider('destroy').remove();
+            start();
+        } );
+    });
 })();
