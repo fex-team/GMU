@@ -108,6 +108,15 @@ module.exports = function(grunt) {
                 cwd: 'test/',
                 src: [ '**/*.js', '!fet/**/*.js', '!mindmap/**/*.js' ]
             }
+        },
+
+        testDownload: {
+            options: {
+                url: 'http://localhost/GMU/test.html'
+            },
+            GMU: {
+
+            }
         }
         
     });
@@ -133,6 +142,8 @@ module.exports = function(grunt) {
     // Default task(s).
     grunt.registerTask( 'default', ['update_submodules', 'concat', 'concat_gmu', 'uglify'] );
 
-    grunt.registerTask( 'test', ['qunit']);
+    grunt.registerTask( 'test', ['qunit'] );
+
+    grunt.registerTask( 'download', ['testDownload'] );
 
 };
