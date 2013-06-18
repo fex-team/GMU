@@ -16,3 +16,4 @@ before_script:
 
 script:
     - phantomjs ./test/fet/tools/phantom-run.js
+    - grunt download
