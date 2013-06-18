@@ -6,6 +6,7 @@
 
     gmu.Slider.options.imgZoom = true;
 
+    // todo 当屏幕旋转的时候需要重新调整
     gmu.Slider.option( 'imgZoom', function() {
         return !!this._options.imgZoom;
     }, function() {
