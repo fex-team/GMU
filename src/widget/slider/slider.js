@@ -80,7 +80,15 @@
 
                 // 如果没有传入content, 则将root的孩子作为可滚动item
                 if ( !opts.content ) {
-                    container.append( $el.children() );
+
+                    // 特殊处理直接用ul初始化slider的case
+                    if ( $el.is( 'ul' ) ) {
+                        this.$el = container.insertAfter( $el );
+                        container = $el;
+                        $el = this.$el;
+                    } else {
+                        container.append( $el.children() );
+                    }
                 } else {
                     this._createItems( container, opts.content );
                 }

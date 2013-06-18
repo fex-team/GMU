@@ -89,6 +89,23 @@
         dom.slider('destroy').remove();
     } );
 
+    test( '通过ul实例化', function() {
+        expect( 2 );
+
+        var dom = $('<ul>' +
+                '<li> item 1</li>' +
+                '<li> item 2</li>' +
+                '<li> item 3</li>' +
+                '<li> item 4</li>' +
+                '</ul>').appendTo( fixture ),
+            items;
+
+        dom.slider();
+
+        ok( dom.hasClass('ui-slider-group'), 'ok' );
+        ok( dom.parent().hasClass('ui-slider'), 'ok' );
+    } );
+
     test( '其他dom结构初始化检测', function() {
         var dom = $('<div><ul><li>item1</li><li>item2</li><li>item3</li>' +
                     '</ul></div>').appendTo( fixture ),

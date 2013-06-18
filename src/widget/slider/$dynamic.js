@@ -9,8 +9,15 @@
  * @import widget/slider.js
  */
 (function( gmu, $ ) {
+    gmu.Slider.options.edgeThrottle = 0;
 
     gmu.Slider.register( 'dynamic', {
+        _init: function() {
+            var me = this;
+
+            // 当滑动结束后调整
+            me.on( 'slideend', me._adjustPos );
+        },
 
         _create: function() {
             var me = this,
@@ -38,6 +45,7 @@
         trigger: function( e, to, from ) {
 
             // 当触发slide的时候执行
+            // 用来记录这次滑动的方向和当前滑动的数据体
             if ( e === 'slide' || e.type === 'slide' ) {
                 this._active = this._pool[ to ];
                 this._dir = to - from > 0 ? 1 : -1;
@@ -52,6 +60,7 @@
                 return;
             }
 
+            // 检测是否需要调整同时标记一下，下次动画执行完后将调整
             this._adjustPos();
             this._flag = true;
 
@@ -64,12 +73,14 @@
                 return;
             }
 
+            // 检测是否需要调整同时标记一下，下次动画执行完后将调整
             this._adjustPos();
             this._flag = true;
 
             return this.origin.apply( this, arguments );
         },
 
+        // 调整位置，如果能移动的话，将当前的总是移动到中间。
         _adjustPos: function( force ) {
             
             if ( !force && !this._flag ) {
@@ -107,8 +118,9 @@
             }
 
             // 到达边缘
-            if ( index === 0 || index === length - 1 ) {
-                me.trigger( 'edge', index === 0, me._active );
+            if ( index === opts.edgeThrottle || index ===
+                    length - opts.edgeThrottle - 1 ) {
+                me.trigger( 'edge', index === opts.edgeThrottle, me._active );
             }
 
             me._flag = false;
