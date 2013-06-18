@@ -13,6 +13,8 @@ module.exports = function(grunt) {
     // Nodejs libs.
     var path = require('path');
 
+    var sprintf = require( './lib/sprintf.js' );
+
     // External lib.
     var phantomjs = require('grunt-lib-phantomjs').init(grunt);
 
@@ -49,6 +51,48 @@ module.exports = function(grunt) {
             grunt.log.writeln();
         }
     };
+
+    var outputRows = function(rows, wrap) {
+        var maxLen = [],
+            strs = [],
+            newvalue,
+            text,
+            str,
+            sep;
+
+        rows[0].forEach(function(cell, i) {
+            maxLen[i] = cell.length;
+        });
+
+        rows.forEach(function(row) {
+            row.forEach(function(cell, i) {
+                if (cell.length > maxLen[i]) {
+                    maxLen[i] = cell.length;
+                }
+            });
+        });
+
+        rows.forEach(function(row, i) {
+            sep = i === 0 ? '^' : '|';
+            str = sep + ' ';
+            row.forEach(function(cell, j) {
+                newvalue = wrap ? wrap( cell, i, j ) : cell;
+                text = sprintf('%-' + maxLen[j] + 's', cell);
+                if( newvalue !== cell ) {
+                    text = text.replace( cell, newvalue );
+                }
+
+                str += text + ' ' + sep + ' ';
+            });
+
+            strs.push(str);
+        });
+
+        grunt.log.writeln(strs.join('\n'));
+    }
+
+    var coverage;
+    var coverageRender = require('./lib/cov_render.js');
 
     // QUnit hooks.
     phantomjs.on('qunit.moduleStart', function(name) {
@@ -92,7 +136,7 @@ module.exports = function(grunt) {
         }
     });
 
-    phantomjs.on('qunit.done', function(failed, passed, total, duration) {
+    phantomjs.on('qunit.done', function(failed, passed, total, duration, covData) {
         phantomjs.halt();
         status.failed += failed;
         status.passed += passed;
@@ -107,6 +151,10 @@ module.exports = function(grunt) {
                 grunt.log.ok();
             }
         }
+    });
+
+    phantomjs.on('updateCoverage', function( data ) {
+        coverage = data;
     });
 
     // Built-in error handlers.
@@ -135,8 +183,8 @@ module.exports = function(grunt) {
                 timeout: 5000,
 
                 inject: asset('tasks/lib/bridge.js'),
+                phantomScript: asset('tasks/lib/phantom.js'),
 
-                // Explicit non-file URLs to test.
                 url: 'http://localhost:8000/test/fet/bin/run.php?case='
             });
 
@@ -147,6 +195,10 @@ module.exports = function(grunt) {
             total: 0,
             duration: 0
         };
+
+
+
+        coverage = null;
 
         this.files.forEach(function(f) {
 
@@ -165,7 +217,9 @@ module.exports = function(grunt) {
 
             // Process each filepath in-order.
             grunt.util.async.forEachSeries(files, function(module, next) {
-                var url = options.url + module.replace(/\.js$/i, '');
+                var url = options.url + module.replace(/\.js$/i, '' );
+
+                options.cov && (url += '&cov=true');
 
                 var basename = path.basename(url);
                 grunt.verbose.subhead( 'Testing ' + module + ' ' ).or.write('Testing ' + module + ' ' );
@@ -202,6 +256,20 @@ module.exports = function(grunt) {
                 } else {
                     grunt.verbose.writeln();
                     grunt.log.ok(status.total + ' assertions passed (' + status.duration + 'ms)');
+
+                    // output coverage;
+                    if ( coverage ) {
+                        grunt.log.writeln('\n覆盖率输出结果');
+                        outputRows( coverageRender(coverage), function( value, x, y) {
+                            if( x === 1 ) {
+                                return String(value).red;
+                            } else if( x===0 ) {
+                                return String(value).green;
+                            }
+
+                            return value;
+                        } );
+                    }
                 }
                 // All done!
                 done();

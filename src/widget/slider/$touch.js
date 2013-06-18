@@ -18,6 +18,16 @@
         delta,
         moved;
 
+    // 提供默认options
+    $.extend( gmu.Slider.options, {
+
+        // 是否阻止事件冒泡
+        stopPropagation: false,
+
+        // 是否阻止滚动
+        disableScroll: false
+    } );
+
 
     gmu.Slider.register( 'touch', {
         _init: function() {
@@ -27,7 +37,7 @@
                 // 绑定手势
                 this.getEl().on( 'touchstart.slider', this._handler );
                 
-                // 阻止误点击
+                // 阻止误点击, 犹豫touchmove被preventDefault了，导致长按也会触发click
                 this._container.on( 'click.slider', function() {
                     return !moved;
                 } );

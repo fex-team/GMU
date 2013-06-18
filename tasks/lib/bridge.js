@@ -1,52 +1,54 @@
 (function() {
+    var started;
+
     function sendMessage() {
-        var args = [].slice.call(arguments);
-        alert(JSON.stringify(args));
+        var args = [].slice.call( arguments );
+        alert( JSON.stringify( args ) );
     }
 
-    function override( name, fn ) {
+    function hook( name, fn ) {
         var target = QUnit,
             old = target[ name ];
 
         target[ name ] = function() {
             var ret = old.apply( this, arguments );
 
-            fn.apply( {ret: ret}, arguments );
-
+            fn.apply( null, arguments );
             return ret;
         }
     }
 
-    var started;
+    hook( 'moduleStart', function( name ) {
+        sendMessage( 'qunit.moduleStart', name );
+    } );
 
-    // init,module,asyncTest,test,expect,ok,equal,notEqual,deepEqual,notDeepEqual,strictEqual,notStrictEqual,start,stop,reset,triggerEvent,is,done,log,testStart,testDone,moduleStart,moduleDone,equals,same,isLocal,equiv,jsDump
+    hook( 'moduleDone', function( name ) {
+        sendMessage( 'qunit.moduleDone', name );
+    } );
 
+    hook( 'testStart', function( name ) {
+        sendMessage( 'qunit.testStart', name );
+    } );
 
-    override( 'moduleStart', function( name ) {
-        sendMessage( "qunit.moduleStart", name );
-    });
+    hook( 'testDone', function( testName, bad ) {
+        sendMessage( 'qunit.testDone', testName, bad );
+    } );
 
-    override( 'moduleDone', function( name ) {
-        sendMessage( "qunit.moduleDone", name );
-    });
-
-    override( 'testStart', function( name ) {
-        sendMessage( "qunit.testStart", name );
-    });
-
-    override( 'testDone', function( testName, bad ) {
-        sendMessage( "qunit.testDone", testName, bad );
-    });
-
-    override( 'start', function() {
+    hook( 'start', function() {
         started = +new Date;
+    } );
+
+    hook( 'done', function( failures, total, detail ) {
+        var coverage = window.__coverage__;
+
+        if ( coverage ) {
+            sendMessage( 'updateCoverage', coverage );
+        }
+
+        sendMessage( 'qunit.done', failures, total - failures, total, +new Date - started );
     });
 
-    override( 'done', function( failures, total, detail ) {
-        sendMessage( "qunit.done", failures, total - failures, total, +new Date - started );
-    });
-
-    override( 'log', function( result, message ) {
+    hook( 'log', function( result, message ) {
         var actual, expected;
 
         if ( !result && /^(.*?),\s*expected:(.*?)result:(.*?)$/i.test(message) ) {
@@ -55,8 +57,6 @@
             message = RegExp.$1;
         }
 
-        // to do
-        sendMessage( "qunit.log", result, actual, expected, message, '' );
+        sendMessage( 'qunit.log', result, actual, expected, message, '' );
     });
-
 })();

@@ -3,7 +3,7 @@
  * @name Slider
  * @desc <qrcode align="right" title="Live Demo">../gmu/examples/widget/slider/slider.html</qrcode>
  * 图片轮播组件
- * @import extend/touch.js, extend/event.ortchange.js, extend/parseTpl.js, core/widget.js
+ * @import extend/touch.js, extend/event.ortchange.js, core/widget.js
  */
 (function( gmu, $, undefined ) {
     var cssPrefix = $.fx.cssPrefix,
@@ -19,9 +19,6 @@
 
             // 是否连续滑动
             loop: false,
-
-            // 是否阻止事件冒泡
-            stopPropagation: false,
             
             // 动画执行速度
             speed: 400,
@@ -42,22 +39,17 @@
                     '</div>'
         },
 
-        tpl2html: function( subpart, data ) {
-            var tpl = this.template;
-
-            tpl =  typeof subpart === 'string' ? tpl[ subpart ] :
-                    ((data = subpart), subpart);
-            
-            return data ? $.parseTpl( tpl, data ) : tpl;
-        },
-
         _create: function() {
             var me = this,
                 $el = me.getEl(),
                 opts = me._options;
 
             me.index = opts.index;
+
+            // 初始dom结构
             me._initDom( $el, opts );
+
+            // 更新width
             me._initWidth( $el, me.index );
             me._container.on( transitionEnd + '.slider',
                     $.proxy( me._tansitionEnd, me ) );
@@ -83,7 +75,15 @@
 
                 // 如果没有传入content, 则将root的孩子作为可滚动item
                 if ( !opts.content ) {
-                    container.append( $el.children() );
+
+                    // 特殊处理直接用ul初始化slider的case
+                    if ( $el.is( 'ul' ) ) {
+                        this.$el = container.insertAfter( $el );
+                        container = $el;
+                        $el = this.$el;
+                    } else {
+                        container.append( $el.children() );
+                    }
                 } else {
                     this._createItems( container, opts.content );
                 }
@@ -110,10 +110,9 @@
                     .toArray();
 
             this.trigger( 'done.dom', $el.addClass( 'ui-slider' ), opts );
-            return this;
         },
 
-        // 根据opts.content里面的数据挨个render插入到container中
+        // 根据items里面的数据挨个render插入到container中
         _createItems: function( container, items ) {
             var i = 0,
                 len = items.length;
@@ -128,13 +127,12 @@
 
             // width没有变化不需要重排
             if ( !force && (width = $el.width()) === this.width ) {
-                return this;
+                return;
             }
 
             this.width = width;
             this._arrange( width, index );
             this.height = $el.height();
-            return this;
         },
 
         // 重排items
@@ -143,6 +141,7 @@
                 i = 0,
                 item,
                 len;
+
             this._slidePos = new Array( items.length );
 
             for ( len = items.length; i < len; i++ ) {
@@ -187,17 +186,19 @@
         },
 
         _circle: function( index, arr ) {
-            arr = arr || this._items;
+            var len;
 
-            // <<4 用来实现 x 16 的效果，减少返回值是负值的可能
-            return ((arr.length << 4) + index) % arr.length;
+            arr = arr || this._items;
+            len = arr.length;
+
+            return (index % len + len) % arr.length;
         },
 
         _tansitionEnd: function( e ) {
 
             // ~~用来类型转换，等价于parseInt( str, 10 );
             if ( ~~e.target.getAttribute( 'data-index' ) !== this.index ) {
-                return false;
+                return;
             }
             
             this.trigger( 'slideend', this.index );
@@ -258,6 +259,10 @@
             }
 
             return this;
+        },
+
+        getIndex: function() {
+            return this.index;
         },
 
         destroy: function() {
