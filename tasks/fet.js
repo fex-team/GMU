@@ -183,7 +183,7 @@ module.exports = function(grunt) {
                 inject: asset('tasks/lib/bridge.js'),
                 phantomScript: asset('tasks/lib/phantom.js'),
 
-                url: 'http://localhost:8000/test/fet/bin/run.php?case='
+                url: 'http://localhost/GMU/test/fet/bin/run.php?case='
             });
 
         tempfile = options.cov && new Tempfile();

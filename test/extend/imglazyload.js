@@ -151,7 +151,7 @@ test("scroll:图片进入可视区能正确加载 & startLoad", function(){
 
 test("iscroll:初始状态图片在iscroll wrapper区域内能正确加载", function(){
     stop();
-    ua.importsrc('core/iscroll', function(){
+    ua.importsrc('extend/iscroll', function(){
         var viewImages = [],
             $scroller = $('#container'),
             itemH = $('p').height() + $('.ui-imglazyload').height(),
@@ -182,7 +182,7 @@ test("iscroll:初始状态图片在iscroll wrapper区域内能正确加载", fun
 
 test("iscroll:滚动过程中在iscroll wrapper区域内能正确加载", function(){
     stop();
-    ua.importsrc('core/iscroll', function(){
+    ua.importsrc('extend/iscroll', function(){
         var viewImages = [],
             $scroller = $('#container'),
             itemH = $('p').height() + $('.ui-imglazyload').height(),
