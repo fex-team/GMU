@@ -115,39 +115,20 @@ GMU由百度GMU小组开发，基于开源BSD协议，支持商业和非商业�
 1. 2.0.3，基于[zepto 1.0rc1](http://zeptojs.com/)开发，包括14个通用UI组件及各组件相关插件   **latest version**
 
 ###命令行工具###
-命令行工具提供代码打包，[规范](https://github.com/gmuteam/jsbint/blob/master/standard.md)检测和生成文档功能。命令行工具基于node环境开发，所以需要自行安装node工具。
+命令行工具提供代码打包，[规范](https://github.com/gmuteam/jsbint/blob/master/standard.md)检测和生成文档功能。命令行工具基于grunt环境，请安装grunt-cli `npm install -g grunt-cli`
 
-在使用前需要安装依赖，`npm install`，然后通过`node build`来查看任务
-
-    Usage: build [options] [command]
-
-      Commands:
-
-        dist                   合并代码并采用uglify压缩代码
-        doc                    生成静态API文档
-        fis                    生成fis包
-        jshint                 规范检测工具
-
-      Options:
-
-        -h, --help                output usage information
-        -s, --silent              安静模式，不输出任何调试信息
-        -X, --exclude <files...>  在打包GMU的时候，用来过滤部分文件。
-        -t, --theme <name>        在打包GMU的时候，用来指定打包什么主题。
+在使用前需要安装依赖，`npm install`
 
 ####1. 打包代码####
-* `node build dist` 合并并压缩zepto/gmu所有代码
-* `node build dist widget/button.js` 只打包button组件
-* `node build dist core/**.js -X "core/iscroll.js"` 打包所有core的js，排除iscroll文件
+`grunt`
 
 ####2. 代码规范检测####
 gmu所有的代码要求通过[此内定代码规范](https://github.com/gmuteam/jsbint/blob/master/standard.md), 通过以下命令可以得到检测结果
-* `node build jshint` 检测所有src下js代码，将结果打印在控制台
-* `node build jshint src/widget/button.js` 只检测button.js文件
+`grunt jsbint`
 
 ####3. 生成文档####
 通过以下命令可以在doc目录下生成静态文档，也可以[在线查看](http://gmu.baidu.com/doc);
-* `node build doc`
+`grunt doc`
 
 
 ###反馈bug###

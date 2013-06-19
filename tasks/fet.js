@@ -15,6 +15,8 @@ module.exports = function(grunt) {
 
     var sprintf = require( './lib/sprintf.js' );
 
+    var Tempfile = require('temporary/lib/file');
+
     // External lib.
     var phantomjs = require('grunt-lib-phantomjs').init(grunt);
 
@@ -91,6 +93,10 @@ module.exports = function(grunt) {
         grunt.log.writeln(strs.join('\n'));
     }
 
+    var tempfile;
+
+    var coverageRender = require('./lib/cov_render.js');
+
     // QUnit hooks.
     phantomjs.on('qunit.moduleStart', function(name) {
         unfinished[name] = true;
@@ -148,18 +154,6 @@ module.exports = function(grunt) {
                 grunt.log.ok();
             }
         }
-        if ( covData ) {
-            grunt.log.writeln('覆盖率输出结果');
-            outputRows( covData, function( value, x, y) {
-                if( x === 1 ) {
-                    return String(value).red;
-                } else if( x===0 ) {
-                    return String(value).green;
-                }
-
-                return value;
-            } );
-        }
     });
 
     // Built-in error handlers.
@@ -179,8 +173,7 @@ module.exports = function(grunt) {
     // Pass-through console.log statements.
     phantomjs.on('console', console.log.bind(console));
 
-    grunt.registerMultiTask("qunit", "Testing...", function() {
-
+    grunt.registerMultiTask("fet", "Testing...", function() {
         var done = this.async(),
             options = this.options({
 
@@ -188,9 +181,13 @@ module.exports = function(grunt) {
                 timeout: 5000,
 
                 inject: asset('tasks/lib/bridge.js'),
+                phantomScript: asset('tasks/lib/phantom.js'),
 
                 url: 'http://localhost:8000/test/fet/bin/run.php?case='
             });
+
+        tempfile = options.cov && new Tempfile();
+        options.coverageFile = tempfile && tempfile.path;
 
         // Reset status.
         status = {
@@ -247,6 +244,7 @@ module.exports = function(grunt) {
             // All tests have been run.
 
             function() {
+                var coverage;
                 // Log results.
                 if (status.failed > 0) {
                     grunt.warn(status.failed + '/' + status.total + ' assertions failed (' +
@@ -256,8 +254,24 @@ module.exports = function(grunt) {
                 } else {
                     grunt.verbose.writeln();
                     grunt.log.ok(status.total + ' assertions passed (' + status.duration + 'ms)');
+
+                    // output coverage;
+                    if ( options.cov && (coverage = grunt.file.read(tempfile.path)) ) {
+                        coverage = JSON.parse( coverage );
+                        grunt.log.writeln('\n覆盖率输出结果');
+                        outputRows( coverageRender(coverage), function( value, x, y) {
+                            if( x === 1 ) {
+                                return String(value).red;
+                            } else if( x===0 ) {
+                                return String(value).green;
+                            }
+
+                            return value;
+                        } );
+                    }
                 }
                 // All done!
+                tempfile && tempfile.unlink();
                 done();
             });
         });
