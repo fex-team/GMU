@@ -6,11 +6,6 @@
 	background-color:#fff;
 }
 
-.ui-suggestion .ui-suggestion-content{
-    min-height: 33px;
-    max-height: 66px;
-}
-
 .ui-suggestion ul{
 	list-style: none;
 	background: #fff;
