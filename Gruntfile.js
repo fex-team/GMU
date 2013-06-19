@@ -126,7 +126,7 @@ module.exports = function(grunt) {
 
             core: {
                 cwd: 'test/',
-                src: 'core/*.js'
+                src: 'core/widget.js'
             }
         },
 
