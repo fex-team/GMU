@@ -110,7 +110,7 @@ module.exports = function(grunt) {
 
         qunit: {
             options: {
-                url: 'http://localhost/gmu/test/fet/bin/run.php?case=',
+                url: 'http://localhost/GMU/test/fet/bin/run.php?case=',
                 cov: true
             },
             
