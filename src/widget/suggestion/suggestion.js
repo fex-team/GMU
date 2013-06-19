@@ -177,7 +177,7 @@
                 me.$wrapper.off( ns ).remove();
                 me.$mask.off( ns ).replaceWith( me.getEl() );
                 opts.autoClose && $( document ).off( ns );
-            }).trigger( 'compatdata' );    // 兼容老的历史数据
+            });    // 兼容老的历史数据
 
             return me;
         },
