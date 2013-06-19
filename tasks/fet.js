@@ -173,7 +173,7 @@ module.exports = function(grunt) {
     // Pass-through console.log statements.
     phantomjs.on('console', console.log.bind(console));
 
-    grunt.registerMultiTask("qunit", "Testing...", function() {
+    grunt.registerMultiTask("fet", "Testing...", function() {
         var done = this.async(),
             options = this.options({
 
