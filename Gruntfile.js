@@ -119,14 +119,9 @@ module.exports = function(grunt) {
                 src: [ '**/*.js', '!fet/**/*.js', '!mindmap/**/*.js' ]
             },
 
-            slider: {
+            temp: {
                 cwd: 'test/',
-                src: 'widget/slider/*.js'
-            },
-
-            core: {
-                cwd: 'test/',
-                src: 'core/widget.js'
+                src: ['core/*.js', 'widget/slider/*.js']
             }
         },
 
@@ -164,7 +159,7 @@ module.exports = function(grunt) {
             'concat_gmu', 'uglify', 'smart_cov', 'qunit:all'] );
 
     grunt.registerTask( 'test', [ 'update_submodules', 'concat', 'concat_gmu',
-            'smart_cov', 'qunit:core' ]);
+            'smart_cov', 'qunit:temp' ]);
 
     grunt.registerTask( 'download', ['testDownload'] );
 
