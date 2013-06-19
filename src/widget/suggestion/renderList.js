@@ -17,7 +17,7 @@
      * @callback 列表渲染完成后的回调函数
      * */
 
-    $.extend( gmu.suggestion.options, {
+    $.extend( gmu.Suggestion.options, {
 
         // 是否使用+来使sug item进入input框
         usePlus: false,
@@ -26,17 +26,18 @@
         listCount: 5,
 
         // 自定义渲染列表函数，可以覆盖默认渲染列表的方法
-        renderList: null
+        renderlist: null
     } );
 
-    gmu.suggestion.option( 'renderList', function() {
+    gmu.Suggestion.option( 'renderlist', function() {
 
         // 当renderList不是Function类型时，该option操作生效
-        return $.type( this._options.renderList ) !== 'function';
+        return $.type( this._options.renderlist ) !== 'function';
 
     }, function() {
 
         var me = this,
+            $xssElem = $( '<div></div>'),
 
             // 渲染sug list列表，返回list array
             _createList = function( query, sugs ) {
@@ -55,7 +56,7 @@
                 sugs = sugs.slice( 0, opts.listCount );
 
                 // 防止xss注入，通过text()方法转换一下
-                query = $( '<div></div>' ).text( query || '' ).html();
+                query = $xssElem.text( query || '' ).html();
 
                 // sug列表渲染比较频繁，故不采用模板来解析
                 for ( i = 0, len = sugs.length; i < len; i++ ) {
@@ -74,13 +75,22 @@
 
                 return html;
             },
+            eventHandler,
+            $form,
             ns;
 
         me.on( 'ready', function() {
             ns = me.ns;
+            $form = $( me._options.form || me.getEl().closest( 'form' ) );
+            eventHandler = $.proxy( me._eventHandler, me );
 
             // 扩展sug事件
             $.extend( me.eventMap, {
+
+                submit: function() {
+                    this._options.isHistory &&
+                    this._localStorage( this.value() ).trigger( 'submit' );
+                },
 
                 touchstart: function( e ) {
 
@@ -110,17 +120,25 @@
                 }
             } );
 
+            // 绑定form的submit事件
+            $form.size() && (me.$form = $form
+                .on( 'submit' + ns, eventHandler ));
+
             // 注册tap事件由于中文输入法时，touch事件不能submit
             this.$content.on( 'touchstart' + ns + ' tap' + ns,
-                    $.proxy( me._eventHandler, me ) )
-                    .find( 'li' ).highlight( 'ui-suggestion-highlight' );
+                    eventHandler).find( 'li' )
+                    .highlight( 'ui-suggestion-highlight' );
+
+            me.on( 'destroy', function() {
+                $form.size() && $form.off( ns );
+            } );
         } );
 
-        me.on( 'renderList', function( e, data, query, callback ) {
+        me.on( 'renderlist', function( e, data, query, callback ) {
             var ret = _createList( query, data );
 
             // 回调渲染suglist
-            return callback.call( this, ret.length ?
+            return callback( ret.length ?
                         '<ul>' + ret.join( ' ' ) + '</ul>' : '' );
         } );
     } );

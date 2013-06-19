@@ -7,7 +7,7 @@
  */
 (function( gmu, $ ) {
 
-    gmu.suggestion.register( 'iscroll', {
+    gmu.Suggestion.register( 'iscroll', {
 
         _init: function() {
             var me = this;

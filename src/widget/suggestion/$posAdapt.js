@@ -8,7 +8,7 @@
 (function( $, win ) {
     var reverse = Array.prototype.reverse;
 
-    gmu.suggestion.register( 'posAdapt', {
+    gmu.Suggestion.register( 'posAdapt', {
 
         _checkPos: function() {
             var sugH = this._options.height || 66,
@@ -29,6 +29,7 @@
                         $list.children() : $list;
 
                 reverse.call( $list );    // sug list反转
+                $list.appendTo(me.$content);
                 me.$btn.prependTo( me.$wrapper );    // 调整按钮位置
             }
 

@@ -3,7 +3,7 @@
  * @name Suggestion
  * @desc <qrcode align="right" title="Live Demo">../gmu/examples/widget/suggestion/suggestion_setup.html</qrcode>
  * 搜索建议组件
- * @import core/touch.js
+ * @import extend/touch.js, extend/parseTpl.js
  */
 (function( $, win ) {
 
@@ -60,13 +60,10 @@
 
     var guid = 0;
 
-    gmu.define( 'suggestion', {
+    gmu.define( 'Suggestion', {
 
         // 默认options
         options: {
-
-            // 发送请求返回数据后是否缓存query请求结果
-            isCache: true,
 
             // 是否在localstorage中存储用户查询记录，相当于2.0.5以前版本中的isStorage
             isHistory: true,
@@ -77,17 +74,22 @@
             historyShare: true,
 
             // 点击外边空白区域是否关闭sug
-            autoClose: false,
+            autoClose: false
+        },
 
-            // 是否兼容1.x版本中的历史数据，默认为false
-            compatData: false
+        template: {
+
+            // wrapper中content, button, clear, close这几个div必须有，其他的可以更改
+            wrapper: '<div id="ui-suggestion-' + (guid++) +
+                '" class="ui-suggestion">' +
+                '<div class="ui-suggestion-content"></div>' +
+                '<div class="ui-suggestion-button">' +
+                '<span class="ui-suggestion-clear">清除历史记录</span>' +
+                '<span class="ui-suggestion-close">关闭</span>' +
+                '</div></div>'
         },
 
         eventMap: {
-            submit: function() {
-                this._options.isHistory &&
-                        this._localStorage( this.value() ).trigger( 'submit' );
-            },
 
             focus: function() {
 
@@ -113,7 +115,6 @@
                     me.getEl().blur();
                     me.hide().trigger( 'close' );
                 }
-
             }
         },
 
@@ -125,15 +126,8 @@
             $input.wrap( me.$mask = $parent.length ?
                     $parent : $( '<div class="ui-suggestion-mask"></div>' ) );
 
-            // 考虑到不涉及到动态渲染数据，故没有采用template
-            me.$mask.append(
-                    '<div id="ui-suggestion-' + (guid++) +
-                    '" class="ui-suggestion">' +
-                    '<div class="ui-suggestion-content"></div>' +
-                    '<div class="ui-suggestion-button">' +
-                    '<span class="ui-suggestion-clear">清除历史记录</span>' +
-                    '<span class="ui-suggestion-close">关闭</span>' +
-                    '</div></div>' );
+            // 考采用template的wrapper项渲染列表
+            me.$mask.append( me.tpl2html( 'wrapper' ) );
 
             me.$wrapper = me.$mask.find( '.ui-suggestion' );
             me.$content = me.$wrapper
@@ -145,13 +139,12 @@
             me.$clearBtn = me.$btn.find( '.ui-suggestion-clear' );
             me.$closeBtn = me.$btn.find( '.ui-suggestion-close' );
 
-            return me.trigger('initDom');
+            return me.trigger('initdom');
         },
 
         _create: function() {
             var me = this,
                 opts = me._options,
-                $form = $( opts.form || me.getEl().closest( 'form' ) ),
                 hs = opts.historyShare,
                 ns = me.ns = '.suggestion',
                 eventHandler = $.proxy( me._eventHandler, me );
@@ -161,13 +154,11 @@
             // 若传string，则在此基础上加上'SUG-Sharing-History'
             me.key = hs ?
                     (($.type( hs ) === 'boolean' ? '' : hs + '-') +
-                    'SUG-Sharing-History') : me.getEl().attr( 'id' );
+                    'SUG-Sharing-History') :
+                    me.getEl().attr( 'id' ) || ('ui-suggestion-' + (guid++));
 
-            me.splitor = encodeURIComponent( ',' );    // localStorage中数据分隔符
+            me.separator = encodeURIComponent( ',' );    // localStorage中数据分隔符
             opts.isCache && (me.cacheData = {});
-
-            $form.size() && (me.$form = $form
-                    .on( 'submit' + ns, eventHandler ));
 
             opts.autoClose && $( document ).on( 'tap' + ns, function( e ) {
 
@@ -181,13 +172,12 @@
             me.$btn.on( 'click' + ns, eventHandler );
 
             me.on( 'destroy', function() {
-                $form.size() && $form.off( ns );
                 me.getEl().off( ns );
                 me.$wrapper.children().off( ns ).remove();
                 me.$wrapper.off( ns ).remove();
                 me.$mask.off( ns ).replaceWith( me.getEl() );
                 opts.autoClose && $( document ).off( ns );
-            } );
+            }).trigger( 'compatdata' );    // 兼容老的历史数据
 
             return me;
         },
@@ -204,20 +194,19 @@
             if ( query ) {
 
                 // 当query不为空，即input或focus时,input有值
-                // 用户自己发送请求或直接本地数据处理，可以在sendRequest中处理
-                // sendRequest中形参：
+                // 用户自己发送请求或直接本地数据处理，可以在sendrequest中处理
+                // sendrequest中形参：
                 // @query 用户输入查询串
                 // @render 数据请求完成后的渲染回调函数，其参数为query,data
                 // @cacheData 缓存query的回调函数，其参数为query, data
-                (data = me._cacheData( query )) ? me._render( query, data ) :
-                        me.trigger( 'sendRequest',
-                        query, me._render, me._cacheData );
+                me.trigger( 'sendrequest', query, $.proxy( me._render, me ),
+                        $.proxy( me._cacheData, me ));
 
             } else {
 
                 // query为空，即刚开始focus时，读取localstorage中的数据渲染
                 (data = me._localStorage()) ?
-                        me._render( query, data.split( me.splitor ) ) :
+                        me._render( query, data.split( me.separator ) ) :
                         me.hide();
             }
 
@@ -230,7 +219,7 @@
             // @data 渲染的数据，为Array
             // @query 用户输入的查询串
             // @fillWrapper 列表渲染完成后的回调函数，参数为listHtml片段
-            this.trigger( 'renderList', data, query, this._fillWrapper );
+            this.trigger( 'renderlist', data, query, $.proxy( this._fillWrapper, this ) );
         },
 
         /**
@@ -249,20 +238,17 @@
         },
 
         _eventHandler: function( e ) {
-            this.eventMap[ e.type.split( '.' )[ 0 ] ].call( this, e );
+            this.eventMap[ e.type ].call( this, e );
         },
 
         _localStorage: function( value ) {
             var me = this,
                 key = me.key,
-                splitor = me.splitor,
+                separator = me.separator,
                 localStorage,
                 data;
 
             try {
-
-                // 老的history数据兼容处理
-                me._options.compatData && me.trigger( 'compatData' );
 
                 localStorage = win.localStorage;
 
@@ -274,18 +260,20 @@
 
                 } else if ( value ) {    // setter
                     data = localStorage[ key ] ?
-                            localStorage[ key ].split( splitor ) : [];
+                            localStorage[ key ].split( separator ) : [];
 
                     // 数据去重处理
                     // todo 对于兼容老格式的数据中有一项会带有\u001e，暂未做判断
                     if ( !~$.inArray( value, data ) ) {
                         data.unshift( value );
-                        localStorage[ key ] = data.join( splitor );
+                        localStorage[ key ] = data.join( separator );
                     }
                 }
+
             } catch ( ex ) {
                 console.log( ex.message );
             }
+
             return me;
         },
 

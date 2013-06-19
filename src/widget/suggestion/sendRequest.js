@@ -18,7 +18,10 @@
     * @cacheData 缓存query list的回调方法
     * */
 
-    $.extend( gmu.suggestion.options, {
+    $.extend( gmu.Suggestion.options, {
+
+        // 发送请求返回数据后是否缓存query请求结果
+        isCache: true,
 
         // 发送请求时query的key值
         queryKey: 'wd',
@@ -27,26 +30,35 @@
         cbKey: 'cb',
 
         // 自定义发送请求函数，可以覆盖默认发送请求的方法
-        sendRequest: null
+        sendrequest: null
     } );
 
-    gmu.suggestion.option( 'sendRequest', function() {
+    gmu.Suggestion.option( 'sendRequest', function() {
 
         // 当sendRequest不是Function类型时，该option操作生效
         return $.type( this._options.sendRequest ) !== 'function';
 
     }, function() {
 
-        this.on( 'sendRequest', function( e, query, callback, cacheData ) {
+        this.on( 'sendrequest', function( e, query, callback, cacheData ) {
             var me = this,
                 opts = me._options,
                 url = opts.source,
                 param = opts.param,
 
                 // 以date作为后缀，应该不会重复，故不作origin
-                cb = 'suggestion_' + (+new Date());
+                cb = 'suggestion_' + (+new Date()),
+                cdata;
 
             if ( query ) {
+
+                // 若缓存中存数请求的query数据，则不发送请求
+                if ( opts.isCache && (cdata = cacheData( query )) ) {
+                    callback( query, cdata );
+                    return me;
+                }
+
+                // 替换url后第一个参数的连接符?&或&为?
                 url = (url + '&' + opts.queryKey + '=' +
                         encodeURIComponent( query ))
                         .replace( /[&?]{1,2}/, '?' );
@@ -68,10 +80,10 @@
                     *     "android", "angel beats!", "a pink", "app"]
                     * }
                     */
-                    callback.call( me, query, data.s );
+                    callback( query, data.s );
 
                     // 缓存请求的query
-                    cacheData.call( me, query, data.s );
+                    cacheData( query, data.s );
 
                     delete window[ cb ];
                 };

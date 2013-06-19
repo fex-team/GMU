@@ -8,11 +8,12 @@
  */
 (function( $, win ) {
 
-    gmu.suggestion.options.compatData = true;
+    // 是否兼容1.x版本中的历史数据
+    gmu.Suggestion.options.compatData = true;
 
-    gmu.suggestion.option( 'compatData', true, function() {
+    gmu.Suggestion.option( 'compatdata', true, function() {
 
-        this.on( 'compatData.suggestion', function() {
+        this.on( 'compatData', function() {
             var key = this.key,
                 localdata = win.localStorage[ key ],
                 dataArr;
