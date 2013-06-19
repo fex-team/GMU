@@ -164,7 +164,7 @@ module.exports = function(grunt) {
             'concat_gmu', 'uglify', 'smart_cov', 'qunit:all'] );
 
     grunt.registerTask( 'test', [ 'update_submodules', 'concat', 'concat_gmu',
-            'smart_cov', 'qunit:all' ]);
+            'smart_cov', 'qunit:core' ]);
 
     grunt.registerTask( 'download', ['testDownload'] );
 
