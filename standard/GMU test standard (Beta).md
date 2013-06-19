@@ -12,12 +12,12 @@ GMU测试标准根据百度全网的移动设备和浏览器统计数据制定�
 其中，设备、浏览器、分辨率按照占比分为A级和B级两部分，A级原则上需要全部测试通过，B级保证不影响页面功能的使用。
 
 ## 移动设备（操作系统）
-A级：IOS6.*、IOS5.*、IOS4.3、Android2.3、Android4.0、Android4.1、Android2.2
-B级：IOS4.1、IOS4.2、Android2.1、Android3.2
+A级：IOS6.*、Android2.3、Android4.0
+B级：Android4.1、IOS5.*、IOS4.3、IOS4.1、IOS4.2、Android2.2、Android2.1、Android3.2
 
 ## 浏览器
-A级：UC8.*以上版本、Android默认浏览器、ISO默认浏览器、QQ浏览器、百度浏览器、360浏览器、Chrome浏览器
-B级：其他浏览器
+A级：Android默认浏览器、ISO默认浏览器、UC8.*以上版本、QQ浏览器
+B级：百度浏览器、360浏览器、Chrome浏览器、其他浏览器
 
 ## 分辨率
 A级：320x480、480x800、800x1280、360x640
