@@ -108,7 +108,7 @@ module.exports = function(grunt) {
             }
         },
 
-        qunit: {
+        fet: {
             options: {
                 url: 'http://localhost/GMU/test/fet/bin/run.php?case=',
                 cov: true
@@ -156,10 +156,10 @@ module.exports = function(grunt) {
 
     // Default task(s).
     grunt.registerTask( 'default', [ 'jsbint:all', 'update_submodules', 'concat',
-            'concat_gmu', 'uglify', 'smart_cov', 'qunit:all'] );
+            'concat_gmu', 'uglify', 'smart_cov', 'fet:all'] );
 
     grunt.registerTask( 'test', [ 'update_submodules', 'concat', 'concat_gmu',
-            'smart_cov', 'qunit:temp' ]);
+            'smart_cov', 'fet:temp' ]);
 
     grunt.registerTask( 'download', ['testDownload'] );
 

@@ -6,7 +6,7 @@
  * ../gmu/_examples/widget/slider/slider_dynamic.html</qrcode>
  * 此插件扩充slider， 让内容可以动态修改，在这种模式下，dom个数跟items的个数无关，
  * 永远是3个div轮换，对于图片集比较多的图片轮播，采用这种方式。
- * @import widget/slider.js
+ * @import widget/slider/slider.js
  */
 (function( gmu, $ ) {
     gmu.Slider.options.edgeThrottle = 0;
@@ -24,7 +24,7 @@
                 opts = me._options,
                 group;
 
-            if ( opts.content.length < 3 ) {
+            if ( !opts.content || opts.content.length < 3 ) {
                 throw new Error( '以动态模式使用slider，至少需要传入3组数据' );
             }
 
@@ -34,7 +34,7 @@
             me._content = opts.content.concat();
 
             group = $( '<div class="ui-slider-group"></div>' );
-            me._renderItems( me._content, opts.index, group, opts );
+            me._renderItems( me._content, opts.index, group );
             group.appendTo( me.getEl() );
             opts.index = me.index;
 
@@ -67,9 +67,10 @@
             return this.origin( e );
         },
 
-        slideTo: function( to ) {
-
-            if ( this.index === to || this.index === this._circle( to ) ) {
+        slideTo: function( to, speed ) {
+            var index = this.index;
+            
+            if ( index === to || index === this._circle( to ) ) {
                 return;
             }
 
@@ -77,6 +78,16 @@
             this._adjustPos();
             this._flag = true;
 
+            return this.origin( to - index +  this.index, speed );
+        },
+
+        next: function() {
+            this._adjustPos();
+            return this.origin.apply( this, arguments );
+        },
+
+        prev: function() {
+            this._adjustPos();
             return this.origin.apply( this, arguments );
         },
 

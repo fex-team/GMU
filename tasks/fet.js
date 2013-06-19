@@ -15,6 +15,8 @@ module.exports = function(grunt) {
 
     var sprintf = require( './lib/sprintf.js' );
 
+    var Tempfile = require('temporary/lib/file');
+
     // External lib.
     var phantomjs = require('grunt-lib-phantomjs').init(grunt);
 
@@ -91,7 +93,8 @@ module.exports = function(grunt) {
         grunt.log.writeln(strs.join('\n'));
     }
 
-    var coverage;
+    var tempfile;
+
     var coverageRender = require('./lib/cov_render.js');
 
     // QUnit hooks.
@@ -153,10 +156,6 @@ module.exports = function(grunt) {
         }
     });
 
-    phantomjs.on('updateCoverage', function( data ) {
-        coverage = data;
-    });
-
     // Built-in error handlers.
     phantomjs.on('fail.load', function(url) {
         phantomjs.halt();
@@ -174,8 +173,7 @@ module.exports = function(grunt) {
     // Pass-through console.log statements.
     phantomjs.on('console', console.log.bind(console));
 
-    grunt.registerMultiTask("qunit", "Testing...", function() {
-
+    grunt.registerMultiTask("fet", "Testing...", function() {
         var done = this.async(),
             options = this.options({
 
@@ -188,6 +186,9 @@ module.exports = function(grunt) {
                 url: 'http://localhost/GMU/test/fet/bin/run.php?case='
             });
 
+        tempfile = options.cov && new Tempfile();
+        options.coverageFile = tempfile && tempfile.path;
+
         // Reset status.
         status = {
             failed: 0,
@@ -195,10 +196,6 @@ module.exports = function(grunt) {
             total: 0,
             duration: 0
         };
-
-
-
-        coverage = null;
 
         this.files.forEach(function(f) {
 
@@ -247,6 +244,7 @@ module.exports = function(grunt) {
             // All tests have been run.
 
             function() {
+                var coverage;
                 // Log results.
                 if (status.failed > 0) {
                     grunt.warn(status.failed + '/' + status.total + ' assertions failed (' +
@@ -258,7 +256,8 @@ module.exports = function(grunt) {
                     grunt.log.ok(status.total + ' assertions passed (' + status.duration + 'ms)');
 
                     // output coverage;
-                    if ( coverage ) {
+                    if ( options.cov && (coverage = grunt.file.read(tempfile.path)) ) {
+                        coverage = JSON.parse( coverage );
                         grunt.log.writeln('\n覆盖率输出结果');
                         outputRows( coverageRender(coverage), function( value, x, y) {
                             if( x === 1 ) {
@@ -272,6 +271,7 @@ module.exports = function(grunt) {
                     }
                 }
                 // All done!
+                tempfile && tempfile.unlink();
                 done();
             });
         });
