@@ -132,7 +132,7 @@ module.exports = function(grunt) {
                 grunt.log.error();
                 logFailedAssertions();
             } else {
-                grunt.log.write('F'.red);
+                grunt.log.write('X'.red);
             }
         } else {
             grunt.verbose.ok().or.write('.');
@@ -162,6 +162,12 @@ module.exports = function(grunt) {
         grunt.verbose.write('Running PhantomJS...').or.write('...');
         grunt.log.error();
         grunt.warn('PhantomJS unable to load "' + url + '" URI.');
+    });
+
+    // Re-broadcast qunit events on grunt.event.
+    phantomjs.on('qunit.*', function() {
+        var args = [this.event].concat(grunt.util.toArray(arguments));
+        grunt.event.emit.apply(grunt.event, args);
     });
 
     phantomjs.on('fail.timeout', function() {
