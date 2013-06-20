@@ -42,7 +42,7 @@
 
             if ( !dots.length ) {
                 dots = this.tpl2html( 'dots', {
-                    len: this.length    
+                    len: this.length
                 } );
                 
                 dots = $( dots ).appendTo( $el );
