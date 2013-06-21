@@ -3,7 +3,7 @@
  * @name Button
  * @desc <qrcode align="right" title="Live Demo">../gmu/examples/widget/button/button.html</qrcode>
  * 按钮组件
- * @import core/extend.js, core/ui.js, core/highlight.js
+ * @import core/widget.js, extend/highlight.js
  * @importCSS icons.css
  */
 (function ($, undefined) {
@@ -11,7 +11,7 @@
         iconposRE = /\bui\-button\-icon\-pos\-(\w+)\b/ig;
 
     /**
-     * @name $.ui.button
+     * @name gmu.Button
      * @grammar $.ui.button(el, options) ⇒ instance
      * @grammar $.ui.button(options) ⇒ instance
      * @grammar button(options) ⇒ self

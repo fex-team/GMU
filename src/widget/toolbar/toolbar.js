@@ -115,6 +115,9 @@
 
             // 向下兼容：如果没有传position，认为在右侧添加按钮
             btns.forEach( function( btn, index ) {
+                if( Object.prototype.toString.call(btn) != '[object String]' ) {
+                    btn = btn._el;
+                }
                 me._addBtn( btnContainer, btn );
             });
         },
