@@ -88,6 +88,8 @@ test('默认options及sug能正常创建', function () {
     equal(sug.$closeBtn.hasClass('ui-suggestion-close'), true, 'close btn正确创建');
 
     equal(opts.compatdata, true, 'compatData参数正确');
+
+    sug.destroy();
 });
 
 test('以","分隔的历史数据能正常被读存', function () {
@@ -111,6 +113,8 @@ test('以","分隔的历史数据能正常被读存', function () {
         equal(sug.history(), ('newquery,' + history).split(',').join(sug.separator), '历史数据转换后能正常存入');
 
     } catch(e){}
+
+    sug.destroy();
 });
 
 test('历史数据被处理后，能正常渲染', function () {
@@ -140,5 +144,7 @@ test('历史数据被处理后，能正常渲染', function () {
         equal(sug.$content.find('.sug-item').eq(4).text(), 'gmu', '老的历史记录第五项正常');
 
     } catch(e){}
+
+    sug.destroy();
 });
 
