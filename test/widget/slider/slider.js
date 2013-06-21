@@ -249,6 +249,30 @@
         } );
     } );
 
+    test( 'slideTo 方向', function() {
+        stop();
+
+        var dom = $('<div>' +
+                '<div> item 1</div>' +
+                '<div> item 2</div>' +
+                '<div> item 3</div>' +
+                '<div> item 4</div>' +
+                '</div>').appendTo( fixture ),
+            instance,
+            pos;
+
+        instance = dom.slider({index: 2}).slider('this');
+
+        pos = instance._slidePos[2];
+        console.log( pos );
+
+        instance.slideTo(4);
+        ok( instance._slidePos[2] > pos, '方向正确');
+
+        dom.slider('destroy').remove();
+        start();
+    } );
+
     test( 'prev', function() {
         stop();
 
