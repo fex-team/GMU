@@ -80,7 +80,7 @@
     } );
 
     test( 'getIndex && active', function() {
-        expect( 12 );
+        expect( 14 );
 
         var dom = $('<div></div>').appendTo( fixture ),
             instance;
@@ -102,10 +102,17 @@
 
         equal(instance._active.key, 2, 'ok');
         equal( $(instance._items[instance.index]).text(), 'I am item 2');
+        //index === to   不做操作
+        dom.slider('slideTo',1);
+        equal( dom.slider('getIndex'), 1, 'ok');
+        //index === this._circle( to )  不做操作
+        dom.slider('slideTo',4);
+        equal( dom.slider('getIndex'), 1, 'ok');
 
         dom.slider('next');
         equal( dom.slider('getIndex'), 2, 'ok');
-        equal(instance._active.key, 3, 'ok');
+        //测试active
+        equal(dom.slider('active').key, 3, 'ok');
         equal( $(instance._items[instance.index]).text(), 'I am item 3');
 
         dom.slider('next');
@@ -174,6 +181,7 @@
         equal( instance.content().length, 4, 'ok');
         instance.content(instance.content().concat({key:5}));
         equal( instance.content().length, 5, 'ok');
+
 
         equal(instance._active.key, 2, 'ok');
         equal( $(instance._items[instance.index]).text(), 'I am item 2');
