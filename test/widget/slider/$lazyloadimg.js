@@ -73,7 +73,46 @@
         items = dom.find('img[lazyload]');
         equal( items.length, 0, 'ok');
     } );
+    test( 'loop==true,检查加载是否正确', function() {
+        expect( 4 );
 
+        var dom = $('<div></div>').appendTo( fixture ),
+            items;
+
+        dom.slider({loop: true,
+            content: [
+                {
+                    href: "#",
+                    pic: "../../widget/css/slider/image1.png",
+                    title: "让Coron的太阳把自己晒黑—小天..."
+                },
+
+                {
+                    href: "#",
+                    pic: "../../widget/css/slider/image2.png",
+                    title: "让Coron的太阳把自己晒黑—小天..."
+                },
+                {
+                    href: "#",
+                    pic: "../../widget/css/slider/image3.png",
+                    title: "让Coron的太阳把自己晒黑—小天..."
+                },
+                {
+                    href: "#",
+                    pic: "../../widget/css/slider/image4.png",
+                    title: "让Coron的太阳把自己晒黑—小天..."
+                }
+            ]
+        });
+        items = dom.find('img[lazyload]');
+        equal( items.length, 1, 'ok');
+        equal(dom[0].getElementsByTagName('img')[2].src,'','image3图片没有加载');
+        dom.slider('prev');
+        items = dom.find('img[lazyload]');
+        equal( items.length, 0, 'ok');
+        ok(/image3/.test(dom[0].getElementsByTagName('img')[2].src),'image3图片加载了');
+
+    } );
     test( '当img没有lazyload属性时，不对它进行lazyload处理', function() {
         expect( 1 );
 
