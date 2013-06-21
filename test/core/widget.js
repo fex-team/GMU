@@ -46,7 +46,15 @@ test("option拆分", function() {
             ok(data.name === 'default', 'option拆分检查：Passed!' + 'overlay');
         });
     });
+    
+    gmu.Panel.option('display', 'overlay', function(){
+        var me = this;
 
+        me.on('show', function(e, data){
+            ok(data.name === 'default', 'option拆分检查：Passed!' + 'overlay');
+        });
+    });
+    
     gmu.Panel.option('display', '*', function(){
         var me = this;
 
@@ -79,7 +87,7 @@ test("option拆分", function() {
 });
 
 test("插件", function() {
-    expect(5);
+    expect(6);
 
     gmu.Panel.register('follow', {
         _init: function(){
@@ -108,11 +116,59 @@ test("插件", function() {
     panel.show();
 
     $('#panel').remove();
+    
+    //没有注册_init，_init是个空函数
+    gmu.Panel.register('follow', {});
+
+    $(document.body).append('<div id="panel"></div>');
+    var panel = new gmu.Panel('#panel', {
+        name: 'custom gmu',
+        display: 'push'
+    });
+    $('#panel').remove();
+    
+    gmu.Panel.register('follow', {
+        _init: function(){
+            var me = this;
+
+            ok(true, "插件初始化检查：Passed!");
+        },
+
+        follow: function(){
+            ok(true, "插件添加的实例方法检查：Passed!");
+        },
+
+        hide: function(){
+            this.origin();
+        }
+    });
+
+    //origin覆盖
+    gmu.Panel.register('follow', {
+        _init: function(){
+            var me = this;
+            me.origin = function(){}
+        },
+
+        hide: function(){
+            this.origin();
+        }
+    });
+    
+    $(document.body).append('<div id="panel"></div>');
+    var panel = new gmu.Panel('#panel', {
+        name: 'custom gmu',
+        display: 'push'
+    });
+
+    panel.hide();
+
+    $('#panel').remove(); 
 });
 
 
 test("实例化类", function() {
-    expect(4);
+    expect(6);
 
     $(document.body).append('<div id="panel"></div>');
     var panel = new gmu.Panel('#panel', {
@@ -130,21 +186,86 @@ test("实例化类", function() {
     ok($jQuery.isFunction(panel.show), '实例方法检查：Passed!');
 
     $('#panel').remove();
+    
+    
+    //不传el && 事件return false
+    $(document.body).append('<div id="panel"></div>');
+    
+    gmu.define('PanelN', {
+        _init: function(){
+            this.$el = $('#panel');
+        }
+    });
+    
+    var panel = new gmu.PanelN({
+    	name: 'custom gmu',
+        testEvent: function(){
+        	return false;
+    		ok(true, '不执行');
+    	}
+    });
+    
+    ok(panel.$el.attr("id") === "panel", 'el检查：Passed!');
+    ok(panel._options.name === 'custom gmu', '实例参数检查：Passed!');
+    
+    panel.trigger("testEvent");
+    
+    $('#panel').remove();
 });
 
 test("DOM options", function() {
-    expect(1);
+    expect(7);
     
     $(document.body).append('<div id="panel" data-name="custom gmu"></div>');
     var panel = new gmu.Panel('#panel', {
         follow: false
     });
-
     ok(panel._options.name === 'custom gmu', 'DOM options检查：Passed!');
     // ok(panel.template === '<div>Hello {{name}}</div>', '实例类模板检查：Passed!');
     // ok(panel.tpl2html('gmu') === '<div>Hello GMU</div>', '实例类模板解析函数检查：Passed!');
     // ok($jQuery.isFunction(panel.show), '实例方法检查：Passed!');
-
+    $('#panel').remove();
+        
+    $(document.body).append('<div id="panel" data-name="true"></div>');
+    var panel = new gmu.Panel('#panel', {
+        follow: false
+    });
+    ok(panel._options.name === true, 'DOM options检查：Passed!');
+    $('#panel').remove();
+    
+    $(document.body).append('<div id="panel" data-name="false"></div>');
+    var panel = new gmu.Panel('#panel', {
+        follow: false
+    });
+    ok(panel._options.name === false, 'DOM options检查：Passed!');
+    $('#panel').remove();
+    
+    $(document.body).append('<div id="panel" data-name="null"></div>');
+    var panel = new gmu.Panel('#panel', {
+        follow: false
+    });
+    ok(panel._options.name === 'new Class', 'DOM options检查：Passed!');
+    $('#panel').remove();
+    
+    $(document.body).append('<div id="panel" data-name="0"></div>');
+    var panel = new gmu.Panel('#panel', {
+        follow: false
+    });
+    ok(panel._options.name === 0, 'DOM options检查：Passed!');
+    $('#panel').remove();
+    
+    $(document.body).append("<div id='panel' data-name='{\"key\":\"value\"}'></div>");
+    var panel = new gmu.Panel('#panel', {
+        follow: false
+    });
+    ok(panel._options.name.key === 'value', 'DOM options检查：Passed!');
+    $('#panel').remove();
+    
+    $(document.body).append('<div id="panel" data-test="0"></div>');
+    var panel = new gmu.Panel('#panel', {
+        follow: false
+    });
+    ok(panel._options.test === undefined, 'DOM options检查：Passed!');
     $('#panel').remove();
 });
 
@@ -237,7 +358,7 @@ test("类继承 - inherits方式", function(){
 });
 
 test("zeptoLize", function(){
-    expect(2);
+    expect(3);
 
     gmu.define('test', {
         options: {
@@ -256,6 +377,7 @@ test("zeptoLize", function(){
     $(document.body).append('<div id="test"></div>');
     $('#test').test().test('testfn');
     ok($('#test').test('testreturn') === 'value', '调用有返回值的实例方法检查：Passed!');
+    ok($('#test').test().test('this').$el.attr('id') === 'test', '参数是this：Passed!')
     $('#test').remove();
 });
 

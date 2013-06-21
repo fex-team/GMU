@@ -132,11 +132,18 @@
                         el = undefined;
                     }
                     el && (this.$el = $( el ));
+
+                    // if( !el ) {
+                    //     throw new Error('Error! No element input.');
+                    //     return;
+                    // }
+
+
                     // options中存在container时，覆盖el
-                    options && options.container && (el = this.$el = $( options.container ));
+                    // !el && options && options.container && (el = this.$el = $( options.container ));
 
                     // 从el上获取option
-                    var dom_options = getDomOptions( el, fn.options );
+                    var dom_options = this.$el ? getDomOptions( el, fn.options ) : {};
                     var options = me._options = $.extend( {}, fn.options, dom_options, options );
 
                     // 将template和tpl2html挂到实例上
