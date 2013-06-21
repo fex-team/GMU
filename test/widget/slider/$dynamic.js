@@ -80,7 +80,7 @@
     } );
 
     test( 'getIndex', function() {
-        expect( 8 );
+        expect( 10 );
 
         var dom = $('<div></div>').appendTo( fixture ),
             instance;
@@ -102,10 +102,17 @@
 
         equal(instance._active.key, 2, 'ok');
         equal( $(instance._items[instance.index]).text(), 'I am item 2');
+        //index === to   不做操作
+        dom.slider('slideTo',1);
+        equal( dom.slider('getIndex'), 1, 'ok');
+        //index === this._circle( to )  不做操作
+        dom.slider('slideTo',4);
+        equal( dom.slider('getIndex'), 1, 'ok');
 
         dom.slider('next');
         equal( dom.slider('getIndex'), 2, 'ok');
-        equal(instance._active.key, 3, 'ok');
+        //测试active
+        equal(dom.slider('active').key, 3, 'ok');
         equal( $(instance._items[instance.index]).text(), 'I am item 3');
 
         dom.slider('next');
@@ -137,6 +144,7 @@
         instance.content(instance.content().concat({key:5}));
         equal( instance.content().length, 5, 'ok');
 
+
         equal(instance._active.key, 2, 'ok');
         equal( $(instance._items[instance.index]).text(), 'I am item 2');
 
@@ -159,6 +167,18 @@
         equal( dom.slider('getIndex'), 3, 'ok');
         equal(instance._active.key, 4, 'ok');
         equal( $(instance._items[instance.index]).text(), 'I am item 4');
+
+        //改变内容，选中的是最后的
+        dom.slider('content',[  { key: 6},  { key: 7},  { key: 8}]);
+        equal( instance.content().length, 3, 'ok');
+        equal( instance._active.key, 8, 'ok');
+        equal( instance.index, 2, 'ok');
+        //center=true，改变内容，选中的是中间的
+        instance._data=true;
+        dom.slider('content',[  { key: 6},  { key: 7},  { key: 8}]);
+        equal( instance.content().length, 3, 'ok');
+        equal( instance._active.key, 7, 'ok');
+        equal( instance.index, 1, 'ok');
     });
 
     
