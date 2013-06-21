@@ -80,7 +80,7 @@
     } );
 
     test( 'getIndex && active', function() {
-        expect( 14 );
+        expect( 15 );
 
         var dom = $('<div></div>').appendTo( fixture ),
             instance;
@@ -128,6 +128,8 @@
         equal( instance.active().key, 3, 'ok');
         instance.slideTo(1);
         equal( instance.active().key, 2, 'ok');
+        instance.slideTo(0);
+        equal( instance.active().key, 1, 'ok');
 
         instance.destroy();
         dom.remove();
