@@ -30,7 +30,7 @@
                 });
 
                 // 绑tap事件，touchend会失焦点，键盘收起，故绑touchstart并阻止默认行为
-                me.$quickDel.on( 'tap' + ns, function( e ) {
+                me.$quickDel.on( 'touchstart' + ns, function( e ) {
                     e.preventDefault();    // 阻止默认事件，否则会触发blur，键盘收起
                     e.formDelete = true;    // suggestion解决删除问题
                     $input.val('');

@@ -6,7 +6,7 @@
  * @import widget/suggestion/suggestion.js
  */
 
-(function( $ ) {
+(function( $, win ) {
 
     /*
     * 默认以jsonp发送请求，当用户在option中配置了sendRequest时
@@ -33,69 +33,72 @@
         sendrequest: null
     } );
 
-    gmu.Suggestion.option( 'sendRequest', function() {
+    gmu.Suggestion.option( 'sendrequest', function() {
 
         // 当sendRequest不是Function类型时，该option操作生效
-        return $.type( this._options.sendRequest ) !== 'function';
+        return $.type( this._options.sendrequest ) !== 'function';
 
     }, function() {
+        var me = this,
+            opts = me._options,
+            queryKey = opts.queryKey,
+            cbKey = opts.cbKey,
+            param = opts.param,
+            isCache = opts.isCache,
+            cdata,
+            url,
+            cb;
 
         this.on( 'sendrequest', function( e, query, callback, cacheData ) {
-            var me = this,
-                opts = me._options,
-                url = opts.source,
-                param = opts.param,
 
-                // 以date作为后缀，应该不会重复，故不作origin
-                cb = 'suggestion_' + (+new Date()),
-                cdata;
+            url = opts.source,
 
-            if ( query ) {
+            // 以date作为后缀，应该不会重复，故不作origin
+            cb = 'suggestion_' + (+new Date());
 
-                // 若缓存中存数请求的query数据，则不发送请求
-                if ( opts.isCache && (cdata = cacheData( query )) ) {
-                    callback( query, cdata );
-                    return me;
-                }
+            // 若缓存中存数请求的query数据，则不发送请求
+            if ( isCache && (cdata = cacheData( query )) ) {
+                callback( query, cdata );
+                return me;
 
-                // 替换url后第一个参数的连接符?&或&为?
-                url = (url + '&' + opts.queryKey + '=' +
-                        encodeURIComponent( query ))
-                        .replace( /[&?]{1,2}/, '?' );
-
-                !~url.indexOf( '&' + opts.cbKey ) &&
-                        (url += '&' + opts.cbKey + '=' + cb);
-
-                param && (url += '&' + param);
-
-                window[ cb ] = function( data ) {
-
-                    /*
-                    * 渲染数据并缓存请求数据
-                    * 返回的数据格式如下：
-                    * {
-                    *     q: "a",
-                    *     p: false,
-                    *     s: ["angelababy", "akb48", "after school",
-                    *     "android", "angel beats!", "a pink", "app"]
-                    * }
-                    */
-                    callback( query, data.s );
-
-                    // 缓存请求的query
-                    cacheData( query, data.s );
-
-                    delete window[ cb ];
-                };
-
-                // 以jsonp形式发送请求
-                $.ajax({
-                    url: url,
-                    dataType: 'jsonp'
-                });
             }
+
+            // 替换url后第一个参数的连接符?&或&为?
+            url = (url + '&' + queryKey + '=' + encodeURIComponent( query ))
+                    .replace( /[&?]{1,2}/, '?' );
+
+            !~url.indexOf( '&' + cbKey ) &&  (url += '&' + cbKey + '=' + cb);
+
+            param && (url += '&' + param);
+
+            win[ cb ] = function( data ) {
+
+                /*
+                 * 渲染数据并缓存请求数据
+                 * 返回的数据格式如下：
+                 * {
+                 *     q: "a",
+                 *     p: false,
+                 *     s: ["angelababy", "akb48", "after school",
+                 *     "android", "angel beats!", "a pink", "app"]
+                 * }
+                 */
+                callback( query, data.s );
+
+                // 缓存请求的query
+                isCache && cacheData( query, data.s );
+
+                delete win[ cb ];
+            };
+
+            // 以jsonp形式发送请求
+            $.ajax({
+                url: url,
+                dataType: 'jsonp'
+            });
+
             return me;
         } );
 
     } );
-})( gmu.$ );
+})( gmu.$, window );

@@ -3,7 +3,7 @@
  * @name Suggestion - renderList
  * @desc <qrcode align="right" title="Live Demo">../gmu/examples/widget/suggestion/suggestion_setup.html</qrcode>
  * 搜索建议option: renderList，提供默认列表渲染，若需要自己渲染sug列表，即renderList为Function类型，则该文件可以不用引
- * @import widget/suggestion/suggestion.js
+ * @import widget/suggestion/suggestion.js, extend/highlight.js
  */
 (function( $ ) {
 
@@ -18,6 +18,9 @@
      * */
 
     $.extend( gmu.Suggestion.options, {
+
+        // 是否在localstorage中存储用户查询记录，相当于2.0.5以前版本中的isStorage
+        isHistory: true,
 
         // 是否使用+来使sug item进入input框
         usePlus: false,
@@ -38,6 +41,9 @@
 
         var me = this,
             $xssElem = $( '<div></div>'),
+            _xssFilter = function( str ) {
+                return $xssElem.text( str ).html();
+            },
 
             // 渲染sug list列表，返回list array
             _createList = function( query, sugs ) {
@@ -56,11 +62,11 @@
                 sugs = sugs.slice( 0, opts.listCount );
 
                 // 防止xss注入，通过text()方法转换一下
-                query = $xssElem.text( query || '' ).html();
+                query = _xssFilter( query || '' );
 
                 // sug列表渲染比较频繁，故不采用模板来解析
                 for ( i = 0, len = sugs.length; i < len; i++ ) {
-                    str = sug = sugs[ i ];
+                    str = _xssFilter( sug = sugs[ i ] );
 
                     // 若是query为空则不需要进行替换
                     query && (str = $.trim( sug )
@@ -87,9 +93,15 @@
             // 扩展sug事件
             $.extend( me.eventMap, {
 
-                submit: function() {
+                submit: function(e) {
+                    var submitEvent = gmu.Event('submit');
+
                     this._options.isHistory &&
-                    this._localStorage( this.value() ).trigger( 'submit' );
+                            this._localStorage( this.value() );
+
+                    this.trigger( submitEvent );
+                    // 阻止表单默认提交事件
+                    submitEvent.isDefaultPrevented() && e.preventDefault();
                 },
 
                 touchstart: function( e ) {
@@ -125,8 +137,7 @@
                 .on( 'submit' + ns, eventHandler ));
 
             // 注册tap事件由于中文输入法时，touch事件不能submit
-            this.$content.on( 'touchstart' + ns + ' tap' + ns,
-                    eventHandler).find( 'li' )
+            this.$content.on( 'touchstart' + ns + ' tap' + ns, eventHandler)
                     .highlight( 'ui-suggestion-highlight' );
 
             me.on( 'destroy', function() {

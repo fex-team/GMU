@@ -3,7 +3,7 @@
  * @name Suggestion
  * @desc <qrcode align="right" title="Live Demo">../gmu/examples/widget/suggestion/suggestion_setup.html</qrcode>
  * 搜索建议组件
- * @import extend/touch.js, extend/parseTpl.js
+ * @import core/widget.js, extend/touch.js
  */
 (function( $, win ) {
 
@@ -65,13 +65,13 @@
         // 默认options
         options: {
 
-            // 是否在localstorage中存储用户查询记录，相当于2.0.5以前版本中的isStorage
-            isHistory: true,
-
             // 多个sug之间是否共享历史记录，可传入指定的key值，相当于2.0.5以前版本中的isSharing + shareName
             // 若传默认传true，则使用默认key：'SUG-Sharing-History'，若传false，即表示不共享history
             // 若传string，则为该值+'-SUG-Sharing-History'作为key值
             historyShare: true,
+
+            // 删除历史记录时是否确认
+            confirmClearHistory: true,
 
             // 点击外边空白区域是否关闭sug
             autoClose: false
@@ -158,7 +158,6 @@
                     me.getEl().attr( 'id' ) || ('ui-suggestion-' + (guid++));
 
             me.separator = encodeURIComponent( ',' );    // localStorage中数据分隔符
-            opts.isCache && (me.cacheData = {});
 
             opts.autoClose && $( document ).on( 'tap' + ns, function( e ) {
 
@@ -278,8 +277,10 @@
         },
 
         _cacheData: function( key, value ) {
+            this.cacheData || (this.cacheData = {});
+
             return value !== undefined ?
-                    this.cacheData[ key ] = value : this.cacheData[ key ];
+                this.cacheData[ key ] = value : this.cacheData[ key ];
         },
 
         /**
@@ -302,10 +303,14 @@
          * instance.history(null)     //清空当前sug的history
          * */
         history: function( value ) {
-            return value === null ?
-                    win.confirm( '清除全部查询历史记录？' ) &&
-                    (this._localStorage( value ), this.hide()) :
-                    this._localStorage( value );
+            var me = this,
+                clearHistory = value !== null || function() {
+                    return me._localStorage( null).hide();
+                };
+
+            return value === null ? (me._options.confirmClearHistory ?
+                win.confirm( '清除全部查询历史记录？' ) && clearHistory() :
+                clearHistory()) : me._localStorage( value )
         },
 
         /**
@@ -320,7 +325,7 @@
                 this.isShow = true;
             }
 
-            return this;
+            return this.trigger( 'show' );
         },
 
         /**
@@ -335,7 +340,7 @@
                 this.isShow = false;
             }
 
-            return this;
+            return this.trigger( 'hide' );
         }
     } );
 })( gmu.$, window );
