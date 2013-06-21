@@ -1,4 +1,4 @@
-module('suggestion.plugin.$quickdelete', {
+module('suggestion.plugin.$iscroll', {
     setup: function() {
         $('<input />').attr({
             'id': 'sugg-input',
@@ -71,79 +71,108 @@ test('加载sug样式', function() {
     ua.loadcss(["reset.css", "widget/suggestion/suggestion.css",
         "widget/suggestion/suggestion.default.css",
         "../test/widget/css/suggestion/suggestion.test.css",
-        "widget/suggestion/$quickdelete.css"
+        "widget/suggestion/$iscroll.css"
     ], function() {
         ok( 1, 'suggestion css 正确加载' );
         start();
     });
 });
 
-test('sug及quickdelete是否正确创建', function () {
-    var sug = gmu.Suggestion({
-            container: "#sugg-input",
-            sendrequest: sendrequest,
-            renderlist: renderlist
-        });
-
-    equal(sug.$mask.hasClass('ui-suggestion-mask'), true, 'mask元素正确创建');
-    equal(sug.$wrapper.hasClass('ui-suggestion'), true, 'mask元素正确创建');
-    equal(sug.$content.hasClass('ui-suggestion-content'), true, 'content元素正确创建');
-    equal(sug.$clearBtn.hasClass('ui-suggestion-clear'), true, 'clear btn正确创建');
-    equal(sug.$closeBtn.hasClass('ui-suggestion-close'), true, 'close btn正确创建');
-
-    equal(sug.$mask.find('.ui-suggestion-quickdel').length, 1, 'quickdelete元素正确创建');
-    equal(sug.$mask.find('.ui-suggestion-quickdel').css('visibility'), 'hidden', 'quickdelete元素开始时隐藏');
-
-    sug.destroy();
-});
-
-test('quickdelete功能是否正常', function () {
-    expect(10);
-    stop();
+test('sug及iscroll是否正确创建', function () {
 
     var sug = gmu.Suggestion({
         container: "#sugg-input",
         sendrequest: sendrequest,
         renderlist: renderlist
-    }),
-        $input = sug.getEl();
+    });
+
+    equal(sug.$mask.hasClass('ui-suggestion-mask'), true, 'mask元素正确创建');
+    equal(sug.$wrapper.hasClass('ui-suggestion'), true, 'mask元素正确创建');
+    equal(sug.$content.hasClass('ui-suggestion-content'), true, 'content元素正确创建');
+    equal(sug.$scroller.hasClass('ui-suggestion-scroller'), true, 'scroller元素正确创建');
+    equal(sug.$clearBtn.hasClass('ui-suggestion-clear'), true, 'clear btn正确创建');
+    equal(sug.$closeBtn.hasClass('ui-suggestion-close'), true, 'close btn正确创建');
+
+    ok(sug.$content.attr('data--iscroll-'), 'iscroll实例正确创建');
+
+    sug.destroy();
+});
+
+test('sug中iscroll能正确内滚', function () {
+    expect(3);
+    stop();
+
+    var sug = gmu.Suggestion({
+            container: "#sugg-input",
+            sendrequest: sendrequest,
+            renderlist: renderlist
+        }),
+        $input = sug.getEl(),
+        top;
 
 
-    $input.val('a').focus();
-    equal(sug.quickDelShow, true, 'quickdel在focus有字符时直接显示');
+    $input.val('a').trigger('input');
+    equal(sug.isShow, true, 'sug正确显示');
 
-    $input.val('ab').trigger('input');
-    equal(sug.quickDelShow, true, 'quickdel在input时显示');
+    top = sug.$content.find('.sug-item').eq(0).offset().top;
 
-    try {
-        window.localStorage['SUG-Sharing-History'] = 'Alabama';
+    ta.touchstart(sug.$scroller.get(0),{
+        touches:[{
+            pageX: 0,
+            pageY: 0
+        }]
+    });
+    ta.touchmove(sug.$scroller.get(0),{
+        touches:[{
+            pageX: 0,
+            pageY: -10
+        }]
+    });
+    ta.touchend(sug.$scroller.get(0))
 
-        ta.touchstart(sug.$quickDel.get(0),{
-            touches:[{
-                pageX: 0,
-                pageY: 0
-            }]
-        });
+    setTimeout(function() {
+        equal(sug.$content.find('.sug-item').eq(0).offset().top < top, true, 'sug中iscroll能正常滑动' );
+
+        sug.hide();
+        equal(sug.isShow, false, 'sug能正常关闭');
+
+        sug.destroy();
+        start();
+
+    }, 600)
+});
+
+test('input时，iscroll能滚到最顶部', function () {
+    expect(5);
+    stop();
+
+    var sug = gmu.Suggestion({
+            container: "#sugg-input",
+            sendrequest: sendrequest,
+            renderlist: renderlist
+        }),
+        $input = sug.getEl(),
+        top;
+
+
+    $input.val('a').trigger('input');
+    equal(sug.isShow, true, 'sug正确显示');
+
+    setTimeout(function() {
+        top = sug.$content.find('.sug-item').eq(0).offset().top;
+        equal(sug.$content.find('.sug-item').eq(0).text(), 'Alabama', 'sug第一项正确显示');
+        equal(sug.$content.find('.sug-item').eq(3).text(), 'Arkansas', 'sug第四项正确显示');
+
+        $input.val('an').trigger('input');
 
         setTimeout(function() {
-            equal(sug.quickDelShow, false, '点击quickdelete后，quickdelete消失');
-            equal($input.val(), '', '点击quickdelete后，input值被清除');
-            equal(sug.isShow, true, 'input无字符时，history显示');
-            equal(sug.$content.find('.sug-item').text(), 'Alabama', '显示的历史记录正确');
-
-            sug.hide();
-            $input.val('我们').trigger('input');
-            equal(sug.quickDelShow, true, 'quickdel在input时显示');
-            $input.val('').trigger('input');
-            equal(sug.quickDelShow, false, 'quickdel在input字符删除时消失');
-            equal(sug.isShow, true, 'input无字符时，history显示');
-            equal(sug.$content.find('.sug-item').length, 1, '显示的历史记录正确');
+            equal(sug.$content.find('.sug-item').eq(0).text(), 'Arkansas', 'sug第一项内容改变');
+            equal(sug.$content.find('.sug-item').eq(0).offset().top, top, 'input输入后，sug滚到最顶部');
 
             sug.destroy();
             start();
+        }, 400);
 
-        }, 100)
+    }, 400)
 
-    }catch(e){}
 });
-
