@@ -6,27 +6,26 @@
  */
 (function( $ ) {    // 修复zepto的offset setter的一个bug
 
-    var _offset = $.fn.offset,
-        list = [ '', 'static', 'relative' ];
+    var _offset = $.fn.offset;
 
     $.fn.offset = function( coord ) {
         var hook;
 
         hook = coord && function() {
-            var orig = $( this ).position(),
+            var pos = $( this ).position(),
                 style = this.style;
 
             coord = typeof coord === 'function' ? 
                     coord.apply( this, arguments ) : coord;
 
             if ( !~[ '', 'static' ].indexOf( style.position ) ) {
-                orig.top -= parseFloat( style.top ) || 0;
-                orig.left -= parseFloat( style.left ) || 0;
+                pos.top -= parseFloat( style.top );
+                pos.left -= parseFloat( style.left );
             }
 
             coord = {
-                top: coord.top - orig.top,
-                left: coord.left - orig.left
+                top: coord.top - pos.top,
+                left: coord.left - pos.left
             };
 
             return coord;
@@ -105,8 +104,8 @@
                 opt = opts[ key ] = [ 'center', 'center' ],
                 offset = offsets[ key ] = [ 0, 0 ];
 
-            pos.length === 1 && pos[ rhorizontal.test( pos[ 0 ] ) ? 'push' :
-                    'unshift' ]( 'center' );
+            pos.length === 1 && pos[ rvertical.test( pos[ 0 ] ) ? 'unshift' :
+                    'push' ]( 'center' );
 
             rhorizontal.test( pos[ 0 ] ) && (opt[ 0 ] = RegExp.$1) &&
                     (offset[ 0 ] = RegExp.$2);
@@ -136,7 +135,8 @@
         }
 
         var target = $( opts.of ),
-            within = getWithinInfo( opts.within ),
+            collision = opts.collision,
+            within = collision && getWithinInfo( opts.within ),
             ofses = {},
             dim = getDimensions( target ),
             bPos = {
@@ -154,15 +154,14 @@
 
         return this.each(function() {
             var $el = $( this ),
-                ofs = $( this ).offset(),
+                ofs = $el.offset(),
                 pos = $.extend( {}, bPos ),
-                myOfs = getOffsets( opts.my, ofses.my, ofs.width, ofs.height ),
-                fn;
+                myOfs = getOffsets( opts.my, ofses.my, ofs.width, ofs.height );
 
             pos.left = round( pos.left + myOfs[ 2 ] - myOfs[ 0 ] );
             pos.top = round( pos.top + myOfs[ 3 ] - myOfs[ 1 ] );
 
-            $.isFunction( (fn = opts.collision) ) && fn.call( this, pos, {
+            collision && collision.call( this, pos, {
                 of: dim,
                 offset: ofs,
                 my: opts.my,

@@ -266,7 +266,9 @@ module.exports = function(grunt) {
                         coverage = JSON.parse( coverage );
                         grunt.log.writeln('\n覆盖率输出结果');
                         outputRows( coverageRender(coverage), function( value, x, y) {
-                            if( x === 1 ) {
+                            if( /^100%/.test(value) ) {
+                                return String(value).magenta
+                            } else if( x === 1 ) {
                                 return String(value).red;
                             } else if( x===0 ) {
                                 return String(value).green;
