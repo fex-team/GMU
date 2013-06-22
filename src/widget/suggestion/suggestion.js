@@ -79,9 +79,9 @@
 
         template: {
 
-            // wrapper中content, button, clear, close这几个div必须有，其他的可以更改
-            wrapper: '<div id="ui-suggestion-' + (guid++) +
-                '" class="ui-suggestion">' +
+            // ui-suggestion的class必须有
+            // ontent, button, clear, close这几个div必须有，其他的可以更改
+            wrapper: '<div class="ui-suggestion">' +
                 '<div class="ui-suggestion-content"></div>' +
                 '<div class="ui-suggestion-button">' +
                 '<span class="ui-suggestion-clear">清除历史记录</span>' +
@@ -129,10 +129,11 @@
             // 考采用template的wrapper项渲染列表
             me.$mask.append( me.tpl2html( 'wrapper' ) );
 
-            me.$wrapper = me.$mask.find( '.ui-suggestion' );
+            me.$wrapper = me.$mask.find( '.ui-suggestion' )
+                    .prop('id', 'ui-suggestion-' + (guid++));
             me.$content = me.$wrapper
-                    .css( 'top', $input.height() +
-                    parseInt( me.$wrapper.css( 'top' ), 10 ) )
+                    .css( 'top', $input.height() + (me.wrapperTop =
+                    parseInt( me.$wrapper.css( 'top' ), 10 ) || 0) )
                     .find( '.ui-suggestion-content' );
 
             me.$btn = me.$wrapper.find( '.ui-suggestion-button' );

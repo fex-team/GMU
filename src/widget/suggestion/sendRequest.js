@@ -45,16 +45,14 @@
             cbKey = opts.cbKey,
             param = opts.param,
             isCache = opts.isCache,
-            cdata,
-            url,
-            cb;
+            cdata;
 
         this.on( 'sendrequest', function( e, query, callback, cacheData ) {
 
-            url = opts.source,
+            var url = opts.source,
 
             // 以date作为后缀，应该不会重复，故不作origin
-            cb = 'suggestion_' + (+new Date());
+                cb = 'suggestion_' + (+new Date());
 
             // 若缓存中存数请求的query数据，则不发送请求
             if ( isCache && (cdata = cacheData( query )) ) {
