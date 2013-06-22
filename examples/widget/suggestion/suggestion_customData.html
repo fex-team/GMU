@@ -102,7 +102,7 @@
 
         $('#input').suggestion({
 
-            sendRequest: function (e, query, render, cacheData) {
+            sendrequest: function (e, query, render, cacheData) {
                 var listArr = [];
 
                 $.each(states, function (i, item) {
@@ -110,13 +110,13 @@
                 });
 
                 // 渲染数据列表，render(query, data), query为用户输入的query， data为Array类型，为渲染的数据数组
-                render.call(this, query, listArr);
+                render( query, listArr );
 
                 // 缓存请求数据，cacheData(query, data), query为用户输入的query， data为Array类型，为渲染的数据数组
-                cacheData.call(this, query, listArr);
+                cacheData( query, listArr );
             },
 
-            renderList: function (e, data, query, callback) {
+            renderlist: function (e, data, query, callback) {
 
                 // renderList的回调函数callback(listHtml), listHtml为sug列表内容
                 callback.call( this, data.map(function (item) {
