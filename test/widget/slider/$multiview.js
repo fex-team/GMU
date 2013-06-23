@@ -45,18 +45,37 @@
         dom.slider();
 
         items = dom.find('.ui-slider-item');
-        equal( items.eq(0).offset().left, pos.left, 'ok' );
-        equal( items.eq(1).offset().left, pos.left + pos.width/2, 'ok');
-        equal( items.eq(2).offset().left, pos.left + pos.width, 'ok' );
-        
-        dom.slider('next')
-            .slider('one', 'slideend', function(){
-                equal( items.eq(2).offset().left, pos.left, 'ok' );
-                equal( items.eq(3).offset().left, pos.left + pos.width/2, 'ok');
-                equal( items.eq(1).offset().left, pos.left - pos.width/2, 'ok' );
 
-                start();
-            });
+        approximateEqual( items.eq(0).offset().left, pos.left, 'ok' );
+        approximateEqual( items.eq(1).offset().left, pos.left + pos.width/2, 'ok');
+        approximateEqual( items.eq(2).offset().left, pos.left + pos.width, 'ok' );
+        
+        dom.slider('one', 'slideend', function(){
+            
+            // 强制reflow
+            dom[0].clientLeft;
+
+            approximateEqual( items.eq(2).offset().left, pos.left, 'ok' );
+            approximateEqual( items.eq(3).offset().left, pos.left + pos.width/2, 'ok');
+            approximateEqual( items.eq(1).offset().left, pos.left - pos.width/2, 'ok' );
+
+
+            dom.slider('one', 'slideend', function(){
+
+                // 强制reflow
+                dom[0].clientLeft;
+
+                setTimeout(function(){
+                    approximateEqual( items.eq(0).offset().left, pos.left, 'ok' );
+                    approximateEqual( items.eq(1).offset().left, pos.left + pos.width/2, 'ok');
+                    approximateEqual( items.eq(2).offset().left, pos.left + pos.width, 'ok' );
+
+                    dom.slider('destroy').remove();
+                    start();
+                }, 500);
+            }).slider('prev');
+
+        }).slider('next');
     } );
 
     test( 'travelSize', function() {
@@ -74,16 +93,101 @@
         dom.slider({travelSize: 1});
 
         items = dom.find('.ui-slider-item');
-        equal( items.eq(0).offset().left, pos.left, 'ok' );
-        equal( items.eq(1).offset().left, pos.left + pos.width/2, 'ok');
-        equal( items.eq(2).offset().left, pos.left + pos.width, 'ok' );
+        approximateEqual( items.eq(0).offset().left, pos.left, 'ok' );
+        approximateEqual( items.eq(1).offset().left, pos.left + pos.width/2, 'ok');
+        approximateEqual( items.eq(2).offset().left, pos.left + pos.width, 'ok' );
         
         dom.slider('next')
             .slider('one', 'slideend', function(){
-                equal( items.eq(1).offset().left, pos.left, 'ok' );
-                equal( items.eq(2).offset().left, pos.left + pos.width/2, 'ok');
-                equal( items.eq(0).offset().left, pos.left - pos.width/2, 'ok' );
+                approximateEqual( items.eq(1).offset().left, pos.left, 'ok' );
+                approximateEqual( items.eq(2).offset().left, pos.left + pos.width/2, 'ok');
+                approximateEqual( items.eq(0).offset().left, pos.left - pos.width/2, 'ok' );
 
+                dom.slider('destroy').remove();
+                start();
+            });
+    } );
+
+    test( 'travelSize 2', function() {
+        stop();
+
+        var dom = $('<div style="width: 200px;">' +
+                '<div> item 1</div>' +
+                '<div> item 2</div>' +
+                '<div> item 3</div>' +
+                '<div> item 4</div>' +
+                '</div>').appendTo( fixture ),
+            pos = dom.offset(),
+            items;
+
+        dom.slider({travelSize: 2});
+
+        items = dom.find('.ui-slider-item');
+        approximateEqual( items.eq(0).offset().left, pos.left, 'ok' );
+        approximateEqual( items.eq(1).offset().left, pos.left + pos.width/2, 'ok');
+        approximateEqual( items.eq(2).offset().left, pos.left + pos.width, 'ok' );
+        
+        dom.slider('slideTo', 1)
+            .slider('one', 'slideend', function(){
+                approximateEqual( items.eq(1).offset().left, pos.left, 'ok' );
+                approximateEqual( items.eq(2).offset().left, pos.left + pos.width/2, 'ok');
+                approximateEqual( items.eq(0).offset().left, pos.left - pos.width/2, 'ok' );
+
+                dom.slider('next');
+
+                // 不能是3
+                equal(dom.slider('getIndex'), 2, 'ok');
+
+                dom.slider('next');
+                equal(dom.slider('getIndex'), 2, 'ok');// 到达边缘不能再移动
+
+
+                dom.slider('slideTo', 0);
+                dom.slider('prev');
+                equal(dom.slider('getIndex'), 0, 'ok');// 到达边缘不能再移动
+
+                dom.slider('destroy').remove();
+                start();
+            });
+    } );
+
+    test( 'travelSize 3', function() {
+        stop();
+
+        var dom = $('<div style="width: 200px;">' +
+                '<div> item 1</div>' +
+                '<div> item 2</div>' +
+                '<div> item 3</div>' +
+                '<div> item 4</div>' +
+                '</div>').appendTo( fixture ),
+            pos = dom.offset(),
+            items;
+
+        dom.slider({travelSize: 2, loop: true});
+
+        items = dom.find('.ui-slider-item');
+        approximateEqual( items.eq(0).offset().left, pos.left, 'ok' );
+        approximateEqual( items.eq(1).offset().left, pos.left + pos.width/2, 'ok');
+        approximateEqual( items.eq(2).offset().left, pos.left + pos.width, 'ok' );
+        
+        dom.slider('slideTo', 7)
+            .slider('one', 'slideend', function(){
+                approximateEqual( items.eq(7).offset().left, pos.left, 'ok' );
+                approximateEqual( items.eq(0).offset().left, pos.left + pos.width/2, 'ok');
+
+                dom.slider('next');
+
+                equal(dom.slider('getIndex'), 1, 'ok');
+
+                dom.slider('next');
+                equal(dom.slider('getIndex'), 3, 'ok');
+
+
+                dom.slider('slideTo', 0);
+                dom.slider('prev');
+                equal(dom.slider('getIndex'), 6, 'ok');
+
+                dom.slider('destroy').remove();
                 start();
             });
     } );
@@ -110,6 +214,8 @@
         equal( ins._slidePos[1], 0);
         equal( ins._slidePos[2], 100);
         equal( ins._slidePos[3], 300);
+
+        dom.slider('destroy').remove();
         start();
     } );
 
@@ -144,11 +250,37 @@
             equal( ins._slidePos[2], -100);
             equal( ins._slidePos[3], 0);
             equal( ins._slidePos[4], 100);
+
+            dom.slider('destroy').remove();
             start();
         });
     } );
 
-    // todo 实际位置检测
+    test( '移动位置测试 & loop - 特需', function() {
+        stop();
+
+        var dom = $('<div style="width: 200px;">' +
+                '<div> item 1</div>' +
+                '<div> item 2</div>' +
+                '<div> item 3</div>' +
+                '<div> item 4</div>' +
+                '</div>').appendTo( fixture ),
+            pos = dom.offset(),
+            ins;
+
+        ins = dom.slider({loop:true, index:2}).slider('this');
+
+        equal( ins._slidePos[2], 0);
+        equal( ins._slidePos[3], 100);
+        ins.slideTo( 9 );
+        equal( ins._slidePos[1], 0);
+        equal( ins._slidePos[2], 100);
+        equal( ins._slidePos[3], 200);
+
+        dom.slider('destroy').remove();
+        start();
+
+    } );
     
     
 })();

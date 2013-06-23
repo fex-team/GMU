@@ -8,10 +8,9 @@
             touchstart: '_onStart',
             touchmove: '_onMove',
             touchend: '_onEnd',
-            touchcancel: '_onEnd'
+            touchcancel: '_onEnd',
+            click: '_onClick'
         },
-
-        $doc = $( document ),
 
         isScrolling,
         start,
@@ -31,26 +30,31 @@
 
     gmu.Slider.register( 'touch', {
         _init: function() {
-            this._handler = $.proxy( this._handler, this );
-            this.on( 'ready', function() {
+            var me = this,
+                $el = me.getEl();
+
+            me._handler = function( e ) {
+                me._options.stopPropagation && e.stopPropagation();
+                return map[ e.type ] && me[ map[ e.type ] ].call( me, e );
+            };
+
+            me.on( 'ready', function() {
 
                 // 绑定手势
-                this.getEl().on( 'touchstart.slider', this._handler );
+                $el.on( 'touchstart.slider', me._handler );
                 
                 // 阻止误点击, 犹豫touchmove被preventDefault了，导致长按也会触发click
-                this._container.on( 'click.slider', function() {
-                    return !moved;
-                } );
+                me._container.on( 'click.slider', me._handler );
             } );
 
-            this.on( 'destroy', function() {
-                this._container.off( '.slider' );
+            me.on( 'destroy', function() {
+                me._container.off( '.slider' );
+                $el.off( '.slider', me._handler );
             } );
         },
 
-        _handler: function( e ) {
-            map[ e.type ] && this[ map[ e.type ] ].call( this, e );
-            this._options.stopPropagation && e.stopPropagation();
+        _onClick: function() {
+            return !moved;
         },
 
         _onStart: function( e ) {
@@ -81,7 +85,7 @@
             me._move( opts.loop ? me._circle( me.index + num ) :
                     me.index + num, me.width, 0, true );
 
-            $doc.on( 'touchmove.slider touchend.slider touchcancel.slider',
+            me.$el.on( 'touchmove.slider touchend.slider touchcancel.slider',
                     me._handler );
         },
 
@@ -142,6 +146,13 @@
         },
 
         _onEnd: function() {
+            this.$el.off( 'touchmove.slider touchend.slider touchcancel.slider',
+                    this._handler );
+
+            if ( !moved ) {
+                return;
+            }
+
             var me = this,
                 opts = me._options,
                 viewNum = opts.viewNum || 1,
@@ -162,46 +173,39 @@
                 len,
                 pos;
 
-            if ( moved ) {
+            if ( duration < 250 ) {
 
-                if ( duration < 250 ) {
-
-                    // 如果滑动速度比较快，偏移量跟根据速度来算
-                    speed = absDeltaX / duration;
-                    diff = Math.min( Math.round( speed * viewNum * 1.2 ),
-                            viewNum );
-                } else {
-                    diff = Math.round( absDeltaX / (me.perWidth || me.width) );
-                }
+                // 如果滑动速度比较快，偏移量跟根据速度来算
+                speed = absDeltaX / duration;
+                diff = Math.min( Math.round( speed * viewNum * 1.2 ),
+                        viewNum );
+            } else {
+                diff = Math.round( absDeltaX / (me.perWidth || me.width) );
+            }
+            
+            if ( diff && !isPastBounds ) {
+                me._slide( index, diff, dir, me.width, opts.speed,
+                        opts, true );
                 
-                if ( diff && !isPastBounds ) {
-                    me._slide( index, diff, dir, me.width, opts.speed,
-                            opts, true );
-                    
-                    // 在以下情况，需要多移动一张
-                    if ( viewNum > 1 && duration >= 250 &&
-                            Math.ceil( absDeltaX / (me.perWidth ||
-                            me.width) ) !== diff ) {
+                // 在以下情况，需要多移动一张
+                if ( viewNum > 1 && duration >= 250 &&
+                        Math.ceil( absDeltaX / me.perWidth ) !== diff ) {
 
-                        me.index < index ? me._move( me.index - 1, -me.perWidth,
-                                opts.speed ) : me._move( me.index + viewNum,
-                                me.width, opts.speed );
-                    }
-                } else {
-                    
-                    // 滑回去
-                    for ( i = index - viewNum, len = index + 2 * viewNum;
-                        i < len; i++ ) {
+                    me.index < index ? me._move( me.index - 1, -me.perWidth,
+                            opts.speed ) : me._move( me.index + viewNum,
+                            me.width, opts.speed );
+                }
+            } else {
+                
+                // 滑回去
+                for ( i = index - viewNum, len = index + 2 * viewNum;
+                    i < len; i++ ) {
 
-                        pos = opts.loop ? me._circle( i ) : i;
-                        me._translate( pos, slidePos[ pos ], 
-                                opts.speed );
-                    }
+                    pos = opts.loop ? me._circle( i ) : i;
+                    me._translate( pos, slidePos[ pos ], 
+                            opts.speed );
                 }
             }
-
-            $doc.off( 'touchmove.slider touchend.slider touchcancel.slider',
-                    me._handler );
         }
     } );
 })( gmu, gmu.$ );

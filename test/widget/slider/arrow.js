@@ -30,7 +30,65 @@
     });
 
 
-    // todo
+    test( 'prev & next', function() {
+        stop();
+
+        var dom = $('<div>' +
+                '<div> item 1</div>' +
+                '<div> item 2</div>' +
+                '<div> item 3</div>' +
+                '<div> item 4</div>' +
+                '</div>').appendTo( fixture );
+
+        dom.slider();
+
+        ok(dom.find('.ui-slider-pre').length, 'ok');
+        ok(dom.find('.ui-slider-next').length, 'ok');
+
+        equal( dom.slider('getIndex'), 0 );
+
+        dom.find('.ui-slider-next').trigger('tap');
+
+        equal( dom.slider('getIndex'), 1 );
+
+        dom.find('.ui-slider-pre').trigger('tap');
+
+        equal( dom.slider('getIndex'), 0 );
+
+        dom.slider('destroy').remove();
+
+        start();
+
+    });
     
+
+    test( 'custom prev next element', function() {
+        stop();
+
+        var dom = $('<div>' +
+                '<div class="ui-slider-group"><div> item 1</div>' +
+                '<div> item 2</div>' +
+                '<div> item 3</div>' +
+                '<div> item 4</div></div>' +
+                '<a class="prev">prev</a><a class="next">next</a>'+
+                '</div>').appendTo( fixture );
+
+        dom.slider({selector:{prev:'a.prev', next: 'a.next'}});
+
+        equal( dom.slider('getIndex'), 0 );
+
+        dom.find('a.next').trigger('tap');
+
+        equal( dom.slider('getIndex'), 1 );
+
+        dom.find('a.prev').trigger('tap');
+
+        equal( dom.slider('getIndex'), 0 );
+
+        dom.slider('destroy').remove();
+
+        start();
+
+    });
     
 })();

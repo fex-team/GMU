@@ -79,8 +79,8 @@
         equal( items.length, 3, 'ok' );
     } );
 
-    test( 'getIndex', function() {
-        expect( 10 );
+    test( 'getIndex && active', function() {
+        expect( 15 );
 
         var dom = $('<div></div>').appendTo( fixture ),
             instance;
@@ -119,6 +119,46 @@
         equal( dom.slider('getIndex'), 3, 'ok');
         equal(instance._active.key, 4, 'ok');
         equal( $(instance._items[instance.index]).text(), 'I am item 4');
+
+        equal( instance.active().key, 4, 'ok');
+
+        instance.slideTo(1);
+        equal( instance.active().key, 4, '不允许跨1张');
+        instance.slideTo(2);
+        equal( instance.active().key, 3, 'ok');
+        instance.slideTo(1);
+        equal( instance.active().key, 2, 'ok');
+        instance.slideTo(0);
+        equal( instance.active().key, 1, 'ok');
+
+        instance.destroy();
+        dom.remove();
+    } );
+
+    test( 'position', function() {
+        expect( 3 );
+
+        var dom = $('<div></div>').appendTo( fixture ),
+            instance;
+
+        dom.slider({
+            content: [
+                { key: 1},
+                { key: 2},
+                { key: 3},
+                { key: 4}
+            ],
+            template: {
+                item: '<div class="ui-slider-item">I am item <%= key %></div>',
+            },
+            index: 3
+        });
+
+        instance = dom.slider('this');
+
+        equal( $(instance._items[instance.index]).text(), 'I am item 4');
+        equal( instance.index, 2, 'ok');
+        equal( instance._pool[2].key, 4, 'ok');
     } );
 
     test( 'content', function(){
@@ -167,19 +207,87 @@
         equal( dom.slider('getIndex'), 3, 'ok');
         equal(instance._active.key, 4, 'ok');
         equal( $(instance._items[instance.index]).text(), 'I am item 4');
-
-        //改变内容，选中的是最后的
-        dom.slider('content',[  { key: 6},  { key: 7},  { key: 8}]);
-        equal( instance.content().length, 3, 'ok');
-        equal( instance._active.key, 8, 'ok');
-        equal( instance.index, 2, 'ok');
-        //center=true，改变内容，选中的是中间的
-        instance._data=true;
-        dom.slider('content',[  { key: 6},  { key: 7},  { key: 8}]);
-        equal( instance.content().length, 3, 'ok');
-        equal( instance._active.key, 7, 'ok');
-        equal( instance.index, 1, 'ok');
     });
+
+
+    test( 'content 2', function(){
+        var dom = $('<div></div>').appendTo( fixture ),
+            instance,
+            arr;
+
+        dom.slider({
+            content: [
+                { key: 1},
+                { key: 2},
+                { key: 3},
+                { key: 4}
+            ],
+            template: {
+                item: '<div class="ui-slider-item">I am item <%= key %></div>',
+            },
+            index: 3
+        });
+
+        instance = dom.slider('this');
+
+        arr = instance.content();
+        arr.pop();
+        arr.push({key:5});
+        arr.push({key:6});
+
+        instance.content(arr);
+        equal( instance.active().key, 1, 'ok');
+
+        arr.shift();
+        arr.unshift({key: -1});
+
+        instance.content(arr);
+        equal( instance.active().key, -1, 'ok');
+
+        arr.unshift({key: -2});
+
+        instance.content(arr);
+        equal( instance.active().key, -1, 'ok');
+
+        instance.destroy();
+        dom.remove();
+    });
+
+    test( 'on touchstart的时候会立即进行调整', function(){
+        var dom = $('<div></div>').appendTo( fixture ),
+            instance,
+            arr;
+
+        dom.slider({
+            content: [
+                { key: 1},
+                { key: 2},
+                { key: 3},
+                { key: 4}
+            ],
+            template: {
+                item: '<div class="ui-slider-item">I am item <%= key %></div>',
+            },
+            index: 1
+        });
+
+        instance = dom.slider('this');
+
+        instance.next();
+        equal( instance._pool[1].key, 2, 'ok');
+        ta.touchstart(dom[0], {
+            touches:[{
+                pageX: 100,
+                pageY:100
+            }]
+        });
+        equal( instance._pool[1].key, 3, 'ok');
+
+        instance.destroy();
+        dom.remove();
+    });
+
+   
 
     
 })();
