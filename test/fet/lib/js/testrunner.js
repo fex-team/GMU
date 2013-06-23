@@ -120,19 +120,19 @@ var QUnit = {
 				QUnit.stop();
 			}
 
-			try {
+			// try {
 				callback.call(testEnvironment);
-			} catch(e) {
-				fail("Test " + name + " died, exception and test follows", e, callback);
-				QUnit.ok( false, "Died on test #" + (config.assertions.length + 1) + ": " + e.message );
-				// else next test will carry the responsibility
-				saveGlobal();
+			// } catch(e) {
+			// 	fail("Test " + name + " died, exception and test follows", e, callback);
+			// 	QUnit.ok( false, "Died on test #" + (config.assertions.length + 1) + ": " + e.message );
+			// 	// else next test will carry the responsibility
+			// 	saveGlobal();
 
-				// Restart the tests if they're blocking
-				if ( config.blocking ) {
-					start();
-				}
-			}
+			// 	// Restart the tests if they're blocking
+			// 	if ( config.blocking ) {
+			// 		start();
+			// 	}
+			// }
 		});
 
 		synchronize(function() {

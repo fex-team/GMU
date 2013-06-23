@@ -16,7 +16,7 @@
             dots: true,
 
             selector: {
-                dot: '.ui-slider-dots'    // 所有点父级的选择器
+                dots: '.ui-slider-dots'    // 所有点父级的选择器
             }
         }
     } );
@@ -25,10 +25,6 @@
         
         var updateDots = function( to, from ) {
             var dots = this._dots;
-
-            if ( !dots ) {
-                return;
-            }
 
             typeof from === 'undefined' || gmu.staticCall( dots[
                 from % this.length ], 'removeClass', 'ui-state-active' );
@@ -49,14 +45,13 @@
             }
 
             this._dots = dots.children().toArray();
-            updateDots.call( this, this.index );
         } );
 
         this.on( 'slide', function( e, to, from ) {
             updateDots.call( this, to, from );
         } );
 
-        this.on( 'create', function() {
+        this.on( 'ready', function() {
             updateDots.call( this, this.index );
         } );
     } );

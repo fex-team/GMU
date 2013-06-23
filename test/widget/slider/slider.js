@@ -249,6 +249,29 @@
         } );
     } );
 
+    test( 'slideTo 方向', function() {
+        stop();
+
+        var dom = $('<div>' +
+                '<div> item 1</div>' +
+                '<div> item 2</div>' +
+                '<div> item 3</div>' +
+                '<div> item 4</div>' +
+                '</div>').appendTo( fixture ),
+            instance,
+            pos;
+
+        instance = dom.slider({index: 2}).slider('this');
+
+        pos = instance._slidePos[2];
+
+        instance.slideTo(4);
+        ok( instance._slidePos[2] > pos, '方向正确');
+
+        dom.slider('destroy').remove();
+        start();
+    } );
+
     test( 'prev', function() {
         stop();
 
@@ -264,13 +287,13 @@
         dom.slider({index: 1});
 
         items = dom.find('.ui-slider-item');
-        equal( items.eq(1).offset().left, pos, '当前第二个可见' );
+        approximateEqual( items.eq(1).offset().left, pos, '当前第二个可见' );
         ok( items.eq(0).offset().left < pos, '当前第一在左边');
 
         dom.slider( 'prev');
         dom.slider( 'one', 'slideend', function() {
             ok( items.eq(1).offset().left > pos, '当前第二个滑到右边');
-            equal( items.eq(0).offset().left, pos, '第一个可见' );
+            approximateEqual( items.eq(0).offset().left, pos, '第一个可见' );
 
             dom.slider( 'prev');
             equal( this.getIndex(), 0, 'still 0');
@@ -296,13 +319,13 @@
         dom.slider({index: 2});
 
         items = dom.find('.ui-slider-item');
-        equal( items.eq(2).offset().left, pos, '当前第三个可见' );
+        approximateEqual( items.eq(2).offset().left, pos, '当前第三个可见' );
         ok( items.eq(3).offset().left > pos, '当前第四在右边');
 
         dom.slider( 'next');
         dom.slider( 'one', 'slideend', function() {
             ok( items.eq(2).offset().left < pos, '当前第三个滑到左边');
-            equal( items.eq(3).offset().left, pos, '第四个可见' );
+            approximateEqual( items.eq(3).offset().left, pos, '第四个可见' );
 
             dom.slider( 'next');
             equal( this.getIndex(), 3, 'still 3');
