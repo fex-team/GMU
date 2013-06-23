@@ -123,16 +123,18 @@
         },
 
         _initWidth: function( $el, index, force ) {
-            var width;
+            var me = this,
+                width;
 
             // width没有变化不需要重排
-            if ( !force && (width = $el.width()) === this.width ) {
+            if ( !force && (width = $el.width()) === me.width ) {
                 return;
             }
 
-            this.width = width;
-            this._arrange( width, index );
-            this.height = $el.height();
+            me.width = width;
+            me._arrange( width, index );
+            me.height = $el.height();
+            me.trigger( 'width.change' );
         },
 
         // 重排items

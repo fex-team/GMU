@@ -19,7 +19,7 @@
             me.on( 'slideend', me._adjustPos );
             me.getEl().on( 'touchstart.slider', function() {
                 me._adjustPos();
-            });
+            } );
         },
 
         _create: function() {
@@ -43,7 +43,7 @@
             me._adjustPos( true );
         },
 
-        trigger: function( e, to, from ) {
+        trigger: function( e, to ) {
 
             if ( e === 'slide' || e.type === 'slide' ) {
                 this._active = this._pool[ to ];
@@ -56,7 +56,7 @@
             var index = this.getIndex();
 
             // 一次只允许移动一张
-            if( Math.abs( to - index ) !== 1 ) {
+            if ( Math.abs( to - index ) !== 1 ) {
                 return;
             }
 
@@ -90,7 +90,6 @@
 
             var me = this,
                 opts = me._options,
-                $el = me.getEl(),
                 content = me._content,
                 group = me._group,
                 index = $.inArray( me._active, content ),
@@ -104,6 +103,7 @@
                 elem = $( me.tpl2html( 'item', item ) );
                 gmu.staticCall( me._items[ 1 - delta ], 'remove' );
                 group[ delta < 0 ? 'prepend' : 'append' ]( elem );
+                me.trigger( 'dom.change' );
 
                 me._pool.splice( 1 - delta, 1 );
                 me._pool[ delta < 0 ? 'unshift' : 'push' ]( item );
@@ -188,7 +188,6 @@
             }
 
             var me = this,
-                opts = me._data,
                 active = me._active,
                 index = $.inArray( active, content ),
                 group = this._group.empty();
@@ -199,6 +198,7 @@
             me._arrange( me.width, me.index );
 
             me._adjustPos( false, true );
+            me.trigger( 'dom.change' );
         }
     } );
 })( gmu, gmu.$ );

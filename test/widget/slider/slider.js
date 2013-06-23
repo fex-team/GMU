@@ -264,7 +264,6 @@
         instance = dom.slider({index: 2}).slider('this');
 
         pos = instance._slidePos[2];
-        console.log( pos );
 
         instance.slideTo(4);
         ok( instance._slidePos[2] > pos, '方向正确');
