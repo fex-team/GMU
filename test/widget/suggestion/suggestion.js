@@ -259,10 +259,10 @@ test("history() & historyShare = true", function () {
 
     try {
         if (window.localStorage[key]) {
-            window.localStorage[key] = ''
+            delete window.localStorage[key];
         }
 
-        equal(window.localStorage[key], '', 'localstorage已初始化');
+        ok(!window.localStorage[key], 'localstorage已初始化');
 
         sugg1.history('test');
         equal(window.localStorage[key], 'test', 'history的key正确，并value值正确存储到sug1中');
@@ -309,10 +309,10 @@ test("history() & historyShare = 'test'", function () {
 
     try {
         if (window.localStorage[key]) {
-            window.localStorage[key] = ''
+            delete window.localStorage[key];
         }
 
-        equal(window.localStorage[key], '', 'localstorage已初始化');
+        ok(!window.localStorage[key], 'localstorage已初始化');
 
         sugg1.history('test');
         equal(window.localStorage[key], 'test', 'history的key正确，并value值正确存储到sug1中');

@@ -24,20 +24,20 @@
     border-radius: 2px 0 0 2px;
 }
 
-.search-input input {
+.search-input input{
     width: 100%;
     height: 39px;
     padding: 0 10px;
 }
 
-.search-button {
+.search-button, .submit{
     border: 1px solid #888888;
     border-left: none;
     border-radius: 0 2px 2px 0;
     z-index: 0;
 }
 
-.search-button input {
+.search-button input, .search-button .submit {
     -webkit-appearance: none;
     -moz-appearance: none;
     line-height: 39px;

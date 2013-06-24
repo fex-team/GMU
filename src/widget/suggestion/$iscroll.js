@@ -44,10 +44,10 @@
         /**
          * 复写_fillWrapper方法，数据及按钮调整顺序
          * */
-        _fillWrapper: function( listHtml, query ) {
+        _fillWrapper: function( listHtml ) {
 
             // 数据不是来自历史记录时隐藏清除历史记录按钮
-            this.$clearBtn[ query ? 'hide' : 'show' ]();
+            this.$clearBtn[ this.value() ? 'hide' : 'show' ]();
 
             if ( listHtml ) {
                 this.show().$scroller.html( listHtml );
