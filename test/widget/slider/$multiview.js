@@ -314,62 +314,6 @@
             this.finish();
         });
     });
-
-    test('work with touch', function(){
-        stop();
-
-        ua.importsrc('widget/slider/$touch', function(){
-
-            var dom = $('<div style="width: 200px;">' +
-                    '<div> item 1</div>' +
-                    '<div> item 2</div>' +
-                    '<div> item 3</div>' +
-                    '<div> item 4</div>' +
-                    '</div>').appendTo( fixture ),
-                pos = dom.offset(),
-                ins;
-
-            ins = dom.slider({loop:true, index:2}).slider('this');
-
-            equal( ins._slidePos[0], -200);
-            equal( ins._slidePos[1], -100);
-            equal( ins._slidePos[2], 0);
-            equal( ins._slidePos[3], 100);
-
-
-            ta.touchstart(dom[0], {
-                touches:[{
-                    pageX: 200,
-                    pageY:0
-                }]
-            });
-
-            ta.touchmove(dom[0], {
-                touches:[{
-                    pageX: 60,
-                    pageY: 0
-                }]
-            });
-
-            setTimeout(function(){
-
-                ta.touchend(dom[0]);
-
-                equal( ins.getIndex(), 3 );
-
-                
-                equal( ins._slidePos[1], -200);
-                equal( ins._slidePos[2], -100);
-                equal( ins._slidePos[3], 0);
-                equal( ins._slidePos[4], 100);
-                equal( ins._slidePos[5], 200);
-
-                dom.slider('destroy').remove();
-                start();
-            }, 250);
-
-        }, 'gmu.Slider.plugins.touch', 'widget/slider/slider');
-    });
     
     
 })();
