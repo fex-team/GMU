@@ -256,7 +256,7 @@
             pos = dom.offset(),
             ins;
 
-        ins = dom.slider({loop:true,travelSize: 1}).slider('this');
+        ins = dom.slider({loop:true}).slider('this');
 
         equal( ins._slidePos.length, 8);
         equal( ins._slidePos[0], 0);
