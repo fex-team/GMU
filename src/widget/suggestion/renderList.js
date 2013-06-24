@@ -84,7 +84,7 @@
 
         me.on( 'ready', function() {
             var me = this,
-                ns = me.ns,
+                ns = me.eventNs,
                 $form = $( me._options.form || me.getEl().closest( 'form' ));
 
             // 绑定form的submit事件

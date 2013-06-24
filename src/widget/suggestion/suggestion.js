@@ -132,7 +132,7 @@
         _bindEvent: function() {
             var me = this,
                 $el = me.getEl(),
-                ns = me.ns;
+                ns = me.eventNs;
 
             me._options.autoClose && $( document ).on( 'tap' + ns, function( e ) {
 
