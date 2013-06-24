@@ -110,7 +110,7 @@ module.exports = function(grunt) {
 
         fet: {
             options: {
-                url: 'http://localhost/gmu/test/fet/bin/run.php?case=',
+                url: 'http://localhost/GMU/test/fet/bin/run.php?case=',
                 cov: true
             },
             
@@ -119,14 +119,18 @@ module.exports = function(grunt) {
                 src: [ '**/*.js', '!fet/**/*.js', '!mindmap/**/*.js' ]
             },
 
-            slider: {
+            temp: {
                 cwd: 'test/',
-                src: 'widget/slider/*.js'
-            },
+                src: ['core/*.js', 'widget/slider/*.js']
+            }
+        },
 
-            core: {
-                cwd: 'test/',
-                src: 'core/*.js'
+        testDownload: {
+            options: {
+                url: 'http://localhost/GMU/test.html'
+            },
+            GMU: {
+
             }
         }
         
@@ -155,6 +159,8 @@ module.exports = function(grunt) {
             'concat_gmu', 'uglify', 'smart_cov', 'fet:all'] );
 
     grunt.registerTask( 'test', [ 'update_submodules', 'concat', 'concat_gmu',
-            'smart_cov', 'fet:all' ]);
+            'smart_cov', 'fet:temp' ]);
+
+    grunt.registerTask( 'download', ['testDownload'] );
 
 };

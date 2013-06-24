@@ -137,7 +137,7 @@
 
                     // 从el上获取option
                     var dom_options = getDomOptions( el, fn.options );
-                    var options = me._options = $.extend( {}, fn.options, dom_options, options );
+                    var options = me._options = $.extend( true, {}, fn.options, dom_options, options );
 
                     // 将template和tpl2html挂到实例上
                     if ( options.template !== undefined ) {
@@ -317,8 +317,8 @@ window.gmu.$.ui = gmu;
 
 (function( gmu ) {
     var blankFn = function() {
-
         },
+        slice = [].slice,
         event = gmu.event;
 
     /**
@@ -385,22 +385,23 @@ window.gmu.$.ui = gmu;
          * 或者调用event.preventDefault()阻止后续事件执行
          */
         trigger: function( name ) {
-            var evt = typeof name === 'string' ? new gmu.Event(name) : name,
-                args = [evt].concat( Array.prototype.slice.call( arguments, 1 ) ),
-                opEvent = this._options[name],
+            var evt = typeof name === 'string' ? new gmu.Event( name ) : name,
+                args = [ evt ].concat( slice.call( arguments, 1 ) ),
+                opEvent = this._options[ name ],
 
                 // 先存起来，否则在下面使用的时候，可能已经被destory给删除了。
                 $el = this.getEl();
 
             if ( opEvent && $.isFunction( opEvent ) ) {
+                
                 // 如果返回值是false,相当于执行stopPropagation()和preventDefault();
                 false === opEvent.apply( this, args ) && (evt.stopPropagation(), evt.preventDefault());
             }
 
-            gmu.event.trigger.apply(this, args);
+            event.trigger.apply( this, args );
 
             // triggerHandler不冒泡
-            $el && $el.triggerHandler( evt, args );
+            $el && $el.triggerHandler( evt, (args.unshift(), args) );
 
             return this;
         },

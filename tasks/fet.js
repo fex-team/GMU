@@ -132,7 +132,7 @@ module.exports = function(grunt) {
                 grunt.log.error();
                 logFailedAssertions();
             } else {
-                grunt.log.write('F'.red);
+                grunt.log.write('X'.red);
             }
         } else {
             grunt.verbose.ok().or.write('.');
@@ -164,6 +164,12 @@ module.exports = function(grunt) {
         grunt.warn('PhantomJS unable to load "' + url + '" URI.');
     });
 
+    // Re-broadcast qunit events on grunt.event.
+    phantomjs.on('qunit.*', function() {
+        var args = [this.event].concat(grunt.util.toArray(arguments));
+        grunt.event.emit.apply(grunt.event, args);
+    });
+
     phantomjs.on('fail.timeout', function() {
         phantomjs.halt();
         grunt.log.writeln();
@@ -183,7 +189,7 @@ module.exports = function(grunt) {
                 inject: asset('tasks/lib/bridge.js'),
                 phantomScript: asset('tasks/lib/phantom.js'),
 
-                url: 'http://localhost:8000/test/fet/bin/run.php?case='
+                url: 'http://localhost/GMU/test/fet/bin/run.php?case='
             });
 
         tempfile = options.cov && new Tempfile();
@@ -260,7 +266,9 @@ module.exports = function(grunt) {
                         coverage = JSON.parse( coverage );
                         grunt.log.writeln('\n覆盖率输出结果');
                         outputRows( coverageRender(coverage), function( value, x, y) {
-                            if( x === 1 ) {
+                            if( /^100%/.test(value) ) {
+                                return String(value).magenta
+                            } else if( x === 1 ) {
                                 return String(value).red;
                             } else if( x===0 ) {
                                 return String(value).green;

@@ -4,126 +4,115 @@
  *  @desc 定位插件
  *  @import zepto.js
  */
-//offset
-(function($, undefined){
-    var _offset = $.fn.offset, offset ={};
+(function( $ ) {    // 修复zepto的offset setter的一个bug
 
-    /**
-     * @name offset
-     * @grammar offset()  ⇒ array
-     * @grammar offset(coordinates)  ⇒ self
-     * @grammar offset(function(index, oldOffset){ ... })  ⇒ self
-     * @desc 扩展offset方法，让它支持设置制定坐标。
-     * @example $('p').offset({top: 50, left: 50});//将p设置到坐标点（50， 50）位置。
-     *
-     * $('p').offset(function(index, oldOffset){//将p的位置向做移动50px
-     *     oldOffset.left -=50;
-     *     return oldOffset;
-     * });
-     */
-    $.fn.offset = function(options){
-        //如果传入的不是object，则直接调用老的offset.
-        if(!$.isPlainObject(options))return _offset.apply(this, arguments);
-        //遍历调用offsets.setOffset。
-        return this.each(function(i){
-            offset.setOffset( this, options, i );
-        });
-    }
+    var _offset = $.fn.offset;
 
-    //设置offset值
-    offset.setOffset = function ( elem, options, i ) {
-        var $el = $(elem),
-            position = $el.css( "position"),
-            curOffset = $el.offset(),
-            curCSSTop = $el.css( "top" ),
-            curCSSLeft = $el.css( "left" ),
-            calculatePosition = ( position === "absolute" || position === "fixed" ) && ~$.inArray("auto", [curCSSTop, curCSSLeft]),
-            props = {}, curPosition = {}, curTop, curLeft;
+    $.fn.offset = function( coord ) {
+        var hook;
 
-        //如果是static定位，则需要把定位设置成relative，否则top，left值无效。
-        position === "static" && $el.css("position", "relative");
+        hook = coord && function() {
+            var pos = $( this ).position(),
+                style = this.style;
 
-        //如果定位是absolute或者fixed，同时top或者left中存在auto定位。
-        curPosition = calculatePosition?$el.position():curPosition;
-        curTop = curPosition.top || parseFloat( curCSSTop ) || 0;
-        curLeft = curPosition.left || parseFloat( curCSSLeft ) || 0;
+            coord = typeof coord === 'function' ? 
+                    coord.apply( this, arguments ) : coord;
 
-        //如果options是一个方法，则调用此方法来获取options，同时传入当前offset
-        options = $.isFunction( options )?options.call( elem, i, curOffset ):options;
-
-        options.top != null && (props.top = options.top - curOffset.top + curTop);
-        options.left != null && (props.left = options.left - curOffset.left + curLeft);
-
-        "using" in options ? options.using.call( elem, props ): $el.css( props );
-    }
-})(Zepto);
-
-//position
-(function ($, undefined) {
-    var _position = $.fn.position || function(){
-            if (!this.length) return null;
-            var offsetParent = this.offsetParent(),
-                offset       = this.offset(),
-                parentOffset = /^(?:body|html)$/i.test(offsetParent[0].nodeName) ? { top: 0, left: 0 } : offsetParent.offset()
-
-            parentOffset.top  += parseFloat( offsetParent.css('border-top-width') ) || 0
-            parentOffset.left += parseFloat( offsetParent.css('border-left-width') ) || 0
-
-            return {
-                top:  offset.top  - parentOffset.top,
-                left: offset.left - parentOffset.left
+            if ( !~[ '', 'static' ].indexOf( style.position ) ) {
+                pos.top -= parseFloat( style.top );
+                pos.left -= parseFloat( style.left );
             }
-        },
+
+            coord = {
+                top: coord.top - pos.top,
+                left: coord.left - pos.left
+            };
+
+            return coord;
+        };
+
+        return _offset.call( this, hook );
+    }
+
+})( Zepto );
+
+
+(function ($, undefined) {
+    var _position = $.fn.position,
         round = Math.round,
-        rhorizontal = /left|center|right/,
-        rvertical = /top|center|bottom/,
-        roffset = /([\+\-]\d+%?)/,
-        rposition = /^\w+/,
+        rhorizontal = /^(left|center|right)([\+\-]\d+%?)?$/,
+        rvertical = /^(top|center|bottom)([\+\-]\d+%?)?$/,
         rpercent = /%$/;
 
-    function getOffsets( offsets, width, height ) {
+    function str2int( persent, totol ) {
+        return (parseInt( persent, 10 ) || 0) * (rpercent.test( persent ) ?
+                totol / 100 : 1);
+    }
+
+    function getOffsets( pos, offset, width, height ) {
         return [
-            parseInt( offsets[ 0 ], 10 ) * ( rpercent.test( offsets[ 0 ] ) ? width / 100 : 1 ),
-            parseInt( offsets[ 1 ], 10 ) * ( rpercent.test( offsets[ 1 ] ) ? height / 100 : 1 )
+            pos[ 0 ] === 'right' ? width : pos[ 0 ] === 'center' ?
+                    width / 2 : 0,
+
+            pos[ 1 ] === 'bottom' ? height : pos[ 1 ] === 'center' ?
+                    height / 2 : 0,
+
+            str2int( offset[ 0 ], width ),
+
+            str2int( offset[ 1 ], height )
         ];
     }
 
-    function parseCss( elem, prop ) {
-        return parseInt( elem.css( prop ), 10 ) || 0;
-    }
-
     function getDimensions( elem ) {
-        var raw = elem[0];
-        return raw.nodeType === 9?{//如果是document
-            width: elem.width(),
-            height: elem.height(),
-            top: 0,
-            left: 0
-        }: raw == window ? {//如果是window
-            width: elem.width(),
-            height: elem.height(),
-            top: raw.pageYOffset,
-            left: raw.pageXOffset
-        }: raw.preventDefault && (raw = raw.touches?raw.touches[0]:raw) ? {//如果是event对象
-            width: 0,
-            height: 0,
-            offset: { top: raw.pageY, left: raw.pageX }
-        }: elem.offset();
+        var raw = elem[ 0 ],
+            isEvent = raw.preventDefault;
+
+        raw = raw.touches && raw.touches[ 0 ] || raw;
+
+        // 特殊处理document, window和event对象
+        if ( raw.nodeType === 9 || raw === window || isEvent ) {
+            return {
+                width: isEvent ? 0 : elem.width(),
+                height: isEvent ? 0 : elem.height(),
+                top: raw.pageYOffset || raw.pageY ||  0,
+                left: raw.pageXOffset || raw.pageX || 0
+            };
+        }
+
+        return elem.offset();
     }
 
-    function getWithinInfo(elem){
-        var withinElem = $( elem = (elem || window) ),
-            _isWindow = elem == window,
-            offset = _isWindow? { left: 0, top: 0 } : withinElem.offset();
+    function getWithinInfo( el ) {
+        var $el = $( el = (el || window) ),
+            dim = getDimensions( $el );
+
+        el = $el[ 0 ];
+
         return {
-            element: withinElem,
-            isWindow: _isWindow,
-            offset: offset,
-            width: offset.width || withinElem.width(),
-            height: offset.height || withinElem.height(),
-            scrollLeft: _isWindow?elem.pageXOffset:elem.scrollLeft,
-            scrollTop: _isWindow?elem.pageYOffset:elem.scrollTop
+            $el: $el,
+            width: dim.width,
+            height: dim.height,
+            scrollLeft: el.pageXOffset || el.scrollLeft,
+            scrollTop: el.pageYOffset || el.scrollTop
         };
+    }
+
+    // 参数检测纠错
+    function filterOpts( opts, offsets ) {
+        [ 'my', 'at' ].forEach(function( key ) {
+            var pos = ( opts[ key ] || '' ).split( ' ' ),
+                opt = opts[ key ] = [ 'center', 'center' ],
+                offset = offsets[ key ] = [ 0, 0 ];
+
+            pos.length === 1 && pos[ rvertical.test( pos[ 0 ] ) ? 'unshift' :
+                    'push' ]( 'center' );
+
+            rhorizontal.test( pos[ 0 ] ) && (opt[ 0 ] = RegExp.$1) &&
+                    (offset[ 0 ] = RegExp.$2);
+
+            rvertical.test( pos[ 1 ] ) && (opt[ 1 ] = RegExp.$1) &&
+                    (offset[ 1 ] = RegExp.$2);
+        });
     }
 
     /**
@@ -139,94 +128,49 @@
      * - ''of'' //默认为null// 设置目标元素
      * - ''collision'' //默认为null// 碰撞检测回调方法。传入function.
      * - ''within'' //默认为window，碰撞检测对象。
-     * - ''using''  传入function，如果没有传入position将通过css方法设置，可以传入一个function在方法中，通过animate方法来设置，这样就有了动画效果，而不是瞬间变化。
      */
-    $.fn.position = function (opts) {
-        if (!opts || !opts.of) {
-            return _position.call(this);
+    $.fn.position = function ( opts ) {
+        if ( !opts || !opts.of ) {
+            return _position.call( this );
         }
-        opts = $.extend({}, opts);//弄个副本
 
-        var atOffset, targetWidth, targetHeight, basePosition, dimensions,
-            target = $( opts.of ), tmp, collision,
-            within = getWithinInfo( opts.within ),
-            offsets = {};
+        var target = $( opts.of ),
+            collision = opts.collision,
+            within = collision && getWithinInfo( opts.within ),
+            ofses = {},
+            dim = getDimensions( target ),
+            bPos = {
+                left: dim.left,
+                top: dim.top
+            },
+            atOfs;
 
-        dimensions = getDimensions( target );
-        target[0].preventDefault && (opts.at = "left top");
-        targetWidth = dimensions.width;
-        targetHeight = dimensions.height;
-        basePosition = {
-            left: dimensions.left,
-            top: dimensions.top
-        };
+        target[ 0 ].preventDefault && (opts.at = 'left top');
+        filterOpts( opts, ofses );    // 参数检测纠错
 
-        $.each( [ "my", "at" ], function() {
-            var pos = ( opts[ this ] || "" ).split( " " );
-
-            pos.length ===1 && pos[rhorizontal.test( pos[ 0 ] )?"push":"unshift"]("center");
-            pos[ 0 ] = rhorizontal.test( pos[ 0 ] ) ? pos[ 0 ] : "center";
-            pos[ 1 ] = rvertical.test( pos[ 1 ] ) ? pos[ 1 ] : "center";
-
-            offsets[ this ] = [
-                roffset.test(pos[ 0 ]) ? RegExp.$1 : 0,
-                roffset.test(pos[ 1 ]) ? RegExp.$1 : 0
-            ];
-            opts[ this ] = [
-                rposition.exec( pos[ 0 ] )[ 0 ],
-                rposition.exec( pos[ 1 ] )[ 0 ]
-            ];
-        });
-
-        basePosition.left += (tmp = opts.at[ 0 ]) === "right"?targetWidth:tmp == "center"?targetWidth / 2:0;
-        basePosition.top += (tmp = opts.at[ 1 ]) === "bottom"?targetHeight:tmp == "center"?targetHeight / 2:0;
-
-        atOffset = getOffsets( offsets.at, targetWidth, targetHeight );
-        basePosition.left += atOffset[ 0 ];
-        basePosition.top += atOffset[ 1 ];
+        atOfs = getOffsets( opts.at, ofses.at, dim.width, dim.height );
+        bPos.left += atOfs[ 0 ] + atOfs[ 2 ];
+        bPos.top += atOfs[ 1 ] + atOfs[ 3 ];
 
         return this.each(function() {
-            var collisionPosition,
-                elem = $( this ),
-                offset = elem.offset(),
-                tmp,
-                elemWidth = offset.width,
-                elemHeight = offset.height,
-                marginLeft = parseCss( elem, "marginLeft" ),
-                marginTop = parseCss( elem, "marginTop" ),
-                collisionWidth = elemWidth + marginLeft + parseCss( elem, "marginRight" ),
-                collisionHeight = elemHeight + marginTop + parseCss( elem, "marginBottom" ),
-                position = $.extend( {}, basePosition ),
-                myOffset = getOffsets( offsets.my, elemWidth, elemHeight );
+            var $el = $( this ),
+                ofs = $el.offset(),
+                pos = $.extend( {}, bPos ),
+                myOfs = getOffsets( opts.my, ofses.my, ofs.width, ofs.height );
 
-            position.left -= (tmp = opts.my[ 0 ]) === "right"?elemWidth:tmp==="center"?elemWidth/2:0;
-            position.top -= (tmp = opts.my[ 1 ]) === "bottom"?elemHeight:tmp==="center"?elemHeight/2:0;
-            position.left += myOffset[ 0 ];
-            position.top += myOffset[ 1 ];
+            pos.left = round( pos.left + myOfs[ 2 ] - myOfs[ 0 ] );
+            pos.top = round( pos.top + myOfs[ 3 ] - myOfs[ 1 ] );
 
-            position.left = round(position.left);
-            position.top = round(position.top);
-
-            collisionPosition = {
-                marginLeft: marginLeft,
-                marginTop: marginTop
-            };
-
-            $.isFunction(collision = opts.collision) && collision.call(this, position, {
-                targetWidth: targetWidth,
-                targetHeight: targetHeight,
-                elemWidth: elemWidth,
-                elemHeight: elemHeight,
-                collisionPosition: collisionPosition,
-                collisionWidth: collisionWidth,
-                collisionHeight: collisionHeight,
-                offset: [ atOffset[ 0 ] + myOffset[ 0 ], atOffset [ 1 ] + myOffset[ 1 ] ],
+            collision && collision.call( this, pos, {
+                of: dim,
+                offset: ofs,
                 my: opts.my,
                 at: opts.at,
                 within: within,
-                elem : elem
-            });
-            elem.offset( $.extend( position, { using: opts.using } ) );
+                $el : $el
+            } );
+
+            $el.offset( pos );
         });
     }
-})(Zepto);
+})( Zepto );

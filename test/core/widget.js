@@ -261,16 +261,22 @@ test("zeptoLize", function(){
 
 
 test("destroy", function(){
-    expect(0);
+    expect(1);
 
     $(document.body).append('<div id="test"></div>');
     var test = new gmu.test('#test');
+
+    test.on('init', function(){});
+    test.on('create', function(){});
+
+    // this._events已被删除，没办法检查自定义事件是否都被解绑，通过off间接检查
+    test.off();
+    ok(test._events.length === 0, 'destroy后自定义事件检查：Passed！');
 
     test.destroy();
 
     $('#test').remove();
 
-    //TODO 检查事件方法属性等是否销毁
 });
 
 test("on off trigger", function(){
