@@ -166,15 +166,23 @@
             
             dom.slider( 'one', 'slideend', function(){
 
-                dom.find('img[src$="image4.png"]').on( 'load', function(){
-                    approximateEqual(this.width, 200);
+                
+            });
+
+            dom.slider('next');
+            setTimeout(function(){
+                dom.find('img[src$="image4.png"]').each(function(){
+                    var el = this;
+                    if(!this.naturalWidth) {
+                        setTimeout( 100, arguments.callee );
+                        return ;
+                    }
+                    approximateEqual(el.width, 200);
                     
                     dom.slider('destroy').remove();
                     start();
                 });
-            });
-
-            dom.slider('next');
+            }, 500);
         }, 'gmu.Slider', 'widget/slider/slider');
     });
 
