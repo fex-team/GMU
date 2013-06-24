@@ -17,7 +17,7 @@
 
             // 当滑动结束后调整
             me.on( 'slideend', me._adjustPos );
-            me.getEl().on( 'touchstart.slider', function() {
+            me.getEl().on( 'touchstart' + me.eventNs, function() {
                 me._adjustPos();
             } );
         },

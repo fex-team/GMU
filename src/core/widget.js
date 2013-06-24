@@ -118,6 +118,7 @@
             }
 
             var widgetInit = object._init || blankFn,
+                uuid = 0,
                 fn = function( el, options ) {
 
                     if ( !(this instanceof fn) ) {
@@ -146,6 +147,9 @@
                     if ( options.tpl2html !== undefined )  {
                         me.tpl2html = options.tpl2html;
                     }
+
+                    // 生成eventNs
+                    me.eventNs = '.' + fn._fullname_ + uuid++;
 
                     // 执行父类的构造函数
                     superClass.apply( me, [ el, options ] );
@@ -434,6 +438,9 @@ window.gmu.$.ui = gmu;
 
             // 让外部先destroy
             this.trigger( 'destroy' );
+
+            // 解绑element上的事件
+            this.$el.off( this.eventNs );
             
             // 解绑所有自定义事件
             this.off();
