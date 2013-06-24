@@ -80,68 +80,55 @@
                 }
 
                 return html;
-            },
-            eventHandler,
-            $form,
-            ns;
+            };
 
         me.on( 'ready', function() {
-            ns = me.ns;
-            $form = $( me._options.form || me.getEl().closest( 'form' ) );
-            eventHandler = $.proxy( me._eventHandler, me );
-
-            // 扩展sug事件
-            $.extend( me.eventMap, {
-
-                submit: function(e) {
-                    var submitEvent = gmu.Event('submit');
-
-                    this._options.isHistory &&
-                            this._localStorage( this.value() );
-
-                    this.trigger( submitEvent );
-                    // 阻止表单默认提交事件
-                    submitEvent.isDefaultPrevented() && e.preventDefault();
-                },
-
-                touchstart: function( e ) {
-
-                    // todo 待验证，新闻页面不会有该bug，待排查原因，中文输入不跳转的bug
-                    e.preventDefault();
-                },
-
-                tap: function( e ) {
-                    var me = this,
-                        $input = me.getEl(),
-                        $elem = $( e.target );
-
-                    // 点击加号，input值上框
-                    if ( $elem.hasClass( 'ui-suggestion-plus' ) ) {
-                        $input.val( $elem.attr( 'data-item' ) );
-
-                    } else if ( $.contains( me.$content.get( 0 ),
-                        $elem.get( 0 ) ) ) {
-
-                        // 点击sug item
-                        setTimeout( function() {    // 防止使用tap造成穿透
-                            $input.val( $elem.text() );
-                            me.trigger( 'select', $elem )
-                                    .hide().$form.submit();
-                        }, 400 );
-                    }
-                }
-            } );
+            var me = this,
+                ns = me.ns,
+                $form = $( me._options.form || me.getEl().closest( 'form' ));
 
             // 绑定form的submit事件
-            $form.size() && (me.$form = $form
-                .on( 'submit' + ns, eventHandler ));
+            $form.size() && (me.$form = $form .on( 'submit' + ns,
+                    function( e ) {
+                        var submitEvent = gmu.Event('submit');
+
+                        me._options.isHistory &&
+                        me._localStorage( me.value() );
+
+                        me.trigger( submitEvent );
+
+                        // 阻止表单默认提交事件
+                        submitEvent.isDefaultPrevented() && e.preventDefault();
+                    }));
+
+            // todo 待验证，新闻页面不会有该bug，待排查原因，中文输入不跳转的bug
+            me.$content.on( 'touchstart' + ns, function(e) {
+                e.preventDefault();
+            });
 
             // 注册tap事件由于中文输入法时，touch事件不能submit
-            this.$content.on( 'touchstart' + ns + ' tap' + ns, eventHandler)
-                    .highlight( 'ui-suggestion-highlight' );
+            me.$content.on( 'tap' + ns, function(e) {
+                var $input = me.getEl(),
+                    $elem = $( e.target );
+
+                // 点击加号，input值上框
+                if ( $elem.hasClass( 'ui-suggestion-plus' ) ) {
+                    $input.val( $elem.attr( 'data-item' ) );
+                } else if ( $.contains( me.$content.get( 0 ),
+                    $elem.get( 0 ) ) ) {
+
+                    // 点击sug item, 防止使用tap造成穿透
+                    setTimeout( function() {
+                        $input.val( $elem.text() );
+                        me.trigger( 'select', $elem )
+                            .hide().$form.submit();
+                    }, 400 );
+                }
+            }).highlight( 'ui-suggestion-highlight' );
 
             me.on( 'destroy', function() {
                 $form.size() && $form.off( ns );
+                me.$content.off();
             } );
         } );
 

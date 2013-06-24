@@ -39,6 +39,10 @@
                     // 中文输入时，focus失效 trace:FEBASE-779
                     $input.blur().focus();
                 } );
+
+                me.on( 'destroy', function() {
+                    me.$quickDel.off().remove();
+                } );
             } );
         },
 
