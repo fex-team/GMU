@@ -250,9 +250,7 @@
     } );
 
     test( 'slideTo 方向', function() {
-        stop();
-
-        var dom = $('<div>' +
+         var dom = $('<div>' +
                 '<div> item 1</div>' +
                 '<div> item 2</div>' +
                 '<div> item 3</div>' +
@@ -269,9 +267,22 @@
         ok( instance._slidePos[2] > pos, '方向正确');
 
         dom.slider('destroy').remove();
-        start();
     } );
+    test( 'slideTo 指向当前item时不操作', function() {
+        var dom = $('<div>' +
+                '<div> item 1</div>' +
+                '<div> item 2</div>' +
+                '<div> item 3</div>' +
+                '<div> item 4</div>' +
+                '</div>').appendTo( fixture );
+        //index === to   不做操作
+        dom.slider('slideTo',0);
+        equal( dom.slider('getIndex'), 0, 'ok');
+        //index === this._circle( to )  不做操作
+        dom.slider('slideTo',4);
+        equal( dom.slider('getIndex'), 0, 'ok');
 
+    } );
     test( 'prev', function() {
         stop();
 

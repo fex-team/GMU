@@ -194,8 +194,6 @@
 
 
     test( '移动位置测试', function() {
-        stop();
-
         var dom = $('<div style="width: 200px;">' +
                 '<div> item 1</div>' +
                 '<div> item 2</div>' +
@@ -209,6 +207,7 @@
 
         equal( ins._slidePos[0], 0);
         equal( ins._slidePos[1], 100);
+
         ins.slideTo( 1 );
         equal( ins._slidePos[0], -100);
         equal( ins._slidePos[1], 0);
@@ -216,9 +215,35 @@
         equal( ins._slidePos[3], 300);
 
         dom.slider('destroy').remove();
+    } );
+    test( 'next,index超出，不操作', function() {
+        stop();
+
+        var dom = $('<div style="width: 200px;">' +
+                '<div> item 1</div>' +
+                '<div> item 2</div>' +
+                '<div> item 3</div>' +
+                '<div> item 4</div>' +
+                '</div>').appendTo( fixture ),
+            pos = dom.offset(),
+            ins;
+        dom.slider({viewNum:1,travelSize: 1});
+        ins = dom.slider('this');
+
+        ins.slideTo(3);
+        equal( ins._slidePos[0], -200);
+        equal( ins._slidePos[1], 200);
+        equal( ins._slidePos[2], 200);
+        equal( ins._slidePos[3], 0);
+        //index超出，不操作
+        ins.next();
+        equal( ins._slidePos[0], -200);
+        equal( ins._slidePos[1], 200);
+        equal( ins._slidePos[2], 200);
+        equal( ins._slidePos[3], 0);
+        dom.slider('destroy').remove();
         start();
     } );
-
     test( '移动位置测试 & loop', function() {
         stop();
 
@@ -231,7 +256,7 @@
             pos = dom.offset(),
             ins;
 
-        ins = dom.slider({loop:true}).slider('this');
+        ins = dom.slider({loop:true,travelSize: 1}).slider('this');
 
         equal( ins._slidePos.length, 8);
         equal( ins._slidePos[0], 0);
@@ -257,8 +282,6 @@
     } );
 
     test( '移动位置测试 & loop - 特需', function() {
-        stop();
-
         var dom = $('<div style="width: 200px;">' +
                 '<div> item 1</div>' +
                 '<div> item 2</div>' +
@@ -278,8 +301,6 @@
         equal( ins._slidePos[3], 200);
 
         dom.slider('destroy').remove();
-        start();
-
     } );
     
     
