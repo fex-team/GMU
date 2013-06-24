@@ -20,8 +20,8 @@
 
             // 避免滑动时，自动切换
             me.getEl()
-                    .on( 'touchstart.slider', $.proxy( me.stop, me ) )
-                    .on( 'touchend.slider', $.proxy( me.resume, me ) );
+                    .on( 'touchstart' + me.eventNs, $.proxy( me.stop, me ) )
+                    .on( 'touchend' + me.eventNs, $.proxy( me.resume, me ) );
         },
 
         /**
