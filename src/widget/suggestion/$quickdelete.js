@@ -15,7 +15,7 @@
                 ns;
 
             me.on( 'ready', function() {
-                ns = me.ns;
+                ns = me.eventNs;
 
                 me.$mask.append( me.$quickDel =
                     $( '<div class="ui-suggestion-quickdel"></div>' ) );
