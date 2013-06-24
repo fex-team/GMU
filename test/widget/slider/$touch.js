@@ -28,7 +28,7 @@
                     start();
                 });
     });
-/*
+
 
     test( 'speed swipe', function() {
         stop();
@@ -798,7 +798,7 @@
             start();
         }, 250);
     });
-*/
+
     test('multiview', function(){
         stop();
 
