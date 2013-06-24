@@ -401,7 +401,8 @@ window.gmu.$.ui = gmu;
             event.trigger.apply( this, args );
 
             // triggerHandler不冒泡
-            $el && $el.triggerHandler( evt, (args.unshift(), args) );
+
+            $el && $el.triggerHandler( evt, (args.shift(), args) );
 
             return this;
         },
