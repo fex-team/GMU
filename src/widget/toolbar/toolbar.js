@@ -3,7 +3,7 @@
  * @name Toolbar
  * @desc <qrcode align="right" title="Live Demo">../gmu/examples/widget/toolbar/toolbar.html</qrcode>
  * 工具栏组件
- * @import core/widget.js, core/fix.js, core/highlight.js
+ * @import core/widget.js, extend/fix.js, extend/highlight.js
  */
 (function( gmu, $ ) {
     
@@ -29,30 +29,34 @@
 
         _init: function() {
             var me = this,
+                $el;
+
+            me.on( 'ready', function() {
                 $el = me.$el;
 
-            if( me._options.fix ) {
-                var placeholder = $('<div class="ui-toolbar-placeholder"></div>').height($el.offset().height).
-                    insertBefore($el).append($el).append($el.clone().css({'z-index': 1, position: 'absolute',top: 0})),
-                    top = $el.offset().top,
-                    check = function() {
-                        document.body.scrollTop > top ? $el.css({position:'fixed', top: 0}) : $el.css('position', 'absolute');
-                    },
-                    offHandle;
+                if( me._options.fix ) {
+                    var placeholder = $('<div class="ui-toolbar-placeholder"></div>').height($el.offset().height).
+                        insertBefore($el).append($el).append($el.clone().css({'z-index': 1, position: 'absolute',top: 0})),
+                        top = $el.offset().top,
+                        check = function() {
+                            document.body.scrollTop > top ? $el.css({position:'fixed', top: 0}) : $el.css('position', 'absolute');
+                        },
+                        offHandle;
 
-                $(window).on('touchmove touchend touchcancel scroll scrollStop', check);
-                $(document).on('touchend touchcancel', function() {
-                    offHandle = arguments.callee;
-                    setTimeout( function() {
-                        check();
-                    }, 200 );
-                });
-                me.on('destroy', function() {
-                    $(window).off('touchmove touchend touchcancel scroll scrollStop', check);
-                    $(document).off('touchend touchcancel', offHandle);
-                    placeholder.off().remove();
-                }).on('init', check);
-            }
+                    $(window).on('touchmove touchend touchcancel scroll scrollStop', check);
+                    $(document).on('touchend touchcancel', function() {
+                        offHandle = arguments.callee;
+                        setTimeout( function() {
+                            check();
+                        }, 200 );
+                    });
+                    me.on('destroy', function() {
+                        $(window).off('touchmove touchend touchcancel scroll scrollStop', check);
+                        $(document).off('touchend touchcancel', offHandle);
+                        placeholder.off().remove();
+                    }).on('init', check);
+                }
+            } );
 
             me.on( 'destroy', function() {
                 // 解绑事件
@@ -169,6 +173,10 @@
 
             me.isShowing === true ? 
                 me.hide() : me.show();
+        },
+
+        fix: function( opts ) {
+            this.$el.fix( opts );
         }
     } );
 })( gmu, gmu.$ );

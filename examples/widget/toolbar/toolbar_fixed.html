@@ -1,84 +1,47 @@
 <!doctype html>
 <html>
 <head>
-    <title>toolbar demo - fixed</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <title>toolbar fixed demo</title>
     <!--demo展示所用css，不用关心 begin-->
     <link rel="stylesheet" type="text/css" href="../../../assets/reset.css" />
-    <link rel="stylesheet" href="toolbar_demo.css"/>
-    <link rel="stylesheet" type="text/css" href="../../../assets/widget/button/button.css" />
-    <link rel="stylesheet" type="text/css" href="../../../assets/widget/button/button.default.css" />
-    <link rel="stylesheet" type="text/css" href="../../../assets/widget/dropmenu/dropmenu.css" />
-    <link rel="stylesheet" type="text/css" href="../../../assets/widget/dropmenu/dropmenu.default.css" />
     <!--demo展示所用css end-->
     <!--组件依赖css begin-->
     <link rel="stylesheet" type="text/css" href="../../../assets/widget/toolbar/toolbar.css" />
     <link rel="stylesheet" type="text/css" href="../../../assets/widget/toolbar/toolbar.default.css" /> <!--皮肤文件，若不使用该皮肤，可以不加载-->
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/button/button.css" />
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/button/button.default.css" />
     <!--组件依赖css end-->
 
     <!--组件依赖js begin-->
     <script type="text/javascript" src="../../../dist/zepto.js"></script>
-    <script type="text/javascript" src="../../../src/core/extend.js"></script>
-    <script type="text/javascript" src="../../../src/core/ui.js"></script>
-    <script type="text/javascript" src="../../../src/core/fix.js"></script>
-    <script type="text/javascript" src="../../../src/widget/toolbar.js"></script>
+    <script type="text/javascript" src="../../../src/core/gmu.js"></script>
+    <script type="text/javascript" src="../../../src/core/event.js"></script>
+    <script type="text/javascript" src="../../../src/core/widget.js"></script>
+    <script type="text/javascript" src="../../../src/widget/toolbar/toolbar.js"></script>
+
+    <script type="text/javascript" src="../../../src/extend/fix.js"></script>
+    <script type="text/javascript" src="../../../src/extend/highlight.js"></script>
+    <script type="text/javascript"  id="test" src="../../../src/widget/button/button.js"></script>
     <!--组件依赖js end-->
-
-    <!--demo展示所用js begin-->
-    <script type="text/javascript" src="../../../src/core/highlight.js"></script>
-    <script type="text/javascript" src="../../../src/widget/button.js"></script>
-    <script type="text/javascript" src="../../../src/widget/dropmenu.js"></script>
-    <!--demo展示所用js end-->
+</head>
 <body>
-<h2 class="toolbar_note_1"> toolbar 不在顶部的时候，可以传入useFix参数来固顶(可以根据机型来判断是否使用该参数,建议不要在不支持fixed的机型上使用）,会创建一份DOM副本。</h2>
 
-<div class="toolbar_1">
+
+<div id="J_toolbar1">
     <a href="../">返回</a>  <!-- 如果按钮为a标签，则默认不会添加点击事件 ,若不为a标签，默认会添加上【点击 history(-1)】的事件,该事件可以自己覆写-->
-    <h2>固顶工具栏</h2>
-    <span class="btn"></span>
+    <h2>工具栏</h2>
+    <span class="btn_1"><span>百科</span></span>
+    <span class="btn_1">知道</span>
 </div>
-
-<div id="article">
-    <p class="article-content">
-        一.记叙文阅读规则<br/>
-        1.景物描写真的作用：渲染气氛，烘托人物心情，推动情节发展，表现人物的品质，存托中心意思<br/>
-        2.运用描写方法的作用：表现人物性格，反映作品主题<br/>
-        3.运用比喻拟人等修辞的作用：运用了……的修辞，生动形象的写出了……<br/>
-        4.运用排比的作用：增强语言启示，生动形象的写出了……<br/>
-        5.反问句的作用：加强语气，引起下文，承上启下<br/>
-        6.设问句的作用：引起读者的注意和思考，引出下文，承上启下<br/>
-        7.题目的作用：概括内容，揭示主题；提示线<br/>
-    </p>
-</div>
-
 <script>
-    //创建按钮
-    var btn = $('.btn').button({label:'切换'}),
-        dropmenu = $.ui.dropmenu({
-            cacheParentOffset: false,
-            btn: btn,
-            align:'right',
-            items:[
-                {
-                    text:'普通工具栏',
-                    href:'toolbar.html'
-                },
-                {
-                    text:'固顶工具栏1',
-                    href:'toolbar_fixed.html'
-                },
-                {
-                    text:'固顶工具栏2',
-                    href:'toolbar_fixed_top.html'
-                }
-            ],
-            //创建toolbar
-            container: $('.toolbar_1').toolbar({
-                useFix: true
-            })
-        });
-    ;
+        // 全setup方式调用
+        $('#J_toolbar1').toolbar({});
 </script>
+
+
+<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+<br /><br /><br /><br /><br /><br /><br />
 </body>
 </html>

@@ -1,9 +1,9 @@
 <!doctype html>
 <html>
 <head>
-    <title>toolbar demo</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <title>toolbar demo</title>
     <!--demo展示所用css，不用关心 begin-->
     <link rel="stylesheet" type="text/css" href="../../../assets/reset.css" />
     <!--demo展示所用css end-->
@@ -36,7 +36,7 @@
 </div>
 <script>
         // 全setup方式调用
-        $('#J_toolbar1').toolbar();
+        $('#J_toolbar1').toolbar({});
 </script>
 
 <div id="J_toolbar2">
@@ -57,7 +57,7 @@
 
 <script>
         // 全render方式调用
-        new gmu.Toolbar({
+        var instance3 = new gmu.Toolbar({
             container: document.body,
             title: '标题',
             leftBtns: ['<span class="btn_1">百科</span>'],
@@ -84,6 +84,7 @@
                                                                     })]);
 </script>
 
-
+<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+<br /><br /><br /><br /><br /><br /><br />
 </body>
 </html>
