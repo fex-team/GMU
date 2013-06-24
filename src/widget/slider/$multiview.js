@@ -105,10 +105,12 @@
 
         next: function() {
             var opts = this._options,
-                travelSize = opts.travelSize;
+                travelSize = opts.travelSize,
+                viewNum = opts.viewNum;
 
-            if ( opts.loop || (this.index + 1 < this.length, travelSize =
-                    Math.min( this.length - 1 - this.index, travelSize )) ) {
+            if ( opts.loop || (this.index + viewNum < this.length &&
+                    (travelSize = Math.min( this.length - 1 - this.index,
+                    travelSize ))) ) {
                 
                 this.slideTo( this.index + travelSize );
             }
