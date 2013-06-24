@@ -10,7 +10,8 @@
         transitionEnd = $.fx.transitionEnd,
 
         // todo 检测3d是否支持。
-        translateZ = ' translateZ(0)';
+        translateZ = ' translateZ(0)',
+        uid = 1;
     
     gmu.define( 'Slider', {
 
@@ -51,11 +52,11 @@
 
             // 更新width
             me._initWidth( $el, me.index );
-            me._container.on( transitionEnd + '.slider',
+            me._container.on( transitionEnd + me.eventNs,
                     $.proxy( me._tansitionEnd, me ) );
 
             // 转屏事件检测
-            $( window ).on( 'ortchange.slider', function() {
+            $( window ).on( 'ortchange' + me.eventNs, function() {
                 me._initWidth( $el, me.index );
             } );
         },
@@ -268,10 +269,8 @@
         },
 
         destroy: function() {
-            this._container.off( transitionEnd + '.slider', 
-                    this._tansitionEnd );
-            $( window ).off( 'ortchange.slider' );
-            this.getEl().off( '.slider' );
+            this._container.off( this.eventNs );
+            $( window ).off( 'ortchange' + this.eventNs );
             return this.$super( 'destroy' );
         }
     } );
