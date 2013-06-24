@@ -874,13 +874,14 @@ var UserAction = {
 		if (exclude)
 			ps.e = exclude;
 		var param1 = exclude || "";
+		var isCov = location.href.match(/cov=true/i);
         /**
          * IE下重复载入会出现无法执行情况
          */
 		var head = doc.getElementsByTagName('head')[0];
 		var sc = doc.createElement('script');
 		sc.type = 'text/javascript';
-		sc.src = srcpath + "?f=" + param0 + "&e=" + param1;
+		sc.src = srcpath + "?f=" + param0 + "&e=" + param1 + (isCov?'&'+isCov : '');
 		head.appendChild(sc);
 
 		matcher = matcher || src;

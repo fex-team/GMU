@@ -10,8 +10,7 @@
         transitionEnd = $.fx.transitionEnd,
 
         // todo 检测3d是否支持。
-        translateZ = ' translateZ(0)',
-        uid = 1;
+        translateZ = ' translateZ(0)';
     
     gmu.define( 'Slider', {
 
