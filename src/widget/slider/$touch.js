@@ -41,15 +41,10 @@
             me.on( 'ready', function() {
 
                 // 绑定手势
-                $el.on( 'touchstart.slider', me._handler );
+                $el.on( 'touchstart' + me.eventNs, me._handler );
                 
                 // 阻止误点击, 犹豫touchmove被preventDefault了，导致长按也会触发click
-                me._container.on( 'click.slider', me._handler );
-            } );
-
-            me.on( 'destroy', function() {
-                me._container.off( '.slider' );
-                $el.off( '.slider', me._handler );
+                me._container.on( 'click' + me.eventNs, me._handler );
             } );
         },
 
@@ -66,7 +61,8 @@
 
             var me = this,
                 touche = e.touches[ 0 ],
-                opts = this._options,
+                opts = me._options,
+                eventNs = me.eventNs,
                 num;
 
             start = {
@@ -85,8 +81,8 @@
             me._move( opts.loop ? me._circle( me.index + num ) :
                     me.index + num, me.width, 0, true );
 
-            me.$el.on( 'touchmove.slider touchend.slider touchcancel.slider',
-                    me._handler );
+            me.$el.on( 'touchmove' + eventNs + ' touchend' + eventNs +
+                    ' touchcancel' + eventNs, me._handler );
         },
 
         _onMove: function( e ) {

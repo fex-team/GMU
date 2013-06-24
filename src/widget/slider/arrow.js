@@ -21,11 +21,11 @@
     } );
 
     gmu.Slider.option( 'arrow', true, function() {
-        var arr = [ 'prev', 'next' ];
-        
+        var me = this,
+            arr = [ 'prev', 'next' ];
+
         this.on( 'done.dom', function( e, $el, opts ) {
-            var selector = opts.selector,
-                me = this;
+            var selector = opts.selector;
 
             arr.forEach(function( name ) {
                 var item = $el.find(selector[ name ]);
@@ -35,13 +35,16 @@
         } );
 
         this.on( 'ready', function() {
-            var me = this;
-
             arr.forEach(function( name ) {
-                me[ '_' + name ].on( 'tap.arrow.slider', function() {
+                me[ '_' + name ].on( 'tap' + me.eventNs, function() {
                     me[ name ].call( me );
                 } );
             });
+        } );
+
+        this.on( 'destroy', function() {
+            me._prev.off( me.eventNs );
+            me._next.off( me.eventNs );
         } );
     } );
 })( gmu, gmu.$ );
