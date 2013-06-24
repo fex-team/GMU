@@ -222,6 +222,7 @@
     } );
 
     test( 'slideTo', function() {
+        expect(4);
         stop();
 
         var dom = $('<div>' +
@@ -231,9 +232,10 @@
                 '<div> item 4</div>' +
                 '</div>').appendTo( fixture ),
             pos = dom.offset().left,
+            ins,
             items;
 
-        dom.slider();
+        ins = dom.slider('this');
 
         items = dom.find('.ui-slider-item');
         equal( items.eq(0).offset().left, pos, '当前第一个可见' );
@@ -243,6 +245,11 @@
         dom.slider( 'one', 'slideend', function() {
             ok( items.eq(0).offset().left < pos, '当前第一个滑到左边');
             equal( items.eq(1).offset().left, pos, '第二个可见' );
+
+            ins.on('slide', function(){
+                ok( false, '不应该执行');
+            });
+            ins.slideTo(1);
 
             dom.slider('destroy').remove();
             start();
