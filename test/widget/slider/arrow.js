@@ -90,5 +90,31 @@
         start();
 
     });
+
+    test("destroy",function(){
+        ua.destroyTest(function(w,f){
+
+            var container = w.$('<div id="container">' +
+                    '<div> item 1</div>' +
+                    '<div> item 2</div>' +
+                    '<div> item 3</div>' +
+                    '<div> item 4</div>' +
+                    '</div>');
+
+            w.$("body").append(container);
+
+            var el1= w.dt.eventLength();
+
+            var obj =  container.slider('this');
+            obj.destroy();
+
+
+            var el2= w.dt.eventLength();
+
+            equal(el1,el2, "The event is ok");
+            equals(w.$("#container").length, 1, "组件之外的dom没有被移除");
+            this.finish();
+        });
+    });
     
 })();

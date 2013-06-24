@@ -3,7 +3,7 @@
  * @name Suggestion
  * @desc <qrcode align="right" title="Live Demo">../gmu/examples/widget/suggestion/suggestion_setup.html</qrcode>
  * 搜索建议组件
- * @import core/widget.js, extend/touch.js
+ * @import core/widget.js, extend/touch.js, extend/highlight.js
  */
 (function( $, win ) {
 
@@ -101,20 +101,6 @@
 
                 // 考虑到在手机上输入比较慢，故未进行稀释处理
                 this._showList();
-            },
-
-            click: function( e ) {
-                var me = this,
-                    target = $( e.target ).closest( 'span' ).get( 0 ),
-                    cls = target ? target.className : '';
-
-                if ( cls === 'ui-suggestion-clear' ) {    // 清除历史记录
-                    me.history( null );
-
-                } else if ( cls === 'ui-suggestion-close' ) {    // 关闭sug
-                    me.getEl().blur();
-                    me.hide().trigger( 'close' );
-                }
             }
         },
 
@@ -143,12 +129,49 @@
             return me.trigger('initdom');
         },
 
+        _bindEvent: function() {
+            var me = this,
+                $el = me.getEl(),
+                ns = me.eventNs;
+
+            me._options.autoClose && $( document ).on( 'tap' + ns, function( e ) {
+
+                // 若点击是的sug外边则关闭sug
+                !$.contains( me.$mask.get( 0 ), e.target ) && me.hide();
+            } );
+
+            $el.on( 'focus' + ns, function() {
+
+                // 当sug已经处于显示状态时，不需要次showlist
+                !me.isShow && me._showList().trigger( 'open' );
+            } );
+
+            $el.on( 'input' + ns, function() {
+
+                // 考虑到在手机上输入比较慢，故未进行稀释处理
+                me._showList();
+            } );
+
+            me.$clearBtn.on( 'click' + ns, function() {
+
+                //清除历史记录
+                me.history( null );
+            } ).highlight( 'ui-suggestion-highlight' );
+
+            me.$closeBtn.on( 'click' + ns, function() {
+
+                // 隐藏sug
+                me.getEl().blur();
+                me.hide().trigger( 'close' );
+            } ).highlight( 'ui-suggestion-highlight' );
+
+            return me;
+        },
+
         _create: function() {
             var me = this,
                 opts = me._options,
-                hs = opts.historyShare,
-                ns = me.ns = '.suggestion',
-                eventHandler = $.proxy( me._eventHandler, me );
+                hs = opts.historyShare;
 
             // 若传默认传true，则使用默认key：'SUG-Sharing-History'
             // 若传false，即表示不共享history，以该sug的id作为key值
@@ -158,26 +181,11 @@
                     'SUG-Sharing-History') :
                     me.getEl().attr( 'id' ) || ('ui-suggestion-' + (guid++));
 
-            me.separator = encodeURIComponent( ',' );    // localStorage中数据分隔符
+            // localStorage中数据分隔符
+            me.separator = encodeURIComponent( ',' );
 
-            opts.autoClose && $( document ).on( 'tap' + ns, function( e ) {
-
-                // 若点击是的sug外边则关闭sug
-                !$.contains( me.$mask.get( 0 ), e.target ) && me.hide();
-            } );
-
-            me._initDom()
-                    .getEl().on( 'focus' + ns + ' input' + ns, eventHandler );
-
-            me.$btn.on( 'click' + ns, eventHandler );
-
-            me.on( 'destroy', function() {
-                me.getEl().off( ns );
-                me.$wrapper.children().off( ns ).remove();
-                me.$wrapper.off( ns ).remove();
-                me.$mask.off( ns ).replaceWith( me.getEl() );
-                opts.autoClose && $( document ).off( ns );
-            });    // 兼容老的历史数据
+            // 创建dom，绑定事件
+            me._initDom()._bindEvent();
 
             return me;
         },
@@ -235,10 +243,6 @@
                     this.hide();
 
             return this;
-        },
-
-        _eventHandler: function( e ) {
-            this.eventMap[ e.type ].call( this, e );
         },
 
         _localStorage: function( value ) {
@@ -342,6 +346,27 @@
             }
 
             return this.trigger( 'hide' );
+        },
+
+        destroy: function() {
+            var me = this,
+                $el = me.getEl(),
+                ns = me.ns;
+
+            // 先执行父级destroy，保证插件或option中的destroy先执行
+            me.trigger( 'destroy' );
+
+            $el.off( ns );
+            me.$mask.replaceWith( $el );
+            me.$clearBtn.off( ns );
+            me.$closeBtn.off( ns );
+            me.$wrapper.children().off().remove();
+            me.$wrapper.remove();
+            me._options.autoClose && $( document ).off( ns );
+
+            this.destroyed = true;
+
+            return me;
         }
     } );
 })( gmu.$, window );

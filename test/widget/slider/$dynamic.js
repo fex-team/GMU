@@ -287,7 +287,45 @@
         dom.remove();
     });
 
-   
+    test("destroy",function(){
+        ua.destroyTest(function(w,f){
+
+            var container = w.$('<div id="container"></div>');
+
+            w.$("body").append(container);
+
+            var el1= w.dt.eventLength();
+
+            var content = new w.Object();
+
+            content = $.extend( content, {
+                content: [{
+                        key: 1
+                    }, {
+                        key: 2
+                    }, {
+                        key: 3
+                    }, {
+                        key: 4
+                    }
+                ],
+                template: {
+                    item: '<div class="ui-slider-item">I am item <%= key %></div>',
+                },
+                index: 1
+            });
+
+            var obj = container.slider(content).slider('this');
+            obj.destroy();
+
+            var el2= w.dt.eventLength();
+
+            equal(el1,el2, "The event is ok");
+            equals(w.$("#container").length, 1, "组件之外的dom没有被移除");
+
+            this.finish();
+        });
+    });
 
     
 })();

@@ -16,13 +16,13 @@
         selector = typeof selector === 'string' ? selector : 'img';
 
         function unWatch() {
-            watches && watches.off( 'load.slider', imgZoom );
+            watches && watches.off( 'load' + me.eventNs, imgZoom );
         }
 
         function watch() {
             unWatch();
             watches = me._container.find( selector )
-                    .on( 'load.slider', imgZoom );
+                    .on( 'load' + me.eventNs, imgZoom );
         }
 
         function imgZoom( e ) {
