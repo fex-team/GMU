@@ -153,7 +153,6 @@
                     start();
                 }, 500);
             });
-//        }, 500);
     });
 
     test('travelSize 3', function () {
