@@ -27,14 +27,32 @@
             fix: false
         },
 
-        template: '',
-
-        tpl2html: function() {
-
-        },
-
         _init: function() {
-            var me = this;
+            var me = this,
+                $el = me.$el;
+
+            if( me._options.fix ) {
+                var placeholder = $('<div class="ui-toolbar-placeholder"></div>').height($el.offset().height).
+                    insertBefore($el).append($el).append($el.clone().css({'z-index': 1, position: 'absolute',top: 0})),
+                    top = $el.offset().top,
+                    check = function() {
+                        document.body.scrollTop > top ? $el.css({position:'fixed', top: 0}) : $el.css('position', 'absolute');
+                    },
+                    offHandle;
+
+                $(window).on('touchmove touchend touchcancel scroll scrollStop', check);
+                $(document).on('touchend touchcancel', function() {
+                    offHandle = arguments.callee;
+                    setTimeout( function() {
+                        check();
+                    }, 200 );
+                });
+                me.on('destroy', function() {
+                    $(window).off('touchmove touchend touchcancel scroll scrollStop', check);
+                    $(document).off('touchend touchcancel', offHandle);
+                    placeholder.off().remove();
+                }).on('init', check);
+            }
 
             me.on( 'destroy', function() {
                 // 解绑事件
@@ -62,43 +80,49 @@
                 currentConteiner = btnContainer['left'];
 
             if( $el ) {  // setup方式创建，从DOM中取出按钮组
-                children  = $el.children();
+                children = $el.children();
+                $toolbarWrap = $el.find('ui-toolbar-wrap');
+                if( $toolbarWrap.length === 0 ){
+                    $toolbarWrap = $('<div class="ui-toolbar-wrap"></div>').appendTo($el);
+                }
 
                 children.forEach( function( child ) {
+                    $toolbarWrap.append(child);
+
                     /^[hH]/.test( child.tagName ) && (currentConteiner = btnContainer['right'], me.title = child);
 
                     !/^[hH]/.test( child.tagName ) && currentConteiner.push( child );
                 } );
             } else {    // render方式，需要先创建Toolbar节点
                 me._bySetup = false;
-                $el = me.$el = $('<div>').appendTo( container );  // TODO 先放在documentFragment中，最后在插到container里
+                $el = me.$el = $('<div><div class="ui-toolbar-wrap"></div></div>').appendTo( container );  // TODO 先放在documentFragment中，最后在插到container里
+                $toolbarWrap = $el.find('.ui-toolbar-wrap');
             }
 
-            me.$el.addClass( 'ui-toolbar' );
-            $(me.title).addClass( 'ui-toolbar-title' );
-            
             // 创建左侧按钮组的容器
-            var leftBtnCOntainer = $el.find('.ui-toolbar-left');
+            var leftBtnCOntainer = $toolbarWrap.find('.ui-toolbar-left');
             if( leftBtnCOntainer.length === 0 ) {
-                leftBtnCOntainer = children.length ? $('<div class="ui-toolbar-left">').insertBefore(children[0]) : $('<div class="ui-toolbar-left">').appendTo($el);
+                leftBtnCOntainer = children.length ? $('<div class="ui-toolbar-left">').insertBefore(children[0]) : $('<div class="ui-toolbar-left">').appendTo($toolbarWrap);
                 btnContainer['left'].forEach( function( btn ) {
                     leftBtnCOntainer.append( btn );
                 } );
             }
-            var rightBtnCOntainer = $el.find('.ui-toolbar-right');
+            var rightBtnCOntainer = $toolbarWrap.find('.ui-toolbar-right');
             if( rightBtnCOntainer.length === 0 ) {
-                rightBtnCOntainer = $('<div class="ui-toolbar-right">').appendTo($el);
+                rightBtnCOntainer = $('<div class="ui-toolbar-right">').appendTo($toolbarWrap);
                 btnContainer['right'].forEach( function( btn ) {
                     rightBtnCOntainer.append( btn );
                 } );
             }
+
+            me.$el.addClass( 'ui-toolbar' );
+            $(me.title).length ? $(me.title).addClass( 'ui-toolbar-title' ) : $('<h1 class="ui-toolbar-title">' + opts.title + '</h1>').insertAfter(leftBtnCOntainer);;
 
             btnContainer['left'] = leftBtnCOntainer;
             btnContainer['right'] = rightBtnCOntainer;
 
             me.addBtns( 'left', opts.leftBtns );
             me.addBtns( 'right', opts.rightBtns );
-
 
             me.trigger( 'create' );
         },
@@ -114,9 +138,11 @@
                 btnContainer = me.btnContainer[position];
 
             // 向下兼容：如果没有传position，认为在右侧添加按钮
+            Object.prototype.toString.call(position) != '[object String]' && (btns = position);
+
             btns.forEach( function( btn, index ) {
                 if( Object.prototype.toString.call(btn) != '[object String]' ) {
-                    btn = btn._el;
+                    btn = btn.getEl();
                 }
                 me._addBtn( btnContainer, btn );
             });

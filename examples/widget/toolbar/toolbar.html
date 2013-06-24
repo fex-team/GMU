@@ -10,6 +10,8 @@
     <!--组件依赖css begin-->
     <link rel="stylesheet" type="text/css" href="../../../assets/widget/toolbar/toolbar.css" />
     <link rel="stylesheet" type="text/css" href="../../../assets/widget/toolbar/toolbar.default.css" /> <!--皮肤文件，若不使用该皮肤，可以不加载-->
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/button/button.css" />
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/button/button.default.css" />
     <!--组件依赖css end-->
 
     <!--组件依赖js begin-->
@@ -18,6 +20,9 @@
     <script type="text/javascript" src="../../../src/core/event.js"></script>
     <script type="text/javascript" src="../../../src/core/widget.js"></script>
     <script type="text/javascript" src="../../../src/widget/toolbar/toolbar.js"></script>
+
+    <script type="text/javascript" src="../../../src/extend/highlight.js"></script>
+    <script type="text/javascript"  id="test" src="../../../src/widget/button/button.js"></script>
     <!--组件依赖js end-->
 </head>
 <body>
@@ -67,10 +72,16 @@
             container: document.body,
             title: '标题',
             leftBtns: ['<span class="btn_1">百科</span>'],
-            rightBtns: ['<span class="btn_1">百科</span>', '<span class="btn_1">百科</span>']
+            rightBtns: [new gmu.Button({
+                                        label: 'button按钮',
+                                        container: '#btsn_create'
+                                    }), '<span class="btn_1">百科</span>']
         });
 
-        instance4.addBtns('left', ['<span class="btn_1">新闻</span>', '<span class="btn_1">新闻</span>']);
+        instance4.addBtns('left', ['<span class="btn_1">新闻</span>', new gmu.Button({
+                                                                        label: 'button按钮',
+                                                                        container: '#btsn_create'
+                                                                    })]);
 </script>
 
 

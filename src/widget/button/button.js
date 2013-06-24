@@ -6,7 +6,7 @@
  * @import core/widget.js, extend/highlight.js
  * @importCSS icons.css
  */
-(function ($, undefined) {
+(function ( gmu, $, undefined ) {
     var iconRE = /\bui\-icon\-(\w+)\b/ig,
         iconposRE = /\bui\-button\-icon\-pos\-(\w+)\b/ig;
 
@@ -47,16 +47,32 @@
      * ../gmu/examples/widget/button/button_demo.css
      * </codepreview>
      */
-    $.ui.define('button', {
-        _data:{
-            disabled: false, // true | false
-            selected: false, //true | false
+    gmu.define( 'Button', {
+        
+        options: {
+
+            // true | false
+            disabled: false,
+
+            //true | false
+            selected: false,
+
             label: '',
-            alttext: '', //当只设置icon,没有设置label的时候，组件会认为这是个只有icon的按钮，里面不会放任何文字，如果这个值设定，icon按钮也会有文字内容，但不可见。
-            type: 'button', // button | checkbox | radio | input 在无插件的情况下只有button才能用。
-            icon: '',//home | delete | plus | arrow-u | arrow-d | check | gear | grid | star | arrow-r | arrow-l | minus | refresh | forward | back | alert | info | search | custom
-            iconpos: '',//left, top, right, bottom 只有在文字和图片都有的情况下才有用
+
+            //当只设置icon,没有设置label的时候，组件会认为这是个只有icon的按钮，里面不会放任何文字，如果这个值设定，icon按钮也会有文字内容，但不可见。
+            alttext: '',
+
+            // button | checkbox | radio | input 在无插件的情况下只有button才能用。
+            type: 'button',
+
+            //home | delete | plus | arrow-u | arrow-d | check | gear | grid | star | arrow-r | arrow-l | minus | refresh | forward | back | alert | info | search | custom
+            icon: '',
+
+            //left, top, right, bottom 只有在文字和图片都有的情况下才有用
+            iconpos: '',
+
             attributes: null,
+
             container: null
         },
 
@@ -64,44 +80,62 @@
             return $('<button>');
         },
 
-        _prepareBtnEL: function(mode){
-            return this.root();
+        _prepareBtnEL: function(){
+            return this.$el;
         },
 
         _prepareDom : function(mode){
-            var data = this._data, $el = this.root(), key;
-            if(mode=='create'){
-                (data.label || data.alttext) && (data._textSpan = $('<span class="ui-button-text">'+(data.label || data.alttext)+'</span>').appendTo(data._buttonElement));
-                data.icon && (data._iconSpan = $('<span class="ui-icon ui-icon-'+data.icon+'"></span>').appendTo(data._buttonElement));
-            } else if(mode == 'fullsetup') {
-                data._textSpan = $('.ui-button-text', data._buttonElement);
-                key = data._buttonElement.hasClass('ui-button-icon-only')?'alttext':'label';
-                data[key] = data[key] || data._textSpan.text();
-                data._iconSpan = $('.ui-icon', data._buttonElement);
-                data.icon = data.icon || data._iconSpan.attr('class').match(iconRE) && RegExp.$1;
-                data.iconpos = data.iconpos || data._buttonElement.attr('class').match(iconposRE) && RegExp.$1;
-            } else {
-                data.label = data.label || data._buttonElement.text() || $el.val();
-                data.alttext = data.alttext || $el.attr('data-alttext');
-                data.icon = data.icon || $el.attr('data-icon');
-                data.iconpos = data.iconpos || $el.attr('data-iconpos');
+            var opts = this._options,
+                $el = this.$el,
+                key;
 
-                data._buttonElement.empty();
-                data.icon && (data._iconSpan = $('<span class="ui-icon ui-icon-'+data.icon+'"></span>').appendTo(data._buttonElement));
-                (data.label || data.alttext) && (data._textSpan = $('<span class="ui-button-text">'+(data.label || data.alttext)+'</span>').appendTo(data._buttonElement));
+            if(mode=='create'){
+                (opts.label || opts.alttext) && (opts._textSpan = $('<span class="ui-button-text">'+(opts.label || opts.alttext)+'</span>').appendTo(opts._buttonElement));
+                opts.icon && (opts._iconSpan = $('<span class="ui-icon ui-icon-'+opts.icon+'"></span>').appendTo(opts._buttonElement));
+            } else if(mode == 'fullsetup') {
+                opts._textSpan = $('.ui-button-text', opts._buttonElement);
+                key = opts._buttonElement.hasClass('ui-button-icon-only')?'alttext':'label';
+                data[key] = data[key] || opts._textSpan.text();
+                opts._iconSpan = $('.ui-icon', opts._buttonElement);
+                opts.icon = opts.icon || opts._iconSpan.attr('class').match(iconRE) && RegExp.$1;
+                opts.iconpos = opts.iconpos || opts._buttonElement.attr('class').match(iconposRE) && RegExp.$1;
+            } else {
+                opts.label = opts.label || opts._buttonElement.text() || $el.val();
+                opts.alttext = opts.alttext || $el.attr('data-alttext');
+                opts.icon = opts.icon || $el.attr('data-icon');
+                opts.iconpos = opts.iconpos || $el.attr('data-iconpos');
+
+                opts._buttonElement.empty();
+                opts.icon && (opts._iconSpan = $('<span class="ui-icon ui-icon-'+opts.icon+'"></span>').appendTo(opts._buttonElement));
+                (opts.label || opts.alttext) && (opts._textSpan = $('<span class="ui-button-text">'+(opts.label || opts.alttext)+'</span>').appendTo(opts._buttonElement));
             }
         },
 
         _create: function () {
-            var me = this, $el, data = me._data;
+            var me = this,
+                $el,
+                opts = me._options,
+                className = me._prepareClassName();
 
-            !data.icon && !data.label && (data.label = '按钮');//如果既没有设置icon, 又没有设置label，则设置label为'按钮'
+            !opts.icon && !opts.label && (opts.label = '按钮');//如果既没有设置icon, 又没有设置label，则设置label为'按钮'
 
-            $el = me._el || (me.root(me._createDefEL()));
-            data._buttonElement = me._prepareBtnEL('create');
+            $el = me.$el || (me.$el = me._createDefEL());
+            opts._buttonElement = me._prepareBtnEL('create');
             me._prepareDom('create');
-            $el.appendTo(data._container = $(data.container||'body'));
-            data._buttonElement !== $el && data._buttonElement.insertAfter($el);
+            $el.appendTo(opts._container = $(opts.container||'body'));
+            opts._buttonElement !== $el && opts._buttonElement.insertAfter($el);
+
+
+            opts.attributes && $el.attr(opts.attributes);
+            $el.prop('disabled', !!opts.disabled);
+            opts._buttonElement.addClass(className).highlight(opts.disabled?'':'ui-state-hover');
+
+            //绑定事件
+            opts._buttonElement.on('click', $.proxy(me._eventHandler, me));
+            $.each(['click', 'change'], function(){ //绑定在data中的事件， 这里只需要绑定系统事件
+                opts[this] && me.on(this, opts[this]);
+                delete opts[this];
+            });
         },
 
         _detectType: function(){
@@ -109,41 +143,29 @@
         },
 
         _setup: function( mode ){
-            var me = this, data = me._data;
-            mode = mode?'fullsetup':'setup';
-            data.type = me._detectType();
-            data._buttonElement = me._prepareBtnEL(mode);
+            var me = this,
+                opts = me._options;
+
+            mode = mode ? 'fullsetup' : 'setup';
+            opts.type = me._detectType();
+            opts._buttonElement = me._prepareBtnEL(mode);
             me._prepareDom( mode );
         },
 
         _prepareClassName: function(){
             var me = this,
-                data = me._data,
+                opts = me._options,
                 className = 'ui-button';
 
-            className += data.label && data.icon ? ' ui-button-text-icon ui-button-icon-pos-'+(data.iconpos||'left') :
-                data.label ? ' ui-button-text-only' : ' ui-button-icon-only';
-            className += data.disabled?' ui-state-disable':'';
-            className += data.selected?' ui-state-active':'';
+            className += opts.label && opts.icon ? ' ui-button-text-icon ui-button-icon-pos-'+(opts.iconpos||'left') :
+                opts.label ? ' ui-button-text-only' : ' ui-button-icon-only';
+            className += opts.disabled?' ui-state-disable':'';
+            className += opts.selected?' ui-state-active':'';
             return className;
         },
 
         _init: function(){
-            var me = this,
-                $el = me.root(),
-                data = me._data,
-                className = me._prepareClassName();
-
-            data.attributes && $el.attr(data.attributes);
-            $el.prop('disabled', !!data.disabled);
-            data._buttonElement.addClass(className).highlight(data.disabled?'':'ui-state-hover');
-
-            //绑定事件
-            data._buttonElement.on('click', $.proxy(me._eventHandler, me));
-            $.each(['click', 'change'], function(){ //绑定在data中的事件， 这里只需要绑定系统事件
-                data[this] && me.on(this, data[this]);
-                delete data[this];
-            });
+            
         },
 
         /**
@@ -151,8 +173,9 @@
          * @private
          */
         _eventHandler:function (event) {
-            var data = this._data;
-            if(data.disabled) {
+            var opts = this._options;
+
+            if(opts.disabled) {
                 event.preventDefault();
                 event.stopImmediatePropagation();
             }
@@ -164,12 +187,15 @@
          * @private
          */
         _setState:function (enable) {
-            var data = this._data, change = data.disabled != !enable;
+            var opts = this._options,
+                change = opts.disabled != !enable;
+
             if(change){
-                data.disabled = !enable;
-                data._buttonElement[enable?'removeClass':'addClass']('ui-state-disable').highlight(enable?'ui-state-hover':'');;
+                opts.disabled = !enable;
+                opts._buttonElement[enable?'removeClass':'addClass']('ui-state-disable').highlight(enable?'ui-state-hover':'');;
                 this.trigger('statechange', enable);
             }
+
             return this;
         },
 
@@ -218,14 +244,16 @@
          * btn.toggleEnable();
          */
         toggleEnable:function () {
-            var data = this._data;
-            return this._setState(data.disabled);
+            var opts = this._options;
+
+            return this._setState(opts.disabled);
         },
 
         _setSelected: function(val){
-            var data = this._data;
-            if(data.selected != val){
-                data._buttonElement[ (data.selected = val) ? 'addClass':'removeClass' ]('ui-state-active');
+            var opts = this._options;
+
+            if(opts.selected != val){
+                opts._buttonElement[ (opts.selected = val) ? 'addClass':'removeClass' ]('ui-state-active');
                 this.trigger('change');
             }
             return this;
@@ -276,7 +304,7 @@
          * btn.toggleSelect();
          */
         toggleSelect: function(){
-            return this._setSelected(!this._data.selected);
+            return this._setSelected(!this._opts.selected);
         },
 
         /**
@@ -292,9 +320,11 @@
          * btn.destroy();
          */
         destroy: function(){
-            var me = this, data = this._data;
-            data._buttonElement.off('click', me._eventHandler).highlight();
-            data._buttonElement.remove();
+            var me = this,
+                opts = this._options;
+
+            opts._buttonElement.off('click', me._eventHandler).highlight();
+            opts._buttonElement.remove();
             me.$super('destroy');
         }
 
@@ -311,4 +341,4 @@
          * | destroy | event | 组件在销毁的时候触发 |
          */
     });
-})(Zepto);
+})( gmu, gmu.$ );
