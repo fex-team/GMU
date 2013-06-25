@@ -287,6 +287,35 @@ test('show hide toggle方法', function(){
     toolbar.destroy();
 });
 
+test('addBtns方法', function(){
+    expect(5);
+
+    var toolbar = gmu.Toolbar();
+    ok(toolbar.$el.find(".ui-toolbar-left").children().length === 0 &&
+           toolbar.$el.find(".ui-toolbar-right").children().length === 0 , "Toolbar 按钮个数正确，当前为0");
+
+    toolbar.addBtns('left', ['<span class="btn_1">新闻</span>']);
+    ok(toolbar.$el.find(".ui-toolbar-left").children().length === 1 &&
+           toolbar.$el.find(".ui-toolbar-right").children().length === 0 , "Toolbar 左侧添加一个按钮，按钮个数正确，当前为1");
+
+    toolbar.addBtns('left', ['<span class="btn_1">地图</span>']);
+    ok(toolbar.$el.find(".ui-toolbar-left").children().length === 2 &&
+           toolbar.$el.find(".ui-toolbar-right").children().length === 0 , "Toolbar 左侧添加一个按钮，按钮个数正确，当前为2");
+
+    toolbar.addBtns('right', ['<span class="btn_1">百科</span>']);
+    ok(toolbar.$el.find(".ui-toolbar-left").children().length === 2 &&
+           toolbar.$el.find(".ui-toolbar-right").children().length === 1 , "Toolbar 右侧添加一个按钮，按钮个数正确，当前为3");
+
+    toolbar.addBtns('right', [new gmu.Button({
+                                                label: 'button按钮',
+                                                container: '#btsn_create'
+                                            })]);
+    ok(toolbar.$el.find(".ui-toolbar-left").children().length === 2 &&
+           toolbar.$el.find(".ui-toolbar-right").children().length === 2 , "Toolbar 右侧添加一个按钮，按钮个数正确，当前为4");
+
+    toolbar.destroy();
+});
+
 test('show hide自定义事件', function(){
     expect(5);
 
