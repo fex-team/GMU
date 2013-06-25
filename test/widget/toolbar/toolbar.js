@@ -188,6 +188,45 @@ test('setup模式1', function(){
     $('#J_toolbar').remove();
 });
 
+test('zeptolize方式初始化1', function(){
+    expect(17);
+
+    $('<div id="J_toolbar">' +
+        '<a href="../">返回</a>' +
+        '<h3>百度首页</h3>' +
+        '<span class="btn_1">百科</span>' +
+        '<span class="btn_1">知道</span></div>').appendTo(document.body);
+
+    $('#J_toolbar').toolbar();
+    var toolbar = $('#J_toolbar').toolbar('this');
+
+    equals(toolbar._options.title, "标题", "toolbar标题默认配置为'标题'");
+    ok(toolbar._options.container === document.body, "toolbar默认配置容器为body");
+    ok(toolbar._options.leftBtns.length === 0 && toolbar._options.rightBtns.length === 0, "Toolbar 默认按钮个数为0");
+    equals(toolbar._options.fix, false, "toolbar自定义位置不固定");
+
+    equals(toolbar.$el.css("display"), "block", "toolbar显示正常");
+    equals(toolbar.$el.attr("class"), "ui-toolbar", "class检查正常");
+    equals(toolbar.$el.attr("id"), "J_toolbar", "toolbar el检查正常");
+    equals(toolbar.$el.offset().width, $("body").offset().width, "toolbar宽度正常");
+    equals(toolbar.$el.offset().height, tablet ? 50 : 42, "toolbar高度正常");
+    equals(toolbar.$el.find(".ui-toolbar-title").text(), "百度首页", "toolbar标题为'百度首页'");
+    ok(toolbar.$el.find(".ui-toolbar-left").children().length === 1 &&
+       toolbar.$el.find(".ui-toolbar-right").children().length === 2 , "Toolbar 按钮个数正确");
+    ok(toolbar.$el.find(".ui-toolbar-left").children()[0].innerHTML === '返回', "Toolbar 左侧按钮文案正确");
+
+    // 检查DOM结构
+    var toolbarWrap = $(toolbar.$el.children()[0]);
+    ok( toolbarWrap.hasClass('ui-toolbar-wrap'), 'toolbar-wrap检查正确' );
+    ok( toolbarWrap.children().length === 3, 'toolbarWrap子节点个数检查正确' );
+    ok( $(toolbarWrap.children()[0]).hasClass('ui-toolbar-left'), 'toolbar左侧按钮容器检查正确' );
+    ok( $(toolbarWrap.children()[1]).hasClass('ui-toolbar-title'), 'toolbar标题检查正确' );
+    ok( $(toolbarWrap.children()[2]).hasClass('ui-toolbar-right'), 'toolbar右侧按钮容器检查正确' );
+
+    toolbar.destroy();
+    $('#J_toolbar').remove();
+});
+
 test('setup模式2', function(){
     expect(17);
 
@@ -224,6 +263,47 @@ test('setup模式2', function(){
     ok( $(toolbarWrap.children()[2]).hasClass('ui-toolbar-right'), 'toolbar右侧按钮容器检查正确' );
 
     toolbar.destroy();
+    $('#J_toolbar').remove();
+});
+
+test('zeptolize方式初始化2', function(){
+    expect(17);
+
+    $('<div id="J_toolbar"><div class="ui-toolbar-wrap"><div class="ui-toolbar-left">' +
+            '<a href="../">返回</a>' +
+        '</div>' +
+        '<h3 class="ui-toolbar-title">百度首页</h3>' +
+        '<div class="ui-toolbar-right">' +
+            '<span class="btn_1">百科</span>' +
+            '<span class="btn_1">知道</span></div></div></div>').appendTo(document.body);
+
+    $('#J_toolbar').toolbar();
+    var toolbar = $('#J_toolbar').toolbar('this');
+    
+    equals(toolbar._options.title, "标题", "toolbar标题默认配置为'标题'");
+    ok(toolbar._options.container === document.body, "toolbar默认配置容器为body");
+    ok(toolbar._options.leftBtns.length === 0 && toolbar._options.rightBtns.length === 0, "Toolbar 默认按钮个数为0");
+    equals(toolbar._options.fix, false, "toolbar自定义位置不固定");
+
+    equals(toolbar.$el.css("display"), "block", "toolbar显示正常");
+    equals(toolbar.$el.attr("class"), "ui-toolbar", "class检查正常");
+    equals(toolbar.$el.attr("id"), "J_toolbar", "toolbar el检查正常");
+    equals(toolbar.$el.offset().width, $("body").offset().width, "toolbar宽度正常");
+    equals(toolbar.$el.offset().height, tablet ? 50 : 42, "toolbar高度正常");
+    equals(toolbar.$el.find(".ui-toolbar-title").text(), "百度首页", "toolbar标题为'百度首页'");
+    ok(toolbar.$el.find(".ui-toolbar-left").children().length === 1 &&
+       toolbar.$el.find(".ui-toolbar-right").children().length === 2 , "Toolbar 按钮个数正确");
+    ok(toolbar.$el.find(".ui-toolbar-left").children()[0].innerHTML === '返回', "Toolbar 左侧按钮文案正确");
+
+    // 检查DOM结构
+    var toolbarWrap = $(toolbar.$el.children()[0]);
+    ok( toolbarWrap.hasClass('ui-toolbar-wrap'), 'toolbar-wrap检查正确' );
+    ok( toolbarWrap.children().length === 3, 'toolbarWrap子节点个数检查正确' );
+    ok( $(toolbarWrap.children()[0]).hasClass('ui-toolbar-left'), 'toolbar左侧按钮容器检查正确' );
+    ok( $(toolbarWrap.children()[1]).hasClass('ui-toolbar-title'), 'toolbar标题检查正确' );
+    ok( $(toolbarWrap.children()[2]).hasClass('ui-toolbar-right'), 'toolbar右侧按钮容器检查正确' );
+
+    $('#J_toolbar').toolbar('destroy');
     $('#J_toolbar').remove();
 });
 
@@ -336,5 +416,5 @@ test('show hide自定义事件', function(){
     toolbar.destroy();
 });
 
-// 检查zeptolize方式初始化
 // 检查fix
+// destroy
