@@ -10,7 +10,7 @@ module('GMU Toolbar', {
 var tablet = window.screen.width >= 768 && window.screen.width <= 1024;
 
 test('默认配置项', function(){
-    expect(10);
+    expect(15);
     stop();
     ua.loadcss(["widget/toolbar/toolbar.css","widget/toolbar/toolbar.default.css"], function() {
         var toolbar = gmu.Toolbar();
@@ -27,13 +27,21 @@ test('默认配置项', function(){
         ok(toolbar.$el.find(".ui-toolbar-left").children().length === 0 &&
            toolbar.$el.find(".ui-toolbar-right").children().length === 0 , "Toolbar 没有按钮");
 
+        // 检查DOM结构
+        var toolbarWrap = $(toolbar.$el.children()[0]);
+        ok( toolbarWrap.hasClass('ui-toolbar-wrap'), 'toolbar-wrap检查正确' );
+        ok( toolbarWrap.children().length === 3, 'toolbarWrap子节点个数检查正确' );
+        ok( $(toolbarWrap.children()[0]).hasClass('ui-toolbar-left'), 'toolbar左侧按钮容器检查正确' );
+        ok( $(toolbarWrap.children()[1]).hasClass('ui-toolbar-title'), 'toolbar标题检查正确' );
+        ok( $(toolbarWrap.children()[2]).hasClass('ui-toolbar-right'), 'toolbar右侧按钮容器检查正确' );
+
         toolbar.destroy();
         start();
     });
 });
 
 test('自定义配置项', function(){
-    expect(11);
+    expect(16);
 
     var toolbar = gmu.Toolbar({
         container: $('#J_container'),
@@ -56,11 +64,19 @@ test('自定义配置项', function(){
        toolbar.$el.find(".ui-toolbar-right").children().length === 2 , "Toolbar 按钮个数正确");
     ok(toolbar.$el.find(".ui-toolbar-left").children()[0].innerHTML === '返回', "Toolbar 左侧按钮文案正确");
 
+    // 检查DOM结构
+    var toolbarWrap = $(toolbar.$el.children()[0]);
+    ok( toolbarWrap.hasClass('ui-toolbar-wrap'), 'toolbar-wrap检查正确' );
+    ok( toolbarWrap.children().length === 3, 'toolbarWrap子节点个数检查正确' );
+    ok( $(toolbarWrap.children()[0]).hasClass('ui-toolbar-left'), 'toolbar左侧按钮容器检查正确' );
+    ok( $(toolbarWrap.children()[1]).hasClass('ui-toolbar-title'), 'toolbar标题检查正确' );
+    ok( $(toolbarWrap.children()[2]).hasClass('ui-toolbar-right'), 'toolbar右侧按钮容器检查正确' );
+
     toolbar.destroy();
 });
 
 test('自定义配置项el为selector', function(){
-    expect(11);
+    expect(16);
 
     $('<div id="J_toolbar"></div>').appendTo(document.body);
 
@@ -86,12 +102,20 @@ test('自定义配置项el为selector', function(){
     ok(toolbar.$el.find(".ui-toolbar-left").children().length === 1 &&
        toolbar.$el.find(".ui-toolbar-right").children().length === 2 , "Toolbar 按钮个数正确");
 
+    // 检查DOM结构
+    var toolbarWrap = $(toolbar.$el.children()[0]);
+    ok( toolbarWrap.hasClass('ui-toolbar-wrap'), 'toolbar-wrap检查正确' );
+    ok( toolbarWrap.children().length === 3, 'toolbarWrap子节点个数检查正确' );
+    ok( $(toolbarWrap.children()[0]).hasClass('ui-toolbar-left'), 'toolbar左侧按钮容器检查正确' );
+    ok( $(toolbarWrap.children()[1]).hasClass('ui-toolbar-title'), 'toolbar标题检查正确' );
+    ok( $(toolbarWrap.children()[2]).hasClass('ui-toolbar-right'), 'toolbar右侧按钮容器检查正确' );
+
     toolbar.destroy();
     $('#J_toolbar').remove();
 });
 
 test('自定义配置项el为zepto对象', function(){
-    expect(11);
+    expect(16);
 
     var toolbar = gmu.Toolbar( $('<div id="J_toolbar"></div>'), {
         container: $('#J_container'),
@@ -115,12 +139,20 @@ test('自定义配置项el为zepto对象', function(){
     ok(toolbar.$el.find(".ui-toolbar-left").children().length === 1 &&
        toolbar.$el.find(".ui-toolbar-right").children().length === 2 , "Toolbar 按钮个数正确");
 
+    // 检查DOM结构
+    var toolbarWrap = $(toolbar.$el.children()[0]);
+    ok( toolbarWrap.hasClass('ui-toolbar-wrap'), 'toolbar-wrap检查正确' );
+    ok( toolbarWrap.children().length === 3, 'toolbarWrap子节点个数检查正确' );
+    ok( $(toolbarWrap.children()[0]).hasClass('ui-toolbar-left'), 'toolbar左侧按钮容器检查正确' );
+    ok( $(toolbarWrap.children()[1]).hasClass('ui-toolbar-title'), 'toolbar标题检查正确' );
+    ok( $(toolbarWrap.children()[2]).hasClass('ui-toolbar-right'), 'toolbar右侧按钮容器检查正确' );
+
     toolbar.destroy();
     $('#J_toolbar').remove();
 });
 
 test('setup模式1', function(){
-    expect(12);
+    expect(17);
 
     $('<div id="J_toolbar">' +
         '<a href="../">返回</a>' +
@@ -144,12 +176,20 @@ test('setup模式1', function(){
        toolbar.$el.find(".ui-toolbar-right").children().length === 2 , "Toolbar 按钮个数正确");
     ok(toolbar.$el.find(".ui-toolbar-left").children()[0].innerHTML === '返回', "Toolbar 左侧按钮文案正确");
 
+    // 检查DOM结构
+    var toolbarWrap = $(toolbar.$el.children()[0]);
+    ok( toolbarWrap.hasClass('ui-toolbar-wrap'), 'toolbar-wrap检查正确' );
+    ok( toolbarWrap.children().length === 3, 'toolbarWrap子节点个数检查正确' );
+    ok( $(toolbarWrap.children()[0]).hasClass('ui-toolbar-left'), 'toolbar左侧按钮容器检查正确' );
+    ok( $(toolbarWrap.children()[1]).hasClass('ui-toolbar-title'), 'toolbar标题检查正确' );
+    ok( $(toolbarWrap.children()[2]).hasClass('ui-toolbar-right'), 'toolbar右侧按钮容器检查正确' );
+
     toolbar.destroy();
     $('#J_toolbar').remove();
 });
 
 test('setup模式2', function(){
-    expect(12);
+    expect(17);
 
     $('<div id="J_toolbar"><div class="ui-toolbar-wrap"><div class="ui-toolbar-left">' +
             '<a href="../">返回</a>' +
@@ -175,17 +215,24 @@ test('setup模式2', function(){
        toolbar.$el.find(".ui-toolbar-right").children().length === 2 , "Toolbar 按钮个数正确");
     ok(toolbar.$el.find(".ui-toolbar-left").children()[0].innerHTML === '返回', "Toolbar 左侧按钮文案正确");
 
+    // 检查DOM结构
+    var toolbarWrap = $(toolbar.$el.children()[0]);
+    ok( toolbarWrap.hasClass('ui-toolbar-wrap'), 'toolbar-wrap检查正确' );
+    ok( toolbarWrap.children().length === 3, 'toolbarWrap子节点个数检查正确' );
+    ok( $(toolbarWrap.children()[0]).hasClass('ui-toolbar-left'), 'toolbar左侧按钮容器检查正确' );
+    ok( $(toolbarWrap.children()[1]).hasClass('ui-toolbar-title'), 'toolbar标题检查正确' );
+    ok( $(toolbarWrap.children()[2]).hasClass('ui-toolbar-right'), 'toolbar右侧按钮容器检查正确' );
+
     toolbar.destroy();
     $('#J_toolbar').remove();
 });
 
 test('Button实例作为按钮', function(){
-    expect(11);
+    expect(17);
 
     stop();
     ua.importsrc('widget/button/button', function(){
         var toolbar = gmu.Toolbar( $('<div id="J_toolbar"></div>'), {
-            container: $('#J_container'),
             title: '百度首页',
             leftBtns: ['<span class="btn_1">返回</span>'],
             rightBtns: ['<span class="btn_1">百科</span>', new gmu.Button({
@@ -195,7 +242,7 @@ test('Button实例作为按钮', function(){
         } );
 
         equals(toolbar._options.title, "百度首页", "toolbar标题自定义为'百度首页'");
-        ok(toolbar._options.container[0].id === $('#J_container')[0].id, "toolbar自定义容器为J_container");
+        ok(toolbar._options.container === document.body, "toolbar自定义容器为J_container");
         ok(toolbar._options.leftBtns.length === 1 && toolbar._options.rightBtns.length === 2, "Toolbar 自定义按钮个数正确");
         equals(toolbar._options.fix, false, "toolbar自定义位置不固定");
 
@@ -207,15 +254,58 @@ test('Button实例作为按钮', function(){
         equals(toolbar.$el.find(".ui-toolbar-title").text(), "百度首页", "toolbar标题为'百度首页'");
         ok(toolbar.$el.find(".ui-toolbar-left").children().length === 1 &&
            toolbar.$el.find(".ui-toolbar-right").children().length === 2 , "Toolbar 按钮个数正确");
+        ok(toolbar.$el.find(".ui-toolbar-right").children().length === 2 &&
+           toolbar.$el.find(".ui-toolbar-right").children()[1].tagName === 'BUTTON' , "Button实例作为toolbar按钮正确");
+
+        // 检查DOM结构
+        var toolbarWrap = $(toolbar.$el.children()[0]);
+        ok( toolbarWrap.hasClass('ui-toolbar-wrap'), 'toolbar-wrap检查正确' );
+        ok( toolbarWrap.children().length === 3, 'toolbarWrap子节点个数检查正确' );
+        ok( $(toolbarWrap.children()[0]).hasClass('ui-toolbar-left'), 'toolbar左侧按钮容器检查正确' );
+        ok( $(toolbarWrap.children()[1]).hasClass('ui-toolbar-title'), 'toolbar标题检查正确' );
+        ok( $(toolbarWrap.children()[2]).hasClass('ui-toolbar-right'), 'toolbar右侧按钮容器检查正确' );
 
         toolbar.destroy();
-        $('#J_toolbar').remove();
         start();
     }, 'gmu.Button');
 });
 
-// 检查toolbar-wrap元素
-// 检查zeptolize方式初始化
-// 检查按钮为button实例
-// 检查fix
+test('show hide toggle方法', function(){
+    expect(5);
 
+    var toolbar = gmu.Toolbar();
+    equals(toolbar.$el.css("display"), "block", "toolbar显示正常");
+    toolbar.hide();
+    equals(toolbar.$el.css("display"), "none", "hide方法调用正常");
+    toolbar.show();
+    equals(toolbar.$el.css("display"), "block", "show方法调用正常");
+    toolbar.toggle();
+    equals(toolbar.$el.css("display"), "none", "toggle方法调用正常");
+    toolbar.toggle();
+    equals(toolbar.$el.css("display"), "block", "toggle方法调用正常");
+
+    toolbar.destroy();
+});
+
+test('show hide自定义事件', function(){
+    expect(5);
+
+    var toolbar = gmu.Toolbar();
+    toolbar.on('show', function(){
+        equals(toolbar.$el.css("display"), "block", "show事件正常触发");
+    });
+    toolbar.on('hide', function(){
+        equals(toolbar.$el.css("display"), "none", "hide事件正常触发");
+    });
+
+    equals(toolbar.$el.css("display"), "block", "toolbar显示正常");
+    toolbar.hide();
+    toolbar.show();    
+    toolbar.toggle();
+    toolbar.toggle();
+
+    toolbar.destroy();
+});
+
+// 检查zeptolize方式初始化
+// 检查fix
