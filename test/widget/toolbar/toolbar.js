@@ -1,6 +1,6 @@
-module('plugin/widget/toolbar', {
+module('GMU Toolbar', {
 	setup: function() {
-		$container = $('<div class="ui-toolbar-container" style="position:absolute;left:0;top:0;right:0;"></div>').appendTo(document.body);
+		$container = $('<div id="J_container"></div>').appendTo(document.body);
 	},
 	teardown: function() {
 		$container.remove();
@@ -9,357 +9,213 @@ module('plugin/widget/toolbar', {
 
 var tablet = window.screen.width >= 768 && window.screen.width <= 1024;
 
-test("el(zepto)", function() {
-	expect(15);
-	stop();
-	ua.loadcss(["reset.css", "widget/toolbar/toolbar.css","widget/toolbar/toolbar.default.css"], function() {
-		setTimeout(function() {
-			var toolbar = $.ui.toolbar($('<div class="ui-toolbar"></div>'), {
-			 });
-			equals(toolbar._el.css("display"), "block", "The toolbar shows");
-			equals(toolbar._data.title, "", "The _data titleis right");
-			equals(toolbar._data.backButtonText, "返回", "The _data buttonText is right");
-            equals(toolbar._data.backButtonHref, "", "The _data buttonText is right");
-			equals(toolbar._data.container, undefined, "The _data container is right");
-			equals(toolbar._data.btns, "", "The _data tools is right");
-
-			equals(toolbar._el.parent().attr("tagName").toLowerCase(), "body", "The container is body");
-			equals(toolbar._el.attr("class"), "ui-toolbar", "The el class is right");
-
-			equals(toolbar._el.offset().left, $("body").offset().left, "The left is right");
-			equals(toolbar._el.offset().top, $(".ui-toolbar").offset().top, "The top is right");
-			equals(toolbar._el.offset().width, $("body").offset().width, "The width is right");
-			equals(toolbar._el.offset().height, tablet ? 50 : 42, "The height is right");
-
-			equals(toolbar._el.find(".ui-toolbar-backbtn").text(), "返回", "The buttonText is right");
-			equals(toolbar._el.find(".ui-toolbar-title").text(), null, "The title is right");
-			equals(toolbar._el.find(".ui-toolbar-right").children().length, 0 , "The btns are right");
-
-			toolbar.destroy();
-			start();
-		}, 100);
-	});
-});
-
-test("el(selector)", function(){
-	expect(2);
-	var div = document.createElement("div");
-	$(div).attr("id", "test");
-	document.body.appendChild(div);
-	div = document.createElement("div");
-	$(div).attr("class", "ui-toolbar");
-	$("#test").append(div);
-	var toolbar = $.ui.toolbar('.ui-toolbar', {
-	 });
-	equals(toolbar._el.attr("class"), "ui-toolbar", "The el class is right");
-	equals(toolbar._el.parent().attr("id"), "test", "The container is right");
-	toolbar.destroy();
-	$("#test").remove();
-});
-
-test("container & cls", function(){
-	expect(1);
-	var div = document.createElement("div");
-	$(div).attr("class", "container");
-	document.body.appendChild(div);
-	var toolbar = $.ui.toolbar({
-		 container: '.container'
-	 });
-	equals(toolbar._el.parent().attr("class"), "container", "The container is right");
-	toolbar.destroy();
-	$(".container").remove();
-});
-
-test("full setup", function() {
-	expect(14);
-	$container.html('<div id="toolbar" class="ui-toolbar" data-mode="true">\
-		<div class="ui-toolbar-wrap">\
-        	<div class="ui-toolbar-left"><a class="ui-toolbar-backbtn">首页</a></div>\
-			<h2 class="ui-toolbar-title">标题</h2>\
-			<div class="ui-toolbar-right">\
-				<button class="ui-button ui-button-text-only fontsize" style="-webkit-tap-highlight-color: rgba(255, 255, 255, 0);">\
-					<span class="ui-button-text">click me</span>\
-				</button>\
-			</div>\
-		</div>\
-	</div>');
-	var toolbar = $('#toolbar').toolbar({
-		backButtonText: "buttonText",
-		title: "titleText",
-        backButtonClick: function(){
-			ok(true, "The button is clicked");
-		}
-	}).toolbar('this');
-	equals(toolbar._el.css("display"), "block", "The toolbar shows");
-	equals(toolbar._data.title, "titleText", "The _data titleText is right");
-	equals(toolbar._data.backButtonText, "buttonText", "The _data buttonText is right");
-	equals(toolbar._data.container, undefined, "The _data container is right");
-	equals(toolbar._data.btns, "", "The _data btns is right");
-
-	equals(toolbar._el.parent().attr("class"), "ui-toolbar-container", "The container is body");
-	equals(toolbar._el.attr("class"), "ui-toolbar", "The el class is right");
-
-	equals(toolbar._el.offset().left, $("body").offset().left, "The left is right");
-	equals(toolbar._el.offset().top, $(".ui-toolbar").offset().top, "The top is right");
-	equals(toolbar._el.offset().width, $("body").offset().width, "The width is right");
-	equals(toolbar._el.offset().height, tablet ? 50 : 42, "The height is right");
-
-	equals(toolbar._el.find(".ui-toolbar-backbtn").text(), "首页", "The buttonText is right");
-	equals(toolbar._el.find(".ui-toolbar-title").text(), "标题", "The titleText is right");
-	equals(toolbar._el.find(".ui-toolbar-right").children().length, 1 , "The tools are right");
-
-	ua.click(toolbar._el.find('.ui-toolbar-backbtn')[0]);
-	toolbar.destroy();
-});
-
-test("simple setup", function() {
-	expect(2);
-	$container.html('<div id="toolbar">\
-			<span>back</span>\
-			<h1>测试标题</h1>\
-			<a>字体</a>\
-			<a>选择</a>\
-		</div>');
-	var toolbar = $('#toolbar').toolbar('this');
-	toolbar.hide();
-	ok(!ua.isShown(toolbar._el[0]), "The toolbar hides");
-	toolbar.show();
-	ok(ua.isShown(toolbar._el[0]), "The toolbar shows");
-	toolbar.destroy();
-});
-
-test("title", function() {
-	expect(2);
-	var toolbar = $.ui.toolbar({
-		title: '工具栏标题'
-	});
-	equals(toolbar._data.title, "工具栏标题", "The _data titleText is right");
-	equals($(".ui-toolbar-title", toolbar._el).html(), "工具栏标题", "The titleText is right");
-	toolbar.destroy();
-});
-
-test("buttonText", function() {
-	expect(2);
-	var toolbar = $.ui.toolbar({
-        backButtonText: '取消'
-	});
-	equals(toolbar._data.backButtonText, "取消", "The _data buttonText is right");
-	equals($(".ui-toolbar-backbtn", toolbar._el).html(), "取消", "The buttonText is right");
-	toolbar.destroy();
-});
-
-test("buttonClick", function() {
-	expect(1);
-	var toolbar = $.ui.toolbar({
-		container: '.ui-toolbar-container',
-        backButtonClick: function() {
-			ok(true, "The buttonClick is called");
-		}
-	});
-	ua.click($('.ui-toolbar-backbtn', toolbar._el)[0]);
-	toolbar.destroy();
-});
-
-test("show(), hide(), toggle()", function() {
-	expect(4);
-	var toolbar = $.ui.toolbar({
-		container: '.ui-toolbar-container'
-	});
-	toolbar.hide();
-	equals(toolbar._el.css("display"), "none", "The toolbar hides");
-	toolbar.toggle();
-	equals(toolbar._el.css("display"), "block", "The toolbar shows");
-	toolbar.toggle();
-	equals(toolbar._el.css("display"), "none", "The toolbar hides");
-	toolbar.show();
-	equals(toolbar._el.css("display"), "block", "The toolbar shows");
-	toolbar.destroy();
-});
-test('window scroll(fix)', function() {
-    expect(17);
+test('默认配置项', function(){
+    expect(10);
     stop();
-    var w = window.top;
-    ua.loadcss(["reset.css", "widget/toolbar/toolbar.css", "widget/toolbar/toolbar.default.css"], function(){
-        var s2 = w.document.createElement("script");
-        s2.src = "../../../test/fet/bin/import.php?f=core/zepto.ui,core/zepto.extend,core/zepto.fix,core/zepto.highlight,core/zepto.iscroll,core/zepto.ui,widget/toolbar";
-        w.document.head.appendChild(s2);
-        s2.onload = function(){
-            var html = "";
-            for(var i = 0; i < 80; i++){
-                html += "<br />";
-            }
-            w.$("body").append(html);
-	        var toolbar = w.$.ui.toolbar();
-	        toolbar.root().fix({top:0, left:0});
-	        setTimeout(function(){
-	            equals(toolbar._el.css("display"), "block", "The toolbar is show");
-	            equals(toolbar._el.width() , w.document.body.offsetWidth , "the width is ok");
-	            equals(toolbar._el.height() , tablet ? 50 : 42 , "the height is ok");
-	            equals(toolbar._el.offset().left, 0,'the pos is right');
-	            equals(toolbar._el.offset().top, w.pageYOffset, 'the pos is right');
-	            w.scrollTo(0, 300);
-	            ta.scrollStop(w.document);
-	            setTimeout(function(){
-	                equals(toolbar._el.css("display"), "block", "The toolbar is show");
-	                equals(toolbar._el.width() , w.document.body.offsetWidth , "the width is ok");
-	                equals(toolbar._el.height() , tablet ? 50 : 42 , "the height is ok");
-	                approximateEqual(w.pageYOffset, 300, "The pageYOffset is " + w.pageYOffset);
-	                equals(toolbar._el.offset().top, w.pageYOffset, 'the pos is right');
-	                equals(toolbar._el.offset().left, 0,'the pos is right');
-	                w.scrollTo(0,0);
-	                ta.scrollStop(w.document);
-	                setTimeout(function(){
-	                    equals(toolbar._el.css("display"), "block", "The toolbar is show");
-	                    equals(toolbar._el.width() , w.document.body.offsetWidth , "the width is ok");
-	                    equals(toolbar._el.height() , tablet ? 50 : 42 , "the height is ok");
-	                    approximateEqual(w.pageYOffset, 0, "The pageYOffset is " + w.pageYOffset);
-	                    equals(toolbar._el.offset().top, 0, 'the pos is right');
-	                    equals(toolbar._el.offset().left, 0,'the pos is right');
-	                    w.$("br").remove();
-	                    toolbar.destroy();
-	                    $(s2).remove();
-	                    start();
-	                },200);
-	            },200);
-	        }, 100);
-        };
-    }, w);
-});
-//只有PC和ios5以上支持useFix
-if((!$.os.phone && !$.os.tablet)||($.os.ios && parseFloat($.os.version) > 5)){
-	test('useFix', function() {
-	    expect(12);
-	    stop();
-	    var w = window.top;
-	    ua.loadcss(["reset.css", "widget/toolbar/toolbar.css", "widget/toolbar/toolbar.default.css"], function(){
-	        var s2 = w.document.createElement("script");
-	        s2.src = "../../../test/fet/bin/import.php?f=core/zepto.ui,core/zepto.extend,core/zepto.fix,core/zepto.highlight,core/zepto.iscroll,core/zepto.ui,widget/toolbar";
-	        w.document.head.appendChild(s2);
-	        s2.onload = function(){
-	        	var h = w.document.body.clientHeight;
-	        	var toolbar = w.$.ui.toolbar({useFix:true});
-	            var html = "";
-	            for(var i = 0; i < 80; i++){
-	                html += "<br />";
-	            }
-	            w.$("body").append(html);
-	            var t = toolbar._el.offset().top;
-		        setTimeout(function(){
-		            w.scrollTo(0, h + 500);
-			        ta.scrollStop(w);
-	                setTimeout(function(){
-	                    equals(toolbar._el.css("display"), "block", "The toolbar is show");
-	                    equals(toolbar._el.width() , w.document.body.offsetWidth , "the width is ok");
-	                    equals(toolbar._el.height() , tablet ? 50 : 42, "the height is ok");
-	                    approximateEqual(w.pageYOffset, h + 500, "The pageYOffset is " + w.pageYOffset);
-	                    equals(toolbar._el.offset().top, w.pageYOffset, 'the pos is right');
-	                    equals(toolbar._el.offset().left, 0,'the pos is right');
-	                    w.scrollTo(0,0);
-	                    ta.scrollStop(w);
-	                    setTimeout(function(){
-	                        equals(toolbar._el.css("display"), "block", "The toolbar is show");
-	                        equals(toolbar._el.width() , w.document.body.offsetWidth , "the width is ok");
-	                        equals(toolbar._el.height() , tablet ? 50 : 42, "the height is ok");
-	                        approximateEqual(w.pageYOffset, 0, "The pageYOffset is " + w.pageYOffset);
-	                        equals(toolbar._el.offset().top, t, 'the pos is right');
-	                        equals(toolbar._el.offset().left, 0,'the pos is right');
-	                        w.$("br").remove();
-	                        toolbar.destroy();
-	                        $(s2).remove();
-	                        start();
-	                    },200);
-		            },200);
-		        }, 100);
-	        };
-	    }, w);
-	});
-	test('setup & useFix', function() {
-		expect(12);
-	    stop();
-	    window.top.$(".runningframe").css("height", "200px");
-        $(".ui-toolbar-container").remove();
-    	var $container = $('<div class="ui-toolbar-container"></div>').appendTo(document.body);
-        $container.html('<div id="toolbar">\
-    			<span>back</span>\
-    			<h1>测试标题</h1>\
-    			<a>字体</a>\
-    			<a>选择</a>\
-    		</div>');
-    	var toolbar = $('#toolbar').toolbar({useFix: true}).toolbar('this');
-    	var t = toolbar._el.offset().top;
-        var html = "";
-        for(var i = 0; i < 80; i++){
-            html += "<br />";
-        }
-        $("body").append(html);
-        setTimeout(function(){
-	        window.scrollTo(0, 500);
-            ta.scrollStop();
-            setTimeout(function(){
-                equals(toolbar._el.css("display"), "block", "The toolbar is show");
-                equals(toolbar._el.width() , document.body.offsetWidth , "the width is ok");
-                equals(toolbar._el.height() , tablet ? 50 : 42, "the height is ok");
-                approximateEqual(window.pageYOffset, 500, "The pageYOffset is " + window.pageYOffset);
-                equals(toolbar._el.offset().top, window.pageYOffset, 'the pos is right');
-                equals(toolbar._el.offset().left, 0,'the pos is right');
-                window.scrollTo(0,0);
-                ta.scrollStop();
-                setTimeout(function(){
-                    equals(toolbar._el.css("display"), "block", "The toolbar is show");
-                    equals(toolbar._el.width() , document.body.offsetWidth , "the width is ok");
-                    equals(toolbar._el.height() , tablet ? 50 : 42, "the height is ok");
-                    approximateEqual(window.pageYOffset, 0, "The pageYOffset is " + window.pageYOffset);
-                    equals(toolbar._el.offset().top, t, 'the pos is right');
-                    equals(toolbar._el.offset().left, 0,'the pos is right');
-                    $("br").remove();
-                    toolbar.destroy();
-                    window.top.$(".runningframe").css("height", "99.99%");
-                    start();
-                },200);
-            },200);
-        }, 200);
-	});
-}
-test("destroy()", function() {
-    ua.destroyTest(function(w,f){
-    	w.$('body').highlight();//由于highlight在调用的时候会注册全局事件，以便多次其他实例使用，所以这里先让hightlight把全局事件注册以后再来对比。
-        var dl1 = w.dt.domLength(w);
-        var el1= w.dt.eventLength();
+    ua.loadcss(["widget/toolbar/toolbar.css","widget/toolbar/toolbar.default.css"], function() {
+        var toolbar = gmu.Toolbar();
+        equals(toolbar._options.title, "标题", "toolbar标题默认配置为'标题'");
+        equals(toolbar._options.container, document.body, "toolbar默认配置容器为body");
+        ok(toolbar._options.leftBtns.length === 0 && toolbar._options.rightBtns.length === 0, "Toolbar 默认配置没有按钮");
+        equals(toolbar._options.fix, false, "toolbar默认配置位置不固定");
 
-        var toolbar = w.$.ui.toolbar({
-            title: '工具栏标题'
-        });
+        equals(toolbar.$el.css("display"), "block", "toolbar显示正常");
+        equals(toolbar.$el.attr("class"), "ui-toolbar", "class检查正常");
+        equals(toolbar.$el.offset().width, $("body").offset().width, "toolbar宽度正常");
+        equals(toolbar.$el.offset().height, tablet ? 50 : 42, "toolbar高度正常");
+        equals(toolbar.$el.find(".ui-toolbar-title").text(), "标题", "toolbar标题为'标题'");
+        ok(toolbar.$el.find(".ui-toolbar-left").children().length === 0 &&
+           toolbar.$el.find(".ui-toolbar-right").children().length === 0 , "Toolbar 没有按钮");
+
         toolbar.destroy();
-
-        var el2= w.dt.eventLength();
-        var ol = w.dt.objLength(toolbar);
-        var dl2 =w.dt.domLength(w);
-
-        equal(dl1,dl2,"The dom is ok");
-        equal(el1,el2,"The event is ok");
-        ok(ol==0,"The toolbar is destroy");
-        this.finish();
-    })
+        start();
+    });
 });
-test("useFix & destroy()", function() {
-    ua.destroyTest(function(w,f){
-    	w.$('body').highlight();//由于highlight在调用的时候会注册全局事件，以便多次其他实例使用，所以这里先让hightlight把全局事件注册以后再来对比。
-        var dl1 = w.dt.domLength(w);
-        var el1= w.dt.eventLength();
 
-        var toolbar = w.$.ui.toolbar({
-            title: '工具栏标题',
-            useFix: true
-        });
+test('自定义配置项', function(){
+    expect(11);
+
+    var toolbar = gmu.Toolbar({
+        container: $('#J_container'),
+        title: '百度首页',
+        leftBtns: ['<span class="btn_1">返回</span>'],
+        rightBtns: ['<span class="btn_1">百科</span>', '<span class="btn_1">知道</span>'],
+        fix: false
+    });
+    equals(toolbar._options.title, "百度首页", "toolbar标题自定义为'百度首页'");
+    ok(toolbar._options.container[0].id === $('#J_container')[0].id, "toolbar自定义容器为J_container");
+    ok(toolbar._options.leftBtns.length === 1 && toolbar._options.rightBtns.length === 2, "Toolbar 自定义按钮个数正确");
+    equals(toolbar._options.fix, false, "toolbar自定义位置不固定");
+
+    equals(toolbar.$el.css("display"), "block", "toolbar显示正常");
+    equals(toolbar.$el.attr("class"), "ui-toolbar", "class检查正常");
+    equals(toolbar.$el.offset().width, $("body").offset().width, "toolbar宽度正常");
+    equals(toolbar.$el.offset().height, tablet ? 50 : 42, "toolbar高度正常");
+    equals(toolbar.$el.find(".ui-toolbar-title").text(), "百度首页", "toolbar标题为'百度首页'");
+    ok(toolbar.$el.find(".ui-toolbar-left").children().length === 1 &&
+       toolbar.$el.find(".ui-toolbar-right").children().length === 2 , "Toolbar 按钮个数正确");
+    ok(toolbar.$el.find(".ui-toolbar-left").children()[0].innerHTML === '返回', "Toolbar 左侧按钮文案正确");
+
+    toolbar.destroy();
+});
+
+test('自定义配置项el为selector', function(){
+    expect(11);
+
+    $('<div id="J_toolbar"></div>').appendTo(document.body);
+
+    var toolbar = gmu.Toolbar( '#J_toolbar', {
+        container: $('#J_container'),
+        title: '百度首页',
+        leftBtns: ['<span class="btn_1">返回</span>'],
+        rightBtns: ['<span class="btn_1">百科</span>', '<span class="btn_1">知道</span>'],
+        fix: false
+    } );
+
+    equals(toolbar._options.title, "百度首页", "toolbar标题自定义为'百度首页'");
+    ok(toolbar._options.container[0].id === $('#J_container')[0].id, "toolbar自定义容器为J_container");
+    ok(toolbar._options.leftBtns.length === 1 && toolbar._options.rightBtns.length === 2, "Toolbar 自定义按钮个数正确");
+    equals(toolbar._options.fix, false, "toolbar自定义位置不固定");
+
+    equals(toolbar.$el.css("display"), "block", "toolbar显示正常");
+    equals(toolbar.$el.attr("class"), "ui-toolbar", "class检查正常");
+    equals(toolbar.$el.attr("id"), "J_toolbar", "toolbar el检查正常");
+    equals(toolbar.$el.offset().width, $("body").offset().width, "toolbar宽度正常");
+    equals(toolbar.$el.offset().height, tablet ? 50 : 42, "toolbar高度正常");
+    equals(toolbar.$el.find(".ui-toolbar-title").text(), "百度首页", "toolbar标题为'百度首页'");
+    ok(toolbar.$el.find(".ui-toolbar-left").children().length === 1 &&
+       toolbar.$el.find(".ui-toolbar-right").children().length === 2 , "Toolbar 按钮个数正确");
+
+    toolbar.destroy();
+    $('#J_toolbar').remove();
+});
+
+test('自定义配置项el为zepto对象', function(){
+    expect(11);
+
+    var toolbar = gmu.Toolbar( $('<div id="J_toolbar"></div>'), {
+        container: $('#J_container'),
+        title: '百度首页',
+        leftBtns: ['<span class="btn_1">返回</span>'],
+        rightBtns: ['<span class="btn_1">百科</span>', '<span class="btn_1">知道</span>'],
+        fix: false
+    } );
+
+    equals(toolbar._options.title, "百度首页", "toolbar标题自定义为'百度首页'");
+    ok(toolbar._options.container[0].id === $('#J_container')[0].id, "toolbar自定义容器为J_container");
+    ok(toolbar._options.leftBtns.length === 1 && toolbar._options.rightBtns.length === 2, "Toolbar 自定义按钮个数正确");
+    equals(toolbar._options.fix, false, "toolbar自定义位置不固定");
+
+    equals(toolbar.$el.css("display"), "block", "toolbar显示正常");
+    equals(toolbar.$el.attr("class"), "ui-toolbar", "class检查正常");
+    equals(toolbar.$el.attr("id"), "J_toolbar", "toolbar el检查正常");
+    equals(toolbar.$el.offset().width, $("body").offset().width, "toolbar宽度正常");
+    equals(toolbar.$el.offset().height, tablet ? 50 : 42, "toolbar高度正常");
+    equals(toolbar.$el.find(".ui-toolbar-title").text(), "百度首页", "toolbar标题为'百度首页'");
+    ok(toolbar.$el.find(".ui-toolbar-left").children().length === 1 &&
+       toolbar.$el.find(".ui-toolbar-right").children().length === 2 , "Toolbar 按钮个数正确");
+
+    toolbar.destroy();
+    $('#J_toolbar').remove();
+});
+
+test('setup模式1', function(){
+    expect(12);
+
+    $('<div id="J_toolbar">' +
+        '<a href="../">返回</a>' +
+        '<h3>百度首页</h3>' +
+        '<span class="btn_1">百科</span>' +
+        '<span class="btn_1">知道</span></div>').appendTo(document.body);
+    var toolbar = gmu.Toolbar('#J_toolbar');
+
+    equals(toolbar._options.title, "标题", "toolbar标题默认配置为'标题'");
+    ok(toolbar._options.container === document.body, "toolbar默认配置容器为body");
+    ok(toolbar._options.leftBtns.length === 0 && toolbar._options.rightBtns.length === 0, "Toolbar 默认按钮个数为0");
+    equals(toolbar._options.fix, false, "toolbar自定义位置不固定");
+
+    equals(toolbar.$el.css("display"), "block", "toolbar显示正常");
+    equals(toolbar.$el.attr("class"), "ui-toolbar", "class检查正常");
+    equals(toolbar.$el.attr("id"), "J_toolbar", "toolbar el检查正常");
+    equals(toolbar.$el.offset().width, $("body").offset().width, "toolbar宽度正常");
+    equals(toolbar.$el.offset().height, tablet ? 50 : 42, "toolbar高度正常");
+    equals(toolbar.$el.find(".ui-toolbar-title").text(), "百度首页", "toolbar标题为'百度首页'");
+    ok(toolbar.$el.find(".ui-toolbar-left").children().length === 1 &&
+       toolbar.$el.find(".ui-toolbar-right").children().length === 2 , "Toolbar 按钮个数正确");
+    ok(toolbar.$el.find(".ui-toolbar-left").children()[0].innerHTML === '返回', "Toolbar 左侧按钮文案正确");
+
+    toolbar.destroy();
+    $('#J_toolbar').remove();
+});
+
+test('setup模式2', function(){
+    expect(12);
+
+    $('<div id="J_toolbar"><div class="ui-toolbar-wrap"><div class="ui-toolbar-left">' +
+            '<a href="../">返回</a>' +
+        '</div>' +
+        '<h3 class="ui-toolbar-title">百度首页</h3>' +
+        '<div class="ui-toolbar-right">' +
+            '<span class="btn_1">百科</span>' +
+            '<span class="btn_1">知道</span></div></div></div>').appendTo(document.body);
+    var toolbar = gmu.Toolbar('#J_toolbar');
+
+    equals(toolbar._options.title, "标题", "toolbar标题默认配置为'标题'");
+    ok(toolbar._options.container === document.body, "toolbar默认配置容器为body");
+    ok(toolbar._options.leftBtns.length === 0 && toolbar._options.rightBtns.length === 0, "Toolbar 默认按钮个数为0");
+    equals(toolbar._options.fix, false, "toolbar自定义位置不固定");
+
+    equals(toolbar.$el.css("display"), "block", "toolbar显示正常");
+    equals(toolbar.$el.attr("class"), "ui-toolbar", "class检查正常");
+    equals(toolbar.$el.attr("id"), "J_toolbar", "toolbar el检查正常");
+    equals(toolbar.$el.offset().width, $("body").offset().width, "toolbar宽度正常");
+    equals(toolbar.$el.offset().height, tablet ? 50 : 42, "toolbar高度正常");
+    equals(toolbar.$el.find(".ui-toolbar-title").text(), "百度首页", "toolbar标题为'百度首页'");
+    ok(toolbar.$el.find(".ui-toolbar-left").children().length === 1 &&
+       toolbar.$el.find(".ui-toolbar-right").children().length === 2 , "Toolbar 按钮个数正确");
+    ok(toolbar.$el.find(".ui-toolbar-left").children()[0].innerHTML === '返回', "Toolbar 左侧按钮文案正确");
+
+    toolbar.destroy();
+    $('#J_toolbar').remove();
+});
+
+test('Button实例作为按钮', function(){
+    expect(11);
+
+    stop();
+    ua.importsrc('widget/button/button', function(){
+        var toolbar = gmu.Toolbar( $('<div id="J_toolbar"></div>'), {
+            container: $('#J_container'),
+            title: '百度首页',
+            leftBtns: ['<span class="btn_1">返回</span>'],
+            rightBtns: ['<span class="btn_1">百科</span>', new gmu.Button({
+                                                                    label: 'button按钮',
+                                                                    container: '#btsn_create'
+                                                                })]
+        } );
+
+        equals(toolbar._options.title, "百度首页", "toolbar标题自定义为'百度首页'");
+        ok(toolbar._options.container[0].id === $('#J_container')[0].id, "toolbar自定义容器为J_container");
+        ok(toolbar._options.leftBtns.length === 1 && toolbar._options.rightBtns.length === 2, "Toolbar 自定义按钮个数正确");
+        equals(toolbar._options.fix, false, "toolbar自定义位置不固定");
+
+        equals(toolbar.$el.css("display"), "block", "toolbar显示正常");
+        equals(toolbar.$el.attr("class"), "ui-toolbar", "class检查正常");
+        equals(toolbar.$el.attr("id"), "J_toolbar", "toolbar el检查正常");
+        equals(toolbar.$el.offset().width, $("body").offset().width, "toolbar宽度正常");
+        equals(toolbar.$el.offset().height, tablet ? 50 : 42, "toolbar高度正常");
+        equals(toolbar.$el.find(".ui-toolbar-title").text(), "百度首页", "toolbar标题为'百度首页'");
+        ok(toolbar.$el.find(".ui-toolbar-left").children().length === 1 &&
+           toolbar.$el.find(".ui-toolbar-right").children().length === 2 , "Toolbar 按钮个数正确");
+
         toolbar.destroy();
-
-        var el2= w.dt.eventLength();
-        var ol = w.dt.objLength(toolbar);
-        var dl2 =w.dt.domLength(w);
-
-        equal(dl1,dl2,"The dom is ok");
-        equal(el1,el2 + 2,"The event is ok"); //TODO:fix()的事件没有清除
-        ok(ol==0,"The toolbar is destroy");
-        this.finish();
-    })
+        $('#J_toolbar').remove();
+        start();
+    }, 'gmu.Button');
 });
+
+// 检查toolbar-wrap元素
+// 检查zeptolize方式初始化
+// 检查按钮为button实例
+// 检查fix
+

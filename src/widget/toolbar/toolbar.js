@@ -31,6 +31,10 @@
             var me = this,
                 $el;
 
+            if( !me._options.container ) {
+                me._options.container = document.body;
+            }
+
             me.on( 'ready', function() {
                 $el = me.$el;
 
@@ -62,11 +66,10 @@
                 // 解绑事件
                 
                 
-                // 如果是通过setup模式创建，保留节点
-                if( me._bySetup ) {
-
-                } else {    // 如果是通过render模式创建，移除节点
+                // 如果是通过render模式创建，移除节点
+                if( me._bySetup === false ) {
                     me.$el.remove();
+                } else {    // 如果是通过setup模式创建，保留节点
                 }
             } );
         },
@@ -84,10 +87,14 @@
                 currentConteiner = btnContainer['left'];
 
             if( $el ) {  // setup方式创建，从DOM中取出按钮组
+                $el[0].parentNode || (me._bySetup = false, $el.appendTo(container));   // 如果是动态创建的元素，将其插入DOM中
+
                 children = $el.children();
-                $toolbarWrap = $el.find('ui-toolbar-wrap');
+                $toolbarWrap = $el.find('.ui-toolbar-wrap');
                 if( $toolbarWrap.length === 0 ){
                     $toolbarWrap = $('<div class="ui-toolbar-wrap"></div>').appendTo($el);
+                }else{
+                    children = $toolbarWrap.children();
                 }
 
                 children.forEach( function( child ) {
@@ -127,8 +134,6 @@
 
             me.addBtns( 'left', opts.leftBtns );
             me.addBtns( 'right', opts.rightBtns );
-
-            me.trigger( 'create' );
         },
 
         _addBtn: function( contianer, btn ) {
@@ -171,8 +176,8 @@
         toggle: function() {
             var me = this;
 
-            me.isShowing === true ? 
-                me.hide() : me.show();
+            me.isShowing === false ? 
+                me.show() : me.hide();
         },
 
         fix: function( opts ) {
