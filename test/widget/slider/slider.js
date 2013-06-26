@@ -308,7 +308,7 @@
                 approximateEqual(items.eq(0).offset().left, pos, '第一个可见');
 
                 dom.slider('prev');
-                equal(this.getIndex(), 0, 'still 0');
+                equal(dom.slider('getIndex'), 0, 'still 0');
 
 
                 dom.slider('destroy').remove();
@@ -344,7 +344,7 @@
                 approximateEqual(items.eq(3).offset().left, pos, '第四个可见');
 
                 dom.slider('next');
-                equal(this.getIndex(), 3, 'still 3');
+                equal(dom.slider('getIndex'), 3, 'still 3');
 
                 dom.slider('destroy').remove();
                 start();
