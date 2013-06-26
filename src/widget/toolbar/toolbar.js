@@ -39,6 +39,7 @@
                 $el = me.$el;
 
                 if( me._options.fix ) {
+                    // TODO 元素id的处理
                     var placeholder = $('<div class="ui-toolbar-placeholder"></div>').height($el.offset().height).
                         insertBefore($el).append($el).append($el.clone().css({'z-index': 1, position: 'absolute',top: 0})),
                         top = $el.offset().top,
@@ -48,8 +49,7 @@
                         offHandle;
 
                     $(window).on('touchmove touchend touchcancel scroll scrollStop', check);
-                    $(document).on('touchend touchcancel', function() {
-                        offHandle = arguments.callee;
+                    $(document).on('touchend touchcancel', offHandle = function() {
                         setTimeout( function() {
                             check();
                         }, 200 );
@@ -57,7 +57,11 @@
                     me.on('destroy', function() {
                         $(window).off('touchmove touchend touchcancel scroll scrollStop', check);
                         $(document).off('touchend touchcancel', offHandle);
-                        placeholder.off().remove();
+                        
+                        // 删除placeholder，保留原来的Toolbar节点
+                        $el.insertBefore(placeholder);
+                        placeholder.remove();
+
                     }).on('init', check);
                 }
             } );
@@ -70,6 +74,7 @@
                 if( me._bySetup === false ) {
                     me.$el.remove();
                 } else {    // 如果是通过setup模式创建，保留节点
+                    me.$el.css('position', 'static').css('top', 'auto');
                 }
             } );
         },

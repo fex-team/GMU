@@ -151,6 +151,24 @@ test('自定义配置项el为zepto对象', function(){
     $('#J_toolbar').remove();
 });
 
+
+//只有PC和ios5以上支持fix
+if((!$.os.phone && !$.os.tablet)||($.os.ios && parseFloat($.os.version) > 5)){
+    test('fix参数', function(){
+        stop();
+        var tmp = $('<div style="height:500px;"></div>').appendTo(document.body);
+        var toolbar = gmu.Toolbar({fix: true});
+        window.scrollTo(0, 20);
+        setTimeout(function(){
+            equals(toolbar.$el.offset().top, 40, '页面滚动后，toolbar位置正常');
+
+            toolbar.destroy();
+            tmp.remove();
+            start();
+        }, 10);
+    });
+}
+
 test('setup模式1', function(){
     expect(17);
 
@@ -416,5 +434,63 @@ test('show hide自定义事件', function(){
     toolbar.destroy();
 });
 
-// 检查fix
-// destroy
+test('destroy', function(){
+    expect(8);
+
+    // render模式的destroy
+    var toolbar = gmu.Toolbar();
+
+    ok($('.ui-toolbar').length === 1, 'render模式创建Toolbar后，toolbar已存在在DOM中');
+    toolbar.destroy();
+    ok($('.ui-toolbar').length === 0, 'render模式创建Toolbar，destroy后，toolbar已移除');
+
+    // setup模式的destroy
+    $('<div id="J_toolbar">' +
+        '<a href="../">返回</a>' +
+        '<h3>百度首页</h3>' +
+        '<span class="btn_1">百科</span>' +
+        '<span class="btn_1">知道</span></div>').appendTo(document.body);
+
+    $('#J_toolbar').toolbar();
+    var toolbar = $('#J_toolbar').toolbar('this');
+
+    ok($('#J_toolbar').length === 1, 'setup模式创建Toolbar后，toolbar已存在在DOM中');
+    toolbar.destroy();
+    ok($('.ui-toolbar').length === 1, 'setup模式创建Toolbar，destroy后，toolbar元素仍存在在DOM中');
+    $('#J_toolbar').remove();
+
+    // fix状态的destroy
+    $('<div id="J_toolbar">' +
+        '<a href="../">返回</a>' +
+        '<h3>百度首页</h3>' +
+        '<span class="btn_1">百科</span>' +
+        '<span class="btn_1">知道</span></div>').appendTo(document.body);
+
+    $('#J_toolbar').toolbar({fix: true});
+    var toolbar = $('#J_toolbar').toolbar('this');
+    ok($('.ui-toolbar').length === 2, 'fix状态，toolbar被复制出一份');
+    toolbar.destroy();
+    ok($('.ui-toolbar').length === 1, 'destroy后，复制出的toolbar被清除，原有的保留');
+    equals($('.ui-toolbar').css('position'), 'static', 'destroy后，toolbar定位方式改成static');
+    equals($('.ui-toolbar').css('top'), 'auto', 'destroy后，toolbar top改成auto');
+
+    $('#J_toolbar').remove();
+});
+
+
+test('fix方法', function(){
+    expect(1);
+
+    stop();
+    var tmp = $('<div style="height:500px;"></div>').appendTo(document.body);
+    var toolbar = gmu.Toolbar();
+    toolbar.fix({top: 20});
+    window.scrollTo(0, 20);
+    setTimeout(function(){
+        equals(toolbar.$el.offset().top, 40, '页面滚动后，toolbar位置正常');
+        toolbar.destroy();
+        tmp.remove();
+        start();
+    }, 10);
+
+});
