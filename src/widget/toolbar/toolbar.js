@@ -3,7 +3,7 @@
  * @name Toolbar
  * @desc <qrcode align="right" title="Live Demo">../gmu/examples/widget/toolbar/toolbar.html</qrcode>
  * 工具栏组件
- * @import core/widget.js, extend/fix.js, extend/highlight.js
+ * @import core/widget.js, extend/fix.js
  */
 (function( gmu, $ ) {
     
@@ -70,9 +70,6 @@
             } );
 
             me.on( 'destroy', function() {
-                // 解绑事件
-                
-                
                 // 如果是通过render模式创建，移除节点
                 if( me._bySetup === false ) {
                     me.$el.remove();
