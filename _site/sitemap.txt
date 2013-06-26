@@ -1,0 +1,16 @@
+
+http://gmuteam.github.io//nav/framework.html
+http://gmuteam.github.io//nav/solutions.html
+http://gmuteam.github.io//nav/experiences.html
+http://gmuteam.github.io//nav/standards.html
+http://gmuteam.github.io//index.html
+http://gmuteam.github.io//sitemap.txt
+
+http://gmuteam.github.io//solutions/2013/06/26/media-query
+http://gmuteam.github.io//solutions/2013/06/26/match-media
+http://gmuteam.github.io//standards/2013/06/26/gmu-test-standard
+http://gmuteam.github.io//experiences/2013/06/26/gmu-hacks2
+http://gmuteam.github.io//experiences/2013/06/26/gmu-hacks
+http://gmuteam.github.io//standards/2013/06/26/gmu-dev-standard
+http://gmuteam.github.io//standards/2013/06/26/gmu-code-standard
+http://gmuteam.github.io//lessons/2011/12/29/jekyll-introduction

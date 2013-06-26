@@ -1,0 +1,16 @@
+---
+layout: page
+title: 解决方案
+header: Posts By Tag
+group: navigation
+---
+{% include JB/setup %}
+
+{% for category in site.categories %}
+	{% if (category[0] == "solutions" %}
+		<ul>
+		    {% assign pages_list = category[1] %}  
+		    {% include JB/pages_list %}
+		</ul>
+	{% endif %}	
+{% endfor %}

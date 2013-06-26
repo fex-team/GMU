@@ -1,0 +1,327 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>ortchange兼容方案</title>
+    
+    <meta name="author" content="Baidu GMU Team">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/assets/themes/twitter/css/1.4.0/bootstrap.css" rel="stylesheet">
+    <link href="/assets/themes/twitter/css/style.css?body=1" rel="stylesheet" type="text/css" media="all">
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+
+    <div class="topbar">
+      <div class="fill">
+        <div class="container">
+          <a class="brand" href="/">GMU Blog</a>
+          <ul class="nav">
+            
+            
+            
+
+
+  
+    
+      
+      	
+      	<li><a href="/nav/framework.html">Webapp 框架</a></li>
+      	
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/nav/solutions.html">解决方案</a></li>
+      	
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/nav/experiences.html">开发经验</a></li>
+      	
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/nav/standards.html">GMU规范</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+
+
+
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        
+<div class="page-header">
+  <h1>ortchange兼容方案 <small>mobile webapp javascript</small></h1>
+</div>
+
+<div class="row">
+  <div class="span10">
+    <p>我们知道mobile设备上监测转屏的事件是orientationchange，但这个事件支持得不太好，有很多问题，在开发GMU过程中遇到的关于转屏的问题主要有以下几点：</p>
+
+<h2>1. 原生orientationchange事件问题</h2>
+
+<h4>（1）orientationchange事件支持得不好</h4>
+
+<p>有些android就不支持orientation，我们只能借助resize事件，在GMU_2.0.4以前的版本，在$.support中扩展了一个orientation检测，如下（其中有些看着比较奇葩的条件是在某些机型上检测出来的~）:
+<code>javascript
+$.support.orientation = !(br.uc || (parseFloat($.os.version)&lt;5 &amp;&amp; (br.qq || br.chrome))) &amp;&amp; !($.os.android &amp;&amp; parseFloat($.os.version) &gt; 3) &amp;&amp; &quot;orientation&quot; in window &amp;&amp; &quot;onorientationchange&quot; in window
+</code></p>
+
+<h4>（2）resize会多次触发</h4>
+
+<p>对于不支持orientationchange的机型和系统，我们就只能借助于resize来触发，大家知道resize在很多情况下都会触发，而不光只有转屏，因此并不是很准。</p>
+
+<h4>（3）转屏延迟</h4>
+
+<p>通常在转屏后，我们需要重新渲染UI，比如说调整大小，计算位置等，但转屏事件触发后，并不是页面马上就开始渲染，不同的系统，不同的浏览器，不同的机型，甚至软键盘出来与否，都会有不同，那这时我们再去根据当前页面的一些信息去做调整就是旋转前的。原来GMU是进行了延迟处理，但这对于基本无延迟的手机（如ios5+），体验是不好的。
+针对延迟问题，GMU原来的解决方案如下：
+<code>javascript
+$(document).ready(function () {
+    var getOrt = function(){
+            var elem = document.documentElement;
+            return elem.clientWidth / Math.max(elem.clientHeight, 320) &lt; 1.1 ? &quot;portrait&quot; : &quot;landscape&quot;;
+        },
+        lastOrt = getOrt(),
+        handler = function(e) {
+            maxTry = 20;
+            clearInterval(timer);
+            timer = $.later(function() {
+                var curOrt = getOrt();
+                if (lastOrt !== curOrt) {
+                    lastOrt = curOrt;
+                    clearInterval(timer);
+                    $(window).trigger(&#39;ortchange&#39;);
+                } else if(--maxTry){//最多尝试20次
+                    clearInterval(timer);
+                }
+            }, 50, true);
+        },
+        timer, maxTry;
+    $(window).bind($.support.orientation ? &#39;orientationchange&#39; : &#39;resize&#39;, $.debounce(handler));
+});
+</code>
+通过检测横竖屏document.documentElement的clientWidth值是否调整过来，来确定当前是否已经转屏渲染完成。</p>
+
+<h2>2. window.matchMedia问题</h2>
+
+<p>通过上一篇（<a href="https://github.com/gmuteam/GMU/wiki/Media-Query%E5%92%8CmatchMedia%E4%BB%8B%E7%BB%8D">Media Query和matchMedia介绍</a>）的介绍，我们知道有强大的window.matchMedia可以帮我们监测设备状态的改变，但matchMedia也有些问题。</p>
+
+<h4>（1）支持程度不好</h4>
+
+<p>下表是matchMedia的支持程度（摘自<a href="http://caniuse.com/#feat=matchmedia">can I use</a>）：
+<img src="https://raw.github.com/wiki/gmuteam/GMU/images/matchMedia.png" alt="matchMedia的支持程度"></p>
+
+<h4>（2）MediaQueryList对象创建后不更新</h4>
+
+<p>即使matches属性的初始值是正确的，默认情况下还是不会更新matches的值，除非页面含有一个对应相同的query和至少一个规则定义的media块。比如说，为了让一个表现形式为”“screen and (max-width:480px)““的MediaQueryList对象正确显示出来（包括能正确触发事件），你必须在你的CSS中包含一些内容：
+```js
+@media screen and (max-width:480px) {</p>
+
+<p>}
+```
+这里边的样式是空的都可以，只要有相关的@media，因此，使用监听器时需要在页面创建query对应的media</p>
+
+<h2>3. $.matchMedia的实现</h2>
+
+<p>鉴于原生的$.matchMedia的那些问题，GMU在遵照<a href="http://www.w3.org/TR/cssom-view/#dom-window-matchmedia">CSS Object Model（CSSOM）Views</a>规范，在zepto基础上扩展实现了$.matchMedia方法，该方法返回一个对象，该对象包含matches（是否match query），当前查询query, addListener和removeListener，调用方式与原生window.matchMedia一致。$.matchMedia其实实现起来并不复杂，主要思路如下：</p>
+
+<h4>（1）为页面添加检测元素</h4>
+
+<p>css media query主要还是在style上起作用，故在页面创建一个div，作为media query作用的对象。
+<code>js
+$mediaElem = $(&#39;&lt;div class=&quot;&#39; + cls + &#39;&quot; id=&quot;&#39; + id + &#39;&quot;&gt;&lt;/div&gt;&#39;).appendTo(&#39;body&#39;)
+</code></p>
+
+<h4>（2）为检测元素添加transition样式及media query样式</h4>
+
+<p>当query条件满足时，去动态修改transition作用的属性，如(width)，则可触发transitionEnd事件，这样则相当于可以监测到media query。
+```js
+$style = $(&#39;<style></style>&#39;).append(&#39;.&#39; + cls + &#39;{&#39; + cssPrefix + &#39;transition: width 0.001ms; width: 0; position: absolute; top: -10000px;}\n&#39;).appendTo(&#39;head&#39;);  </p>
+
+<p>$style.append(&#39;@media &#39; + query + &#39; { #&#39; + id + &#39; { width: 1px; } }\n&#39;)
+```</p>
+
+<h4>（3）注册transitionEnd事件</h4>
+
+<p>在检测元素上注册transitionEnd事件
+<code>js
+$mediaElem.on(transitionEnd, function() {
+    ret.matches = $mediaElem.width() === 1;
+    $.each(listeners, function (i,fn) {
+        $.isFunction(fn) &amp;&amp; fn.call(ret, ret);
+    });
+});
+</code></p>
+
+<h4>（4）封装addListener及removeListener接口</h4>
+
+<p>主要记录在闭包中的listeners数组件，添加和删除回调函数即可
+<code>js
+ret = {
+    matches: $mediaElem.width() === 1 ,
+    media: query,
+    addListener: function (callback) {
+        listeners.push(callback);
+        return this;
+    },
+    removeListener: function (callback) {
+        var index = listeners.indexOf(callback);
+        ~index &amp;&amp; listeners.splice(index, 1);
+        return this;
+    }
+};
+</code></p>
+
+<h4>（5）完整代码</h4>
+
+<p>完整代码见GMU中<a href="">zepto.extend</a>中$.matchMedia方法
+当然对于已经支持的系统和浏览器，会直接返回原生的window.matchMedia方法</p>
+
+<h2>4. 用$.mediaQuery实现转屏ortchange事件</h2>
+
+<p>实现转屏，只需将query传入检测转屏的query即可。这里在实现时，最开始遇了一点问题。最开始query值为&quot;screen and (orientation: portrait)&quot;，可在某个三星的机器上测试，居然键盘出来会改变视口大小，即认为是orientation改变了。后来经测试后query换成了&quot;screen and (width: &quot; + window.innerWidth + &quot;px)&quot;，即检测设备第一次打开时的width，若转屏后width必然不满足，使得页面上的检测元素width未受media query的css影响而改变而触发transitionEnd。具体代码如下：
+<code>js
+$(function () {
+    var handleOrtchange = function (mql) {
+        $(document.body).prepend(mql.matches);
+            $(window).trigger(&#39;ortchange&#39;);
+        };
+    $.mediaQuery = {
+        ortchange: &#39;screen and (width: &#39; + window.innerWidth + &#39;px)&#39;
+    };
+    $.matchMedia($.mediaQuery.ortchange).addListener(handleOrtchange);
+});
+</code></p>
+
+<h2>5. 还存在的一些问题</h2>
+
+<p>在ios4,ios5,ios6及android 2.2+上的不同机型和浏览器上测试过，转屏事件都能正确触发，但是还是存在如下一些问题，其中部分可考虑后续优化。</p>
+
+<h4>（1）transition支持</h4>
+
+<p>$.matchMedia方法的实现依赖于transition的支持，从<a href="http://caniuse.com/#feat=css-transitions">can I use</a>
+来看transition目前在大部移动浏览器上的支持程度还不错，故这种解决方案对于移动端来说还是较为通用的。
+<img src="https://raw.github.com/wiki/gmuteam/GMU/images/transition.png" alt="transition支持程度"></p>
+
+<h4>（2）MediaQueryList对象的调用时机</h4>
+
+<p>如果直接通过$.matchMeida方法获取对象，matches的值是待transitionEnd后才更新的，这里设置的transition时间是0.001ms，但若用户想在使用时matches的值即为最新，需要有一些延迟</p>
+
+<h4>（3）页面检测元素被无意修改</h4>
+
+<p>现在是通过在页面上创建一个元素来响应media的，若该元元素transition作用的属性值被无意间修改了，也可能导致不准确，当然这种修改的可能性还是比较小。</p>
+
+<h4>（4）页面检测元素及样式的回收</h4>
+
+<p>目前在页上创建的检测元素及相关的样式并未做回收处理，这个若是有需求，后续可再提供相关接口进行清理工作。</p>
+
+<h2>6. 参考资料</h2>
+
+<ol>
+<li><a href="http://www.w3.org/TR/cssom-view/">cssom view</a></li>
+<li><a href="http://www.w3ctech.com/p/982">CSS media queries在JavaScript中的应用</a></li>
+<li><a href="https://github.com/paulirish/matchMedia.js">matchMedia polyfill</a></li>
+<li><a href="https://github.com/fofr/matchMedia.js/blob/master/matchMedia.js">matchMedia.js</a></li>
+<li><a href="https://github.com/nzakas/yui3-gallery/blob/master/src/gallery-media/js/media.js">gallery-media</a></li>
+</ol>
+
+    <hr>
+    <div class="pagination">
+      <ul>
+      
+        <li class="prev"><a href="/standards/2013/06/26/gmu-test-standard" title="GMU测试规范">&larr; Previous</a></li>
+      
+        <li><a href="/siteuse/archive.html">Archive</a></li>
+      
+        <li class="next"><a href="/solutions/2013/06/26/media-query" title="media query介绍">Next &rarr;</a></li>
+      
+      </ul>
+    </div>
+    <hr>
+    
+
+
+  <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_developer = 1;
+    var disqus_shortname = 'gmuteamcn'; // required: replace example with your forum shortname
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+
+  </div>
+  
+  <div class="span4">
+    <h4>Published</h4>
+    <div class="date"><span>26 June 2013</span></div>
+
+    
+  </div>
+</div>
+
+
+      </div>
+
+      <footer>
+        <p>&copy; Baidu GMU Team 2013-2014,  
+          <a href="http://gmu.baidu.com" target="_blank" title="GMU DOC WIKI">GMU官网 </a>
+          & <a href="http://https://githubcom/gmuteam/GMU/" target="_blank"> GMU Github</a>
+        </p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    
+  </body>
+</html>
+

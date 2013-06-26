@@ -1,0 +1,356 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>GMU开发规范</title>
+    
+    <meta name="author" content="Baidu GMU Team">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/assets/themes/twitter/css/1.4.0/bootstrap.css" rel="stylesheet">
+    <link href="/assets/themes/twitter/css/style.css?body=1" rel="stylesheet" type="text/css" media="all">
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+
+    <div class="topbar">
+      <div class="fill">
+        <div class="container">
+          <a class="brand" href="/">GMU Blog</a>
+          <ul class="nav">
+            
+            
+            
+
+
+  
+    
+      
+      	
+      	<li><a href="/nav/framework.html">Webapp 框架</a></li>
+      	
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/nav/solutions.html">解决方案</a></li>
+      	
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/nav/experiences.html">开发经验</a></li>
+      	
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/nav/standards.html">GMU规范</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+
+
+
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        
+<div class="page-header">
+  <h1>GMU开发规范 <small>mobile webapp javascript</small></h1>
+</div>
+
+<div class="row">
+  <div class="span10">
+    <h1>GMU开发规范</h1>
+
+<h2>概述</h2>
+
+<p>本文列出了GMU开发过程中应该遵循的规范，并做出相应的描述；开发过程中应该原则上遵循本文列出的规范。
+本规范主要包括如下部分：
+* 文件组织
+* 样式
+* 定义新组件
+* 默认参数
+* 组件模板
+* 必选参数多选值的拆分
+* 组件插件
+* 组件初始化
+* 对事件的处理
+* destroy的处理
+* 其他说明</p>
+
+<h2>文件组织</h2>
+
+<p>每个组件放在以组件名命名的文件夹内：
+* 组件核心功能以组件名命名比如Panel.js
+* 组件必选参数多选值拆分文件以“参数名.值”命名，比如display.push.js
+* 插件已“$插件名”命名，比如$drag.js</p>
+
+<p>比如:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">.
+├── widget
+    └── Panel Panel组件文件夹
+        ├── Panel.js Panel核心功能文件
+        ├── display.push.js display参数push选项实现文件
+        ├── display.overlay.js display参数overlay选项实现文件
+        ├── $drag.js drag插件
+    └── Suggestion Suggestion组件文件夹
+        ├── Suggestion.js Suggestion核心功能文件
+        ├── $iscroll.js iscroll插件
+</code></pre></div>
+<h2>样式</h2>
+
+<p>gmu组件的classname使用gmu作为命名空间，组件根元素使用“gmu-组件名”命名，比如Dialog最外层容器的classname为‘gmu-dialog&#39;，DOM片段的classname使用“gmu-组件名-片段名”的方式命名，比如Dialog的title命名应该为&#39;gmu-dialog-title&#39;</p>
+
+<h2>定义一个新组件</h2>
+<div class="highlight"><pre><code class="javascript language-javascript" data-lang="javascript"><span class="nx">gmu</span><span class="p">.</span><span class="nx">define</span><span class="p">(</span><span class="s1">&#39;Panel&#39;</span><span class="p">,</span> <span class="p">{</span>
+    <span class="c1">// 默认参数</span>
+    <span class="nx">defaultOptions</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">key</span><span class="o">:</span> <span class="nx">value</span><span class="p">,</span>
+        <span class="nx">key</span><span class="o">:</span> <span class="nx">value</span><span class="p">,</span>
+        <span class="nx">key</span><span class="o">:</span> <span class="nx">value</span><span class="p">,</span>
+        <span class="p">...</span>
+    <span class="p">},</span>
+
+    <span class="c1">// 组件模板</span>
+    <span class="nx">template</span><span class="o">:</span> <span class="s1">&#39;&lt;div&gt;&lt;ul&gt;&lt;li&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;&#39;</span><span class="p">,</span>
+
+    <span class="c1">// 模板转换成html片段的方法</span>
+    <span class="nx">tpl2html</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">){</span>
+        <span class="c1">// do compile...</span>
+        <span class="k">return</span> <span class="nx">html</span><span class="p">;</span>
+    <span class="p">},</span>
+
+    <span class="c1">// 默认构造函数   </span>
+    <span class="nx">_init</span><span class="o">:</span> <span class="kd">function</span><span class="p">(){}</span>
+<span class="p">},</span> <span class="nx">gmu</span><span class="p">.</span><span class="nx">Layer</span><span class="p">);</span>
+</code></pre></div>
+<p>定义一个新组件使用gmu.define方法:
+* 第一个参数为组件名，首字母大写；
+* 第二个参数为一个对象字面量，其中包含defaultOptions(组件默认参数)、template(组件模板)、tpl2html(模板转换成html片段的方法)、_init(默认构造函数)以及组件的其他方法或者属性；
+* 第三个参数为可选参数，表示组件从哪个组件继承。</p>
+
+<h2>组件模板</h2>
+
+<p>组件模板可以使用字符串，也可以是一个对象:
+<code>javascript
+template: &#39;&lt;div&gt;&lt;ul&gt;&lt;li&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;&#39;
+</code>
+或者
+<code>javascript
+template: {
+    title: &#39;&lt;div class=&quot;gmu-dialog-title&quot;&gt;&lt;/div&gt;&#39;,
+    body: &#39;&lt;div class=&quot;gmu-dialog-foot&quot;&gt;&lt;/div&gt;&#39;,
+    foot: &#39;&lt;div class=&quot;gmu-dialog-foot&quot;&gt;&lt;/div&gt;&#39;
+},
+</code></p>
+
+<h2>模板转换成html片段</h2>
+
+<p>当组件模板只有一个时，tpl2html为一个方法，接收一个data参数。
+<code>javascript
+tpl2html: function(data){
+    // do compile...
+    return html;
+}
+</code>
+当组件模板是一个map时，tpl2html可以是一个map也可以是一个方法。
+<code>javascript
+// tpl2html用map实现
+tpl2html:{
+    title: function(data){
+        // do compile...
+        return titlehtml;
+    },
+    body: function(data){
+        // do compile...
+        return bodyhtml;
+    }
+}
+</code>
+或者
+<code>javascript
+// tpl2html用函数实现
+tpl2html: function(name, data){
+    if(name === &#39;title&#39;)
+        // do titlecompile...
+    else if(name === &#39;body&#39;)
+        // do bodycompile
+    return html;
+}
+</code></p>
+
+<h2>必选参数多选值的拆分</h2>
+
+<p>对于组件的必选参数，如果多个可选值是相互独立的，建议采用option的方式拆分。
+比如panel里面的display参数，有三个可选值：push、overlay、reveal。
+使用option的方式拆分如下：
+```javascript
+// display.push.js
+gmu.Panel.option(display, &#39;push&#39;, function(){
+        var me = this;
+        me.on(&#39;setDisplay:panel&#39;, function(e){
+            // do display...
+        });
+    }
+);</p>
+
+<p>// display.overlay.js
+gmu.Panel.option(display, &#39;overlay&#39;, function(){
+        var me = this;
+        me.on(&#39;setDisplay:panel&#39;, function(e){
+            // do display...
+        });
+    }
+);</p>
+
+<p>// display.reveal.js
+gmu.Panel.option(display, &#39;reveal&#39;, function(){
+        var me = this;
+        me.on(&#39;setDisplay:panel&#39;, function(e){
+            // do display...
+        });
+    }
+);
+```</p>
+
+<h2>组件的插件</h2>
+
+<p>每个组件类都有一个register方法，通过register方法可以扩展出一个插件。
+register方法的第一个参数为插件名，第二个参数为一个对象字面量，其中至少包含一个init方法，作为插件的初始化函数，该函数会在组件的构造函数执行完后执行。
+插件的文件名使用$+插件名的方式命名，比如Panel的drag插件，文件名为$drag.js
+```javascript
+// $drag.js
+gmu.Panel.register(&#39;drag&#39;, {
+    init: function(){
+        // do something...
+    },</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">drag: function(){}
+</code></pre></div>
+<p>});
+```</p>
+
+<h2>组件初始化</h2>
+
+<p>组件有两种初始化方式：
+一种是形如$(&#39;#dialog&#39;).dialog()的方式；
+一种是形如gmu.Dialog(&#39;#dialog&#39;)的方式。
+每个组件需要对这两种初始化方式做抹平处理。
+用户使用$(&#39;#dialog&#39;).dialog()方式调用时，底层会给组件传入setup:true的标识作为参考。
+组件内部对初始化方式的判断不应该仅仅依赖setup标识，应该综合用户传入的参数以及DOM节点来判断。</p>
+
+<h2>对事件的处理</h2>
+
+<p>出于向下兼容的考虑，目前事件（包括浏览器原生事件和自定义事件）全部采用直接在DOM元素上挂载监听的方式。
+使用option方式拆分必选参数可选项时，自定义事件采用新的观察者事件机制。</p>
+
+<h2>destroy的处理</h2>
+
+<p>组件destroy的时候应该移除所有的事件，并且对DOM结构进行还原。
+原则上讲，destroy后DOM应该还原到组件初始化之前的状态。</p>
+
+<h2>其他说明</h2>
+
+<ul>
+<li>组件代码都放在闭包中，undefined从函数的形参中取</li>
+<li><em>init为组件的初始化方法，原则上不建议在</em>init中进行构造DOM结构的操作</li>
+<li>各个组件的zIndex取值，暂时不做统一处理</li>
+<li>针对特定浏览器的hack，需要添加注释</li>
+<li>浏览器原生事件需要加&#39;.组件名&#39;作为命名空间，自定义事件不需要命名空间</li>
+</ul>
+
+    <hr>
+    <div class="pagination">
+      <ul>
+      
+        <li class="prev"><a href="/lessons/2011/12/29/jekyll-introduction" title="Jekyll Introduction">&larr; Previous</a></li>
+      
+        <li><a href="/siteuse/archive.html">Archive</a></li>
+      
+        <li class="next"><a href="/standards/2013/06/26/gmu-dev-standard" title="GMU代码规范">Next &rarr;</a></li>
+      
+      </ul>
+    </div>
+    <hr>
+    
+
+
+  <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_developer = 1;
+    var disqus_shortname = 'gmuteamcn'; // required: replace example with your forum shortname
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+
+  </div>
+  
+  <div class="span4">
+    <h4>Published</h4>
+    <div class="date"><span>26 June 2013</span></div>
+
+    
+  </div>
+</div>
+
+
+      </div>
+
+      <footer>
+        <p>&copy; Baidu GMU Team 2013-2014,  
+          <a href="http://gmu.baidu.com" target="_blank" title="GMU DOC WIKI">GMU官网 </a>
+          & <a href="http://https://githubcom/gmuteam/GMU/" target="_blank"> GMU Github</a>
+        </p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    
+  </body>
+</html>
+
