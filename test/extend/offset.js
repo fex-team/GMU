@@ -157,7 +157,7 @@ test( 'position: relative 4', function() {
 
         approximateEqual( offset.left, 100 );
         approximateEqual( offset.top, 100 );
-        
+
         $root.remove();
 } );
 
@@ -293,3 +293,40 @@ test( 'position: fixed', function() {
 
         $root.remove();
 } );
+
+test( 'offset: function', function() {
+
+    var $root = $('<div>').css({
+            position: 'relative',
+            width: 200,
+            height: 200,
+            top: 10,
+            left: 20,
+            background: 'red'
+        }).appendTo( document.body ).append('<p>bla bla bla</p>'),
+
+        $el = $('<div>').css({
+            width: 20,
+            height: 20,
+            position: 'absolute',
+            background: 'blue'
+        }).appendTo( $root ),
+        offset;
+
+        $el.offset(function( idx, old ){
+            equal( old.left, $(this).offset().left);
+            equal( old.top, $(this).offset().top);
+            return {
+                left: 100,
+                top: 100
+            }
+        });
+
+        offset = $el.offset();
+
+        approximateEqual( offset.left, 100 );
+        approximateEqual( offset.top, 100 );
+
+        $root.remove();
+} );
+
