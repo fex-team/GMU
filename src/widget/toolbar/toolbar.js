@@ -61,6 +61,9 @@
                         // 删除placeholder，保留原来的Toolbar节点
                         $el.insertBefore(placeholder);
                         placeholder.remove();
+                        if( me._bySetup === false ) {
+                            me.$el.remove();
+                        }
 
                     }).on('init', check);
                 }

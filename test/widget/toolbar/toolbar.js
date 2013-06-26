@@ -156,14 +156,21 @@ test('自定义配置项el为zepto对象', function(){
 if((!$.os.phone && !$.os.tablet)||($.os.ios && parseFloat($.os.version) > 5)){
     test('fix参数', function(){
         stop();
+
+        $('<div id="J_container"><p>占位</p></div>').insertBefore($($(document.body).children()[0]));
+        toolbar = gmu.Toolbar({
+            container: '#J_container',
+            fix: true});
         var tmp = $('<div style="height:500px;"></div>').appendTo(document.body);
-        var toolbar = gmu.Toolbar({fix: true});
-        window.scrollTo(0, 20);
+
+        var currentOffsetTop = ~~toolbar.$el.offset().top;
+        window.scrollTo(0, currentOffsetTop + 20);
         setTimeout(function(){
-            equals(toolbar.$el.offset().top, 40, '页面滚动后，toolbar位置正常');
+            equals(toolbar.$el.offset().top, currentOffsetTop + 20, '页面滚动后，toolbar位置正常');
 
             toolbar.destroy();
             tmp.remove();
+            $('#J_container').remove();
             start();
         }, 10);
     });
