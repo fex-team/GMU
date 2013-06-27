@@ -94,8 +94,9 @@
                 $input = me.getEl().attr( 'autocomplete', 'off'),
                 $parent = $input.parent('.ui-suggestion-mask');
 
-            $input.wrap( me.$mask = $parent.length ?
-                    $parent : $( '<div class="ui-suggestion-mask"></div>' ) );
+            $parent.length ? me.$mask = $parent :
+                    $input.wrap( me.$mask =
+                    $( '<div class="ui-suggestion-mask"></div>' ) );
 
             // 考采用template的wrapper项渲染列表
             me.$mask.append( me.tpl2html( 'wrapper' ) );
