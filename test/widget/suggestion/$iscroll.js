@@ -99,7 +99,7 @@ test('sug及iscroll是否正确创建', function () {
 });
 
 test('sug中iscroll能正确内滚', function () {
-    expect(3);
+    expect(4);
     stop();
 
     var sug = gmu.Suggestion({
@@ -114,6 +114,7 @@ test('sug中iscroll能正确内滚', function () {
     $input.val('a').trigger('input');
     equal(sug.isShow, true, 'sug正确显示');
 
+    equal(sug.$clearBtn.css("display"),"none","数据不来自历史记录，不显示清除按钮");
     top = sug.$content.find('.sug-item').eq(0).offset().top;
 
     ta.touchstart(sug.$scroller.get(0),{
@@ -141,9 +142,50 @@ test('sug中iscroll能正确内滚', function () {
 
     }, 600)
 });
+test('有历史记录时的iscroll', function () {
+    expect(3);
+    stop();
 
+    var sug = gmu.Suggestion({
+            container: "#sugg-input",
+            source: upath + "data/suggestion.php",
+            renderlist: renderlist
+        }),
+        $input = sug.getEl(),
+        top;
+    sug.history('Alabama');
+    sug.history('Arkansas');
+    sug.history('Arizona');
+    sug.history('California');
+    sug.history('Connecticut');
+    $input.trigger('input');
+    equal(sug.isShow, true, 'sug正确显示');
+    equal(sug.$clearBtn.css("display"),"block","数据来自历史记录，显示清除按钮");
+    top = sug.$content.find('.sug-item').eq(0).offset().top;
+
+    ta.touchstart(sug.$scroller.get(0),{
+        touches:[{
+            pageX: 0,
+            pageY: 0
+        }]
+    });
+    ta.touchmove(sug.$scroller.get(0),{
+        touches:[{
+            pageX: 0,
+            pageY: -10
+        }]
+    });
+    ta.touchend(sug.$scroller.get(0))
+
+    setTimeout(function() {
+        equal(sug.$content.find('.sug-item').eq(0).offset().top < top, true, 'sug中iscroll能正常滑动' );
+        sug.destroy();
+        start();
+
+    }, 600)
+});
 test('input时，iscroll能滚到最顶部', function () {
-    expect(5);
+    expect(7);
     stop();
 
     var sug = gmu.Suggestion({
@@ -157,22 +199,38 @@ test('input时，iscroll能滚到最顶部', function () {
 
     $input.val('a').trigger('input');
     equal(sug.isShow, true, 'sug正确显示');
-
     setTimeout(function() {
         top = sug.$content.find('.sug-item').eq(0).offset().top;
         equal(sug.$content.find('.sug-item').eq(0).text(), 'Alabama', 'sug第一项正确显示');
         equal(sug.$content.find('.sug-item').eq(3).text(), 'Arkansas', 'sug第四项正确显示');
+        ta.touchstart(sug.$scroller.get(0),{
+            touches:[{
+                pageX: 0,
+                pageY: 0
+            }]
+        });
+        ta.touchmove(sug.$scroller.get(0),{
+            touches:[{
+                pageX: 0,
+                pageY: -10
+            }]
+        });
+        ta.touchend(sug.$scroller.get(0));
 
-        $input.val('an').trigger('input');
+        setTimeout(function () {
 
-        setTimeout(function() {
-            equal(sug.$content.find('.sug-item').eq(0).text(), 'Arkansas', 'sug第一项内容改变');
-            equal(sug.$content.find('.sug-item').eq(0).offset().top, top, 'input输入后，sug滚到最顶部');
+            equal(sug.$content.find('.sug-item').eq(0).offset().top < top, true, 'iscroll滑动一段');
+            $input.val('an').trigger('input');
 
-            sug.destroy();
-            start();
+            setTimeout(function () {
+                equal(sug.$content.find('.sug-item').eq(0).text(), 'Arkansas', 'sug第一项内容改变');
+                equal(sug.$content.find('.sug-item').eq(0).offset().top, top, 'input输入后，sug滚到最顶部');
+                $input.val('hello').trigger('input');
+                equal(sug.isShow, false, 'sug没有匹配到内容关闭 ');
+                sug.destroy();
+                start();
+            }, 400);
         }, 400);
-
-    }, 400)
+    }, 400);
 
 });

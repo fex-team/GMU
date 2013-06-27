@@ -158,7 +158,18 @@ test('多实例', function () {
 
     $('#sugg-input1').val('Ala').trigger('input');
 });
+test('在已有的suggestion-mask中，不会新建suggestion-mask', function () {
 
+    var sug = new $.ui.Suggestion({
+            container: "#sugg-input"
+        }),
+        sug1 = new $.ui.Suggestion({
+            container: "#sugg-input"
+        });
+
+    equal($('.ui-suggestion-mask').length, 1, '1个sug mask正确创建');
+
+});
 test("autoClose = true", function () {
     expect(2);
 

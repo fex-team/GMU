@@ -342,3 +342,41 @@ test("input上框操作", function() {
     }, 400)
 
 });
+test('点击“+”,词条上框', function () {
+    stop();
+    expect(3);
+    var sug = gmu.Suggestion({
+            container: "#sugg-input",
+            sendrequest: sendrequest,
+            usePlus:true
+        });
+
+    $('#sugg-input').val( 'Al' ).trigger( 'input' );
+    equal(sug.isShow, true, 'sug正确显示了');
+    equal(sug.$content.find('div.ui-suggestion-plus').length, 2, 'plus显示');
+
+    ta.tap(sug.$content.find('div.ui-suggestion-plus').get(0));
+    setTimeout(function() {
+
+        equal(sug.value(), 'Alabama', '点击加号，item项正确上框');
+        start();
+    }, 400)
+});
+test('tag点击content以外的元素，没有误操作', function () {
+    expect(2);
+    stop();
+
+    var sug = gmu.Suggestion({
+        container: "#sugg-input",
+        sendrequest: sendrequest
+    });
+
+    $('#sugg-input').val( 'Al' ).trigger( 'input' );
+    equal(sug.isShow, true, 'sug正确显示了');
+
+    ta.tap(sug.$closeBtn.get(0));
+    setTimeout(function() {
+        equal(sug.value(), 'Al', 'close ,框中内容没有改变');
+        start();
+    }, 400)
+});
