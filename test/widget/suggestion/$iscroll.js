@@ -129,7 +129,16 @@ test('sug中iscroll能正确内滚', function () {
             pageY: -10
         }]
     });
-    ta.touchend(sug.$scroller.get(0))
+    ta.touchend(sug.$scroller.get(0));
+    //一下鼠标操作时为了在PC上跑用例用
+    ua.mousedown(sug.$scroller.get(0),{
+        clientX: 0,
+        clientY: 0
+    });
+    ua.mousemove(sug.$scroller.get(0),{
+        clientX: 0,
+        clientY: -10
+        });
 
     setTimeout(function() {
         equal(sug.$content.find('.sug-item').eq(0).offset().top < top, true, 'sug中iscroll能正常滑动' );
@@ -175,8 +184,16 @@ test('有历史记录时的iscroll', function () {
             pageY: -10
         }]
     });
-    ta.touchend(sug.$scroller.get(0))
-
+    ta.touchend(sug.$scroller.get(0));
+    //一下鼠标操作时为了在PC上跑用例用
+    ua.mousedown(sug.$scroller.get(0),{
+        clientX: 0,
+        clientY: 0
+    });
+    ua.mousemove(sug.$scroller.get(0),{
+        clientX: 0,
+        clientY: -10
+    });
     setTimeout(function() {
         equal(sug.$content.find('.sug-item').eq(0).offset().top < top, true, 'sug中iscroll能正常滑动' );
         sug.destroy();
@@ -216,7 +233,15 @@ test('input时，iscroll能滚到最顶部', function () {
             }]
         });
         ta.touchend(sug.$scroller.get(0));
-
+        //一下鼠标操作时为了在PC上跑用例用
+        ua.mousedown(sug.$scroller.get(0),{
+            clientX: 0,
+            clientY: 0
+        });
+        ua.mousemove(sug.$scroller.get(0),{
+            clientX: 0,
+            clientY: -10
+        });
         setTimeout(function () {
 
             equal(sug.$content.find('.sug-item').eq(0).offset().top < top, true, 'iscroll滑动一段');
