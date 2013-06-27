@@ -107,7 +107,7 @@
         _initDom: function() {
             var me = this,
                 $input = me.getEl().attr( 'autocomplete', 'off'),
-                $parent = $input.parent('ui-suggestion-mask');
+                $parent = $input.parent('.ui-suggestion-mask');
 
             $input.wrap( me.$mask = $parent.length ?
                     $parent : $( '<div class="ui-suggestion-mask"></div>' ) );
