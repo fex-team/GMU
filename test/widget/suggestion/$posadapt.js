@@ -154,3 +154,32 @@ test('posAdapt=false, 创建时sug位置显示正确', function() {
 
     $("#sugg-input").val('A').trigger('input');
 });
+test('posAdapt=true, 但是窗口上方不够显示高度', function() {
+    expect(8);
+    stop();
+
+    var sug = gmu.Suggestion({
+        container: "#sugg-input",
+        sendrequest: sendrequest,
+        renderlist: renderlist,
+        listSelector: '.sug-item',
+        height: $('#sugg-input').offset().top - window.pageYOffset + 100
+    });
+
+    sug.on('show', function () {
+        equal(sug.isShow, true, 'sug正确显示了');
+        equal(sug.$wrapper.css('top'), ($('#sugg-input').height()+sug.wrapperTop) + 'px', 'wrapper位置正确适应了');
+        equal(sug.$wrapper.children().eq(0).hasClass('ui-suggestion-button'), false, 'sug的btn操作按钮未调整位置');
+        equal(sug.$content.find('.sug-item').length, 4, 'sug的item项正确');
+
+        equal(sug.$content.find('.sug-item').eq(0).text(), 'Alabama', 'sug的item中第一项位置正调确调整');
+        equal(sug.$content.find('.sug-item').eq(1).text(), 'Alaska', 'sug的item中第二项位置正调确调整');
+        equal(sug.$content.find('.sug-item').eq(2).text(), 'Arizona', 'sug的item中第三项位置正调确调整');
+        equal(sug.$content.find('.sug-item').eq(3).text(), 'Arkansas', 'sug的item中第四项位置正调确调整');
+        sug.destroy();
+        start();
+    });
+
+    $("#sugg-input").val('A').trigger('input');
+
+});
