@@ -89,28 +89,14 @@
                 '</div></div>'
         },
 
-        eventMap: {
-
-            focus: function() {
-
-                // 当sug已经处于显示状态时，不需要次showlist
-                !this.isShow && this._showList().trigger( 'open' );
-            },
-
-            input: function() {
-
-                // 考虑到在手机上输入比较慢，故未进行稀释处理
-                this._showList();
-            }
-        },
-
         _initDom: function() {
             var me = this,
                 $input = me.getEl().attr( 'autocomplete', 'off'),
-                $parent = $input.parent('ui-suggestion-mask');
+                $parent = $input.parent('.ui-suggestion-mask');
 
-            $input.wrap( me.$mask = $parent.length ?
-                    $parent : $( '<div class="ui-suggestion-mask"></div>' ) );
+            $parent.length ? me.$mask = $parent :
+                    $input.wrap( me.$mask =
+                    $( '<div class="ui-suggestion-mask"></div>' ) );
 
             // 考采用template的wrapper项渲染列表
             me.$mask.append( me.tpl2html( 'wrapper' ) );
