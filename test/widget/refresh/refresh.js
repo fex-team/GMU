@@ -55,25 +55,25 @@ function render(data, dir, type, $elem) {
 test('默认配置项是否正确(只有setup模式)', function () {
     createDom('down');
     stop();
-    ua.loadcss(["reset.css", "widget/refresh/refresh.default.css"], function () {
+    ua.loadcss(["widget/refresh/refresh.default.css"], function () {
         var $wrapper = $('.wrapper'),
             refresh = $wrapper.refresh().refresh('this');
         
-        equals(refresh._data.ready, null, "默认参数");
-        equals(refresh._data.statechange, null, "默认参数");
-        equals(refresh._el.hasClass('wrapper'), true, 'refresh[down]实例成功创建');
-        equals(refresh._el.hasClass('ui-refresh'), true, 'refresh[down] wrapper元素加上了ui-refresh的class');
+        equals(refresh._options.load, null, "默认参数");
+        equals(refresh._options.statechange, null, "默认参数");
+        equals(refresh.$el.hasClass('wrapper'), true, 'refresh[down]实例成功创建');
+        equals(refresh.$el.hasClass('ui-refresh'), true, 'refresh[down] wrapper元素加上了ui-refresh的class');
         strictEqual($wrapper.find('.ui-refresh-down').length, 1, 'refresh[down]');
         strictEqual($wrapper.find('.ui-refresh-down').find('.ui-refresh-icon').length, 1, 'refresh[down] icon元素存在');
         strictEqual($wrapper.find('.ui-refresh-down').find('.ui-refresh-label').length, 1, 'refresh[down] label元素存在');
         equals($wrapper.find('.ui-refresh-down').find('.ui-refresh-label').text(), "加载更多", "label元素的文字内容正确");
-        ok(ua.isShown(refresh._el.find(".ui-refresh-down")[0]), "refresh[down]显示");
+        ok(ua.isShown(refresh.$el.find(".ui-refresh-down")[0]), "refresh[down]显示");
         refresh.destroy();
         start();
     })
 });
 
-test('参数options:ready & 方法:afterDataLoading', function () {
+test('参数options:load & 方法:afterDataLoading', function () {
     createDom('up');
     expect(10);
     stop();
@@ -81,7 +81,7 @@ test('参数options:ready & 方法:afterDataLoading', function () {
     var $wrapper = $('.wrapper'),
         liNum = $wrapper.find('li').length,
         refresh = $wrapper.refresh({
-            ready: function (dir, type) {
+            load: function (dir, type) {
             	equals($wrapper.find('.ui-refresh-up').find('.ui-refresh-label').text(), "加载中...", "label元素的文字内容正确");
 
                 var me = this;
@@ -89,8 +89,8 @@ test('参数options:ready & 方法:afterDataLoading', function () {
                     render(data, dir, type);
                     me.afterDataLoading('up');    //数据加载完成后改变状态
                     
-                    equals(dir, 'up', 'ready参数dir正确');
-                    equals(type, 'click', 'ready参数click正确');
+                    equals(dir, 'up', 'load参数dir正确');
+                    equals(type, 'click', 'load参数click正确');
                     equals($('.data-list').find('li').length, 20, 'refresh加载完成后列表数量正确');
                     equals($wrapper.find('.ui-refresh-up').find('.ui-refresh-label').text(), "加载更多", "label元素的文字内容正确");
                     refresh.destroy();
@@ -144,11 +144,11 @@ test('参数options:statechange', function () {
                 }
                 count++;
             },
-            ready: function (dir, type) {
+            load: function (dir, type) {
                 var me = this;
                 $.getJSON('../../widget/data/refresh.php', function (data) {
-                    equals(dir, refreshDir, 'ready参数dir正确');
-                    equals(type, 'click', 'ready参数click正确');
+                    equals(dir, refreshDir, 'load参数dir正确');
+                    equals(type, 'click', 'load参数click正确');
                     
                     refreshCount ==0 && equals($wrapper.find('.ui-refresh-' + dir).find('.ui-refresh-label').text(), "加载中...", "label元素的文字内容正确");
                     refreshCount ==1 && equals($wrapper.find('.ui-refresh-' + dir).html(), "加载中测试", "label元素的文字内容正确");
@@ -223,8 +223,8 @@ test('多实例', function () {
     createDom('both', $('.wrapper3'));
 
     var refresh1 = $('.wrapper').refresh({
-        ready: function (dir, type) {
-            ok(true, 'up实例ready is triggered');
+        load: function (dir, type) {
+            ok(true, 'up实例load is triggered');
 
             var me = this;
             $.getJSON('../../widget/data/refresh.php', function (data) {
@@ -237,8 +237,8 @@ test('多实例', function () {
         }
     }).refresh('this');
     var refresh2 = $('.wrapper2').refresh({
-        ready: function (dir, type) {
-            ok(true, 'down实例ready is triggered');
+        load: function (dir, type) {
+            ok(true, 'down实例load is triggered');
 
             var me = this;
             $.getJSON('../../widget/data/refresh.php', function (data) {
@@ -251,8 +251,8 @@ test('多实例', function () {
         }
     }).refresh('this');
     var refresh3 = $('.wrapper3').refresh({
-        ready: function (dir, type) {
-            ok(true, 'both实例ready is triggered');
+        load: function (dir, type) {
+            ok(true, 'both实例load is triggered');
 
             var me = this;
             $.getJSON('../../widget/data/refresh.php', function (data) {
@@ -270,9 +270,9 @@ test('多实例', function () {
 
     equals($('.ui-refresh-icon').length, 4, '多实例下icon创建正确');
     equals($('.ui-refresh-label').length, 4, '多实例下label创建正确');
-    equals(refresh1._el.hasClass('wrapper'), true, 'up实例成功创建');
-    equals(refresh2._el.hasClass('wrapper2'), true, 'down实例成功创建');
-    equals(refresh3._el.hasClass('wrapper3'), true, 'both实例成功创建');
+    equals(refresh1.$el.hasClass('wrapper'), true, 'up实例成功创建');
+    equals(refresh2.$el.hasClass('wrapper2'), true, 'down实例成功创建');
+    equals(refresh3.$el.hasClass('wrapper3'), true, 'both实例成功创建');
     equals($('.ui-refresh li').length, 30, '开始的数据列表数量正确');
     ua.click($('.wrapper').find('.ui-refresh-up')[0]);
 });
@@ -287,8 +287,8 @@ test('方法：enable,disable测试', function () {
             statechange: function (e, elem, state, dir) {
                 ok(true, state + ' is triggered');
             },
-            ready: function (dir, type) {
-                ok(true, 'ready is triggered');
+            load: function (dir, type) {
+                ok(true, 'load is triggered');
 
                 var me = this;
                 $.getJSON('../../widget/data/refresh.php', function (data) {
@@ -341,9 +341,9 @@ test("交互 － 加载过程中不响应点击", function(){
         lis = $wrapper.find('li'),
         count = 0,
         refresh = $wrapper.refresh({
-            ready: function(){
+            load: function(){
             	count ++
-            	ok(true, "ready 被触发");    
+            	ok(true, "load 被触发");    
             	if(count == 1){
             		ua.click($('.ui-refresh-down')[0]);
             	}

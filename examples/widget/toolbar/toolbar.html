@@ -35,7 +35,6 @@
     <span class="btn_1">知道</span>
 </div>
 <script>
-        // 全setup方式调用
         $('#J_toolbar1').toolbar({});
 </script>
 
@@ -50,8 +49,8 @@
 <script>
         // 半setup方式调用
         $('#J_toolbar2').toolbar({
-            leftBtns: [],
-            rightBtns: []
+            leftBtns: ['<span class="btn_1">百度</span>'],
+            rightBtns: ['<span class="btn_1">新闻</span>', '<span class="btn_1">文库</span>']
         });
 </script>
 
