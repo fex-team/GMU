@@ -57,7 +57,7 @@ test('down-上拉加载', function () { //refresh_lite只支持上拉
 
     var $wrapper = $('.wrapper'),
         refresh = $wrapper.refresh({
-            ready: function (dir, type) {
+            load: function (dir, type) {
             	equals($wrapper.find('.ui-refresh-down').find('.ui-refresh-label').text(), "加载中...", "label元素的文字内容正确");
             	ok(ua.isShown($wrapper.find('.ui-refresh-down').find('.ui-refresh-icon')[0]), "icon显示");
                 ok($wrapper.find('.ui-refresh-down').find('.ui-refresh-icon').hasClass("ui-loading"), "icon 样式正确");
@@ -102,7 +102,7 @@ test("参数options - statechange", function(){
         lis = $wrapper.find('li'),
         count = 0,
         refresh = $wrapper.refresh({
-        	ready: function(){
+        	load: function(){
         		refresh.afterDataLoading();
                 refresh.disable();
         	},
@@ -155,11 +155,11 @@ test("参数 － 不传threshold(list高度小于屏幕高度一半)", function(
         lis = $wrapper.find('li'),
         count = 0,
         refresh = $wrapper.refresh({
-            ready: function(){
+            load: function(){
             	setTimeout(function(){
             		refresh.afterDataLoading();
             	}, 0);
-            	ok(true, "ready 被触发");      
+            	ok(true, "load 被触发");      
             }
         }).refresh('this'),
         target = $wrapper.get(0);
@@ -220,11 +220,11 @@ test("参数 － 不传threshold(list高度大于屏幕高度一半)", function(
     
     var count = 0,
         refresh = $wrapper.refresh({
-            ready: function(){
+            load: function(){
             	setTimeout(function(){
             		refresh.afterDataLoading();
             	}, 0);
-            	ok(true, "ready 被触发");      
+            	ok(true, "load 被触发");      
             }
         }).refresh('this'),
         target = $wrapper.get(0);
@@ -280,11 +280,11 @@ test("参数 － 传threshold", function(){
         count = 0,
         refresh = $wrapper.refresh({
         	threshold: 150,
-            ready: function(){
+            load: function(){
             	setTimeout(function(){
             		refresh.afterDataLoading();
             	}, 0);
-            	ok(true, "ready 被触发");      
+            	ok(true, "load 被触发");      
             }
         }).refresh('this'),
         target = $wrapper.get(0);
@@ -337,11 +337,11 @@ test("公共方法 － enable&disable", function(){
         lis = $wrapper.find('li'),
         count = 0,
         refresh = $wrapper.refresh({
-            ready: function(){
+            load: function(){
             	setTimeout(function(){
             		refresh.afterDataLoading();
             	}, 0);
-            	ok(true, "ready 被触发");      
+            	ok(true, "load 被触发");      
             }
         }).refresh('this'),
         target = $wrapper.get(0);
@@ -416,8 +416,8 @@ test("交互 － 加载过程中不响应滑动动作", function(){
         lis = $wrapper.find('li'),
         count = 0,
         refresh = $wrapper.refresh({
-            ready: function(){
-            	ok(true, "ready 被触发");    
+            load: function(){
+            	ok(true, "load 被触发");    
             }
         }).refresh('this'),
         target = $wrapper.get(0);
@@ -471,11 +471,11 @@ test("交互 － 滑动距离小于10px不响应", function(){
         lis = $wrapper.find('li'),
         count = 0,
         refresh = $wrapper.refresh({
-            ready: function(){
+            load: function(){
             	setTimeout(function(){
             		refresh.afterDataLoading();
             	}, 0);
-            	ok(true, "ready 被触发");      
+            	ok(true, "load 被触发");      
             }
         }).refresh('this'),
         target = $wrapper.get(0);
@@ -528,8 +528,8 @@ test('参数disablePlugin:true', function () {
     var $wrapper = $('.wrapper'),
         refresh = $wrapper.refresh({
         	disablePlugin: true,
-            ready: function (dir, type) {
-                ok(true, 'ready is triggered');
+            load: function (dir, type) {
+                ok(true, 'load is triggered');
             }
         }).refresh('this'),
         target = $wrapper.get(0);

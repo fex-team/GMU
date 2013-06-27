@@ -60,7 +60,7 @@ if((!$.os.phone && !$.os.tablet)||($.os.ios && parseFloat($.os.version) > 5)){
 	    var $wrapper = $('.wrapper'),
 	    	lis = $wrapper.find('li'),
 	        refresh = $wrapper.refresh({
-	            ready: function (dir, type) {
+	            load: function (dir, type) {
 	            	equals($wrapper.find('.ui-refresh-down').find('.ui-refresh-label').text(), "加载中...", "label元素的文字内容正确");
 	                equals($wrapper.find('.ui-refresh-down').find('.ui-loading').attr("class"), "ui-loading", "icon显示正确");
 	                
@@ -99,7 +99,7 @@ if((!$.os.phone && !$.os.tablet)||($.os.ios && parseFloat($.os.version) > 5)){
 	    	lis = $wrapper.find('li'),
 	        refresh = $wrapper.refresh({
 	        	threshold: -5,
-	            ready: function (dir, type) {
+	            load: function (dir, type) {
 	            	equals($wrapper.find('.ui-refresh-up').find('.ui-refresh-label').text(), "加载中...", "label元素的文字内容正确");
 	                equals($wrapper.find('.ui-refresh-up').find('.ui-loading').attr("class"), "ui-loading", "icon显示正确");
 	                
@@ -136,7 +136,7 @@ if((!$.os.phone && !$.os.tablet)||($.os.ios && parseFloat($.os.version) > 5)){
 	    	lis = $wrapper.find('li'),
 	    	count = 0,
 	        refresh = $wrapper.refresh({
-	            ready: function (dir, type) {
+	            load: function (dir, type) {
 	            	equals($wrapper.find('.ui-refresh-down').find('.ui-refresh-label').text(), "加载中...", "label元素的文字内容正确");
 	                equals($wrapper.find('.ui-refresh-down').find('.ui-loading').attr("class"), "ui-loading", "icon显示正确");
 
@@ -177,7 +177,7 @@ if((!$.os.phone && !$.os.tablet)||($.os.ios && parseFloat($.os.version) > 5)){
 	    	count = 0,
 	        refresh = $wrapper.refresh({
 	        	threshold: -5,
-	            ready: function (dir, type) {
+	            load: function (dir, type) {
 	        		equals($wrapper.find('.ui-refresh-up').find('.ui-refresh-label').text(), "加载中...", "label元素的文字内容正确");
 	                equals($wrapper.find('.ui-refresh-up').find('.ui-loading').attr("class"), "ui-loading", "icon显示正确");
 
@@ -214,7 +214,7 @@ if((!$.os.phone && !$.os.tablet)||($.os.ios && parseFloat($.os.version) > 5)){
 	        lis = $wrapper.find('li'),
 	        count = 0,
 	        refresh = $wrapper.refresh({
-	        	ready: function(){
+	        	load: function(){
 	        		refresh.afterDataLoading();
 	                refresh.disable();
 	        	},
@@ -257,7 +257,7 @@ if((!$.os.phone && !$.os.tablet)||($.os.ios && parseFloat($.os.version) > 5)){
 
 	    var $wrapper = $('.wrapper'),
 	    	refresh = $wrapper.refresh({
-	            ready: function (dir, type) {
+	            load: function (dir, type) {
 	        		refresh.afterDataLoading();
 	                ok(false);
 	            }
@@ -286,7 +286,7 @@ if((!$.os.phone && !$.os.tablet)||($.os.ios && parseFloat($.os.version) > 5)){
 	    var $wrapper = $('.wrapper'),
 	    	refresh = $wrapper.refresh({
 	    		threshold: 10,
-	            ready: function (dir, type) {
+	            load: function (dir, type) {
 	        		refresh.afterDataLoading();
 	                ok(false);
 	            }
@@ -315,7 +315,7 @@ if((!$.os.phone && !$.os.tablet)||($.os.ios && parseFloat($.os.version) > 5)){
 	    var $wrapper = $('.wrapper'),
 	    	refresh = $wrapper.refresh({
 	    		threshold: 10,
-	            ready: function (dir, type) {
+	            load: function (dir, type) {
 	        		refresh.afterDataLoading();
 	                ok(true);
 	            }
@@ -343,11 +343,11 @@ if((!$.os.phone && !$.os.tablet)||($.os.ios && parseFloat($.os.version) > 5)){
 	    var $wrapper = $('.wrapper'),
 	        count = 0,
 	        refresh = $wrapper.refresh({
-	            ready: function(){
+	            load: function(){
 	            	setTimeout(function(){
 	            		refresh.afterDataLoading();
 	            	}, 0);
-	            	ok(true, "ready 被触发");      
+	            	ok(true, "load 被触发");      
 	            }
 	        }).refresh('this'),
 	        target = $wrapper.get(0);
@@ -407,8 +407,8 @@ if((!$.os.phone && !$.os.tablet)||($.os.ios && parseFloat($.os.version) > 5)){
 	    var $wrapper = $('.wrapper'),
 	        count = 0,
 	        refresh = $wrapper.refresh({
-	            ready: function(){
-	            	ok(true, "ready 被触发");    
+	            load: function(){
+	            	ok(true, "load 被触发");    
 	            }
 	        }).refresh('this'),
 	        target = $wrapper.get(0);
@@ -441,8 +441,8 @@ if((!$.os.phone && !$.os.tablet)||($.os.ios && parseFloat($.os.version) > 5)){
 	        lis = $wrapper.find('li'),
 	        refresh = $wrapper.refresh({
 	        	disablePlugin: true,
-	            ready: function (dir, type) {
-	                ok(true, 'ready is triggered');
+	            load: function (dir, type) {
+	                ok(true, 'load is triggered');
 	            }
 	        }).refresh('this'),
 	        target = $wrapper.get(0);

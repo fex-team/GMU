@@ -4,7 +4,7 @@
  * @desc <qrcode align="right" title="Live Demo">../gmu/examples/widget/refresh/refresh_iscroll.html</qrcode>
  * 拉动加载更多iscroll插件
  * @short Refresh.iscroll
- * @import core/iscroll.js, widget/refresh.js
+ * @import extend/iscroll.js, widget/refresh/refresh.js
  */
 
 (function( gmu, $, undefined ) {
@@ -82,7 +82,6 @@
                             upStatus = me._status('up'),
                             downStatus = me._status('down');
 
-                        debugger;
                         if (up && !upStatus || down && !downStatus || this.maxScrollY >= 0) return;    //上下不能同时加载 trace:FEBASE-775，当wrapper > scroller时，不进行加载 trace:FEBASE-774
                         if (downStatus && down && !downRefreshed && this.y < (this.maxScrollY - threshold)) {    //下边按钮，上拉加载
                             me._setMoveState('down', 'beforeload', 'pull');

@@ -62,7 +62,7 @@ test('down-上拉加载', function () {
     var $wrapper = $('.wrapper'),
     	lis = $wrapper.find('li'),
         refresh = $wrapper.refresh({
-            ready: function (dir, type) {
+            load: function (dir, type) {
             	equals($wrapper.find('.ui-refresh-down').find('.ui-refresh-label').text(), "加载中...", "label元素的文字内容正确");
                 equals($wrapper.find('.ui-refresh-down').find('.ui-loading').attr("class"), "ui-loading", "icon显示正确");
 
@@ -115,7 +115,7 @@ test('up-下拉加载', function () {
     var $wrapper = $('.wrapper'),
     	lis = $wrapper.find('li'),
         refresh = $wrapper.refresh({
-            ready: function (dir, type) {
+            load: function (dir, type) {
             	equals($wrapper.find('.ui-refresh-up').find('.ui-refresh-label').text(), "加载中...", "label元素的文字内容正确");
                 equals($wrapper.find('.ui-refresh-up').find('.ui-loading').attr("class"), "ui-loading", "icon显示正确");
 
@@ -169,7 +169,7 @@ test('both-上拉加载', function () {
     	lis = $wrapper.find('li'),
     	count = 0,
         refresh = $wrapper.refresh({
-            ready: function (dir, type) {
+            load: function (dir, type) {
             	equals($wrapper.find('.ui-refresh-down').find('.ui-refresh-label').text(), "加载中...", "label元素的文字内容正确");
                 equals($wrapper.find('.ui-refresh-down').find('.ui-loading').attr("class"), "ui-loading", "icon显示正确");
 
@@ -225,7 +225,7 @@ test('both-下拉加载', function () {
     	lis = $wrapper.find('li'),
     	count = 0,
         refresh = $wrapper.refresh({
-            ready: function (dir, type) {
+            load: function (dir, type) {
         		equals($wrapper.find('.ui-refresh-up').find('.ui-refresh-label').text(), "加载中...", "label元素的文字内容正确");
                 equals($wrapper.find('.ui-refresh-up').find('.ui-loading').attr("class"), "ui-loading", "icon显示正确");
 
@@ -295,7 +295,7 @@ test("参数options - statechange", function(){
         lis = $wrapper.find('li'),
         count = 0,
         refresh = $wrapper.refresh({
-        	ready: function(){
+        	load: function(){
         		refresh.afterDataLoading();
                 refresh.disable();
         	},
@@ -357,7 +357,7 @@ test('参数threshold-不传, 上拉, 大于默认阈值', function () {
 
     var $wrapper = $('.wrapper'),
     	refresh = $wrapper.refresh({
-            ready: function (dir, type) {
+            load: function (dir, type) {
         		refresh.afterDataLoading();
                 ok(true);
             }
@@ -404,7 +404,7 @@ test('参数threshold-不传, 上拉, 小于默认阈值', function () {
 
     var $wrapper = $('.wrapper'),
     	refresh = $wrapper.refresh({
-            ready: function (dir, type) {
+            load: function (dir, type) {
         		refresh.afterDataLoading();
                 ok(false);
             }
@@ -453,7 +453,7 @@ test('参数threshold-不传, 下拉, 大于默认阈值', function () {
 
     var $wrapper = $('.wrapper'),
     	refresh = $wrapper.refresh({
-            ready: function (dir, type) {
+            load: function (dir, type) {
         		refresh.afterDataLoading();
                 ok(true);
             }
@@ -500,7 +500,7 @@ test('参数threshold-不传, 下拉, 小于默认阈值', function () {
 
     var $wrapper = $('.wrapper'),
     	refresh = $wrapper.refresh({
-            ready: function (dir, type) {
+            load: function (dir, type) {
         		refresh.afterDataLoading();
                 ok(false);
             }
@@ -549,7 +549,7 @@ test('参数threshold-传20, 上拉, 大于阈值', function () {
     var $wrapper = $('.wrapper'),
     	refresh = $wrapper.refresh({
     		threshold: 20,
-            ready: function (dir, type) {
+            load: function (dir, type) {
         		refresh.afterDataLoading();
                 ok(true);
             }
@@ -597,7 +597,7 @@ test('参数threshold-传20, 上拉, 小于阈值', function () {
     var $wrapper = $('.wrapper'),
     	refresh = $wrapper.refresh({
     		threshold: 20,
-            ready: function (dir, type) {
+            load: function (dir, type) {
         		refresh.afterDataLoading();
                 ok(false);
             }
@@ -646,7 +646,7 @@ test('参数threshold-传20, 下拉, 大于阈值', function () {
     var $wrapper = $('.wrapper'),
     	refresh = $wrapper.refresh({
     		threshold: 20,
-            ready: function (dir, type) {
+            load: function (dir, type) {
         		refresh.afterDataLoading();
                 ok(true);
             }
@@ -698,7 +698,7 @@ test('参数threshold-传20, 下拉, 小于阈值', function () {
     var $wrapper = $('.wrapper'),
     	refresh = $wrapper.refresh({
     		threshold: 20,
-            ready: function (dir, type) {
+            load: function (dir, type) {
         		refresh.afterDataLoading();
                 ok(false);
             }
@@ -732,11 +732,11 @@ test("公共方法 － enable&disable", function(){
     var $wrapper = $('.wrapper'),
         count = 0,
         refresh = $wrapper.refresh({
-	        ready:function (dir, type) {
+	        load:function (dir, type) {
             	setTimeout(function(){
             		refresh.afterDataLoading();
             	}, 10);
-            	ok(true, "ready 被触发");
+            	ok(true, "load 被触发");
             }
         }).refresh('this'),
         target = $wrapper.get(0);
@@ -826,8 +826,8 @@ test("交互 － 加载过程中不响应滑动动作", function(){
     var $wrapper = $('.wrapper'),
         count = 0,
         refresh = $wrapper.refresh({
-            ready: function(){
-            	ok(true, "ready 被触发");
+            load: function(){
+            	ok(true, "load 被触发");
             }
         }).refresh('this'),
         target = $wrapper.get(0);
@@ -898,8 +898,8 @@ test('disablePlugin', function () {
     var $wrapper = $('.wrapper'),
         refresh = $wrapper.refresh({
         	disablePlugin: true,
-            ready: function (dir, type) {
-                ok(true, 'ready is triggered');
+            load: function (dir, type) {
+                ok(true, 'load is triggered');
             }
         }).refresh('this'),
         target = $wrapper.get(0)
