@@ -362,21 +362,3 @@ test('点击“+”,词条上框', function () {
         start();
     }, 400)
 });
-test('tag点击content以外的元素，没有误操作', function () {
-    expect(2);
-    stop();
-
-    var sug = gmu.Suggestion({
-        container: "#sugg-input",
-        sendrequest: sendrequest
-    });
-
-    $('#sugg-input').val( 'Al' ).trigger( 'input' );
-    equal(sug.isShow, true, 'sug正确显示了');
-
-    ta.tap(sug.$closeBtn.get(0));
-    setTimeout(function() {
-        equal(sug.value(), 'Al', 'close ,框中内容没有改变');
-        start();
-    }, 400)
-});

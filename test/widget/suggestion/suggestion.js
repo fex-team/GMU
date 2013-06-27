@@ -251,7 +251,38 @@ test("history() & historyShare = false", function () {
     }
 
 });
+test("history() & historyShare = false ，container没有id", function () {
+    expect(5);
+    $('<input />').attr({
+        'class': 'com-search-input1'
+    }).appendTo('body');
 
+    var sugg = new $.ui.Suggestion({
+            container: ".com-search-input1",
+            historyShare: false
+        });
+
+    var key = sugg.key;
+    ok(/ui-suggestion-/.test(key),'检查key');
+    try {
+        if (window.localStorage[key]) {
+            window.localStorage[key] = ''
+        }
+
+        ok(!window.localStorage[key], '该sug的localstorage已初始化');
+
+        sugg.history('test');
+        equal(window.localStorage[key], 'test', 'history的key正确，并正确存储test');
+
+        sugg.history('');
+        equal(window.localStorage[key], 'test', '存储内容空，什么也不做，localStorage不变');
+
+        sugg.destroy();
+
+    } catch (e) {
+    }
+
+});
 test("history() & historyShare = true", function () {
     expect(6);
 
