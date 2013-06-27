@@ -120,6 +120,18 @@
                 data._$navWrapper.width(iScroll.wrapperW - iScroll.wrapperOffsetLeft);    //wrapper存在padding值时，需特殊处理
                 me._refresh(data._vpCount[orient], data._lastIndex);   //转屏时更新tab宽度及curbar宽度
             },
+
+            update: function() {
+                var me = this,
+                    data = me._data,
+                    orient = data._lastOrient || (win.innerWidth > win.innerHeight ? 'landscape' : 'portrait');
+                    iScroll = data.iScroll;
+
+                !data._vpCount[orient] && (data._vpCount[orient] = data.viewportCount + (orient === 'landscape' ? Math.floor(data.viewportCount / 2) : 0));
+                data._$navWrapper.width(iScroll.wrapperW - iScroll.wrapperOffsetLeft);    //wrapper存在padding值时，需特殊处理
+                me._refresh(data._vpCount[orient], data._lastIndex);   //转屏时更新tab宽度及curbar宽度
+                iScroll.refresh();
+            },
             /**
              * 由于将fix元素当成箭头元素使用，与原来派生事件逻辑不一样，故覆盖原来的方法
              * */

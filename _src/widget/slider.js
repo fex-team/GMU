@@ -154,6 +154,11 @@
 
             if ( !ignoreWidth || !width ) {
                 this.width = width = $el.width();
+
+                // 在隐藏模式下，直接不执行。
+                if ( !width ) {
+                    return ;
+                }
                 this.height = $el.height();
                 this.perWidth = perWidth = Math.ceil( width / viewNum );
             }
@@ -204,9 +209,7 @@
             this._container.on( transitionEnd + '.slider',
                     $.proxy( this._tansitionEnd, this ) );
 
-            $( window ).on( 'ortchange.slider', function() {
-                me._initWidth( $el, viewNum, me.index );
-            } );
+            $( window ).on( 'ortchange.slider', $.proxy( this.update, this ) );
 
             this.on( 'slide.slider', function() {
                 this._loadImages( this._items, viewNum, this.index, opts );
@@ -385,6 +388,11 @@
             this.index = to;
             this.trigger( 'slide', [ to, index ] );
             return this;
+        },
+
+        update: function() {
+            var me = this;
+            me._initWidth( me.root(), me._data.viewNum, me.index );
         },
 
         _updateDots: function( to, from ) {
