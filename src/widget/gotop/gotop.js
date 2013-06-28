@@ -4,13 +4,13 @@
  * @name Gotop
  * @desc <qrcode align="right" title="Live Demo">../gmu/examples/widget/gotop/gotop.html</qrcode>
  * 提供一个快速回到页面顶部的按钮
- * @import core/extend.js, core/ui.js,core/fix.js
+ * @import core/widget.js, extend/fix.js
  */
-(function($, undefined) {
+(function( gmu, $， undefined ) {
     /**
-     * @name     $.ui.gotop
-     * @grammar  $(el).gotop(options) ⇒ self
-     * @grammar  $.ui.gotop([el [,options]]) =>instance
+     * @name     $.ui.Gotop
+     * @grammar  $(el).gotop(options) => self
+     * @grammar  $.ui.Gotop([el [,options]]) => instance
      * @desc **el**
      * css选择器, 或者zepto对象
      * **Options**
@@ -28,8 +28,8 @@
      * ../gmu/examples/widget/gotop/gotop_demo.css
      * </codepreview>
      */
-    $.ui.define('gotop', {
-        _data: {
+    gmu.define( 'Gotop', {
+        options: {
             container:          '',
             useFix:             true,
             useHide:            true,
@@ -54,18 +54,21 @@
 
         _init: function() {
             var me = this,
-                root = me.root(),
+                $el = me.$el,
+                _opts = me._options,
                 _eventHandler = $.proxy(me._eventHandler, me);
-            me.data('useHide') && $(document).on('touchmove', _eventHandler);
+
+            _opts['useHide'] && $(document).on('touchmove', _eventHandler);
             $(document).on('touchend touchcancel scrollStop', _eventHandler);
             $(window).on('scroll ortchange', _eventHandler);
-            root.on('click', _eventHandler);
+            $el.on('click', _eventHandler);
             me.on('destroy', function() {
                 $(document).off('touchmove touchend touchcancel scrollStop', _eventHandler);
                 $(window).off('scroll ortchange', _eventHandler);
             });
-            me.data('useFix') && root.fix(me.data('position'));
-            me.data('root', root[0]);
+            _opts['useFix'] && $el.fix(me._opts['position']);
+            _opts['root'] = $el[0];
+
             return me;
         },
 
@@ -74,19 +77,20 @@
          */
         _eventHandler: function(e) {
             var me = this;
+
             switch (e.type) {
                 case 'touchmove':
                     me.hide();
                     break;
                 case 'scroll':
-                    clearTimeout(me.data('_TID'));
+                    clearTimeout(me._options['_TID']);
                     break;
                 case 'touchend':
                 case 'touchcancel':
-                    clearTimeout(me.data('_TID'));
-                    me.data('_TID', $.later(function(){
+                    clearTimeout(me._options['_TID']);
+                    me._options['_TID'] = setTimeout(function(){
                         me._check.call(me);
-                    }, 300));
+                    }, 300);
                     break;
                 case 'scrollStop':
                     me._check();
@@ -105,7 +109,9 @@
          */
         _check: function(position) {
             var me = this;
+
             (position !== undefined ? position : window.pageYOffset) > document.documentElement.clientHeight ? me.show() : me.hide();
+            
             return  me;
         },
 
@@ -115,21 +121,22 @@
 		_scrollTo: function() {
             var me = this,
                 from = window.pageYOffset;
+
             me.hide();
-            clearTimeout(me.data('_TID'));
-            if (!me.data('useAnimation')) {
+            clearTimeout(me._options['_TID']);
+            if (!me._options['useAnimation']) {
                 window.scrollTo(0, 1);
                 me.trigger('afterScroll');
             } else {
-                me.data('moveToTop', $.later(function() {
+                me._options['moveToTop'] = setTimeout(function() {
                     if (from > 1) {
                         window.scrollBy(0, -Math.min(150,from - 1));
                         from -= 150;
                     } else {
-                        clearInterval(me.data('moveToTop'));
+                        clearInterval(me._options['moveToTop']);
                         me.trigger('afterScroll');
                     }
-                }, 25, true));
+                }, 25, true);
             }
             return me;
 		},
@@ -148,7 +155,8 @@
          */
 
         show: function() {
-            this._data.root.style.display = 'block';
+            this._options.root.style.display = 'block';
+
             return this;
         },
 
@@ -165,7 +173,8 @@
          * demo.hide();
          */
         hide: function() {
-            this._data.root.style.display = 'none';
+            this._options.root.style.display = 'none';
+            
             return this;
         }
         /**
@@ -178,5 +187,4 @@
          * | destroy | event | 组件在销毁的时候触发 |
          */
     });
-
-})(Zepto);
+})( gmu, gmu.$ );
