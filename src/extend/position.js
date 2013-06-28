@@ -2,41 +2,8 @@
  *  @file 基于Zepto的位置设置获取组件
  *  @name Position
  *  @desc 定位插件
- *  @import zepto.js
+ *  @import zepto.js, extend/offset.js
  */
-(function( $ ) {    // 修复zepto的offset setter的一个bug
-
-    var _offset = $.fn.offset;
-
-    $.fn.offset = function( coord ) {
-        var hook;
-
-        hook = coord && function() {
-            var pos = $( this ).position(),
-                style = this.style;
-
-            coord = typeof coord === 'function' ? 
-                    coord.apply( this, arguments ) : coord;
-
-            if ( !~[ '', 'static' ].indexOf( style.position ) ) {
-                pos.top -= parseFloat( style.top );
-                pos.left -= parseFloat( style.left );
-            }
-
-            coord = {
-                top: coord.top - pos.top,
-                left: coord.left - pos.left
-            };
-
-            return coord;
-        };
-
-        return _offset.call( this, hook );
-    }
-
-})( Zepto );
-
-
 (function ($, undefined) {
     var _position = $.fn.position,
         round = Math.round,
