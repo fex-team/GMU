@@ -252,7 +252,7 @@ test("history() & historyShare = false", function () {
 
 });
 test("history() & historyShare = false ，container没有id", function () {
-    expect(5);
+    expect(4);
     $('<input />').attr({
         'class': 'com-search-input1'
     }).appendTo('body');
