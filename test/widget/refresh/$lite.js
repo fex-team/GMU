@@ -45,7 +45,7 @@ function createDom (dir, $wrapper, w) {
 test("只为加载css用",function(){
     expect(1);
     stop();
-    ua.loadcss(["reset.css",  "loading.default.css", "widget/refresh/refresh.default.css"], function(){
+    ua.loadcss(["loading.default.css", "widget/refresh/refresh.default.css"], function(){
         ok(true, '样式加载进来了！');
         start();
     });
@@ -518,42 +518,6 @@ test("交互 － 滑动距离小于10px不响应", function(){
 	    	start();
 	    }, 10);
     }, 10);
-});
-
-test('参数disablePlugin:true', function () {
-    createDom('down');
-    expect(1);
-    stop();
-
-    var $wrapper = $('.wrapper'),
-        refresh = $wrapper.refresh({
-        	disablePlugin: true,
-            load: function (dir, type) {
-                ok(true, 'load is triggered');
-            }
-        }).refresh('this'),
-        target = $wrapper.get(0);
-   
-    var l = $(target).offset().left+10;
-    var t = $(target).offset().top + $(target).offset().height-10;
-
-    ta.touchstart(target, {
-        touches:[{
-            pageX: l,
-            pageY: t
-        }]
-    });
-    ta.touchmove(target, {
-        touches:[{
-            pageX: l,
-            pageY: t-100
-        }]
-    });
-    ta.touchend(target);
-
-	ok(true);
-	start();
-
 });
 
 test("destroy", function(){

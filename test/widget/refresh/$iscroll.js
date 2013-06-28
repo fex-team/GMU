@@ -206,7 +206,7 @@ test('both-上拉加载', function () {
     });
     ua.mousemove(target, {
         clientX: 0,
-        clientY: -300
+        clientY: -500
     });
 
     equals($wrapper.find('.ui-refresh-down').find('.ui-refresh-label').text(), "松开立即加载", "label元素的文字内容正确");
@@ -283,7 +283,7 @@ test("参数options - iScrollOpts", function(){
         		hScroll: false
         	}
         }).refresh('this');
-    equals(refresh._data.iScroll.options.hScroll, false, "The iScrollOpts is right");
+    equals(refresh._options.iScroll.options.hScroll, false, "The iScrollOpts is right");
 });
 
 test("参数options - statechange", function(){
@@ -888,58 +888,6 @@ test("交互 － 加载过程中不响应滑动动作", function(){
 	    	start();
 	    }, 10);
     }, 10);
-});
-
-test('disablePlugin', function () {
-    createDom('up');
-    expect(1);
-    stop();
-
-    var $wrapper = $('.wrapper'),
-        refresh = $wrapper.refresh({
-        	disablePlugin: true,
-            load: function (dir, type) {
-                ok(true, 'load is triggered');
-            }
-        }).refresh('this'),
-        target = $wrapper.get(0)
-
-    setTimeout(function(){
-        ta.touchstart(target, {
-            touches: [{
-                pageX: 0,
-                pageY: 0
-            }]
-        });
-
-        ta.touchmove(target, {
-            touches: [{
-                pageX: 0,
-                pageY: 200
-            }]
-        });
-
-        ta.touchend(target);
-
-        //PC
-        ua.mousedown(target, {
-            clientX: 0,
-            clientY: 0
-        });
-
-        ua.mousemove(target, {
-        	clientX: 0,
-            clientY: 200
-        });
-
-        ua.mouseup(target);
-
-        setTimeout(function(){
-        	equals(refresh._data.useTransition, undefined, "disable plugin");
-        	refresh.destroy();
-        	start();
-        }, 300);
-    }, 1000);
 });
 
 test("destroy", function(){

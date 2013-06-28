@@ -5,7 +5,7 @@
  * @desc <qrcode align="right" title="Live Demo">../gmu/examples/widget/refresh/refresh_iOS5.html</qrcode>
  * 拉动加载更多iOS5插件，适用于iOS5及以上
  * @short Refresh.iOS5
- * @import widget/refresh/refresh.js
+ * @import widget/refresh/refresh.js, extend/throttle.js
  */
 
 (function( gmu, $, undefined ) {

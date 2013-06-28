@@ -96,7 +96,7 @@
             var me = this,
                 stateChange = $.Event('statechange');
 
-            me.trigger(stateChange, [me._options['$' + dir + 'Elem'], state, dir]);
+            me.trigger(stateChange, me._options['$' + dir + 'Elem'], state, dir);
             if ( stateChange.defaultPrevented ) {
                 return me;
             }

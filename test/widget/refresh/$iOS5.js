@@ -432,46 +432,46 @@ if((!$.os.phone && !$.os.tablet)||($.os.ios && parseFloat($.os.version) > 5)){
 	    }, 10);
 	});
 
-	test('参数disablePlugin:true', function () {
-	    createDom('both');
-	    expect(1);
-	    stop();
+	// test('参数disablePlugin:true', function () {
+	//     createDom('both');
+	//     expect(1);
+	//     stop();
 
-	    var $wrapper = $('.wrapper'),
-	        lis = $wrapper.find('li'),
-	        refresh = $wrapper.refresh({
-	        	disablePlugin: true,
-	            load: function (dir, type) {
-	                ok(true, 'load is triggered');
-	            }
-	        }).refresh('this'),
-	        target = $wrapper.get(0);
+	//     var $wrapper = $('.wrapper'),
+	//         lis = $wrapper.find('li'),
+	//         refresh = $wrapper.refresh({
+	//         	disablePlugin: true,
+	//             load: function (dir, type) {
+	//                 ok(true, 'load is triggered');
+	//             }
+	//         }).refresh('this'),
+	//         target = $wrapper.get(0);
 
-	    refresh.data('threshold',-5);      //反冲距离
-	    setTimeout(function(){
-	        var l = $(target).offset().left+10;
-	        var t = $(target).offset().top-10;
+	//     refresh.data('threshold',-5);      //反冲距离
+	//     setTimeout(function(){
+	//         var l = $(target).offset().left+10;
+	//         var t = $(target).offset().top-10;
 
-	        target.scrollTop = 0;//关键，要不然ios上不动。
-	        ta.touchstart(target, {
-	            targetTouches:[{
-	                clientX: l,
-	                clientY: t
-	            }]
-	        });
-	        ta.touchmove(target, {
-	            targetTouches:[{
-	                clientX: l,
-	                clientY: t-100
-	            }]
-	        });
-	        ta.touchend(target);
-	        setTimeout(function(){
-	        	equals(refresh._data.iScroll, undefined, "disbale plugin");
-	            start();
-	        }, 300);
-	    }, 500);
-	});
+	//         target.scrollTop = 0;//关键，要不然ios上不动。
+	//         ta.touchstart(target, {
+	//             targetTouches:[{
+	//                 clientX: l,
+	//                 clientY: t
+	//             }]
+	//         });
+	//         ta.touchmove(target, {
+	//             targetTouches:[{
+	//                 clientX: l,
+	//                 clientY: t-100
+	//             }]
+	//         });
+	//         ta.touchend(target);
+	//         setTimeout(function(){
+	//         	equals(refresh._data.iScroll, undefined, "disbale plugin");
+	//             start();
+	//         }, 300);
+	//     }, 500);
+	// });
 
 	test("destroy", function(){
 		$(".wrapper").remove();
