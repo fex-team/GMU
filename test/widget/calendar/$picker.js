@@ -246,7 +246,6 @@ test("window resize", function(){
 	        	$(f).css("position", "absolute").css("left", 0).css("top", 0).css("height", 800).css("width", 600);
 	             
 	            setTimeout(function(){
-                    debugger;
 	            	equals(w.$('.ui-slideup').offset().height + w.$('.ui-slideup').offset().top, w.innerHeight, 'position is right');
 	            	
 	                input.calendar('destroy');
