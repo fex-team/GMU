@@ -3,10 +3,7 @@ module('suggestion.plugin.$posadapt', {
         $('<input />').attr({
             'id': 'sugg-input',
             'class': 'com-search-input'
-        }).appendTo($('<div id="pos-wrapper"></div>').css({
-                position: 'relative',
-                top: $(window).height() - 50
-            }).appendTo('body'));
+        }).appendTo('body');
     },
 
     teardown: function() {
@@ -101,85 +98,116 @@ test('posAdapt=true, 创建时sug位置显示正确', function() {
     expect(8);
     stop();
 
-    var sug = gmu.Suggestion({
-        container: "#sugg-input",
-        sendrequest: sendrequest,
-        renderlist: renderlist,
-        listSelector: '.sug-item'
+    ua.frameExt(function(w, f) {
+        var me = this;
+        ua.loadcss(["reset.css",
+            "widget/suggestion/suggestion.css",
+            "widget/suggestion/suggestion.default.css"
+        ], function() {
+            w.$(f).css({
+                position: 'absolute',
+                left: 0,
+                top: 0,
+                height: 400,
+                width: 400
+            });
+            w.$('<input />').attr({
+                'id': 'sugg-iframe',
+                'class': 'com-search-input'
+            }).appendTo(w.$('<div id="pos-wrapper"></div>').css({
+               position: 'relative',
+               top: 350
+            }).appendTo(w.document.body));
+
+            var opts = new w.Object();
+
+            $.extend( opts, {
+                container: "#sugg-iframe",
+                sendrequest: sendrequest,
+                renderlist: renderlist,
+                listSelector: '.sug-item'
+            });
+
+            var sug = w.gmu.Suggestion(opts);
+
+            sug.on('show', function () {
+                equal(sug.isShow, true, 'sug正确显示了');
+                equal(sug.$wrapper.css('top'), (-sug.$wrapper.height()-sug.wrapperTop) + 'px', 'wrapper位置正确适应了');
+                equal(sug.$wrapper.children().eq(0).hasClass('ui-suggestion-button'), true, 'sug的btn操作按钮已正确调整位置');
+                equal(sug.$content.find('.sug-item').length, 4, 'sug的item项正确');
+
+                equal(sug.$content.find('.sug-item').eq(0).text(), 'Arkansas', 'sug的item中第一项位置正调确调整');
+                equal(sug.$content.find('.sug-item').eq(1).text(), 'Arizona', 'sug的item中第二项位置正调确调整');
+                equal(sug.$content.find('.sug-item').eq(2).text(), 'Alaska', 'sug的item中第三项位置正调确调整');
+                equal(sug.$content.find('.sug-item').eq(3).text(), 'Alabama', 'sug的item中第四项位置正调确调整');
+
+                sug.destroy();
+                w.$("#sugg-iframe").remove();
+
+                me.finish();
+            });
+
+            w.$("#sugg-iframe").val('A').trigger('input');
+        });
     });
 
-    sug.on('show', function () {
-        equal(sug.isShow, true, 'sug正确显示了');
-        equal(sug.$wrapper.css('top'), (-sug.$wrapper.height()-sug.wrapperTop) + 'px', 'wrapper位置正确适应了');
-        equal(sug.$wrapper.children().eq(0).hasClass('ui-suggestion-button'), true, 'sug的btn操作按钮已正确调整位置');
-        equal(sug.$content.find('.sug-item').length, 4, 'sug的item项正确');
-
-        equal(sug.$content.find('.sug-item').eq(0).text(), 'Arkansas', 'sug的item中第一项位置正调确调整');
-        equal(sug.$content.find('.sug-item').eq(1).text(), 'Arizona', 'sug的item中第二项位置正调确调整');
-        equal(sug.$content.find('.sug-item').eq(2).text(), 'Alaska', 'sug的item中第三项位置正调确调整');
-        equal(sug.$content.find('.sug-item').eq(3).text(), 'Alabama', 'sug的item中第四项位置正调确调整');
-
-        sug.destroy();
-        start();
-    });
-
-    $("#sugg-input").val('A').trigger('input');
 });
 
-test('posAdapt=false, 创建时sug位置显示正确', function() {
+test('posAdapt=true, 创建时sug位置显示正确', function() {
     expect(8);
     stop();
 
-    var sug = gmu.Suggestion({
-        container: "#sugg-input",
-        sendrequest: sendrequest,
-        renderlist: renderlist,
-        posadapt: false
+    ua.frameExt(function(w, f) {
+        var me = this;
+        ua.loadcss(["reset.css",
+            "widget/suggestion/suggestion.css",
+            "widget/suggestion/suggestion.default.css"
+        ], function() {
+            w.$(f).css({
+                position: 'absolute',
+                left: 0,
+                top: 0,
+                height: 400,
+                width: 400
+            });
+            w.$('<input />').attr({
+                'id': 'sugg-iframe',
+                'class': 'com-search-input'
+            }).appendTo(w.$('<div id="pos-wrapper"></div>').css({
+                    position: 'relative',
+                    top: 350
+                }).appendTo(w.document.body));
+
+            var opts = new w.Object();
+
+            $.extend( opts, {
+                container: "#sugg-iframe",
+                sendrequest: sendrequest,
+                renderlist: renderlist,
+                listSelector: '.sug-item',
+                posadapt: false
+            });
+
+            var sug = w.gmu.Suggestion(opts);
+
+            sug.on('show', function () {
+                equal(sug.isShow, true, 'sug正确显示了');
+                equal(sug.$wrapper.css('top'), (w.$('#sugg-iframe').height()+sug.wrapperTop) + 'px', 'wrapper位置正确适应了');
+                equal(sug.$wrapper.children().eq(0).hasClass('ui-suggestion-button'), false, 'sug的btn操作按钮未调整位置');
+                equal(sug.$content.find('.sug-item').length, 4, 'sug的item项正确');
+
+                equal(sug.$content.find('.sug-item').eq(0).text(), 'Alabama', 'sug的item中第一项位置正调确调整');
+                equal(sug.$content.find('.sug-item').eq(1).text(), 'Alaska', 'sug的item中第二项位置正调确调整');
+                equal(sug.$content.find('.sug-item').eq(2).text(), 'Arizona', 'sug的item中第三项位置正调确调整');
+                equal(sug.$content.find('.sug-item').eq(3).text(), 'Arkansas', 'sug的item中第四项位置正调确调整');
+
+                sug.destroy();
+                w.$("#sugg-iframe").remove();
+
+                me.finish();
+            });
+
+            w.$("#sugg-iframe").val('A').trigger('input');
+        });
     });
-
-    sug.on('show', function () {
-        equal(sug.isShow, true, 'sug正确显示了');
-        equal(sug.$wrapper.css('top'), ($('#sugg-input').height()+sug.wrapperTop) + 'px', 'wrapper位置正确适应了');
-        equal(sug.$wrapper.children().eq(0).hasClass('ui-suggestion-button'), false, 'sug的btn操作按钮未调整位置');
-        equal(sug.$content.find('.sug-item').length, 4, 'sug的item项正确');
-
-        equal(sug.$content.find('.sug-item').eq(0).text(), 'Alabama', 'sug的item中第一项位置正调确调整');
-        equal(sug.$content.find('.sug-item').eq(1).text(), 'Alaska', 'sug的item中第二项位置正调确调整');
-        equal(sug.$content.find('.sug-item').eq(2).text(), 'Arizona', 'sug的item中第三项位置正调确调整');
-        equal(sug.$content.find('.sug-item').eq(3).text(), 'Arkansas', 'sug的item中第四项位置正调确调整');
-
-        sug.destroy();
-        start();
-    });
-
-    $("#sugg-input").val('A').trigger('input');
-});
-test('posAdapt=true, 但是窗口上方不够显示高度', function() {
-    expect(8);
-    stop();
-
-    var sug = gmu.Suggestion({
-        container: "#sugg-input",
-        sendrequest: sendrequest,
-        renderlist: renderlist,
-        listSelector: '.sug-item',
-        height: $('#sugg-input').offset().top - window.pageYOffset + 100
-    });
-
-    sug.on('show', function () {
-        equal(sug.isShow, true, 'sug正确显示了');
-        equal(sug.$wrapper.css('top'), ($('#sugg-input').height()+sug.wrapperTop) + 'px', 'wrapper位置正确适应了');
-        equal(sug.$wrapper.children().eq(0).hasClass('ui-suggestion-button'), false, 'sug的btn操作按钮未调整位置');
-        equal(sug.$content.find('.sug-item').length, 4, 'sug的item项正确');
-
-        equal(sug.$content.find('.sug-item').eq(0).text(), 'Alabama', 'sug的item中第一项位置正调确调整');
-        equal(sug.$content.find('.sug-item').eq(1).text(), 'Alaska', 'sug的item中第二项位置正调确调整');
-        equal(sug.$content.find('.sug-item').eq(2).text(), 'Arizona', 'sug的item中第三项位置正调确调整');
-        equal(sug.$content.find('.sug-item').eq(3).text(), 'Arkansas', 'sug的item中第四项位置正调确调整');
-        sug.destroy();
-        start();
-    });
-
-    $("#sugg-input").val('A').trigger('input');
-
 });
