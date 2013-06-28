@@ -394,7 +394,7 @@ window.gmu.$.ui = gmu;
         trigger: function( name ) {
             var evt = typeof name === 'string' ? new gmu.Event(name) : name,
                 args = [evt].concat( Array.prototype.slice.call( arguments, 1 ) ),
-                opEvent = this._options[name],
+                opEvent = this._options[evt.type],
 
                 // 先存起来，否则在下面使用的时候，可能已经被destory给删除了。
                 $el = this.getEl();

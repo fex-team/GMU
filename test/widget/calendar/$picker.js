@@ -3,7 +3,7 @@ module("widget - calendar.picker");
 test("load assets", function(){
     expect(1);
     stop();
-    ua.loadcss(["reset.css", "widget/calendar/calendar.css", "widget/calendar/calendar.default.css"], function(){
+    ua.loadcss(["widget/calendar/calendar.css", "widget/calendar/calendar.default.css"], function(){
         ok(true, "ok");
         start();
     });
@@ -14,12 +14,12 @@ test("render & el", function(){
     stop();
     var input = $('<input type="text">');
 
-    var ca = $.ui.calendar(input[0],{
+    var ca = $.ui.Calendar(input[0],{
     	date: '2013-04-24'
     });
 
     ok(!input.hasClass('ui-calendar'), '当加入picker插件, selector是赋值对象，不会作为容器处理');
-    equals(ca.root()[0], input[0], 'The el is right');
+    equals(ca.$el[0], input[0], 'The el is right');
 
     ca.show();
 
@@ -49,7 +49,7 @@ test("init: selector", function(){
     input.calendar({date: '2013-04-24'});
 
     ok(!input.hasClass('ui-calendar'), '当加入picker插件, selector是赋值对象，不会作为容器处理');
-    equals(input.calendar('root')[0], input[0], 'The el is right');
+    equals(input.calendar('this').$el[0], input[0], 'The el is right');
 
     input.calendar('show');
 
@@ -102,13 +102,13 @@ test("event: show/hide/beforehide", function(){
     input.calendar({
         date: '2013-04-24',
         show: function(){
-            ok(true, 'ok');
+            ok(true, 'show fired');
         },
         hide: function(){
-            ok(true, 'ok');
+            ok(true, 'hide fired');
         },
         beforehide: function(e){
-            ok(true, 'ok');
+            ok(true, 'beforehide fired');
             if(!flag) {
                 e.preventDefault();
                 flag = true;
@@ -117,15 +117,15 @@ test("event: show/hide/beforehide", function(){
     });
 
     input.calendar('on', 'show', function(){
-        ok(true, 'ok');
+        ok(true, 'show fired');
     });
 
     input.calendar('on', 'hide', function(){
-        ok(true, 'ok');
+        ok(true, 'hide fired');
     });
 
     input.calendar('on', 'beforehide', function(){
-        ok(true, 'ok');
+        ok(true, 'beforehide fired');
     });
 
     input.calendar('show');
@@ -227,21 +227,6 @@ test("user interface: select the input value", function(){
 	}, 200);
 });
 
-test("option: disablePlugin", function(){
-    expect(1);
-    var input = $('<input type="text">').appendTo(document.body);
-
-    input.calendar({
-        disablePlugin: true
-    });
-    
-    input.calendar('this').show;
-    
-    equals(input.calendar('this').show, undefined, 'no plugin');
-    
-    input.calendar('destroy');
-});
-
 test("window resize", function(){
     expect(2);
     stop();
@@ -261,6 +246,7 @@ test("window resize", function(){
 	        	$(f).css("position", "absolute").css("left", 0).css("top", 0).css("height", 800).css("width", 600);
 	             
 	            setTimeout(function(){
+                    debugger;
 	            	equals(w.$('.ui-slideup').offset().height + w.$('.ui-slideup').offset().top, w.innerHeight, 'position is right');
 	            	
 	                input.calendar('destroy');

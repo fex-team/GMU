@@ -3,9 +3,9 @@
  * @name Calendar
  * @desc <qrcode align="right" title="Live Demo">../gmu/examples/widget/calendar/calendar.html</qrcode>
  * 日历组件, 可以用来给一容器生成日历。
- * @import core/touch.js, core/ui.js, core/highlight.js
+ * @import extend/touch.js, core/widget.js, extend/highlight.js
  */
-(function($, undefined) {
+(function( gmu, $, undefined ) {
     var monthNames = ["01月", "02月", "03月", "04月", "05月", "06月",
         "07月", "08月", "09月", "10月", "11月", "12月"],
 
@@ -38,9 +38,9 @@
         prototype;
 
     /**
-     * @name $.ui.calendar
-     * @grammar $.ui.calendar(options) ⇒ instance
-     * @grammar calendar(options) ⇒ self
+     * @name gmu.Calendar
+     * @grammar gmu.Calendar(options) => instance
+     * @grammar calendar(options) => self
      * @desc **Options**
      * - ''date'' {Date|String}: (可选，默认：today) 初始化日期
      * - ''firstDay'' {Number}: (可选，默认：1)  设置新的一周从星期几开始，星期天用0表示, 星期一用1表示, 以此类推.
@@ -56,8 +56,8 @@
      * ../gmu/examples/widget/calendar/calendar.html
      * </codepreview>
      */
-    $.ui.define('calendar', {
-        _data: {
+    gmu.define( 'Calendar', {
+        options: {
             date: null, //默认日期
             firstDay: 1, //星期天用0表示, 星期一用1表示, 以此类推.
             maxDate: null, //可以选择的日期范围
@@ -67,34 +67,38 @@
             yearChangeable: false
         },
 
-        _create: function() {
-            var el = this.root();
+        _init: function() {
+            this.on('ready', function(){
+                var opts = this._options,
+                    el = this._container || this.$el,
+                    eventHandler = $.proxy(this._eventHandler, this);
 
-            //如果没有指定el, 则创建一个空div
-            el = el || this.root($('<div></div>'));
-            el.appendTo(this.data('container') || (el.parent().length ? '' : document.body));
+                this.minDate(opts.minDate)
+                    .maxDate(opts.maxDate)
+                    .date(opts.date || new Date())
+                    .refresh();
+
+                el.addClass('ui-calendar')
+                    .on('click', eventHandler)
+                    .highlight();
+
+                opts.swipeable && el.on('swipeLeft swipeRight', eventHandler);
+            });
         },
 
-        _init: function() {
-            var data = this._data,
-                el = this._container || this.root(),
-                eventHandler = $.proxy(this._eventHandler, this);
+        _create: function() {
+            var $el = this.$el;
 
-            this.minDate(data.minDate)
-                .maxDate(data.maxDate)
-                .date(data.date || new Date())
-                .refresh();
-
-            el.addClass('ui-calendar')
-                .on('click', eventHandler)
-                .highlight();
-
-            data.swipeable && el.on('swipeLeft swipeRight', eventHandler);
+            //如果没有指定el, 则创建一个空div
+            if( !$el ) {
+                $el = this.$el = $('<div>');
+            }
+            $el.appendTo(this._options['container'] || ($el.parent().length ? '' : document.body));
         },
 
         _eventHandler: function(e) {
-            var data = this._data,
-                root = (this._container || this.root()).get(0),
+            var opts = this._options,
+                root = (this._container || this.$el).get(0),
                 match,
                 target,
                 cell,
@@ -125,7 +129,7 @@
                         this._option('selectedDate',
                         date = new Date(cell.attr('data-year'), cell.attr('data-month'), match.text()));
 
-                        this.trigger('select', [date, $.calendar.formatDate(date), this]);
+                        this.trigger('select', date, $.calendar.formatDate(date), this);
                         this.refresh();
                     } else if ((match = $(target).closest('.ui-calendar-prev, .ui-calendar-next', root)) && match.length) {
 
@@ -142,7 +146,7 @@
          * @desc 设置或获取Option，如果想要Option生效需要调用[Refresh](#calendar_refresh)方法。
          */
         _option: function(key, val) {
-            var data = this._data,
+            var opts = this._options,
                 date, minDate, maxDate;
 
             //如果是setter
@@ -151,36 +155,36 @@
                 switch (key) {
                     case 'minDate':
                     case 'maxDate':
-                        data[key] = val ? $.calendar.parseDate(val) : null;
+                        opts[key] = val ? $.calendar.parseDate(val) : null;
                         break;
 
                     case 'selectedDate':
-                        minDate = data.minDate;
-                        maxDate = data.maxDate;
+                        minDate = opts.minDate;
+                        maxDate = opts.maxDate;
                         val = $.calendar.parseDate(val);
                         val = minDate && minDate > val ? minDate : maxDate && maxDate < val ? maxDate : val;
-                        data._selectedYear = data._drawYear = val.getFullYear();
-                        data._selectedMonth = data._drawMonth = val.getMonth();
-                        data._selectedDay = val.getDate();
+                        opts._selectedYear = opts._drawYear = val.getFullYear();
+                        opts._selectedMonth = opts._drawMonth = val.getMonth();
+                        opts._selectedDay = val.getDate();
                         break;
 
                     case 'date':
                         this._option('selectedDate', val);
-                        data[key] = this._option('selectedDate');
+                        opts[key] = this._option('selectedDate');
                         break;
 
                     default:
-                        data[key] = val;
+                        opts[key] = val;
                 }
 
                 //标记为true, 则表示下次refresh的时候要重绘所有内容。
-                data._invalid = true;
+                opts._invalid = true;
 
                 //如果是setter则要返回instance
                 return this;
             }
 
-            return key == 'selectedDate' ? new Date(data._selectedYear, data._selectedMonth, data._selectedDay) : data[key];
+            return key == 'selectedDate' ? new Date(opts._selectedYear, opts._selectedMonth, opts._selectedDay) : opts[key];
         },
 
         /**
@@ -201,18 +205,18 @@
          * @desc 使组件显示某月，当第一参数为str可以+1M, +4M, -5Y, +1Y等等。+1M表示在显示的月的基础上显示下一个月，+4m表示下4个月，-5Y表示5年前
          */
         switchMonthTo: function(month, year) {
-            var data = this._data,
+            var opts = this._options,
                 minDate = this.minDate(),
                 maxDate = this.maxDate(),
                 offset,
                 period,
                 tmpDate;
 
-            if ($.isString(month) && offsetRE.test(month)) {
+            if (Object.prototype.toString.call(month) === '[object String]' && offsetRE.test(month)) {
                 offset = RegExp.$1 == '-' ? -parseInt(RegExp.$2, 10) : parseInt(RegExp.$2, 10);
                 period = RegExp.$3.toLowerCase();
-                month = data._drawMonth + (period == 'm' ? offset : 0);
-                year = data._drawYear + (period == 'y' ? offset : 0);
+                month = opts._drawMonth + (period == 'm' ? offset : 0);
+                year = opts._drawYear + (period == 'y' ? offset : 0);
             } else {
                 month = parseInt(month, 10);
                 year = parseInt(year, 10);
@@ -227,11 +231,10 @@
             month = tmpDate.getMonth();
             year = tmpDate.getFullYear();
 
-            if (month != data._drawMonth || year != data._drawYear) {
-                this.trigger('monthchange', [
-                data._drawMonth = month, data._drawYear = year, this]);
+            if (month != opts._drawMonth || year != opts._drawYear) {
+                this.trigger('monthchange', opts._drawMonth = month, opts._drawYear = year, this);
 
-                data._invalid = true;
+                opts._invalid = true;
                 this.refresh();
             }
 
@@ -244,12 +247,12 @@
          * @desc 当修改option后需要调用此方法。
          */
         refresh: function() {
-            var data = this._data,
-                el = this._container || this.root(),
+            var opts = this._options,
+                el = this._container || this.$el,
                 eventHandler = $.proxy(this._eventHandler, this);
 
             //如果数据没有变化厕不重绘了
-            if (!data._invalid) {
+            if (!opts._invalid) {
                 return;
             }
 
@@ -258,21 +261,22 @@
             el.empty().append(this._generateHTML());
             $('.ui-calendar-calendar td:not(.ui-state-disabled), .ui-calendar-header a', el).highlight('ui-state-hover');
             $('.ui-calendar-header select', el).on('change', eventHandler);
-            data._invalid = false;
+            opts._invalid = false;
             return this;
         },
 
         /**
          * @desc 销毁组件。
          * @name destroy
-         * @grammar destroy()  ⇒ instance
+         * @grammar destroy()  => instance
          */
         destroy: function() {
-            var el = this._container || this.root(),
+            var el = this._container || this.$el,
                 eventHandler = this._eventHandler;
 
             $('.ui-calendar-calendar td:not(.ui-state-disabled)', el).highlight();
             $('.ui-calendar-header select', el).off('change', eventHandler);
+            el.remove();
             return this.$super('destroy');
         },
 
@@ -280,9 +284,9 @@
          * 重绘表格
          */
         _generateHTML: function() {
-            var data = this._data,
-                drawYear = data._drawYear,
-                drawMonth = data._drawMonth,
+            var opts = this._options,
+                drawYear = opts._drawYear,
+                drawMonth = opts._drawMonth,
                 tempDate = new Date(),
                 today = new Date(tempDate.getFullYear(), tempDate.getMonth(),
                 tempDate.getDate()),
@@ -300,9 +304,9 @@
                 rows,
                 printDate;
 
-            firstDay = (isNaN(firstDay = parseInt(data.firstDay, 10)) ? 0 : firstDay);
+            firstDay = (isNaN(firstDay = parseInt(opts.firstDay, 10)) ? 0 : firstDay);
 
-            html += this._renderHead(data, drawYear, drawMonth, minDate, maxDate) +
+            html += this._renderHead(opts, drawYear, drawMonth, minDate, maxDate) +
                 '<table  class="ui-calendar-calendar"><thead><tr>';
 
             for (i = 0; i < 7; i++) {
@@ -403,7 +407,7 @@
         }
     });
 
-    prototype = $.ui.calendar.prototype;
+    prototype = gmu.Calendar.prototype;
 
     //添加更直接的option修改接口
     $.each(['maxDate', 'minDate', 'date', 'selectedDate'], function(i, name) {
@@ -450,7 +454,7 @@
          */
         parseDate: function(obj) {
             var dateRE = /^(\d{4})(?:\-|\/)(\d{1,2})(?:\-|\/)(\d{1,2})$/;
-            return $.isDate(obj) ? obj : dateRE.test(obj) ? new Date(parseInt(RegExp.$1, 10), parseInt(RegExp.$2, 10) - 1, parseInt(RegExp.$3, 10)) : null;
+            return Object.prototype.toString.call(obj) === '[object Date]' ? obj : dateRE.test(obj) ? new Date(parseInt(RegExp.$1, 10), parseInt(RegExp.$2, 10) - 1, parseInt(RegExp.$3, 10)) : null;
         },
 
         /**
@@ -474,5 +478,4 @@
      * | monthchange | event, month, year, ui | 当当前现实月份发生变化时触发 |
      * | destroy | event | 组件在销毁的时候触发 |
      */
-
-})(Zepto);
+})( gmu, gmu.$ );

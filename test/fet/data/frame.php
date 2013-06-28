@@ -14,9 +14,9 @@ $cov = preg_match('/cov=true/i', $_SERVER['QUERY_STRING']); //为支持cov模式
 if(preg_match('/destroy=true/i', $_SERVER['QUERY_STRING'])){
     print '<script type="text/javascript" src="../lib/js/DestroyTest.js"></script>' . "\n";
 
-    // 直接引入Zepto
-    print '<script type="text/javascript" src="../../../dist/zepto.js"></script>' . "\n";
 }
+// 直接引入Zepto
+print '<script type="text/javascript" src="../../../dist/zepto.js"></script>' . "\n";
 if($release == 0 && array_key_exists('f', $_GET)){
 //    print "<script type='text/javascript' src='../lib/js/zepto.js'></script>\n";
 	if($cov)
