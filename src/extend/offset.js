@@ -1,5 +1,5 @@
 /**
- * 修复Zepto中offset setter bug。
+ * @file 修复Zepto中offset setter bug。
  * 比如 被定位元素满足以下条件时，会定位不正确
  * 1. 被定位元素不是第一个节点，且prev兄弟节点中有非absolute或者fixed定位的元素
  * 2. 被定位元素为非absolute或者fixed定位。
