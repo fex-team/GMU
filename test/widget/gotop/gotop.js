@@ -29,11 +29,11 @@ var tablet = window.screen.width >= 768 && window.screen.width <= 1024;
 test("no el", function(){
 	expect(2);
 	stop();
-	ua.loadcss(["reset.css", "widget/gotop/gotop.css"], function(){
-		var gotop = $.ui.gotop({});
+	ua.loadcss(["widget/gotop/gotop.css"], function(){
+		var gotop = gmu.Gotop({});
 		setTimeout(function(){
-			equals(gotop._el.attr("class"), "ui-gotop", "The el is right");
-			equals(gotop._el.parent()[0].tagName.toLowerCase(), "body", "The container is right");
+			equals(gotop.$el.attr("class"), "ui-gotop", "The el is right");
+			equals(gotop.$el.parent()[0].tagName.toLowerCase(), "body", "The container is right");
 			gotop.destroy();
 			start();
 		},200);
@@ -44,11 +44,11 @@ test("el(zepto) & container", function(){
 	expect(2);
 	var html = '<div id="container"></div>';
 	$(document.body).append(html);
-	var gotop = $.ui.gotop($('<div class="ui-gotop">'), {
+	var gotop = gmu.Gotop($('<div class="ui-gotop">'), {
 		container: "#container"
 	});
-	equals(gotop._el.attr("class"), "ui-gotop", "The el is right");
-	equals(gotop._el.parent().attr("id"), "container", "The container is right");
+	equals(gotop.$el.attr("class"), "ui-gotop", "The el is right");
+	equals(gotop.$el.parent().attr("id"), "container", "The container is right");
 	gotop.destroy();
 	$("#container").remove();
 });
@@ -62,9 +62,9 @@ test("el(selector)", function(){
 	$(div).attr("class", "ui-gotop");
 	$("#test").append(div);
 
-	var gotop = $.ui.gotop(".ui-gotop", {});
-	equals(gotop._el.attr("class"), "ui-gotop", "The el is right");
-	equals(gotop._el.parent().attr("id"), "test", "The container is right");
+	var gotop = gmu.Gotop(".ui-gotop", {});
+	equals(gotop.$el.attr("class"), "ui-gotop", "The el is right");
+	equals(gotop.$el.parent().attr("id"), "test", "The container is right");
 	gotop.destroy();
 	$("#test").remove();
 });
@@ -73,20 +73,20 @@ test("useAnimation = false", function(){
     expect(6);
     stop();
     enSetup();
-    var gotop = $.ui.gotop($('<div class="ui-gotop">'), {
+    var gotop = gmu.Gotop($('<div class="ui-gotop">'), {
         useAnimation: false
     });
     setTimeout(function(){
         window.scrollTo(0, 1500);
         ta.scrollStop(document);
         setTimeout(function(){
-            ok(ua.isShown(gotop._el[0]), "The gotop shows");
+            ok(ua.isShown(gotop.$el[0]), "The gotop shows");
             ok(Math.abs(window.pageYOffset - 1500) <= 1, "The pageYOffset is right");
-            equals(gotop._el.offset().left, $("html").offset().width  - (tablet?60:50) - 10, "The gotop left is right");
-            equals(gotop._el.offset().top, window.pageYOffset + $(window).height() -(tablet ? 60 : 50) - 10, "The gotop top is right");
-            ua.click(gotop._el[0]);
+            equals(gotop.$el.offset().left, $("html").offset().width  - (tablet?60:50) - 10, "The gotop left is right");
+            equals(gotop.$el.offset().top, window.pageYOffset + $(window).height() -(tablet ? 60 : 50) - 10, "The gotop top is right");
+            ua.click(gotop.$el[0]);
             ok(window.pageYOffset <= 1, "scroll to top");
-            ok(!ua.isShown(gotop._el[0]), "The gotop hides");
+            ok(!ua.isShown(gotop.$el[0]), "The gotop hides");
             window.scrollTo(0, 0);
             gotop.destroy();
             start();
@@ -94,68 +94,68 @@ test("useAnimation = false", function(){
     }, 300);
 });
 
-test("afterScroll & useAnimation = true", function(){
-	expect(4);
-	stop();
-	enSetup();
-	var a, b;
-	var gotop = $.ui.gotop($('<div class="ui-gotop">'), {
-		useAnimation:true,
-		afterScroll: function(){
-		    b = new Date();
-			ok(b - a > 160, "useAnimation=true");
-			ok(window.pageYOffset <= 1, "scroll to top");
-			ok(!ua.isShown(gotop._el[0]), "The gotop hides");
-			setTimeout(function(){
-				gotop.destroy();
-				start();
-			}, 100);
-		},
-        position: {right: 8, bottom: 8}
-	});
-	setTimeout(function(){
-		window.scrollTo(0, 1500);
-		ta.scrollStop(document);
-		setTimeout(function(){
-			ok(ua.isShown(gotop._el[0]), "The gotop shows");
-			a = new Date();
-			ua.click(gotop._el[0]);
-		}, 300);
-	},100);
-});
+// test("afterScroll & useAnimation = true", function(){
+// 	expect(4);
+// 	stop();
+// 	enSetup();
+// 	var a, b;
+// 	var gotop = gmu.Gotop($('<div class="ui-gotop">'), {
+// 		useAnimation:true,
+// 		afterScroll: function(){
+// 		    b = new Date();
+// 			ok(b - a > 160, "useAnimation=true");
+// 			ok(window.pageYOffset <= 1, "scroll to top");
+// 			ok(!ua.isShown(gotop.$el[0]), "The gotop hides");
+// 			setTimeout(function(){
+// 				gotop.destroy();
+// 				start();
+// 			}, 100);
+// 		},
+//         position: {right: 8, bottom: 8}
+// 	});
+// 	setTimeout(function(){
+// 		window.scrollTo(0, 1500);
+// 		ta.scrollStop(document);
+// 		setTimeout(function(){
+// 			ok(ua.isShown(gotop.$el[0]), "The gotop shows");
+// 			a = new Date();
+// 			ua.click(gotop.$el[0]);
+// 		}, 300);
+// 	},100);
+// });
 
 test("position", function(){
     stop();
 	expect(5);
-	var gotop = $.ui.gotop($('<div class="ui-gotop">'), {
+	var gotop = gmu.Gotop($('<div class="ui-gotop">'), {
 		position: {bottom: 20, right: 30}
 	});
 	gotop.show();
-	ok(ua.isShown(gotop._el[0]), "The gotop shows");
-	equals(gotop._el.offset().height, tablet?60:50, "The gotop height is right");
-	equals(gotop._el.offset().width, tablet ? 60 : 50, "The gotop width is right");
-	approximateEqual(gotop._el.offset().left, $("html").offset().width - (tablet ? 60:50) - 30, "The gotop left is right");
-	equals(gotop._el.offset().top, document.documentElement.clientHeight -(tablet ? 60 :50) - 20, "The gotop top is right");
+	ok(ua.isShown(gotop.$el[0]), "The gotop shows");
+	equals(gotop.$el.offset().height, tablet?60:50, "The gotop height is right");
+	equals(gotop.$el.offset().width, tablet ? 60 : 50, "The gotop width is right");
+	approximateEqual(gotop.$el.offset().left, $("html").offset().width - (tablet ? 60:50) - 30, "The gotop left is right");
+	equals(gotop.$el.offset().top, document.documentElement.clientHeight -(tablet ? 60 :50) - 20, "The gotop top is right");
 	gotop.destroy();
     start();
 });
 
 test("useFix = false", function(){
 	stop();
-	ua.importsrc("core/zepto.fix", function(){
+	ua.importsrc("extend/zepto.fix", function(){
 		expect(3);
 		enSetup();
-		var gotop = $.ui.gotop($('<div class="ui-gotop">'), {
+		var gotop = gmu.Gotop($('<div class="ui-gotop">'), {
 			useFix: false
 		});
-        gotop.root().fix({bottom: 20, right: 30});
+        gotop.$el.fix({bottom: 20, right: 30});
 		setTimeout(function(){
 			window.scrollTo(0, 1500);
 			ta.scrollStop(document);
 			setTimeout(function(){
-				ok(ua.isShown(gotop._el[0]), "The gotop shows");
-				equals(gotop._el.offset().left, $("html").offset().width  -	(tablet ? 60 :	50) - 30, "The gotop left is right");
-	            equals(gotop._el.offset().top, window.pageYOffset + $(window).height() - (tablet ? 60 :50) - 20, "The gotop top is right");
+				ok(ua.isShown(gotop.$el[0]), "The gotop shows");
+				equals(gotop.$el.offset().left, $("html").offset().width  -	(tablet ? 60 :	50) - 30, "The gotop left is right");
+	            equals(gotop.$el.offset().top, window.pageYOffset + $(window).height() - (tablet ? 60 :50) - 20, "The gotop top is right");
 				window.scrollTo(0, 0);
 				ta.scrollStop(document);
 				gotop.destroy();
@@ -169,32 +169,32 @@ test("useHide = false", function(){
 	expect(10);
 	stop();
 	enSetup();
-	var gotop = $.ui.gotop($('<div class="ui-gotop">'), {
+	var gotop = gmu.Gotop($('<div class="ui-gotop">'), {
 		position:{right: 8, bottom: 8},
 		useHide: false
 	});
 	setTimeout(function(){
-		ok(!ua.isShown(gotop._el[0]), "The gotop hides");
+		ok(!ua.isShown(gotop.$el[0]), "The gotop hides");
 		
 		ta.touchmove(document);
 		window.scrollTo(0, 1500);
 		ta.scrollStop(document);
 		setTimeout(function(){
-			ok(ua.isShown(gotop._el[0]), "The gotop shows");
+			ok(ua.isShown(gotop.$el[0]), "The gotop shows");
 			ok(Math.abs(window.pageYOffset - 1500) <= 1, "The pageYOffset is right");
-			equals(gotop._el.offset().left, $("html").offset().width -(tablet ? 60 :50) - 8, "The gotop left is right");
-			equals(gotop._el.offset().top, window.pageYOffset + window.innerHeight -
+			equals(gotop.$el.offset().left, $("html").offset().width -(tablet ? 60 :50) - 8, "The gotop left is right");
+			equals(gotop.$el.offset().top, window.pageYOffset + window.innerHeight -
 					(tablet ? 60 : 50) - 8, "The gotop top is right"); //window.innerHeight表示的是加上控制台的页面高度
 			
 			ta.touchmove(document);
-			ok(ua.isShown(gotop._el[0]), "The gotop shows");
+			ok(ua.isShown(gotop.$el[0]), "The gotop shows");
 			window.scrollTo(0, 1600); 
 			ta.scrollStop(document);
 			setTimeout(function(){
-				ok(ua.isShown(gotop._el[0]), "The gotop shows");
+				ok(ua.isShown(gotop.$el[0]), "The gotop shows");
 				ok(Math.abs(window.pageYOffset - 1600) <= 1, "The pageYOffset is right");
-				equals(gotop._el.offset().left, $("html").offset().width -(tablet ? 60 :50) - 8, "The gotop left is right");
-				equals(gotop._el.offset().top, window.pageYOffset + window.innerHeight -
+				equals(gotop.$el.offset().left, $("html").offset().width -(tablet ? 60 :50) - 8, "The gotop left is right");
+				equals(gotop.$el.offset().top, window.pageYOffset + window.innerHeight -
 						(tablet ? 60 : 50) - 8, "The gotop top is right"); //window.innerHeight表示的是加上控制台的页面高度
                 
 				window.scrollTo(0, 0);
@@ -209,17 +209,17 @@ test("useHide = false", function(){
 test("show() & hide()", function(){
     stop();
 	expect(8);
-	var gotop = $.ui.gotop($('<div class="ui-gotop">'), {});
+	var gotop = gmu.Gotop($('<div class="ui-gotop">'), {});
 	gotop.show();
-	ok(ua.isShown(gotop._el[0]), "The gotop shows");
-	equals(gotop._el.offset().height, (tablet ? 60 :50), "The gotop height is right");
-	equals(gotop._el.offset().width, (tablet ? 60 :50), "The gotop width is right");
-	approximateEqual(gotop._el.offset().left, $("html").offset().width - (tablet ? 60 :50) - 10, "The gotop left is right");
-	equals(gotop._el.offset().top, document.documentElement.clientHeight -	(tablet ? 60 :50) - 10, "The gotop top is right");
-	equals(gotop._el.find('div').css("background-position"), "50% 50%", "The position is right");
-	equals(gotop._el.find('div').css("-webkit-background-size"), tablet?"22px 18px":"18px 15px", "The position is right");
+	ok(ua.isShown(gotop.$el[0]), "The gotop shows");
+	equals(gotop.$el.offset().height, (tablet ? 60 :50), "The gotop height is right");
+	equals(gotop.$el.offset().width, (tablet ? 60 :50), "The gotop width is right");
+	approximateEqual(gotop.$el.offset().left, $("html").offset().width - (tablet ? 60 :50) - 10, "The gotop left is right");
+	equals(gotop.$el.offset().top, document.documentElement.clientHeight -	(tablet ? 60 :50) - 10, "The gotop top is right");
+	equals(gotop.$el.find('div').css("background-position"), "50% 50%", "The position is right");
+	equals(gotop.$el.find('div').css("-webkit-background-size"), tablet?"22px 18px":"18px 15px", "The position is right");
 	gotop.hide();
-	ok(!ua.isShown(gotop._el[0]), "The gotop hides");
+	ok(!ua.isShown(gotop.$el[0]), "The gotop hides");
 	gotop.destroy();
     start();
 });
@@ -228,7 +228,7 @@ test("basic operations", function(){
 	expect(17);
 	stop();
 	enSetup();
-	var gotop = $.ui.gotop($('<div class="ui-gotop">'), {
+	var gotop = gmu.Gotop($('<div class="ui-gotop">'), {
 		position:{right: 8, bottom: 8}
 	});
 	setTimeout(function(){
@@ -237,51 +237,51 @@ test("basic operations", function(){
 		window.scrollTo(0, 100);
 		ta.scrollStop(document);
 		setTimeout(function(){
-			ok(!ua.isShown(gotop._el[0]), "The gotop hides");
+			ok(!ua.isShown(gotop.$el[0]), "The gotop hides");
 			
 			ta.touchmove(document);
 			window.scrollTo(0, 1500); //scroll more than a screen
 			ta.scrollStop(document);
 			setTimeout(function(){
-				ok(ua.isShown(gotop._el[0]), "The gotop shows");
+				ok(ua.isShown(gotop.$el[0]), "The gotop shows");
 				ok(Math.abs(window.pageYOffset - 1500) <= 1, "The pageYOffset is right");
-				equals(gotop._el.offset().left, $("html").offset().width -(tablet ? 60 :50) - 8, "The gotop left is right");
-				equals(gotop._el.offset().top, window.pageYOffset + window.innerHeight -
+				equals(gotop.$el.offset().left, $("html").offset().width -(tablet ? 60 :50) - 8, "The gotop left is right");
+				equals(gotop.$el.offset().top, window.pageYOffset + window.innerHeight -
 						(tablet ? 60 : 50) - 8, "The gotop top is right"); //window.innerHeight表示的是加上控制台的页面高度
 				
 				ta.touchmove(document); //touchmove and then scroll
-                ok(!ua.isShown(gotop._el[0]), "The gotop hides");
+                ok(!ua.isShown(gotop.$el[0]), "The gotop hides");
                 window.scrollTo(0, 1500);
                 ta.scrollStop(document);
                 setTimeout(function(){
-                    ok(ua.isShown(gotop._el[0]), "The gotop shows");
+                    ok(ua.isShown(gotop.$el[0]), "The gotop shows");
                     ok(Math.abs(window.pageYOffset - 1500) <= 1, "The pageYOffset is right");
-                    equals(gotop._el.offset().left, $("html").offset().width -
+                    equals(gotop.$el.offset().left, $("html").offset().width -
 		                    (tablet ? 60 : 50) - 8, "The gotop left is right");
-                    equals(gotop._el.offset().top, window.pageYOffset + window.innerHeight -
+                    equals(gotop.$el.offset().top, window.pageYOffset + window.innerHeight -
 		                    (tablet ? 60 : 50) - 8, "The gotop top is right");
                     
-                    ua.click(gotop._el[0]); //click gotop
+                    ua.click(gotop.$el[0]); //click gotop
                     setTimeout(function(){
                     	ok(window.pageYOffset <= 1, "scroll to top");
-                        ok(!ua.isShown(gotop._el[0]), "The gotop hides");
+                        ok(!ua.isShown(gotop.$el[0]), "The gotop hides");
                         
                         window.scrollTo(0, 1500);
                         ta.scrollStop(document);
                         setTimeout(function(){
-                            ok(ua.isShown(gotop._el[0]), "The gotop shows");
+                            ok(ua.isShown(gotop.$el[0]), "The gotop shows");
                             
                             ta.touchmove(document);
-                            ok(!ua.isShown(gotop._el[0]), "The gotop hides");
+                            ok(!ua.isShown(gotop.$el[0]), "The gotop hides");
                             ta.touchend(document);
                             setTimeout(function(){
-                                ok(ua.isShown(gotop._el[0]), "The gotop shows");
+                                ok(ua.isShown(gotop.$el[0]), "The gotop shows");
                                 
                                 ta.touchmove(document);
-                                ok(!ua.isShown(gotop._el[0]), "The gotop hides");
+                                ok(!ua.isShown(gotop.$el[0]), "The gotop hides");
                                 ta.touchcancel(document);
                                 setTimeout(function(){
-                                    ok(ua.isShown(gotop._el[0]), "The gotop shows");
+                                    ok(ua.isShown(gotop.$el[0]), "The gotop shows");
 	                                
                                     window.scrollTo(0, 0);
 	                                ta.scrollStop(document);
@@ -306,27 +306,27 @@ test("fix && ortchange 转屏", function(){
         	for (i = 0; i < 200; i++) {
     	        w.$("body").append("<li>" + i + "</li>");
     	    }
-            var gotop = w.$.ui.gotop();
+            var gotop = w.gmu.Gotop();
             w.scrollTo(0, 200);
             ta.scrollStop(w.document);
             setTimeout(function(){
                 approximateEqual(w.pageYOffset, 200, "window scrolled");
-                ok(ua.isShown(gotop._el[0]), "The gotop shows");
-                equals(gotop._el.offset().left, 300 - 10 - (tablet ? 60 : 50), "The left is right");
-                equals(gotop._el.offset().top, w.pageYOffset + 150 - 10 -
+                ok(ua.isShown(gotop.$el[0]), "The gotop shows");
+                equals(gotop.$el.offset().left, 300 - 10 - (tablet ? 60 : 50), "The left is right");
+                equals(gotop.$el.offset().top, w.pageYOffset + 150 - 10 -
 		                (tablet ? 60 : 50), "The top is right");
                 $(f).css("width", 150).css("height", 300);
                 w.$("body").css("width", 150).css("height", 300);
                 setTimeout(function(){
-                    ok(!ua.isShown(gotop._el[0]), "The gotop hides");
+                    ok(!ua.isShown(gotop.$el[0]), "The gotop hides");
                     w.scrollTo(0, 400);
                     ta.scrollStop(w.document);
                     setTimeout(function(){
                     	approximateEqual(w.pageYOffset, 400, "window scrolled");
-                        ok(ua.isShown(gotop._el[0]), "The gotop shows");
-                        equals(gotop._el.offset().left, 150 - 10 -
+                        ok(ua.isShown(gotop.$el[0]), "The gotop shows");
+                        equals(gotop.$el.offset().left, 150 - 10 -
 		                        (tablet ? 60 : 50), "The left is right");
-                        equals(gotop._el.offset().top, w.pageYOffset + 300 - 10 -
+                        equals(gotop.$el.offset().top, w.pageYOffset + 300 - 10 -
 		                        (tablet ? 60 : 50), "The top is right");
 	                    window.scrollTo(0, 0);
 	                    ta.scrollStop(document);
@@ -349,8 +349,8 @@ test("setup 模式", function(){
     	window.scrollTo(0, 1500);
         ta.scrollStop(document);
         setTimeout(function(){
-            equals(gotop._el.attr("class"), "ui-gotop", "The el is right");
-            ok(ua.isShown(gotop._el[0]), "The gotop shows");
+            equals(gotop.$el.attr("class"), "ui-gotop", "The el is right");
+            ok(ua.isShown(gotop.$el[0]), "The gotop shows");
 	        window.scrollTo(0, 0);
 	        ta.scrollStop(document);
 	        gotop.destroy();
@@ -364,9 +364,12 @@ test("destroy", function(){
         var dl1 = w.dt.domLength(w);
         var el1= w.dt.eventLength();
 
-        var gotop = w.$.ui.gotop({
-        	useFix: false  //fix()中dom和event都没有清干净，设置false排除fix带来的影响
+        var config = new w.Object({
+            useFix: false  //fix()中dom和event都没有清干净，设置false排除fix带来的影响
         });
+        config.__proto__ = w.Object.prototype;
+
+        var gotop = w.gmu.Gotop(config);
         gotop.destroy();
 
         var el2= w.dt.eventLength();

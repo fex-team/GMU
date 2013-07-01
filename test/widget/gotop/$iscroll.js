@@ -31,19 +31,19 @@ test("iScrollInstance", function(){
     stop();
     expect(11);
     enSetup();
-    ua.loadcss(["reset.css", "widget/gotop/gotop.css"], function(){
+    ua.loadcss(["widget/gotop/gotop.css"], function(){
         $("#thelist").css("height", window.innerHeight);
         var s = new iScroll("thelist");
-        var gotop = $.ui.gotop($('<div class="ui-gotop">'), {
+        var gotop = gmu.Gotop($('<div class="ui-gotop">'), {
             iScrollInstance: s,
             position: {bottom: 20, right: 30},
             afterScroll: function(){
                 equal($("#scroller").offset().top, $("#thelist").offset().top, "The page scrolled");
-                ok(!ua.isShown(gotop._el[0]), "The gotop hides");
-                setTimeout(function(){
+                ok(!ua.isShown(gotop.$el[0]), "The gotop hides");
+                // setTimeout(function(){
     				gotop.destroy();
     				start();
-    			}, 0);
+    			// }, 0);
             }
         });
         setTimeout(function(){
@@ -70,15 +70,18 @@ test("iScrollInstance", function(){
                 clientY: -1500
             });
             setTimeout(function(){
-                ta.touchend($("#scroller")[0]);
                 //PC
-                ua.mouseup($("#scroller")[0]);
+                if(/Windows/.test(window.navigator.userAgent)){
+                    ua.mouseup($("#scroller")[0]);
+                }else{
+                    ta.touchend($("#scroller")[0]);
+                }
                 setTimeout(function(){
                     approximateEqual(s.y, -1500, "The page scrolled");
-                    ok(ua.isShown(gotop._el[0]), "The gotop shows");
-                    equals(gotop._el.offset().left, $("html").offset().width -
+                    ok(ua.isShown(gotop.$el[0]), "The gotop shows");
+                    equals(gotop.$el.offset().left, $("html").offset().width -
 		                    (tablet ? 60 : 50) - 30, "The gotop left is right");
-                    approximateEqual(gotop._el.offset().top, window.innerHeight -
+                    approximateEqual(gotop.$el.offset().top, window.innerHeight -
 		                    (tablet ? 60 : 50) - 20, "The gotop top is right"); //位置相对于整个页面没有变
                     
                     //滑动页面，手指离开之前，gotop隐藏
@@ -94,30 +97,35 @@ test("iScrollInstance", function(){
                             clientY: -100
                         }]
                     });
-                  //PC
-                    ua.mousedown($("#scroller")[0], {
-                        clientX: 0,
-                        clientY: 0
-                    });
-                    ua.mousemove($("#scroller")[0], {
-                    	clientX: 0,
-                        clientY: -100
-                    });
-                    ok(!ua.isShown(gotop._el[0]), "The gotop hides");
+                    //PC
+                    if(/Windows/.test(window.navigator.userAgent)){
+                        ua.mousedown($("#scroller")[0], {
+                            clientX: 0,
+                            clientY: 0
+                        });
+                        ua.mousemove($("#scroller")[0], {
+                        	clientX: 0,
+                            clientY: -100
+                        });
+                    }
+                    ok(!ua.isShown(gotop.$el[0]), "The gotop hides");
                     
                     setTimeout(function(){
-                        ta.touchend($("#scroller")[0]);
-                      //PC
-                        ua.mouseup($("#scroller")[0]);
+                        //PC
+                        if(/Windows/.test(window.navigator.userAgent)){
+                            ua.mouseup($("#scroller")[0]);
+                        }else{
+                            ta.touchend($("#scroller")[0]);
+                        }
                         setTimeout(function(){
                             approximateEqual(s.y, -1600, "The page scrolled");
-                            ok(ua.isShown(gotop._el[0]), "The gotop shows");
-                            equals(gotop._el.offset().left, $("html").offset().width -
+                            ok(ua.isShown(gotop.$el[0]), "The gotop shows");
+                            equals(gotop.$el.offset().left, $("html").offset().width -
 		                            (tablet ? 60 : 50) - 30, "The gotop left is right");
-	                        approximateEqual(gotop._el.offset().top, window.innerHeight -
+	                        approximateEqual(gotop.$el.offset().top, window.innerHeight -
 		                            (tablet ? 60 : 50) - 20, "The gotop top is right"); //位置相对于整个页面没有变
                            
-                            ua.click(gotop._el[0]); //click gotop
+                            ua.click(gotop.$el[0]); //click gotop
                         }, 400);
                     }, 300);
                 }, 300);
@@ -126,22 +134,22 @@ test("iScrollInstance", function(){
     });
 });
 
-test("disablePlugin = true", function(){
+test("disablePlugin", function(){
     stop();
     expect(4);
     enSetup();
-    var gotop = $.ui.gotop($('<div class="ui-gotop">'), {
-    	disablePlugin: true
+    var gotop = gmu.Gotop($('<div class="ui-gotop">'), {
+    	iscroll: false
     });
     setTimeout(function(){
         window.scrollTo(0, 1500);
         ta.scrollStop(document);
         setTimeout(function(){
-            ok(ua.isShown(gotop._el[0]), "The gotop shows");
+            ok(ua.isShown(gotop.$el[0]), "The gotop shows");
             ok(Math.abs(window.pageYOffset - 1500) <= 1, "The pageYOffset is right");
-            equals(gotop._el.offset().left, $("html").offset().width  -
+            equals(gotop.$el.offset().left, $("html").offset().width  -
 		            (tablet ? 60 : 50) - 10, "The gotop left is right");
-            equals(gotop._el.offset().top, window.pageYOffset + $(window).height() -
+            equals(gotop.$el.offset().top, window.pageYOffset + $(window).height() -
 		            (tablet ? 60 : 50) - 10, "The gotop top is right");
             gotop.destroy();
             start();
@@ -157,10 +165,13 @@ test("destroy", function(){
         var dl1 = w.dt.domLength(w);
         var el1= w.dt.eventLength();
 
-        var gotop = w.$.ui.gotop({
+        var config = new w.Object({
             iScrollInstance: s,
             useFix: false //fix()中dom和event都没有清干净，设置false排除fix带来的影响
         });
+        config.__proto__ = w.Object.prototype;
+
+        var gotop = w.gmu.Gotop(config);
         gotop.destroy();
 
         var el2= w.dt.eventLength();

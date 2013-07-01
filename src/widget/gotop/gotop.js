@@ -1,12 +1,49 @@
 
+
 /**
  * @file 返回顶部组件
  * @name Gotop
  * @desc <qrcode align="right" title="Live Demo">../gmu/examples/widget/gotop/gotop.html</qrcode>
  * 提供一个快速回到页面顶部的按钮
- * @import core/widget.js, extend/fix.js
+ * @import core/widget.js, extend/fix.js, extend/throttle.js
  */
-(function( gmu, $， undefined ) {
+
+(function( gmu, $, undefined ) {
+
+
+    /**
+        * @name Trigger Events
+        * @theme event
+        * @desc 扩展的事件
+        * - ***scrollStop*** : scroll停下来时触发, 考虑前进或者后退后scroll事件不触发情况。
+        * - ***ortchange*** : 当转屏的时候触发，兼容uc和其他不支持orientationchange的设备，利用css media query实现，解决了转屏延时及orientation事件的兼容性问题
+        * @example $(document).on('scrollStop', function () {        //scroll停下来时显示scrollStop
+        *     console.log('scrollStop');
+        * });
+        *
+        * $(window).on('ortchange', function () {        //当转屏的时候触发
+        *     console.log('ortchange');
+        * });
+    */
+    /** dispatch scrollStop */
+    function _registerScrollStop(){
+        $(window).on('scroll', $.debounce(80, function() {
+            $(document).trigger('scrollStop');
+        }, false));
+    }
+    //在离开页面，前进或后退回到页面后，重新绑定scroll, 需要off掉所有的scroll，否则scroll时间不触发
+    function _touchstartHander() {
+        $(window).off('scroll');
+        _registerScrollStop();
+    }
+    _registerScrollStop();
+    $(window).on('pageshow', function(e){
+        if(e.persisted) {//如果是从bfcache中加载页面
+            $(document).off('touchstart', _touchstartHander).one('touchstart', _touchstartHander);
+        }
+    });
+
+
     /**
      * @name     $.ui.Gotop
      * @grammar  $(el).gotop(options) => self
@@ -40,34 +77,37 @@
             disablePlugin:      false
         },
 
-        _create: function() {
-            var me = this;
-            (me.root() || me.root($('<div></div>'))).addClass('ui-gotop').append('<div></div>').appendTo(me.data('container') || (me.root().parent().length ? '' : document.body));
-            return me;
-        },
-
-        _setup: function(mode) {
-            var me = this;
-            me._create();
-            return me;
-        },
-
         _init: function() {
             var me = this,
-                $el = me.$el,
+                $el,
                 _opts = me._options,
                 _eventHandler = $.proxy(me._eventHandler, me);
 
-            _opts['useHide'] && $(document).on('touchmove', _eventHandler);
-            $(document).on('touchend touchcancel scrollStop', _eventHandler);
-            $(window).on('scroll ortchange', _eventHandler);
-            $el.on('click', _eventHandler);
-            me.on('destroy', function() {
-                $(document).off('touchmove touchend touchcancel scrollStop', _eventHandler);
-                $(window).off('scroll ortchange', _eventHandler);
-            });
-            _opts['useFix'] && $el.fix(me._opts['position']);
-            _opts['root'] = $el[0];
+            me.on( 'ready', function(){
+                $el = me.$el;
+
+                _opts['useHide'] && $(document).on('touchmove', _eventHandler);
+                $(document).on('touchend touchcancel scrollStop', _eventHandler);
+                $(window).on('scroll ortchange', _eventHandler);
+                $el.on('click', _eventHandler);
+                me.on('destroy', function() {
+                    $(document).off('touchmove touchend touchcancel scrollStop', _eventHandler);
+                    $(window).off('scroll ortchange', _eventHandler);
+                });
+                _opts['useFix'] && $el.fix(_opts['position']);
+                _opts['root'] = $el[0];
+            } );
+
+            return me;
+        },
+
+        _create: function() {
+            var me = this;
+
+            if( !me.$el ) {
+                me.$el = $('<div></div>');
+            }
+            me.$el.addClass('ui-gotop').append('<div></div>').appendTo(me._options['container'] || (me.$el.parent().length ? '' : document.body));
 
             return me;
         },
