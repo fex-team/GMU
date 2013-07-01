@@ -22,30 +22,21 @@
     <!--组件依赖css end-->
     <!--组件依赖js begin-->
     <script type="text/javascript" src="../../../dist/zepto.js"></script>
-    <script type="text/javascript" src="../../../src/core/touch.js"></script>
-    <script type="text/javascript" src="../../../src/core/extend.js"></script>
-    <script type="text/javascript" src="../../../src/core/ui.js"></script>
-    <script type="text/javascript" src="../../../src/core/iscroll.js"></script>
-    <script type="text/javascript" src="../../../src/widget/panel.js"></script>
+    <script type="text/javascript" src="../../../src/extend/touch.js"></script>
+    <script type="text/javascript" src="../../../src/extend/throttle.js"></script>
+    <script type="text/javascript" src="../../../src/extend/iscroll.js"></script>
+    <script type="text/javascript" src="../../../src/core/gmu.js"></script>
+    <script type="text/javascript" src="../../../src/core/event.js"></script>
+    <script type="text/javascript" src="../../../src/core/widget.js"></script>
+    <script type="text/javascript" src="../../../src/widget/panel/panel.js"></script>
+
     <!--组件依赖js end-->
 
-    <!--demo展示所用js begin-->
-    <script type="text/javascript" src="../../../src/core/fix.js"></script>
-    <script type="text/javascript" src="../../../src/widget/toolbar.js"></script>
-    <script type="text/javascript" src="../../../src/core/highlight.js"></script>
-    <script type="text/javascript" src="../../../src/widget/button.js"></script>
-    <script type="text/javascript" src="../../../src/widget/dropmenu.js"></script>
-    <!--demo展示所用js end-->
 </head>
 
 <body>
 <div id="page">
     <div class="cont">
-        <div class="toolbar">
-            <span href="../">返回</span>  <!-- 如果按钮为a标签，则默认不会添加点击事件 ,若不为a标签，默认会添加上【点击 history(-1)】的事件,该事件可以自己覆写-->
-            <h2>固顶工具栏</h2>
-            <span class="btn1"></span>
-        </div>
         <section id="cont-panel" class="option">
             <h2>panel组件</h2>
             <p class="panel-des">panel是GMU_2.0.5推出的新组件，可以从左边或右边呼出新内容，是一款适合于移动端交互的组件，它具有以下参数：</p>
@@ -155,44 +146,6 @@
 </div>
 
 <script type="text/javascript">
-    (function () {
-
-        //添加公共头部
-        var btn = $('.btn1').button({label:'切换'});
-        $.ui.dropmenu({
-            cacheParentOffset: false,
-            btn: btn,
-            align:'right',
-            items:[
-                {
-                    text:'panel组件',
-                    href:'panel.html'
-                },
-                {
-                    text:'panel多种打开模式',
-                    href:'panel_position.html'
-                },
-                {
-                    text:'panel页面滚动关闭',
-                    href:'panel_hide.html'
-                },
-                {
-                    text:'panel iScroll',
-                    href:'panel_iscroll.html'
-                }
-            ],
-            //创建toolbar
-            container: $('.toolbar').toolbar({
-                btns: [$('.btn2').on('click', function() {
-                    $('.panel').toggle();
-                })],
-                useFix: true
-            })
-        });
-        $('.btn2').on('click', function() {
-            $('.panel').toggle();
-        })
-    })();
     $(function ($) {
 
         //初始化panel，panel是iscroll
@@ -209,18 +162,13 @@
         }).on('open', function () {
             $('.panel').iScroll('refresh');
         })
-        $.ui.button({
-            label: 'open',
-            click: function() {
-                $('.panel').panel('toggle');
-            },
-            container: $('.ui-toolbar-right').eq(0)
-        });
-
+        
         function resetHeight() {
             $('.panel').css('height', window.innerHeight).iScroll('refresh');
         }
         $(window).on('scrollStop ortchange', resetHeight);
+
+        $('.panel').panel('toggle');
     }(Zepto));
 </script>
 </body>

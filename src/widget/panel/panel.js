@@ -3,9 +3,44 @@
  * @desc <qrcode align="right" title="Live Demo">../gmu/examples/widget/panel/panel_position.html</qrcode>
  * 面板组件
  * @name Panel
- * @import core/touch.js, core/ui.js
+ * @import extend/touch.js, core/widget.js, extend/throttle.js
  */
-(function ($, undefined) {
+(function( gmu, $, undefined ) {
+
+
+    /**
+        * @name Trigger Events
+        * @theme event
+        * @desc 扩展的事件
+        * - ***scrollStop*** : scroll停下来时触发, 考虑前进或者后退后scroll事件不触发情况。
+        * - ***ortchange*** : 当转屏的时候触发，兼容uc和其他不支持orientationchange的设备，利用css media query实现，解决了转屏延时及orientation事件的兼容性问题
+        * @example $(document).on('scrollStop', function () {        //scroll停下来时显示scrollStop
+        *     console.log('scrollStop');
+        * });
+        *
+        * $(window).on('ortchange', function () {        //当转屏的时候触发
+        *     console.log('ortchange');
+        * });
+    */
+    /** dispatch scrollStop */
+    function _registerScrollStop(){
+        $(window).on('scroll', $.debounce(80, function() {
+            $(document).trigger('scrollStop');
+        }, false));
+    }
+    //在离开页面，前进或后退回到页面后，重新绑定scroll, 需要off掉所有的scroll，否则scroll时间不触发
+    function _touchstartHander() {
+        $(window).off('scroll');
+        _registerScrollStop();
+    }
+    _registerScrollStop();
+    $(window).on('pageshow', function(e){
+        if(e.persisted) {//如果是从bfcache中加载页面
+            $(document).off('touchstart', _touchstartHander).one('touchstart', _touchstartHander);
+        }
+    });
+
+
     var cssPrefix = $.fx.cssPrefix,
         transitionEnd = $.fx.transitionEnd;
     /**
@@ -34,8 +69,8 @@
      * </codepreview>
      */
 
-    $.ui.define('panel', {
-        _data: {
+    gmu.define( 'Panel', {
+        options: {
             contentWrap: '',       //若不传，则默认为panel的next节点
             scrollMode: 'follow',   //'follow |'hide' | 'fix'   Panel滑动方式，follow表示跟随页面滑动，hide表示页面滑动时panel消失, fix表示panel固定在页面中
             display: 'push',     //'overlay' | 'reveal' | 'push' Panel出现模式，overlay表示浮层reveal表示在content下边展示，push表示panel将content推出
@@ -47,35 +82,41 @@
             beforeclose: null,
             close: null
         },
-        _create: function () {
-            throw new Error('panel组件不支持create模式，请使用setup模式');
-        },
-        _setup: function () {
-            var me = this,
-                data = me._data,
-                $el = me.root().addClass('ui-panel ui-panel-'+ data.position);
 
-            me.panelWidth = $el.width() || 0;
-            me.$contentWrap = $(data.contentWrap || $el.next());
-            data.dismissible && ( me.$panelMask = $('<div class="ui-panel-dismiss"></div>').width(document.body.clientWidth - $el.width()).appendTo('body') || null);
-        },
         _init: function () {
             var me = this,
-                data = me._data;
+                opts = me._options;
 
-            me.displayFn = me._setDisplay();
-            me.$contentWrap.addClass('ui-panel-animate');
-            me.root().on(transitionEnd, $.proxy(me._eventHandler, me)).hide();  //初始状态隐藏panel
-            data.dismissible && me.$panelMask.hide().on('click', $.proxy(me._eventHandler, me));    //绑定mask上的关闭事件
-            data.scrollMode !== 'follow' && $(document).on('scrollStop', $.proxy(me._eventHandler, me));
-            $(window).on('ortchange', $.proxy(me._eventHandler, me));
+            me.on( 'ready', function(){
+                me.displayFn = me._setDisplay();
+                me.$contentWrap.addClass('ui-panel-animate');
+                me.$el.on(transitionEnd, $.proxy(me._eventHandler, me)).hide();  //初始状态隐藏panel
+                opts.dismissible && me.$panelMask.hide().on('click', $.proxy(me._eventHandler, me));    //绑定mask上的关闭事件
+                opts.scrollMode !== 'follow' && $(document).on('scrollStop', $.proxy(me._eventHandler, me));
+                $(window).on('ortchange', $.proxy(me._eventHandler, me));
+            } );
         },
+
+        _create: function () {
+            if(this._options.setup){
+                var me = this,
+                    opts = me._options,
+                    $el = me.$el.addClass('ui-panel ui-panel-'+ opts.position);
+
+                me.panelWidth = $el.width() || 0;
+                me.$contentWrap = $(opts.contentWrap || $el.next());
+                opts.dismissible && ( me.$panelMask = $('<div class="ui-panel-dismiss"></div>').width(document.body.clientWidth - $el.width()).appendTo('body') || null);
+            }else{
+                throw new Error('panel组件不支持create模式，请使用setup模式');
+            }
+        },
+        
         /**
          * 生成display模式函数
          * */
         _setDisplay: function () {
             var me = this,
-                $panel = me.root(),
+                $panel = me.$el,
                 $contentWrap = me.$contentWrap,
                 transform = cssPrefix + 'transform',
                 posData = me._transDisplayToPos(),
@@ -87,7 +128,7 @@
                     $panel.css(transform, 'translate3d(' + me._transDirectionToPos(pos, panelPos[isOpen]) + 'px,0,0)');
                     if (!isClear) {
                         $contentWrap.css(transform, 'translate3d(' + me._transDirectionToPos(pos, contPos[isOpen]) + 'px,0,0)');
-                        me.maskTimer = $.later(function () {      //防止外界注册tap穿透，故做了延迟
+                        me.maskTimer = setTimeout(function () {      //防止外界注册tap穿透，故做了延迟
                             me.$panelMask && me.$panelMask.css(pos, $panel.width()).toggle(isOpen);
                         }, 400);    //改变mask left/right值
                     }
@@ -101,7 +142,7 @@
          * */
         _initPanelPos: function (dis, pos) {
             this.displayFn[dis](0, pos, true);
-            this.root().get(0).clientLeft;    //触发页面reflow，使得ui-panel-animate样式不生效
+            this.$el.get(0).clientLeft;    //触发页面reflow，使得ui-panel-animate样式不生效
             return this;
         },
         /**
@@ -136,22 +177,22 @@
          * */
         _setShow: function (isOpen, dis, pos) {
             var me = this,
-                data = me._data,
+                opts = me._options,
                 eventName = isOpen ? 'open' : 'close',
                 beforeEvent = $.Event('before' + eventName),
                 changed = isOpen !== me.state(),
                 _eventBinder = isOpen ? 'on' : 'off',
                 _eventHandler = isOpen ? $.proxy(me._eventHandler, me) : me._eventHandler,
-                _dis = dis || data.display,
-                _pos = pos || data.position;
+                _dis = dis || opts.display,
+                _pos = pos || opts.position;
 
             me.trigger(beforeEvent, [dis, pos]);
             if (beforeEvent.defaultPrevented) return me;
             if (changed) {
                 me._dealState(isOpen, _dis, _pos);    //关闭或显示时，重置状态
                 me.displayFn[_dis](me.isOpen = Number(isOpen), _pos);   //根据模式和打开方向，操作panel
-                data.swipeClose && me.root()[_eventBinder]($.camelCase('swipe-' + _pos), _eventHandler);     //滑动panel关闭
-                data.display = _dis, data.position = _pos;
+                opts.swipeClose && me.$el[_eventBinder]($.camelCase('swipe-' + _pos), _eventHandler);     //滑动panel关闭
+                opts.display = _dis, opts.position = _pos;
             }
             return me;
         },
@@ -160,15 +201,15 @@
          * */
         _dealState: function (isOpen, dis, pos) {
             var me = this,
-                data = me._data,
-                $panel = me.root(),
+                opts = me._options,
+                $panel = me.$el,
                 $contentWrap = me.$contentWrap,
                 addCls = 'ui-panel-' + dis + ' ui-panel-' + pos,
-                removeCls = 'ui-panel-' + data.display + ' ui-panel-' + data.position + ' ui-panel-animate';
+                removeCls = 'ui-panel-' + opts.display + ' ui-panel-' + opts.position + ' ui-panel-animate';
 
             if (isOpen) {
                 $panel.removeClass(removeCls).addClass(addCls).show();
-                data.scrollMode === 'fix' && $panel.css('top', $(window).scrollTop());    //fix模式下
+                opts.scrollMode === 'fix' && $panel.css('top', $(window).scrollTop());    //fix模式下
                 me._initPanelPos(dis, pos);      //panel及contentWrap位置初始化
                 if (dis === 'reveal') {
                     $contentWrap.addClass('ui-panel-contentWrap').on(transitionEnd, $.proxy(me._eventHandler, me));    //reveal模式下panel不触发transitionEnd;
@@ -187,8 +228,8 @@
 
         _eventHandler: function (e) {
             var me = this,
-                data = me._data,
-                scrollMode = data.scrollMode,
+                opts = me._options,
+                scrollMode = opts.scrollMode,
                 eventName = me.state() ? 'open' : 'close';
 
             switch (e.type) {
@@ -198,14 +239,14 @@
                     me.close();
                     break;
                 case 'scrollStop':
-                    scrollMode === 'fix' ? me.root().css('top', $(window).scrollTop()) : me.close();
+                    scrollMode === 'fix' ? me.$el.css('top', $(window).scrollTop()) : me.close();
                     break;
                 case transitionEnd:
-                    me.trigger(eventName, [data.display, data.position]);
+                    me.trigger(eventName, [opts.display, opts.position]);
                     break;
                 case 'ortchange':   //增加转屏时对mask的处理
                     me.$panelMask && me.$panelMask.css('height', document.body.clientHeight);
-                    scrollMode === 'fix' && me.root().css('top', $(window).scrollTop());     //转并重设top值
+                    scrollMode === 'fix' && me.$el.css('top', $(window).scrollTop());     //转并重设top值
                     break;
             }
         },
@@ -277,4 +318,4 @@
          */
     });
 
-})(Zepto);
+})( gmu, gmu.$ );
