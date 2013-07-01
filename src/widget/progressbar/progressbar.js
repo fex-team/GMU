@@ -4,10 +4,9 @@
  * @name Progressbar
  * @desc <qrcode align="right" title="Live Demo">../gmu/examples/widget/progresssbar/progresssbar.html</qrcode>
  * 提供一个可调整百分比的进度条
- * @import core/touch.js, core/extend.js, core/ui.js
+ * @import extend/touch.js, core/widget.js
  */
-
-(function($, undefined) {
+(function( gmu, $, undefined ) {
     /**
      * @name     $.ui.progressbar
      * @grammar  $(el).progressbar(options) ⇒ self
@@ -22,11 +21,11 @@
      * **Demo**
      * <codepreview href="../examples/widget/progressbar/progressbar.html">
      * ../gmu/examples/widget/progressbar/progressbar.html
-     * ../gmu/examples/widget/progressbar/progressbar_demo.css
+     * ../gmu/examples/widget/progressbar/progressbar_demopts.css
      * </codepreview>
      */
-    $.ui.define('progressbar', {
-        _data: {
+    gmu.define('progressbar', {
+        options: {
             initValue:          0,
             horizontal:         true,
             transitionDuration: 300,
@@ -35,39 +34,49 @@
             _percent:           0
         },
 
-        _create: function() {
-            var me = this,
-                direction = me.data('horizontal') ? 'h' : 'v';
-            (me.root() || me.root($('<div></div>'))).addClass('ui-progressbar-' + direction).appendTo(me.data('container') || (me.root().parent().length ? '' : document.body)).html(
-            ('<div class="ui-progressbar-bg"><div class="ui-progressbar-filled"></div><div class="ui-progressbar-button"><div><b></b></div></div></div>'));
-        },
-
-        _setup: function(mode) {
-            mode || this._create();
-        },
-
         _init: function() {
             var me = this,
-                root = me.root(),
+                $el,
+                _eventHandler,
+                _button,
+                _background,
+                _offset;
+
+            me.on( 'ready', function(){
+                $el = me.$el,
                 _eventHandler = $.proxy(me._eventHandler, me),
-                _button = root.find('.ui-progressbar-button'),
-                _background = root.find('.ui-progressbar-bg'),
-                _offset = root.offset();
-            _button.on('touchstart touchmove touchend touchcancel', _eventHandler);
-            _background.on('touchstart', _eventHandler);
-            me.data({
-                _button:        _button[0],
-                $_background:    _background,
-                _filled:        root.find('.ui-progressbar-filled')[0],
-                _width:         _offset.width,
-                _height:        _offset.height
-            });
-            me.data('horizontal') && _offset.width && root.width(_offset.width);
-            me.data('initValue') > 0 && me.value( me.data('initValue'));
+                _button = $el.find('.ui-progressbar-button'),
+                _background = $el.find('.ui-progressbar-bg'),
+                _offset = $el.offset();
+
+                _button.on('touchstart touchmove touchend touchcancel', _eventHandler);
+                _background.on('touchstart', _eventHandler);
+                $.extend( me._options, {
+                    _button:        _button[0],
+                    $_background:    _background,
+                    _filled:        $el.find('.ui-progressbar-filled')[0],
+                    _width:         _offset.width,
+                    _height:        _offset.height
+                });
+                me._options['horizontal'] && _offset.width && $el.width(_offset.width);
+                me._options['initValue'] > 0 && me.value( me._options['initValue']);
+            } );
+        },
+
+        _create: function() {
+            var me = this,
+                direction = me._options['horizontal'] ? 'h' : 'v';
+
+            if( !me.$el ) {
+                me.$el = $('<div></div>');
+            }
+            me.$el.addClass('ui-progressbar-' + direction).appendTo(me._options['container'] || (me.$el.parent().length ? '' : document.body)).html(
+                ('<div class="ui-progressbar-bg"><div class="ui-progressbar-filled"></div><div class="ui-progressbar-button"><div><b></b></div></div></div>'));
         },
 
         _eventHandler: function(e) {
             var me = this;
+
             switch (e.type) {
                 case 'touchmove':
                     me._touchMove(e);
@@ -87,8 +96,9 @@
 
         _touchStart: function(e) {
             var me = this,
-                o = me._data;
-            me.data({
+                opts = me._options;
+
+            $.extend( me._options, {
                 pageX:      e.touches[0].pageX,
                 pageY:      e.touches[0].pageY,
                 S:          false,      //isScrolling
@@ -96,48 +106,50 @@
                 X:          0,          //horizontal moved
                 Y:          0           //vertical moved
             });
-            o._button.style.webkitTransitionDuration = '0ms';
-            o._filled.style.webkitTransitionDuration = '0ms';
-            $(o._button).addClass('ui-progressbar-button-pressed');
+
+            opts._button.style.webkitTransitionDuration = '0ms';
+            opts._filled.style.webkitTransitionDuration = '0ms';
+            $(opts._button).addClass('ui-progressbar-button-pressed');
             me.trigger('dragStart');
         },
 
         _touchMove: function(e) {
             var me = this,
-                o = me._data,
+                opts = me._options,
                 touch = e.touches[0],
-                X = touch.pageX - o.pageX,
-                Y = touch.pageY - o.pageY,
+                X = touch.pageX - opts.pageX,
+                Y = touch.pageY - opts.pageY,
                 _percent;
-            if(!o.T) {
-                var S = Math.abs(X) < Math.abs(touch.pageY - o.pageY);
-                o.T = true;
-                o.S = S;
+
+            if(!opts.T) {
+                var S = Math.abs(X) < Math.abs(touch.pageY - opts.pageY);
+                opts.T = true;
+                opts.S = S;
             }
-            if(o.horizontal) {
-                if(!o.S) {
+            if(opts.horizontal) {
+                if(!opts.S) {
                     e.stopPropagation();
                     e.preventDefault();
-                    _percent =  (X + o._current) / o._width * 100;
+                    _percent =  (X + opts._current) / opts._width * 100;
                     if(_percent <= 100 && _percent >= 0) {
-                        o._percent = _percent;
-                        o.X = X;
-                        o._button.style.webkitTransform = 'translate3d(' + (o.X + o._current) + 'px,0,0)';
-                        o._filled.style.width = _percent + '%';
+                        opts._percent = _percent;
+                        opts.X = X;
+                        opts._button.style.webkitTransform = 'translate3d(' + (opts.X + opts._current) + 'px,0,0)';
+                        opts._filled.style.width = _percent + '%';
                         me.trigger('valueChange');
                     }
                     me.trigger('dragMove');
                 }
             } else {
-                if(o.S) {
+                if(opts.S) {
                     e.stopPropagation();
                     e.preventDefault();
-                    _percent = -(o._current + Y) / o._height * 100;
+                    _percent = -(opts._current + Y) / opts._height * 100;
                     if(_percent <= 100 && _percent >= 0) {
-                        o._percent = _percent;
-                        o.Y = Y;
-                        o._button.style.webkitTransform = 'translate3d(0,' + (Y + o._current) + 'px,0)';
-                        o._filled.style.cssText += 'height:' + _percent + '%;top:' + (o._height + Y + o._current) + 'px';
+                        opts._percent = _percent;
+                        opts.Y = Y;
+                        opts._button.style.webkitTransform = 'translate3d(0,' + (Y + opts._current) + 'px,0)';
+                        opts._filled.style.cssText += 'height:' + _percent + '%;top:' + (opts._height + Y + opts._current) + 'px';
                         me.trigger('valueChange');
                     }
                     me.trigger('dragMove');
@@ -147,20 +159,22 @@
 
         _touchEnd: function() {
             var me = this,
-                o = me._data;
-                o._current += o.horizontal ? o.X : o.Y;
-            $(o._button).removeClass('ui-progressbar-button-pressed');
+                opts = me._options;
+
+            opts._current += opts.horizontal ? opts.X : opts.Y;
+            $(opts._button).removeClass('ui-progressbar-button-pressed');
             me.trigger('dragEnd');
         },
 
         _click: function(e) {
             var me = this,
-                o = me._data,
-                rect = o.$_background.offset(),
+                opts = me._options,
+                rect = opts.$_background.offset(),
                 touch = e.touches[0];
-            o.horizontal ?
-                me.value((touch.pageX - rect.left) / o._width * 100) :
-                me.value((o._height - touch.pageY + rect.top) / o._height * 100);
+
+            opts.horizontal ?
+                me.value((touch.pageX - rect.left) / opts._width * 100) :
+                me.value((opts._height - touch.pageY + rect.top) / opts._height * 100);
         },
 
         /**
@@ -174,29 +188,30 @@
          *
          * //render mode
          * var demo = $.ui.progressbar();
-         * demo.value();
-         * demo.value(30);
+         * demopts.value();
+         * demopts.value(30);
          */
         value: function(value) {
             var me = this,
-                o = me._data,
+                opts = me._options,
                 _current, duration;
+
             if(value === undefined) {
-                return o._percent;
+                return opts._percent;
             } else {
                 value = parseFloat(value);
                 if(isNaN(value)) return me;
                 value = value > 100 ? 100 : value < 0 ? 0 : value;
-                o._percent = value;
-                duration = ';-webkit-transition-duration:' + o.transitionDuration + 'ms';
-                if(o.horizontal) {
-                    _current = o._current = o._width * value / 100;
-                    o._button.style.cssText += '-webkit-transform:translate3d(' + _current + 'px,0,0)' + duration;
-                    o._filled.style.cssText += 'width:'+ value + '%' + duration;
+                opts._percent = value;
+                duration = ';-webkit-transition-duration:' + opts.transitionDuration + 'ms';
+                if(opts.horizontal) {
+                    _current = opts._current = opts._width * value / 100;
+                    opts._button.style.cssText += '-webkit-transform:translate3d(' + _current + 'px,0,0)' + duration;
+                    opts._filled.style.cssText += 'width:'+ value + '%' + duration;
                 } else {
-                    _current = o._current = o._height * value / -100;
-                    o._button.style.cssText += '-webkit-transform:translate3d(0,' + _current + 'px,0)' + duration;
-                    o._filled.style.cssText += 'height:' + value + '%;top:' + (o._height + _current) + 'px' + duration;
+                    _current = opts._current = opts._height * value / -100;
+                    opts._button.style.cssText += '-webkit-transform:translate3d(0,' + _current + 'px,0)' + duration;
+                    opts._filled.style.cssText += 'height:' + value + '%;top:' + (opts._height + _current) + 'px' + duration;
                 }
                 me.trigger('valueChange');
                 return me;
@@ -209,10 +224,12 @@
          */
         show: function() {
             var me = this;
-            if(!me.data('_isShow')){
-                me.root().css('display', 'block');
-                me.data('_isShow', true);
+
+            if(!me._options['_isShow']){
+                me.$el.css('display', 'block');
+                me._options['_isShow'] = true;
             }
+
             return me;
         },
 
@@ -223,10 +240,12 @@
          */
         hide: function() {
             var me = this;
-            if(me.data('_isShow')) {
-                me.root().css('display', 'none');
-                me.data('_isShow', false);
+
+            if(me._options['_isShow']) {
+                me.$el.css('display', 'none');
+                me._options['_isShow'] = false;
             }
+
             return me;
         }
         /**
@@ -242,5 +261,4 @@
          * | destroy | event | 组件在销毁的时候触发 |
          */
     });
-
-})(Zepto);
+})( gmu, gmu.$ );

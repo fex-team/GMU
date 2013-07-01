@@ -10,18 +10,18 @@ module('webapp.progressbar', {
 test("smart setup", function() {
     expect(8);
     stop();
-    ua.loadcss(["reset.css", "widget/progressbar/progressbar.css"], function() {
+    ua.loadcss(["widget/progressbar/progressbar.css"], function() {
         var progressbar = $('#progressbar').progressbar('this');
         
-        equals(progressbar._data.initValue, 0, "The _data is right");
-        equals(progressbar._data.horizontal, true, "The _data is right");
-        equals(progressbar._data.transitionDuration, 300, "The _data is right");
+        equals(progressbar._options.initValue, 0, "The _data is right");
+        equals(progressbar._options.horizontal, true, "The _data is right");
+        equals(progressbar._options.transitionDuration, 300, "The _data is right");
         
-        ok(ua.isShown(progressbar._el[0]), "The bar shows");
-        ok(progressbar._el.is(".ui-progressbar-h"), "The bar is right");
-        equals(progressbar._el.find(".ui-progressbar-bg").length, 1 , "The background is right");
-        equals(progressbar._el.find(".ui-progressbar-button").length, 1 , "The button is right");
-        equals(progressbar._el.find(".ui-progressbar-button").offset().left, -14, "The button is right");
+        ok(ua.isShown(progressbar.$el[0]), "The bar shows");
+        ok(progressbar.$el.is(".ui-progressbar-h"), "The bar is right");
+        equals(progressbar.$el.find(".ui-progressbar-bg").length, 1 , "The background is right");
+        equals(progressbar.$el.find(".ui-progressbar-button").length, 1 , "The button is right");
+        equals(progressbar.$el.find(".ui-progressbar-button").offset().left, -14, "The button is right");
         
         progressbar.destroy();
         start();
@@ -33,10 +33,10 @@ test("full setup", function() {
     $('#progressbar').remove();
     $('body').append('<div id="progressbar" class="ui-progressbar-h" style="width: 1366px;"><div class="ui-progressbar-bg"><div class="ui-progressbar-filled"></div><div class="ui-progressbar-button"><div><b></b></div></div></div></div>');
     var progressbar = $('#progressbar').progressbar('this');
-    ok(ua.isShown(progressbar._el[0]), "The bar shows");
-    ok(progressbar._el.is(".ui-progressbar-h"), "The bar is right");
-    equals(progressbar._el.find(".ui-progressbar-bg").length, 1 , "The background is right");
-    equals(progressbar._el.find(".ui-progressbar-button").length, 1 , "The button is right");
+    ok(ua.isShown(progressbar.$el[0]), "The bar shows");
+    ok(progressbar.$el.is(".ui-progressbar-h"), "The bar is right");
+    equals(progressbar.$el.find(".ui-progressbar-bg").length, 1 , "The background is right");
+    equals(progressbar.$el.find(".ui-progressbar-button").length, 1 , "The button is right");
     progressbar.destroy();     
 });
 
@@ -45,16 +45,16 @@ test("render, no el", function() {
     stop();
     var progressbar = $.ui.progressbar();
     
-    equals(progressbar._data.initValue, 0, "The _data is right");
-    equals(progressbar._data.horizontal, true, "The _data is right");
-    equals(progressbar._data.transitionDuration, 300, "The _data is right");
+    equals(progressbar._options.initValue, 0, "The _data is right");
+    equals(progressbar._options.horizontal, true, "The _data is right");
+    equals(progressbar._options.transitionDuration, 300, "The _data is right");
     
-    ok(ua.isShown(progressbar._el[0]), "The bar shows");
-    ok(progressbar._el.is(".ui-progressbar-h"), "The bar is right");
-    equals(progressbar._el.parent()[0], document.body, "The container is right");
-    equals(progressbar._el.find(".ui-progressbar-bg").length, 1 , "The background is right");
-    equals(progressbar._el.find(".ui-progressbar-button").length, 1 , "The button is right");
-    equals(progressbar._el.find(".ui-progressbar-button").offset().left, -14, "The button is right");
+    ok(ua.isShown(progressbar.$el[0]), "The bar shows");
+    ok(progressbar.$el.is(".ui-progressbar-h"), "The bar is right");
+    equals(progressbar.$el.parent()[0], document.body, "The container is right");
+    equals(progressbar.$el.find(".ui-progressbar-bg").length, 1 , "The background is right");
+    equals(progressbar.$el.find(".ui-progressbar-button").length, 1 , "The button is right");
+    equals(progressbar.$el.find(".ui-progressbar-button").offset().left, -14, "The button is right");
     progressbar.destroy();
     start();
 });
@@ -67,10 +67,10 @@ test("render, el(selector)", function() {
     
     var progressbar = $.ui.progressbar("#progressbar");
    
-    ok(ua.isShown(progressbar._el[0]), "The bar shows");
-    ok(progressbar._el.is(".ui-progressbar-h"), "The bar is right");
-    ok(progressbar._el.is("#progressbar"), "The bar is right");
-    equals(progressbar._el.parent().attr("id"), "test", "The container is right");
+    ok(ua.isShown(progressbar.$el[0]), "The bar shows");
+    ok(progressbar.$el.is(".ui-progressbar-h"), "The bar is right");
+    ok(progressbar.$el.is("#progressbar"), "The bar is right");
+    equals(progressbar.$el.parent().attr("id"), "test", "The container is right");
     $("#test").remove();
     progressbar.destroy();
     start();
@@ -86,10 +86,10 @@ test("render, el(zepto)", function() {
     	container: "#container"
     });
    
-    ok(ua.isShown(progressbar._el[0]), "The bar shows");
-    ok(progressbar._el.is(".ui-progressbar-h"), "The bar is right");
-    ok(progressbar._el.is("#progressbar"), "The bar is right");
-    equals(progressbar._el.parent().attr("id"), "container", "The container is right");
+    ok(ua.isShown(progressbar.$el[0]), "The bar shows");
+    ok(progressbar.$el.is(".ui-progressbar-h"), "The bar is right");
+    ok(progressbar.$el.is("#progressbar"), "The bar is right");
+    equals(progressbar.$el.parent().attr("id"), "container", "The container is right");
     progressbar.destroy();
     $("#container").remove();
     start();
@@ -104,10 +104,10 @@ test("transitionDuration & horizontal", function() {
     	horizontal: false
     }).progressbar('this');
     setTimeout(function(){
-    	approximateEqual(progressbar._el.find(".ui-progressbar-button").offset().top, progressbar._el.offset().top + 400 * (1 - 0.4) - 14, "The initValue is right");
-    	ok(progressbar._el.is(".ui-progressbar-v"), "The horizontal is right");
-    	equals(progressbar._el.find(".ui-progressbar-bg").width(), 7, "The horizontal is right");
-    	equals(progressbar._el.height(), 400, "The horizontal is right");
+    	approximateEqual(progressbar.$el.find(".ui-progressbar-button").offset().top, progressbar.$el.offset().top + 400 * (1 - 0.4) - 14, "The initValue is right");
+    	ok(progressbar.$el.is(".ui-progressbar-v"), "The horizontal is right");
+    	equals(progressbar.$el.find(".ui-progressbar-bg").width(), 7, "The horizontal is right");
+    	equals(progressbar.$el.height(), 400, "The horizontal is right");
         progressbar.destroy();
         start();
     }, 250);
@@ -118,7 +118,7 @@ test("initValue, transitionDuration, value()", function() {
     expect(7);
     var progressbar = $('#progressbar').progressbar({initValue:40}).progressbar('this');
     setTimeout(function(){
-    	approximateEqual(progressbar._el.find(".ui-progressbar-button").offset().left, progressbar._el.width() * 0.4 - 14, "The initValue is right");
+    	approximateEqual(progressbar.$el.find(".ui-progressbar-button").offset().left, progressbar.$el.width() * 0.4 - 14, "The initValue is right");
         equal(progressbar.value(), 40, 'the value is right');
         progressbar.value(65);
         equal(progressbar.value(), 65, 'the value is right');
@@ -139,12 +139,12 @@ test("show(), hide()", function() {
     stop();
     expect(3);
     var progressbar = $('#progressbar').progressbar('this');
-    ok(ua.isShown(progressbar._el[0]), "The progressbar shows");
+    ok(ua.isShown(progressbar.$el[0]), "The progressbar shows");
     progressbar.hide();
     setTimeout(function () {
-        ok(!ua.isShown(progressbar._el[0]), "The progressbar hides");
+        ok(!ua.isShown(progressbar.$el[0]), "The progressbar hides");
         progressbar.show();
-        ok(ua.isShown(progressbar._el[0]), "The progressbar shows");
+        ok(ua.isShown(progressbar.$el[0]), "The progressbar shows");
         progressbar.destroy();
         start();
     }, 100);
@@ -154,6 +154,7 @@ test("左右滑动 - 横向", function() {
     expect(2);
     stop();
     var progressbar = $('#progressbar').progressbar('this');
+
     ta.touchstart($(".ui-progressbar-button")[0], {
         touches: [{
             clientX: 0,
@@ -169,7 +170,7 @@ test("左右滑动 - 横向", function() {
     ta.touchend($(".ui-progressbar-button")[0]);
 
     setTimeout(function(){
-        equals(progressbar.value(), 200 / progressbar._el.offset().width * 100,"The value is right");
+        equals(progressbar.value(), 200 / progressbar.$el.offset().width * 100,"The value is right");
         ta.touchstart($(".ui-progressbar-button")[0], {
             touches: [{
                 clientX: 0,
@@ -184,7 +185,7 @@ test("左右滑动 - 横向", function() {
         });
         ta.touchend($(".ui-progressbar-button")[0]);
         setTimeout(function(){
-            equals(progressbar.value(), 150 / progressbar._el.offset().width * 100,"The value is right");
+            equals(progressbar.value(), 150 / progressbar.$el.offset().width * 100,"The value is right");
             progressbar.destroy();
             start();
         }, 550);
@@ -203,7 +204,7 @@ test("点击进度条 - 横向", function() {
     });
     ta.touchend($(".ui-progressbar-bg")[0]);
     setTimeout(function(){
-        equals(progressbar.value(), 300 / progressbar._el.offset().width * 100,"The value is right");
+        equals(progressbar.value(), 300 / progressbar.$el.offset().width * 100,"The value is right");
         ta.touchstart($(".ui-progressbar-bg")[0], {
             touches: [{
                 clientX: -100,
@@ -238,7 +239,7 @@ test("上下滑动 - 竖向", function() {
     ta.touchend($(".ui-progressbar-button")[0]);
 
     setTimeout(function(){
-        equals(progressbar.value(), 200 / progressbar._el.offset().height * 100,"The value is right");
+        equals(progressbar.value(), 200 / progressbar.$el.offset().height * 100,"The value is right");
         ta.touchstart($(".ui-progressbar-button")[0], {
             touches: [{
                 clientX: 0,
@@ -253,7 +254,7 @@ test("上下滑动 - 竖向", function() {
         });
         ta.touchend($(".ui-progressbar-button")[0]);
         setTimeout(function(){
-            equals(progressbar.value(), 150 / progressbar._el.offset().height * 100,"The value is right");
+            equals(progressbar.value(), 150 / progressbar.$el.offset().height * 100,"The value is right");
             progressbar.destroy();
             start();
         }, 550);
@@ -267,16 +268,16 @@ test("点击进度条 - 竖向", function() {
     ta.touchstart($(".ui-progressbar-bg")[0], {
         touches: [{
             clientX: 0,
-            clientY: progressbar._el.offset().top + 300
+            clientY: progressbar.$el.offset().top + 300
         }]
     });
     ta.touchend($(".ui-progressbar-bg")[0]);
     setTimeout(function(){
-        equals(progressbar.value(), (progressbar._el.offset().height - 300) / progressbar._el.offset().height * 100,"The value is right");
+        equals(progressbar.value(), (progressbar.$el.offset().height - 300) / progressbar.$el.offset().height * 100,"The value is right");
         ta.touchstart($(".ui-progressbar-bg")[0], {
             touches: [{
                 clientX: 0,
-                clientY: progressbar._el.offset().top - 100
+                clientY: progressbar.$el.offset().top - 100
             }]
         });
         ta.touchend($(".ui-progressbar-bg")[0]);
