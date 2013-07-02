@@ -131,19 +131,18 @@
                         options = el;
                         el = undefined;
                     }
-                    el && (this.$el = $( el ));
+                    el && (me.$el = $( el ));
 
+                    // options中存在el时，覆盖el
+                    options && options.el && (el = me.$el = $( options.el ));
+                    
                     // if( !el ) {
                     //     throw new Error('Error! No element input.');
                     //     return;
                     // }
 
-
-                    // options中存在container时，覆盖el
-                    // !el && options && options.container && (el = this.$el = $( options.container ));
-
                     // 从el上获取option
-                    var dom_options = this.$el ? getDomOptions( el, fn.options ) : {};
+                    var dom_options = me.$el ? getDomOptions( el, fn.options ) : {};
                     var options = me._options = $.extend( {}, fn.options, dom_options, options );
 
                     // 将template和tpl2html挂到实例上
@@ -156,7 +155,7 @@
 
                     // 执行父类的构造函数
                     superClass.apply( me, [ el, options ] );
-                    this.superClass = fn.superClass = superClass;
+                    me.superClass = fn.superClass = superClass;
 
                     // 初始化配置项监听
                     for( var opt in _optioned ){
@@ -206,10 +205,10 @@
                     me._create();
                     me.trigger('ready');
 
-                    record( this.$el[ 0 ], fn._fullname_, me );
+                    record( me.$el[ 0 ], fn._fullname_, me );
 
                     me.on( 'destroy', function() {
-                        record( this.$el[ 0 ], fn._fullname_, null );
+                        record( me.$el[ 0 ], fn._fullname_, null );
                     } );
                     
                     return me;
