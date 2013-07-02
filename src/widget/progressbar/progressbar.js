@@ -24,7 +24,7 @@
      * ../gmu/examples/widget/progressbar/progressbar_demopts.css
      * </codepreview>
      */
-    gmu.define('progressbar', {
+    gmu.define('Progressbar', {
         options: {
             initValue:          0,
             horizontal:         true,
@@ -60,6 +60,12 @@
                 });
                 me._options['horizontal'] && _offset.width && $el.width(_offset.width);
                 me._options['initValue'] > 0 && me.value( me._options['initValue']);
+            } );
+
+            me.on( 'destroy', function() {
+                if ( !me._options.setup ) {
+                    me.$el.remove();
+                }
             } );
         },
 

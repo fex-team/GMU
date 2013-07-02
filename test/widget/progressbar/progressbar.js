@@ -43,7 +43,7 @@ test("full setup", function() {
 test("render, no el", function() {
     expect(9);
     stop();
-    var progressbar = $.ui.progressbar();
+    var progressbar = gmu.Progressbar();
     
     equals(progressbar._options.initValue, 0, "The _data is right");
     equals(progressbar._options.horizontal, true, "The _data is right");
@@ -65,7 +65,7 @@ test("render, el(selector)", function() {
     $('#progressbar').remove();
     $('body').append('<div id="test"><div id="progressbar"></div></div>');
     
-    var progressbar = $.ui.progressbar("#progressbar");
+    var progressbar = gmu.Progressbar("#progressbar");
    
     ok(ua.isShown(progressbar.$el[0]), "The bar shows");
     ok(progressbar.$el.is(".ui-progressbar-h"), "The bar is right");
@@ -82,7 +82,7 @@ test("render, el(zepto)", function() {
     $('#progressbar').remove();
     $('body').append('<div id="container"></div>');
     
-    var progressbar = $.ui.progressbar($('<div id="progressbar"></div>'),{
+    var progressbar = gmu.Progressbar($('<div id="progressbar"></div>'),{
     	container: "#container"
     });
    
