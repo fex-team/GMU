@@ -435,7 +435,7 @@
     };
 
     /**
-     * @desc 定义一个gmu组件，只支持单继承
+     * @desc 定义一个gmu组件
      */
     gmu.define = function( name, object, superClass ) {
         gmu[ name ] = createClass( name, object, superClass );
