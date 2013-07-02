@@ -58,6 +58,7 @@
                     elem = $elem.get(0);
                 if ($elem.length) {
                     me._status(dir, true);    //初始设置加载状态为可用
+                    data['_' + dir + 'Enable'] = true;
                     if (!elem.childNodes.length || ($elem.find('.ui-refresh-icon').length && $elem.find('.ui-refresh-label').length)) {    //若内容为空则创建，若不满足icon和label的要求，则不做处理
                         !elem.childNodes.length && me._createBtn(dir);
                         data.refreshInfo || (data.refreshInfo = {});
@@ -68,7 +69,7 @@
                         }
                     }
                     $elem.on('click', function () {
-                        if (!me._status(dir) || data._actDir) return;         //检查是否处于可用状态，同一方向上的仍在加载中，或者不同方向的还未加载完成 traceID:FEBASE-569
+                        if (!me._status(dir) || data._actDir || !data['_' + dir + 'Enable']) return;         //检查是否处于可用状态，同一方向上的仍在加载中，或者不同方向的还未加载完成 traceID:FEBASE-569
                         me._setStyle(dir, 'loading');
                         me._loadingAction(dir, 'click');
                     });
@@ -162,6 +163,7 @@
                 if (!$elem.length) return;
                 //若是enable操作，直接显示，disable则根据text是否是true来确定是否隐藏
                 able ? $elem.show() : (hide ?  $elem.hide() : me._setStyle(dir, 'disable'));
+                data['_' + dir + 'Enable'] = able;
                 me._status(dir, able);
             });
             return me;
