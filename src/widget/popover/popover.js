@@ -8,7 +8,7 @@
         options: {
 
             // 容器选择器，不传将自我创建
-            popover: null,
+            container: null,
 
             // popover 内容
             content: null
@@ -22,7 +22,7 @@
             var me = this,
                 opts = me._options,
                 $el = opts.target && $( opts.target ) || me.getEl(),
-                $root = opts.popover && $( opts.popover );
+                $root = opts.container && $( opts.container );
 
             // 没传 或者 就算传入了选择器，但是没有找到节点，还是得创建一个。
             $root && $root.length || ($root = $( me.tpl2html( 'frame' ) )

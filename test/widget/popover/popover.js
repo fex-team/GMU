@@ -63,7 +63,7 @@
             dom = $('<a data-content="Hello World">Button</a>').appendTo(fixture);
 
         dom.popover({
-            popover: container
+            container: container
         });
 
         ok( container.hasClass('ui-popover'), '添加了正确的className' );
@@ -79,7 +79,7 @@
         var dom = $('<a data-content="Hello World">Button</a>').appendTo(fixture);
 
         dom.popover({
-            popover: '#bucunzaideyuansuid'    // 不存在的元素id
+            container: '#bucunzaideyuansuid'    // 不存在的元素id
         });
 
         container = dom.next();
@@ -198,7 +198,7 @@
             dom = $('<a data-content="Hello World">Button</a>').appendTo(fixture);
 
         dom.popover({
-            popover: container
+            container: container
         });
 
         dom.popover('destroy').remove();
