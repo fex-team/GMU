@@ -124,7 +124,7 @@
             update: function() {
                 var me = this,
                     data = me._data,
-                    orient = data._lastOrient || (win.innerWidth > win.innerHeight ? 'landscape' : 'portrait');
+                    orient = data._lastOrient || (win.innerWidth > win.innerHeight ? 'landscape' : 'portrait'),
                     iScroll = data.iScroll;
 
                 !data._vpCount[orient] && (data._vpCount[orient] = data.viewportCount + (orient === 'landscape' ? Math.floor(data.viewportCount / 2) : 0));
