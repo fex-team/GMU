@@ -4,14 +4,13 @@
  * @name Add2desktop
  * @desc <qrcode align="right" title="Live Demo">../gmu/examples/widget/add2desktop/add2desktop.html</qrcode>
  * 在iOS中将页面添加为桌面图标(不支持Android系统)
- * @import core/extend.js, core/ui.js, core/fix.js
+ * @import core/widget.js, extend/fix.js
  */
-
-(function($, undefined) {
+(function( gmu, $, undefined ) {
     /**
-     * @name     $.ui.add2desktop
-     * @grammar  $(el).add2desktop(options) ⇒ self
-     * @grammar  $.ui.add2desktop([el [,options]]) =>instance
+     * @name     gmu.Add2desktop
+     * @grammar  gmu.Add2desktop([el [,options]]) =>instance
+     * @grammar  $(el).add2desktop(options) => self
      * @desc **el**
      * css选择器, 或者zepto对象
      * **Options**
@@ -27,8 +26,8 @@
      * ../gmu/examples/widget/add2desktop/add2desktop.html
      * </codepreview>
      */
-    $.ui.define('add2desktop', {
-        _data: {
+    gmu.define('Add2desktop', {
+        options: {
             icon: '',
             container:  '',
             key:'_gmu_adddesktop_key',
@@ -46,80 +45,89 @@
             _isShow:false
         },
 
-        _create: function() {
-            var me = this,
-                $elem = (me.root() || me.root($('<div></div>'))).addClass('ui-add2desktop').appendTo(me.data('container') || (me.root().parent().length ? '' : document.body)),
-                version = ($.os.version && $.os.version.substr(0, 3) > 4.1 ? 'new' :'old');
-            $elem.html('<img src="' + me.data('icon') + '"/><p>先点击<span class="ui-add2desktop-icon-' + version +'"></span>，<br />再"添加至主屏幕"</p><span class="ui-add2desktop-close"><b></b></span><div class="ui-add2desktop-arrow"><b></b></div>');
-        },
-
-        _setup: function(mode) {
-            var me = this,
-                $elem = me.root();
-            if(!mode) {
-                var src = $elem.children('img').attr('src');
-                src && me.data('icon', src);
-                me._create();
-            }
-            return me;
-        },
-
         _init: function() {
             var me = this;
-            me.root().find('.ui-add2desktop-close').on('click',function () {
-                me.hide();
-            });
-            me.data('useFix') && me.root().fix(me.data('position'));
-            return me.show();
+
+            me.on( 'ready', function(){
+                me.$el.find('.ui-add2desktop-close').on('click',function () {
+                    me.hide();
+                });
+                me._options['useFix'] && me.$el.fix(me._options['position']);
+
+                me.show();
+            } );
+
+            me.on( 'destroy', function(){
+                me.$el.remove();
+            } );
+        },
+
+        _create: function() {
+            var me = this,
+                $el,
+                version = ($.os.version && $.os.version.substr(0, 3) > 4.1 ? 'new' :'old');
+
+            if( me._options.setup ) {
+                var src = me.$el.children('img').attr('src');
+                src && (me._options['icon'] = src);
+            }
+            $el = me.$el || (me.$el = $('<div></div>'));
+            $el.addClass('ui-add2desktop').appendTo(me._options['container'] || (me.$el.parent().length ? '' : document.body)),
+
+            $el.html('<img src="' + me._options['icon'] + '"/><p>先点击<span class="ui-add2desktop-icon-' + version +'"></span>，<br />再"添加至主屏幕"</p><span class="ui-add2desktop-close"><b></b></span><div class="ui-add2desktop-arrow"><b></b></div>');
         },
 
         /**
          * @desc 存储/获取LocalStorage的键值
          * @name key
-         * @grammar key()  ⇒ value
+         * @grammar key()  => value
          * @example
          * //setup mode
          * $('#add2desktop').add2desktop('key','1'); //设置键值为1
          *
          * //render mode
-         * var demo = $.ui.add2desktop();
+         * var demo = gmu.Add2desktop();
          * demo.key();  //获取键值
          */
         key : function(value){
             var ls = window.localStorage;
-            return value !== undefined ? ls.setItem(this.data('key'),value) : ls.getItem(this.data('key'))
+            return value !== undefined ? ls.setItem(this._options['key'], value) : ls.getItem(this._options['key']);
         },
 
         /**
          * @desc 显示add2desktop
          * @name show
-         * @grammar show()  ⇒ self
+         * @grammar show()  => self
          */
         show: function() {
             var me = this;
-            if(!me.data('_isShow')){
+
+            if( !me._options['_isShow'] ) {
                 if(!$.os.ios || $.browser.uc || $.browser.qq || $.browser.chrome) return me; //todo 添加iOS原生浏览器的判断
-                var event = $.Event('beforeshow');
+                var event = new gmu.Event('beforeshow');
                 me.trigger(event);
                 if(event.defaultPrevented) return me;
-                me.root().css('display', 'block');
-                me.data('_isShow', true);
+                me.$el.css('display', 'block');
+                me._options['_isShow'] = true;
             }
+
             return me;
         },
 
         /**
          * @desc 隐藏add2desktop
          * @name hide
-         * @grammar hide()  ⇒ self
+         * @grammar hide()  => self
          */
         hide: function() {
             var me = this;
-            if(me.data('_isShow')) {
-                me.root().css('display', 'none');
-                me.data('_isShow', false);
+
+            if(me._options['_isShow']) {
+                me.$el.css('display', 'none');
+                me._options['_isShow'] = false;
                 me.trigger('afterhide');
             }
+
             return me;
         }
         /**
@@ -127,11 +135,11 @@
          * @theme event
          * @desc 组件内部触发的事件
          * ^ 名称 ^ 处理函数参数 ^ 描述 ^
-         * | init | event | 组件初始化的时候触发，不管是render模式还是setup模式都会触发 |
+         * | ready | event | 组件初始化的时候触发，不管是render模式还是setup模式都会触发 |
          * | beforeshow | event | 显示前触发的事件 |
          * | afterhide | event | 隐藏后触发的事件 |
          * | destroy | event | 组件在销毁的时候触发 |
          */
     });
 
-})(Zepto);
+})( gmu, gmu.$ );
