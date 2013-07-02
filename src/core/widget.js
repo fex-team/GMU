@@ -134,7 +134,7 @@
                     }
                     el && (this.$el = $( el ));
                     // options中存在container时，覆盖el
-                    options && options.container && (el = this.$el = $( options.container ));
+                    options && options.el && (el = this.$el = $( options.el ));
 
                     // 从el上获取option
                     var dom_options = getDomOptions( el, fn.options );
