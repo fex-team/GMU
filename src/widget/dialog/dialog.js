@@ -3,9 +3,9 @@
  * @name Dialog
  * @desc <qrcode align="right" title="Live Demo">../gmu/examples/widget/dialog/dialog.html</qrcode>
  * 弹出框组件
- * @import core/ui.js, core/highlight.js
+ * @import core/widget.js, extend/highlight.js, extend/parseTpl.js
  */
-(function($, undefined) {
+(function( gmu, $, undefined ) {
     var tpl = {
         close: '<a class="ui-dialog-close" title="关闭"><span class="ui-icon ui-icon-delete"></span></a>',
         mask: '<div class="ui-mask"></div>',
@@ -25,9 +25,9 @@
     };
 
     /**
-     * @name $.ui.dialog
-     * @grammar $.ui.dialog(options) ⇒ instance
-     * @grammar dialog(options) ⇒ self
+     * @name gmu.Dialog
+     * @grammar gmu.Dialog(options) => instance
+     * @grammar dialog(options) => self
      * @desc **Options**
      * - ''autoOpen'' {Boolean}: (可选，默认：true)初始化后是否自动弹出
      * - ''closeBtn'' {Boolean}: (可选，默认：true)是否显示关闭按钮
@@ -55,8 +55,8 @@
      * ../gmu/examples/widget/dialog/dialog.html
      * </codepreview>
      */
-    $.ui.define('dialog', {
-        _data: {
+    gmu.define( 'Dialog', {
+        options: {
             autoOpen: true,
             buttons: null,
             closeBtn: true,
@@ -77,81 +77,86 @@
          * @desc 获取最外层的节点。
          */
         getWrap: function(){
-            return this._data._wrap;
-        },
-
-        _setup: function(){
-            var data = this._data;
-            data.content = data.content || this._el.show();
-            data.title = data.title || this._el.attr('title');
+            return this._options._wrap;
         },
 
         _init: function(){
-            var me = this, data = me._data, btns,
+            var me = this, opts = me._options, btns,
                 i= 0, eventHanlder = $.proxy(me._eventHandler, me), vars = {};
 
-            data._container = $(data.container || document.body);
-            (data._cIsBody = data._container.is('body')) || data._container.addClass('ui-dialog-container');
-            vars.btns = btns= [];
-            data.buttons && $.each(data.buttons, function(key){
-                btns.push({
-                    index: ++i,
-                    text: key,
-                    key: key
+            me.on( 'ready', function() {
+                opts._container = $(opts.container || document.body);
+                (opts._cIsBody = opts._container.is('body')) || opts._container.addClass('ui-dialog-container');
+                vars.btns = btns= [];
+                opts.buttons && $.each(opts.buttons, function(key){
+                    btns.push({
+                        index: ++i,
+                        text: key,
+                        key: key
+                    });
                 });
-            });
-            data._mask = data.mask ? $(tpl.mask).appendTo(data._container) : null;
-            data._wrap = $($.parseTpl(tpl.wrap, vars)).appendTo(data._container);
-            data._content = $('.ui-dialog-content', data._wrap);
+                opts._mask = opts.mask ? $(tpl.mask).appendTo(opts._container) : null;
+                opts._wrap = $($.parseTpl(tpl.wrap, vars)).appendTo(opts._container);
+                opts._content = $('.ui-dialog-content', opts._wrap);
 
-            data._title = $(tpl.title);
-            data._close = data.closeBtn && $(tpl.close).highlight('ui-dialog-close-hover');
-            me._el = me._el || data._content;//如果不需要支持render模式，此句要删除
+                opts._title = $(tpl.title);
+                opts._close = opts.closeBtn && $(tpl.close).highlight('ui-dialog-close-hover');
+                me.$el = me.$el || opts._content;//如果不需要支持render模式，此句要删除
 
-            me.title(data.title);
-            me.content(data.content);
+                me.title(opts.title);
+                me.content(opts.content);
 
-            btns.length && $('.ui-dialog-btns .ui-btn', data._wrap).highlight('ui-state-hover');
-            data._wrap.css({
-                width: data.width,
-                height: data.height
-            });
+                btns.length && $('.ui-dialog-btns .ui-btn', opts._wrap).highlight('ui-state-hover');
+                opts._wrap.css({
+                    width: opts.width,
+                    height: opts.height
+                });
 
-            //bind events绑定事件
-            $(window).on('ortchange', eventHanlder);
-            data._wrap.on('click', eventHanlder);
-            data._mask && data._mask.on('click', eventHanlder);
-            data.autoOpen && me.root().one('init', function(){me.open();});
+                //bind events绑定事件
+                $(window).on('ortchange', eventHanlder);
+                opts._wrap.on('click', eventHanlder);
+                opts._mask && opts._mask.on('click', eventHanlder);
+                opts.autoOpen && me.open();
+            } );
+        },
+
+        _create: function(){
+            var opts = this._options;
+
+            if( this._options.setup ){
+                opts.content = opts.content || this.$el.show();
+                opts.title = opts.title || this.$el.attr('title');
+            }
         },
 
         _eventHandler: function(e){
-            var me = this, match, wrap, data = me._data, fn;
+            var me = this, match, wrap, opts = me._options, fn;
             switch(e.type){
                 case 'ortchange':
                     this.refresh();
                     break;
                 case 'touchmove':
-                    data.scrollMove && e.preventDefault();
+                    opts.scrollMove && e.preventDefault();
                     break;
                 case 'click':
-                    if(data._mask && ($.contains(data._mask[0], e.target) || data._mask[0] === e.target )){
+                    if(opts._mask && ($.contains(opts._mask[0], e.target) || opts._mask[0] === e.target )){
                         return me.trigger('maskClick');
                     }
-                    wrap = data._wrap.get(0);
+                    wrap = opts._wrap.get(0);
                     if( (match = $(e.target).closest('.ui-dialog-close', wrap)) && match.length ){
                         me.close();
                     } else if( (match = $(e.target).closest('.ui-dialog-btns .ui-btn', wrap)) && match.length ) {
-                        fn = data.buttons[match.attr('data-key')];
+                        fn = opts.buttons[match.attr('data-key')];
                         fn && fn.apply(me, arguments);
                     }
             }
         },
 
         _calculate: function(){
-            var me = this, data = me._data, size, $win, root = document.body,
-                ret = {}, isBody = data._cIsBody, round = Math.round;
+            var me = this, opts = me._options, size, $win, root = document.body,
+                ret = {}, isBody = opts._cIsBody, round = Math.round;
 
-            data.mask && (ret.mask = isBody ? {
+            opts.mask && (ret.mask = isBody ? {
                 width:  '100%',
                 height: Math.max(root.scrollHeight, root.clientHeight)-1//不减1的话uc浏览器再旋转的时候不触发resize.奇葩！
             }:{
@@ -159,7 +164,7 @@
                 height: '100%'
             });
 
-            size = data._wrap.offset();
+            size = opts._wrap.offset();
             $win = $(window);
             ret.wrap = {
                 left: '50%',
@@ -176,13 +181,13 @@
          * @desc 用来更新弹出框位置和mask大小。如父容器大小发生变化时，可能弹出框位置不对，可以外部调用refresh来修正。
          */
         refresh: function(){
-            var me = this, data = me._data, ret, action;
-            if(data._isOpen) {
+            var me = this, opts = me._options, ret, action;
+            if(opts._isOpen) {
 
                 action = function(){
                     ret = me._calculate();
-                    ret.mask && data._mask.css(ret.mask);
-                    data._wrap.css(ret.wrap);
+                    ret.mask && opts._mask.css(ret.mask);
+                    opts._wrap.css(ret.wrap);
                 }
 
                 //如果有键盘在，需要多加延时
@@ -207,11 +212,11 @@
          * @desc 弹出弹出框，如果设置了位置，内部会数值转给[position](widget/dialog.js#position)来处理。
          */
         open: function(x, y){
-            var data = this._data;
-            data._isOpen = true;
+            var opts = this._options;
+            opts._isOpen = true;
 
-            data._wrap.css('display', 'block');
-            data._mask && data._mask.css('display', 'block');
+            opts._wrap.css('display', 'block');
+            opts._mask && opts._mask.css('display', 'block');
 
             x !== undefined && this.position ? this.position(x, y) : this.refresh();
 
@@ -225,15 +230,15 @@
          * @desc 关闭弹出框
          */
         close: function(){
-            var eventData, data = this._data;
+            var eventData, opts = this._options;
 
             eventData = $.Event('beforeClose');
             this.trigger(eventData);
             if(eventData.defaultPrevented)return this;
 
-            data._isOpen = false;
-            data._wrap.css('display', 'none');
-            data._mask && data._mask.css('display', 'none');
+            opts._isOpen = false;
+            opts._wrap.css('display', 'none');
+            opts._mask && opts._mask.css('display', 'none');
 
             $(document).off('touchmove', this._eventHandler);
             return this.trigger('close');
@@ -246,13 +251,13 @@
          * @example $('#dialog').dialog('title', '标题<span>xxx</span>');
          */
         title: function(value) {
-            var data = this._data, setter = value !== undefined;
+            var opts = this._options, setter = value !== undefined;
             if(setter){
-                value = (data.title = value) ? '<h3>'+value+'</h3>' : value;
-                data._title.html(value)[value?'prependTo':'remove'](data._wrap);
-                data._close && data._close.prependTo(data.title? data._title : data._wrap);
+                value = (opts.title = value) ? '<h3>'+value+'</h3>' : value;
+                opts._title.html(value)[value?'prependTo':'remove'](opts._wrap);
+                opts._close && opts._close.prependTo(opts.title? opts._title : opts._wrap);
             }
-            return setter ? this : data.title;
+            return setter ? this : opts.title;
         },
 
         /**
@@ -265,9 +270,9 @@
          * $('#dialog').dialog('content', $('#content'));
          */
         content: function(val) {
-            var data = this._data, setter = val!==undefined;
-            setter && data._content.empty().append(data.content = val);
-            return setter ? this: data.content;
+            var opts = this._options, setter = val!==undefined;
+            setter && opts._content.empty().append(opts.content = val);
+            return setter ? this: opts.content;
         },
 
         /**
@@ -276,12 +281,12 @@
          * @grammar destroy()  ⇒ instance
          */
         destroy: function(){
-            var data = this._data, _eventHander = this._eventHandler;
+            var opts = this._options, _eventHander = this._eventHandler;
             $(window).off('ortchange', _eventHander);
             $(document).off('touchmove', _eventHander);
-            data._wrap.off('click', _eventHander).remove();
-            data._mask && data._mask.off('click', _eventHander).remove();
-            data._close && data._close.highlight();
+            opts._wrap.off('click', _eventHander).remove();
+            opts._mask && opts._mask.off('click', _eventHander).remove();
+            opts._close && opts._close.highlight();
             return this.$super('destroy');
         }
 
@@ -291,11 +296,11 @@
          * @desc 组件内部触发的事件
          *
          * ^ 名称 ^ 处理函数参数 ^ 描述 ^
-         * | init | event | 组件初始化的时候触发，不管是render模式还是setup模式都会触发 |
+         * | ready | event | 组件初始化的时候触发，不管是render模式还是setup模式都会触发 |
          * | open | event | 当弹出框弹出后触发 |
          * | beforeClose | event | 在弹出框关闭之前触发，可以通过e.preventDefault()来阻止 |
          * | close | event | 在弹出框关闭之后触发 |
          * | destroy | event | 组件在销毁的时候触发 |
          */
     });
-})(Zepto);
+})( gmu, gmu.$ );
