@@ -247,8 +247,8 @@
 
                 me.template = mergeObj( fn.template, opts.template );
 
-                me.tpl2html = mergeObj( fn.tpl2html, opts.tpl2html ) ||
-                        me.tpl2html;
+                me.tpl2html = mergeObj( me.tpl2html, fn.tpl2html,
+                        opts.tpl2html );
 
                 // 生成eventNs widgetName
                 me.eventNs = '.' + name + uuid++;
