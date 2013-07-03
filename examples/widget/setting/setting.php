@@ -41,7 +41,7 @@ $arr = array(
         "description" => '搜索建议',
         "group" => 'Components',
         "icon" => 'suggestion.png',
-        "href" => 'suggestion/suggestion_setup.html'
+        "href" => 'suggestion/suggestion.html'
     ),
     'tabs' => array(
         "name" => 'Tabs',

@@ -6,46 +6,39 @@
 
     gmu.Slider.options.imgZoom = true;
 
-    // todo 当屏幕旋转的时候需要重新调整
     gmu.Slider.option( 'imgZoom', function() {
         return !!this._options.imgZoom;
     }, function() {
         var me = this,
-            opts = this._options,
-            tpl2html = this.tpl2html,
-            selector = typeof opts.imgZoom === 'string' ? opts.imgZoom : 'img',
+            selector = me._options.imgZoom,
             watches;
 
-        this.tpl2html = function( subpart ) {
-            subpart === 'item' && watch();
-            return tpl2html.apply( this, arguments );
-        };
+        selector = typeof selector === 'string' ? selector : 'img';
 
-        this.on( 'ready', watch );
+        function unWatch() {
+            watches && watches.off( 'load' + me.eventNs, imgZoom );
+        }
 
         function watch() {
-            if ( watches ) {
-                watches.off( 'load.slider' );
-                watches = null;
-                return setTimeout( watch, 0 );
-            }
-
-            watches = me._container
-                    .find( selector )
-                    .on( 'load.slider', _imgZoom );
+            unWatch();
+            watches = me._container.find( selector )
+                    .on( 'load' + me.eventNs, imgZoom );
         }
 
-        function _imgZoom( e ) {
-            var img = e.target,
-                scale;
+        function imgZoom( e ) {
+            var img = e.target || this,
 
-            scale = Math.min( me.width / me.width, 
-                    me.height / img.height );
-
-            // 只缩放，不拉伸
-            if ( scale < 1 ) {
-                img.style.width = scale * img.width + 'px';
-            }
+                // 只缩放，不拉伸
+                scale = Math.min( 1, me.width / img.naturalWidth,
+                    me.height / img.naturalHeight );
+            
+            img.style.width = scale * img.naturalWidth + 'px';
         }
+
+        me.on( 'ready dom.change', watch );
+        me.on( 'width.change', function() {
+            watches && watches.each( imgZoom );
+        } );
+        me.on( 'destroy', unWatch );
     } );
 })( gmu );

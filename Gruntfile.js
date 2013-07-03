@@ -121,7 +121,7 @@ module.exports = function(grunt) {
 
             temp: {
                 cwd: 'test/',
-                src: ['core/*.js', 'widget/slider/*.js']
+                src: ['core/*.js', 'widget/slider/*.js', 'widget/suggestion/*.js']
             }
         },
 

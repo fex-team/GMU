@@ -118,6 +118,7 @@
             }
 
             var widgetInit = object._init || blankFn,
+                uuid = 0,
                 fn = function( el, options ) {
 
                     if ( !(this instanceof fn) ) {
@@ -142,8 +143,8 @@
                     // }
 
                     // 从el上获取option
-                    var dom_options = me.$el ? getDomOptions( el, fn.options ) : {};
-                    var options = me._options = $.extend( {}, fn.options, dom_options, options );
+                    var dom_options = getDomOptions( el, fn.options );
+                    var options = me._options = $.extend( true, {}, fn.options, dom_options, options );
 
                     // 将template和tpl2html挂到实例上
                     if ( options.template !== undefined ) {
@@ -152,6 +153,9 @@
                     if ( options.tpl2html !== undefined )  {
                         me.tpl2html = options.tpl2html;
                     }
+
+                    // 生成eventNs
+                    me.eventNs = '.' + fn._fullname_ + uuid++;
 
                     // 执行父类的构造函数
                     superClass.apply( me, [ el, options ] );
@@ -323,8 +327,8 @@ window.gmu.$.ui = gmu;
 
 (function( gmu ) {
     var blankFn = function() {
-
         },
+        slice = [].slice,
         event = gmu.event;
 
     /**
@@ -399,14 +403,16 @@ window.gmu.$.ui = gmu;
                 $el = this.getEl();
 
             if ( opEvent && $.isFunction( opEvent ) ) {
+                
                 // 如果返回值是false,相当于执行stopPropagation()和preventDefault();
                 false === opEvent.apply( this, args ) && (evt.stopPropagation(), evt.preventDefault());
             }
 
-            gmu.event.trigger.apply(this, args);
+            event.trigger.apply( this, args );
 
             // triggerHandler不冒泡
-            $el && $el.triggerHandler( evt, args );
+
+            $el && $el.triggerHandler( evt, (args.shift(), args) );
 
             return this;
         },
@@ -438,6 +444,9 @@ window.gmu.$.ui = gmu;
 
             // 让外部先destroy
             this.trigger( 'destroy' );
+
+            // 解绑element上的事件
+            this.$el.off( this.eventNs );
             
             // 解绑所有自定义事件
             this.off();

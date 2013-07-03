@@ -1,18 +1,19 @@
 .ui-suggestion-mask{
 	position: relative;
 	z-index: 100;
+    display: -webkit-box;
 }
 
+.ui-suggestion-mask input{
+    -webkit-box-flex: 1;
+    display: block;
+}
 .ui-suggestion{
 	position: absolute;
 	display: none;
 	z-index: 100;
     width: 100%;
     -webkit-box-sizing: border-box;
-}
-
-.ui-suggestion .ui-suggestion-scroller{
-    min-height: 33px;
 }
 
 .ui-suggestion ul li{

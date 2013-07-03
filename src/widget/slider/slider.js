@@ -51,11 +51,11 @@
 
             // 更新width
             me._initWidth( $el, me.index );
-            me._container.on( transitionEnd + '.slider',
+            me._container.on( transitionEnd + me.eventNs,
                     $.proxy( me._tansitionEnd, me ) );
 
             // 转屏事件检测
-            $( window ).on( 'ortchange.slider', function() {
+            $( window ).on( 'ortchange' + me.eventNs, function() {
                 me._initWidth( $el, me.index );
             } );
         },
@@ -123,16 +123,18 @@
         },
 
         _initWidth: function( $el, index, force ) {
-            var width;
+            var me = this,
+                width;
 
             // width没有变化不需要重排
-            if ( !force && (width = $el.width()) === this.width ) {
+            if ( !force && (width = $el.width()) === me.width ) {
                 return;
             }
 
-            this.width = width;
-            this._arrange( width, index );
-            this.height = $el.height();
+            me.width = width;
+            me._arrange( width, index );
+            me.height = $el.height();
+            me.trigger( 'width.change' );
         },
 
         // 重排items
@@ -266,10 +268,8 @@
         },
 
         destroy: function() {
-            this._container.off( transitionEnd + '.slider', 
-                    this._tansitionEnd );
-            $( window ).off( 'ortchange.slider' );
-            this.getEl().off( '.slider' );
+            this._container.off( this.eventNs );
+            $( window ).off( 'ortchange' + this.eventNs );
             return this.$super( 'destroy' );
         }
     } );

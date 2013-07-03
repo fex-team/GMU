@@ -17,6 +17,9 @@
 
             // 当滑动结束后调整
             me.on( 'slideend', me._adjustPos );
+            me.getEl().on( 'touchstart' + me.eventNs, function() {
+                me._adjustPos();
+            } );
         },
 
         _create: function() {
@@ -29,12 +32,10 @@
             }
 
             opts.viewNum = 1;    // 只能处理viewNum为1的情况
+            opts.loop = false;    // 不支持loop
 
-            // 避免外部直接修改，影响内部代码
-            me._content = opts.content.concat();
-
-            group = $( '<div class="ui-slider-group"></div>' );
-            me._renderItems( me._content, opts.index, group );
+            this._group = group = $( '<div class="ui-slider-group"></div>' );
+            me._renderItems( opts.content, opts.index, group );
             group.appendTo( me.getEl() );
             opts.index = me.index;
 
@@ -42,57 +43,46 @@
             me._adjustPos( true );
         },
 
-        trigger: function( e, to, from ) {
+        trigger: function( e, to ) {
 
-            // 当触发slide的时候执行
-            // 用来记录这次滑动的方向和当前滑动的数据体
             if ( e === 'slide' || e.type === 'slide' ) {
                 this._active = this._pool[ to ];
-                this._dir = to - from > 0 ? 1 : -1;
+                this._flag = true;    // 标记需要调整
             }
             return this.origin.apply( this, arguments );
-        },
-
-        _onStart: function( e ) {
-
-            // 不处理多指
-            if ( e.touches.length > 1 ) {
-                return;
-            }
-
-            // 检测是否需要调整同时标记一下，下次动画执行完后将调整
-            this._adjustPos();
-            this._flag = true;
-
-            return this.origin( e );
         },
 
         slideTo: function( to, speed ) {
-            var index = this.index;
-            
-            if ( index === to || index === this._circle( to ) ) {
+            var index = this.getIndex();
+
+            // 一次只允许移动一张
+            if ( Math.abs( to - index ) !== 1 ) {
                 return;
             }
 
-            // 检测是否需要调整同时标记一下，下次动画执行完后将调整
             this._adjustPos();
-            this._flag = true;
 
-            return this.origin( to - index +  this.index, speed );
-        },
-
-        next: function() {
-            this._adjustPos();
-            return this.origin.apply( this, arguments );
+            return this.origin( to + this.index - index, speed );
         },
 
         prev: function() {
-            this._adjustPos();
-            return this.origin.apply( this, arguments );
+            var index = this.getIndex();
+
+            index > 0 && this.slideTo( index - 1 );
+
+            return this;
+        },
+
+        next: function() {
+            var index = this.getIndex();
+
+            index < this._content.length - 1 && this.slideTo( index + 1 );
+
+            return this;
         },
 
         // 调整位置，如果能移动的话，将当前的总是移动到中间。
-        _adjustPos: function( force ) {
+        _adjustPos: function( force, ignoreEdge ) {
             
             if ( !force && !this._flag ) {
                 return;
@@ -100,25 +90,20 @@
 
             var me = this,
                 opts = me._options,
-                $el = me.getEl(),
                 content = me._content,
-                length = content.length,
-                group = $el.find( opts.selector.container ),
-                index,
-                delta,
-                next,
+                group = me._group,
+                index = $.inArray( me._active, content ),
+                delta = me.index - 1,
+                next = index + delta,
                 item,
                 elem;
 
-            index = $.inArray( me._active, content );
-            delta = me.index - 1;
-            next = index + delta;
-
-            if ( delta && next < length && next >= 0 ) {
+            if ( delta && next < content.length && next >= 0 ) {
                 item = content[ next ];
                 elem = $( me.tpl2html( 'item', item ) );
                 gmu.staticCall( me._items[ 1 - delta ], 'remove' );
                 group[ delta < 0 ? 'prepend' : 'append' ]( elem );
+                me.trigger( 'dom.change' );
 
                 me._pool.splice( 1 - delta, 1 );
                 me._pool[ delta < 0 ? 'unshift' : 'push' ]( item );
@@ -129,8 +114,8 @@
             }
 
             // 到达边缘
-            if ( index === opts.edgeThrottle || index ===
-                    length - opts.edgeThrottle - 1 ) {
+            if ( !ignoreEdge && (index === opts.edgeThrottle || index ===
+                    length - opts.edgeThrottle - 1) ) {
                 me.trigger( 'edge', index === opts.edgeThrottle, me._active );
             }
 
@@ -138,13 +123,13 @@
             return me;
         },
 
-        _renderItems: function( content, index, group, center ) {
-            var arr, 
-                rest;
+        _renderItems: function( content, index, group ) {
+            var arr = content.slice( index, index + (index > 0 ? 2 : 3) ), 
+                rest = 3 - arr.length;
 
-            arr = content.slice( index, index + (center ? 2 : 3) );
+            // 避免外部直接修改，影响内部代码
+            this._content = content.concat();
             this._active = content[ index ];
-            rest = 3 - arr.length;
             rest && (arr = content.slice( index - rest, index )
                     .concat( arr ));
             this.index = rest;
@@ -203,22 +188,17 @@
             }
 
             var me = this,
-                opts = me._data,
                 active = me._active,
                 index = $.inArray( active, content ),
-                $el = me.getEl(),
-                group;
+                group = this._group.empty();
 
-            ~index || (index = me._dir > 0 ? 0 : content.length - 1);
-
-            group = $el.find( '.ui-slider-group' ).empty();
-            me._content = content = content.concat();
-            me._renderItems( content, index, group, opts, true );
+            ~index || (index = 0);
+            me._renderItems( content, index, group );
             me._items = group.children().toArray();
             me._arrange( me.width, me.index );
 
-            me._adjustPos();
-            active !== me._active && me.trigger( 'slide', me.index, -1 );
+            me._adjustPos( false, true );
+            me.trigger( 'dom.change' );
         }
     } );
 })( gmu, gmu.$ );
