@@ -5,6 +5,7 @@
 
 (function( gmu, $, undefined ) {
     var slice = [].slice,
+        toString = Object.prototype.toString,
         blankFn = function() {},
 
         // 挂到组件类上的属性、方法
@@ -32,6 +33,10 @@
         })(),
 
         event = gmu.event;
+
+    function isPlainObject( obj ) {
+        return toString.call( obj ) === '[object Object]';
+    }
 
     // 遍历对象
     function eachObject( obj, iterator ) {
@@ -93,7 +98,7 @@
 
                 // 从缓存中取，没有则创建一个
                 obj = record( el, name ) || new gmu[ name ]( el,
-                        $.isPlainObject( opts ) ? opts : undefined );
+                        isPlainObject( opts ) ? opts : undefined );
 
                 // 取实例
                 if ( method === 'this' ) {
@@ -185,6 +190,8 @@
                         ret = val.apply( me, arguments );
                         origin === undefined ? delete me.origin :
                                 (me.origin = origin);
+
+                        return ret;
                     };
                 } else {
                     me[ key ] = val;
@@ -203,7 +210,7 @@
 
         while ( i-- ) {
             last = last || args[ i ];
-            $.isPlainObject( args[ i ] ) || args.splice( i, 1 );
+            isPlainObject( args[ i ] ) || args.splice( i, 1 );
         }
 
         return args.length ?
@@ -232,7 +239,7 @@
                 var me = this,
                     opts;
 
-                if ( $.isPlainObject( el ) ) {
+                if ( isPlainObject( el ) ) {
                     options = el;
                     el = undefined;
                 }
