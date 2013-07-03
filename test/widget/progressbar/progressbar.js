@@ -299,12 +299,10 @@ test("destroy()", function() {
         progressbar.destroy();
 
         var el2= w.dt.eventLength();
-        var ol = w.dt.objLength(progressbar);
         var dl2 =w.dt.domLength(w);
 
-        equal(dl1,dl2,"The dom is ok");   //测试结果不是100%可靠，可忽略
-        equal(el1,el2,"The event is ok");
-        ok(ol==0,"The dialog is destroy");
+        equal(dl2, dl1, "The dom is ok");   //测试结果不是100%可靠，可忽略
+        equal(el2, el1, "The event is ok");
         this.finish();
     })
 });

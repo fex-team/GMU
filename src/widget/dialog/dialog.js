@@ -3,7 +3,7 @@
  * @name Dialog
  * @desc <qrcode align="right" title="Live Demo">../gmu/examples/widget/dialog/dialog.html</qrcode>
  * 弹出框组件
- * @import core/widget.js, extend/highlight.js, extend/parseTpl.js
+ * @import core/widget.js, extend/highlight.js, extend/parseTpl.js, extend/event.ortchange.js
  */
 (function( gmu, $, undefined ) {
     var tpl = {

@@ -79,7 +79,7 @@
                 $el = me.$el;
 
             if( me._options.setup ) {
-
+                // 值支持setup模式，所以直接从DOM中取元素
                 opts.$upElem = $el.find('.ui-refresh-up');
                 opts.$downElem = $el.find('.ui-refresh-down');
                 $el.addClass('ui-refresh');

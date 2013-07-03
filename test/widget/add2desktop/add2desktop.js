@@ -305,13 +305,11 @@ if($.os.ios && canShow){
             add2desktop.destroy();
 
             var el2= w.dt.eventLength();
-            var ol = w.dt.objLength(add2desktop);
             var dl2 =w.dt.domLength(w);
 
-            equal(dl1,dl2,"The dom is ok");
+            equal(dl2, dl1, "The dom is ok");
             equal(w.$(".ui-add2desktop").length, 0, "The dom is ok");
             equal(el1,el2,"The event is ok");
-            ok(ol==0,"The toolbar is destroy");
             this.finish();
         })
 	});

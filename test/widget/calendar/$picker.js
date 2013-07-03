@@ -94,7 +94,7 @@ test("method: show/hide", function(){
 
 
 test("event: show/hide/beforehide", function(){
-    expect(7);
+    expect(8);
     stop();
     var input = $('<input type="text">'),
         flag;
@@ -174,6 +174,7 @@ test("user interface: submit & event: commit", function(){
         	equals(input.val(), '2013-04-25', "The input value is right");
         	
             input.calendar('destroy');
+            input.remove();
             setTimeout(start, 300);
         }, 300);
     }, 200);
@@ -204,6 +205,7 @@ test("user interface: cancel", function(){
         	equals(input.val(), '', "The input value is right");
         	
             input.calendar('destroy');
+            input.remove();
             setTimeout(start, 300);
         }, 300);
     }, 200);
@@ -223,6 +225,7 @@ test("user interface: select the input value", function(){
         equal(input.calendar('this')._container.find('.ui-calendar-current-day').text(), 24);
         
 	    input.calendar('this').destroy();
+        input.remove();
 	    setTimeout(start, 300);
 	}, 200);
 });
@@ -271,11 +274,9 @@ test("method: destroy",function(){
         instance.destroy();
         setTimeout(function(){
         	var el2= w.dt.eventLength();
-            var ol = w.dt.objLength(instance);
             var dl2 =w.dt.domLength(w);
             equal(dl1,dl2,"The dom is ok");   
             equal(el1,el2,"The event is ok");
-            ok(ol==0,"The widget is destroy");
             me.finish();
         }, 800);
     })

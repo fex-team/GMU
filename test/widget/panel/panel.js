@@ -507,12 +507,10 @@ test("destroy", function(){
         panel.destroy();
 
         var el2= w.dt.eventLength();
-        var ol = w.dt.objLength(panel);
         var dl2 =w.dt.domLength(w);
 
         equal(w.$(".panel").length, 0, "The dom is ok");
         equal(el1,el2,"The event is ok");
-        ok(ol==0,"The panel is destroy");
         this.finish();
     });
 });

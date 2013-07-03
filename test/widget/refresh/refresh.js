@@ -376,7 +376,9 @@ test("destroy", function(){
 
         equal(dl1,dl2,"The dom is ok");
         equal(el1,el2,"The event is ok");
-        ok(ol==0,"The gotop is destroy");
+
+        // destroy是不再删除实例的属性和方法
+        // ok(ol==0,"The refresh is destroy");
         this.finish();
     });
 });

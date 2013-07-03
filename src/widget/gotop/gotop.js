@@ -98,7 +98,10 @@
                 _opts['root'] = $el[0];
             } );
 
-            return me;
+            // 不管是哪种模式创建的，destroy时都将元素移除
+            me.on( 'destroy', function() {
+                me.$el.remove();
+            } );
         },
 
         _create: function() {

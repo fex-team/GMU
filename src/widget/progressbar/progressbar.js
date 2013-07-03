@@ -73,7 +73,7 @@
             var me = this,
                 direction = me._options['horizontal'] ? 'h' : 'v';
 
-            if( !me.$el ) {
+            if ( !me.$el ) {
                 me.$el = $('<div></div>');
             }
             me.$el.addClass('ui-progressbar-' + direction).appendTo(me._options['container'] || (me.$el.parent().length ? '' : document.body)).html(

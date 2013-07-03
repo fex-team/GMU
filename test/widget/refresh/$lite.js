@@ -533,12 +533,10 @@ test("destroy", function(){
         refresh.destroy();
 
         var el2= w.dt.eventLength();
-        var ol = w.dt.objLength(refresh);
         var dl2 =w.dt.domLength(w);
 
         equal(dl1,dl2,"The dom is ok");
         equal(el1,el2,"The event is ok");
-        ok(ol==0,"The gotop is destroy");
         this.finish();
     });
 });
