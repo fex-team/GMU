@@ -67,21 +67,12 @@
         var ret = {},
             data;
 
-        if ( !el ) {
-            return ret;
-        }
-
-        eachObject( keys, function( key ) {
+        el && eachObject( keys, function( key ) {
             data = dataAttr( el, key );
             data === undefined || (ret[ key ] = data);
         } );
 
         return ret;
-    }
-
-    // 返回字符串的首字母小写形式
-    function getFnName( name ) {
-        return name.substring( 0, 1 ).toLowerCase() + name.substring( 1 );
     }
 
     // 在$.fn上挂对应的组件方法呢
@@ -90,10 +81,10 @@
     // $('#btn').button( 'this' ); 取组件实例
     // 此方法遵循get first set all原则
     function zeptolize( name ) {
-        var fnName = getFnName( name ),
-            old = $.fn[ fnName ];
+        var key = name.substring( 0, 1 ).toLowerCase() + name.substring( 1 ),
+            old = $.fn[ key ];
 
-        $.fn[ fnName ] = function( opts ) {
+        $.fn[ key ] = function( opts ) {
             var args = slice.call( arguments, 1 ),
                 method = typeof opts === 'string' && opts,
                 ret,
@@ -102,8 +93,8 @@
             $.each( this, function( i, el ) {
 
                 // 从缓存中取，没有则创建一个
-                obj = record( el, name ) || new gmu[ name ]( el, method ?
-                        {} : opts );
+                obj = record( el, name ) || new gmu[ name ]( el,
+                        $.isPlainObject( opts ) ? opts : undefined );
 
                 // 取实例
                 if ( method === 'this' ) {
@@ -136,8 +127,8 @@
          * var gmuPanel = $.fn.panel.noConflict();
          * gmuPanel.call(test, 'fnname');
          */
-        $.fn[ fnName ].noConflict = function() {
-            $.fn[ fnName ] = old;
+        $.fn[ key ].noConflict = function() {
+            $.fn[ key ] = old;
             return this;
         };
     }
@@ -193,7 +184,8 @@
 
                         me.origin = oringFn;
                         ret = val.apply( me, arguments );
-                        origin === undefined && delete me.origin;
+                        origin === undefined ? delete me.origin :
+                                (me.origin = origin);
                     };
                 } else {
                     me[ key ] = val;
@@ -202,6 +194,21 @@
 
             plugin._init.call( me );
         } );
+    }
+
+    // 合并对象
+    function mergeObj() {
+        var args = slice.call( arguments ),
+            i = args.length,
+            last;
+
+        while ( i-- ) {
+            last = last || args[ i ];
+            $.isPlainObject( args[ i ] ) || args.splice( i, 1 );
+        }
+
+        return args.length ?
+                $.extend.apply( null, [ true, {} ].concat( args ) ) : last;
     }
 
     /**
@@ -215,6 +222,7 @@
         }
 
         var uuid = 0,
+            suid = 0,
 
             fn = function( el, options ) {
 
@@ -234,18 +242,17 @@
                 options && options.el && (el = $( options.el ));
                 el && (me.$el = $( el ), el = me.$el[ 0 ]);
 
-                opts = me._options = $.extend( true, {}, fn.options,
+                opts = me._options = mergeObj( fn.options,
                         getDomOptions( el, fn.options ), options );
 
-                // 优先使用opts中的，次之 klass 类属性中的，次之实例上的
-                me.template = opts.template || fn.template || me.template;
-                me.tpl2html = opts.tpl2html || fn.tpl2html || me.tpl2html;
+                me.template = mergeObj( fn.template, opts.template );
+
+                me.tpl2html = mergeObj( fn.tpl2html, opts.tpl2html ) ||
+                        me.tpl2html;
 
                 // 生成eventNs widgetName
                 me.eventNs = '.' + name + uuid++;
-                me.widgetName = name;
-
-                me.superClass = fn.superClass = superClass;
+                me.widgetName = name.toLowerCase();
 
                 me._init( opts );
                 loadOption.call( me, fn, opts );
@@ -292,18 +299,33 @@
                 options[ option ].push([ value, method ]);
 
                 return fn;
+            },
+
+            /**
+             * @name inherits
+             * @grammar fn.inherits({})
+             * @desc 从该类继承出一个子类，不会被挂到gmu命名空间
+             */
+            inherits: function( obj ) {
+
+                // 生成 Sub class
+                return createClass( name + 'Sub' + ++suid, obj, fn );
+            },
+
+            extend: function( obj ) {
+                staticlist.forEach(function( item ) {
+                    obj[ item ] = mergeObj( superClass[ item ], obj[ item ] );
+                    obj[ item ] && (fn[ item ] = obj[ item ]);
+                    delete obj[ item ]
+                });
+                $.extend( fn.prototype, obj );
             }
         } );
-        
+
+        fn.superClass = superClass;
         fn.prototype = Object.create( superClass.prototype );
-        staticlist.forEach(function( item ) {
-            object[ item ] &&
-
-                    // 如果要支持staticlist中的属性继承，则不能删除object[ item ]
-                    (fn[ item ] = object[ item ]);
-        });
-        $.extend( fn.prototype, object );
-
+        fn.extend( object );
+        
         // 可以在方法中通过this.$super(name)方法调用父级方法。如：this.$super('enable');
         fn.prototype.$super = function( name ) {
             var fn = superClass.prototype[ name ];

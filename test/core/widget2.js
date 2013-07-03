@@ -81,10 +81,24 @@ test("option拆分", function() {
 });
 
 test("插件", function() {
-    expect(5);
+    expect(8);
     stop();
 
-    gmu.Panel.register('follow', {
+    gmu.define('testPlugin', {
+        _init: function() {
+            ok(true, '组件初始化执行');
+        },
+
+        origin: function() {
+            ok( true, 'origin方法执行了');
+        },
+
+        follow: function() {
+            ok( true, 'follow执行了');
+        }
+    });
+
+    gmu.testPlugin.register('follow', {
         _init: function(){
             var me = this;
             ok(true, "插件初始化检查：Passed!");
@@ -92,24 +106,33 @@ test("插件", function() {
 
         follow: function(){
             ok(true, "插件添加的实例方法检查：Passed!");
-        },
-
-        hide: function(){
             this.origin();
         }
     });
 
     $(document.body).append('<div id="panel"></div>');
-    var panel = new gmu.Panel('#panel', {
+    var panel = new gmu.testPlugin('#panel', {
         name: 'custom gmu',
         display: 'push'
     });
 
     panel.follow();
-    panel.hide();
-    panel.show();
+    panel.origin();
+
+    panel.destroy();
 
     $('#panel').remove();
+
+    panel = new gmu.testPlugin('#panel', {
+        follow: false
+    });
+    panel.follow();
+    panel.origin();
+
+    panel.destroy();
+
+    $('#panel').remove();
+
     start();
 });
 
@@ -194,6 +217,49 @@ test("类继承 - define方式", function(){
 
     $('#dialog').remove();
 
+});
+
+test("类继承 - inherits方式", function(){
+    expect(10);
+
+    var Alert = gmu.Dialog.inherits({
+        options: {
+            title: 'Alert'
+        },
+        title: function(title){},
+        content: function(content){}
+    });
+
+    $(document.body).append('<div id="alert"></div>');
+    var alert = new Alert('#alert', {
+        name: '警告框',
+        follow: false
+    });
+
+    ok(alert._options.name === '警告框', '实例参数检查：Passed!');
+    ok(alert._options.title === 'Alert', '继承自父类的参数检查：Passed!');
+    ok(alert.template === '<div>{{name}}</div>', '继承自父类的模板检查：Passed!');
+    ok(alert.tpl2html('gmu') === '<div>gmu</div>', '继承自父类的模板解析函数检查：Passed!');
+    ok($jQuery.isFunction(alert.show), '继承自父类的方法检查：Passed!');
+    $('#alert').remove();
+
+    $(document.body).append('<div id="alert"></div>');
+    var alert = new Alert('#alert', {
+        name: '对话框',
+        template: '<div>Hello {{name}}</div>',
+        tpl2html: function(name){
+            return this.template.replace('{{name}}', name.toUpperCase());
+        },
+        follow: false
+    });
+
+    ok(alert.template === '<div>Hello {{name}}</div>', '实例模板检查：Passed!');
+    ok(alert.tpl2html('gmu') === '<div>Hello GMU</div>', '实例模板解析函数检查：Passed!');
+    ok($jQuery.isFunction(alert.show), '实例方法检查：Passed!');
+    ok($jQuery.isFunction(alert.content), '实例方法检查：Passed!');
+    ok(alert instanceof gmu.Dialog && alert instanceof gmu.Panel, '继承关系检查：Passed!');
+
+    $('#alert').remove();
 });
 
 test("zeptoLize", function(){
@@ -357,32 +423,120 @@ test('从dom中读取属性', function(){
 
     gmu.define('testDomOption', {
         options: {
-            key1: undefined,
-            key2: undefined,
-            key3: undefined,
-            key4: undefined,
-            key5: undefined,
-            key6: undefined
+            key1: null,
+            key2: null,
+            key3: null,
+            key4: null,
+            key5: null,
+            key6: null,
+            key7: null
         }
     });
 
     var dom = $('<div data-key1="true" data-key2="false" data-key3="null"' +
                 ' data-key6=\'{a: 1}\'' +
-                ' data-key4=\'{"a":1}\' data-key5="2"></div>'),
+                ' data-key4=\'{"a":1}\' data-key5="2" data-key7="3"></div>'),
         instance;
 
-
-    instance = dom.testDomOption('this');
+    instance = dom.testDomOption({
+        key7: 4
+    }).testDomOption( 'this' );
 
     strictEqual( instance._options.key1, true, 'ok' );
     strictEqual( instance._options.key2, false, 'ok' );
     strictEqual( instance._options.key3, null, 'ok' );
     strictEqual( instance._options.key4 && instance._options.key4.a, 1, 'ok' );
     strictEqual( instance._options.key5, 2, '数字类型转换' );
-    strictEqual( instance._options.key6, undefined, '正则格式不正确' );
+    strictEqual( instance._options.key6, null, '正则格式不正确' );
+    strictEqual( instance._options.key7, 4, '初始化时传入的优先' );
 
     dom.testDomOption('destroy').remove();
     gmu.testDomOption = undefined;
+});
+
+test('Options继承检测', function(){
+    gmu.define('testOption', {
+        options: {
+            key1: 1,
+            key2: 2,
+            key4: {
+                key1: 1
+            }
+        }
+    });
+
+    gmu.define( 'testOptionChild', {
+        options: {
+            key2: 3,
+            key3: 4,
+            key4: {
+                key2: 2
+            }
+        }
+    }, gmu.testOption );
+
+    var ins = gmu.testOption(),
+        insChild = gmu.testOptionChild();
+
+    
+    equal( ins._options.key1, 1 );
+    equal( ins._options.key2, 2 );
+    equal( ins._options.key4.key1, 1 );
+    equal( insChild._options.key1, 1 );
+    equal( insChild._options.key2, 3 );
+    equal( insChild._options.key3, 4 );
+    equal( insChild._options.key4.key1, 1 );
+    equal( insChild._options.key4.key2, 2 );
+
+    ins.destroy();
+    insChild.destroy();
+
+    delete gmu.testOption;
+    delete gmu.testOptionChild;
+});
+
+test('template继承检测', function(){
+    gmu.define('testTpl', {
+        template: {
+            frame: '123'
+        }
+    });
+
+    gmu.define( 'testTplChild', {
+        template: {
+            item: '<span>'
+        }
+    }, gmu.testTpl );
+
+    var ins = gmu.testTpl(document.body),
+        insChild = gmu.testTplChild(document.body),
+        ins2 = gmu.testTpl( document.body, {
+            template: {
+                frame: '345',
+                abc: '123'
+            }
+        }),
+        insChild2 = gmu.testTplChild(document.body, {
+            template: {
+                frame: '345',
+                abc: '123'
+            }
+        });
+
+    
+    equal( ins.template.frame, '123' );
+    equal( ins2.template.frame, '345' );
+    equal( ins2.template.abc, '123' );
+    equal( gmu.testTpl.template.frame, '123' );
+
+
+    equal( insChild.template.frame, '123' );
+    equal( insChild2.template.frame, '345' );
+    equal( insChild2.template.abc, '123' );
+    equal( insChild2.template.item, '<span>' );
+    equal( gmu.testTplChild.template.frame, '123' );
+    equal( insChild.template.item, '<span>' );
+    equal( gmu.testTplChild.template.item, '<span>' );
 });
 
 test(' Zeptolize', function() {
