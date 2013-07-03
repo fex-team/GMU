@@ -76,7 +76,7 @@ test('加载sug样式', function() {
 
 test('默认option及render方式默认创建', function () {
     var sug = gmu.Suggestion({
-        container: '#sugg-input'
+        el: '#sugg-input'
     }),
         opts = sug._options;
 
@@ -131,7 +131,7 @@ test('多实例', function () {
     }).appendTo('body');
 
     var sug = new $.ui.Suggestion({
-            container: "#sugg-input"
+            el: "#sugg-input"
         }),
         sug1 = $('#sugg-input1').suggestion()
             .on('sendrequest', sendrequest)
@@ -161,10 +161,10 @@ test('多实例', function () {
 test('在已有的suggestion-mask中，不会新建suggestion-mask', function () {
 
     var sug = new $.ui.Suggestion({
-            container: "#sugg-input"
+            el: "#sugg-input"
         }),
         sug1 = new $.ui.Suggestion({
-            container: "#sugg-input"
+            el: "#sugg-input"
         });
 
     equal($('.ui-suggestion-mask').length, 1, '1个sug mask正确创建');
@@ -174,7 +174,7 @@ test("autoClose = true", function () {
     expect(2);
 
     var sugg = $.ui.Suggestion({
-        container: "#sugg-input",
+        el: "#sugg-input",
         autoClose: true,
         sendrequest: sendrequest,
         renderlist: renderlist
@@ -199,7 +199,7 @@ test("autoClose = false", function () {
     expect(2);
 
     var sugg = $.ui.Suggestion({
-        container: "#sugg-input",
+        el: "#sugg-input",
         sendrequest: sendrequest,
         renderlist: renderlist
     });
@@ -220,7 +220,7 @@ test("history() & historyShare = false", function () {
     expect(5);
 
     var sugg = new $.ui.Suggestion({
-            container: "#sugg-input",
+            el: "#sugg-input",
             historyShare: false,
             confirmClearHistory: false
         }),
@@ -251,14 +251,14 @@ test("history() & historyShare = false", function () {
     }
 
 });
-test("history() & historyShare = false ，container没有id", function () {
+test("history() & historyShare = false ，el没有id", function () {
     expect(4);
     $('<input />').attr({
         'class': 'com-search-input1'
     }).appendTo('body');
 
     var sugg = new $.ui.Suggestion({
-            container: ".com-search-input1",
+            el: ".com-search-input1",
             historyShare: false
         });
 
@@ -292,7 +292,7 @@ test("history() & historyShare = true", function () {
     }).appendTo('body');
 
     var sugg1 = new $.ui.Suggestion({
-            container: "#sugg-input",
+            el: "#sugg-input",
             confirmClearHistory: false
         }),
         sugg2 = $('#sugg-input1').suggestion('this'),
@@ -338,7 +338,7 @@ test("history() & historyShare = 'test'", function () {
     }).appendTo('body');
 
     var sugg1 = new $.ui.Suggestion({
-            container: "#sugg-input",
+            el: "#sugg-input",
             confirmClearHistory: false,
             historyShare: 'test'
         }),

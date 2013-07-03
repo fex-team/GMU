@@ -76,7 +76,7 @@ test('加载sug样式', function() {
 
 test('默认options及sug能正常创建', function () {
     var sug = gmu.Suggestion({
-            container: "#sugg-input",
+            el: "#sugg-input",
             sendrequest: sendrequest
         }),
         opts = sug._options;
@@ -103,7 +103,7 @@ test('以","分隔的历史数据能正常被读存', function () {
         window.localStorage[key] = history;
 
         sug = gmu.Suggestion({
-            container: '#sugg-input'
+            el: '#sugg-input'
         });
 
         equal(sug.history(), history.split(',').join( sug.separator ), '历史数据能正常读取');
@@ -128,7 +128,7 @@ test('历史数据被处理后，能正常渲染', function () {
         window.localStorage[key] = history;
 
         sug = gmu.Suggestion({
-            container: '#sugg-input',
+            el: '#sugg-input',
             sendrequest: sendrequest,
             renderlist: renderlist
         });

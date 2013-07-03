@@ -80,7 +80,7 @@ test('加载sug样式', function() {
 
 test('增加posadapt插件后，sug是否正确创建', function () {
     var sug = gmu.Suggestion({
-        container: "#sugg-input",
+        el: "#sugg-input",
         sendrequest: sendrequest,
         renderlist: renderlist
     });
@@ -122,7 +122,7 @@ test('posAdapt=true, 创建时sug位置显示正确', function() {
             var opts = new w.Object();
 
             $.extend( opts, {
-                container: "#sugg-iframe",
+                el: "#sugg-iframe",
                 sendrequest: sendrequest,
                 renderlist: renderlist,
                 listSelector: '.sug-item'
@@ -181,7 +181,7 @@ test('posAdapt=true, 创建时sug位置显示正确', function() {
             var opts = new w.Object();
 
             $.extend( opts, {
-                container: "#sugg-iframe",
+                el: "#sugg-iframe",
                 sendrequest: sendrequest,
                 renderlist: renderlist,
                 listSelector: '.sug-item',

@@ -81,7 +81,7 @@ test('加载sug样式', function() {
 test('sug及iscroll是否正确创建', function () {
 
     var sug = gmu.Suggestion({
-        container: "#sugg-input",
+        el: "#sugg-input",
         sendrequest: sendrequest,
         renderlist: renderlist
     });
@@ -103,7 +103,7 @@ test('sug中iscroll能正确内滚', function () {
     stop();
 
     var sug = gmu.Suggestion({
-            container: "#sugg-input",
+            el: "#sugg-input",
             sendrequest: sendrequest,
             renderlist: renderlist
         }),
@@ -156,7 +156,7 @@ test('有历史记录时的iscroll', function () {
     stop();
 
     var sug = gmu.Suggestion({
-            container: "#sugg-input",
+            el: "#sugg-input",
             source: upath + "data/suggestion.php",
             renderlist: renderlist
         }),
@@ -206,7 +206,7 @@ test('input时，iscroll能滚到最顶部', function () {
     stop();
 
     var sug = gmu.Suggestion({
-            container: "#sugg-input",
+            el: "#sugg-input",
             sendrequest: sendrequest,
             renderlist: renderlist
         }),
