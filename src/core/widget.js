@@ -102,7 +102,7 @@
                 } else if ( method ) {
 
                     // 当取的方法不存在时，抛出错误信息
-                    if ( !$.isFunction(obj[ method ]) ) {
+                    if ( !$.isFunction( obj[ method ] ) ) {
                         throw new Error( '组件没有此方法：' + method );
                     }
 
@@ -308,14 +308,14 @@
             inherits: function( obj ) {
 
                 // 生成 Sub class
-                return createClass( name + 'Sub' + ++suid, obj, fn );
+                return createClass( name + 'Sub' + (++suid), obj, fn );
             },
 
             extend: function( obj ) {
                 staticlist.forEach(function( item ) {
                     obj[ item ] = mergeObj( superClass[ item ], obj[ item ] );
                     obj[ item ] && (fn[ item ] = obj[ item ]);
-                    delete obj[ item ]
+                    delete obj[ item ];
                 });
                 $.extend( fn.prototype, obj );
             }
