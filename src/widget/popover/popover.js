@@ -31,7 +31,8 @@
 
             // 如果传入了content, 则作为内容插入到container中
             opts.content && me.setContent( opts.content );
-            me.trigger( 'done.dom', $root.addClass( 'ui-popover' ), opts );
+            me.trigger( 'done.dom', $root.addClass( 'ui-' + me.widgetName ),
+                    opts );
 
             // 如果节点是动态创建的，则不在文档树中，就把节点插入到$el后面。
             $root.parent().length || $el.after( $root );

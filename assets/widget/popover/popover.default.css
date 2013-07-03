@@ -5,7 +5,7 @@
     border: 1px solid rgba(0,0,0,0.2);
 }
 
-.ui-popover .arrow {
+.ui-arrow {
     position: absolute;
     left: 50%;
     top: 0;
@@ -16,7 +16,7 @@
     border-width: 0 7px 7px 7px;
 }
 
-.ui-popover .arrow:before {
+.ui-arrow:before {
     position: absolute;
     top: 1.5px;
     left: -5.5px;
@@ -27,14 +27,14 @@
     content: '';
 }
 
-.ui-popover.ui-pos-left .arrow {
+.ui-pos-left>.ui-arrow {
     left: auto;
     right: 0;
     top: 50%;
     border-color: transparent transparent transparent rgba(0, 0, 0, 0.2);
     border-width: 7px 0 7px 7px;
 }
-.ui-popover.ui-pos-left .arrow:before {
+.ui-pos-left>.ui-arrow:before {
     left: auto;
     right: 1.5px;
     top: -5.5px;
@@ -42,26 +42,26 @@
     border-width: 6px 0 6px 6px;
 }
 
-.ui-popover.ui-pos-top .arrow {
+.ui-pos-top>.ui-arrow {
     top: auto;
     bottom: 0;
     border-color: rgba(0, 0, 0, 0.2) transparent transparent transparent;
     border-width: 7px 7px 0 7px;
 }
-.ui-popover.ui-pos-top .arrow:before {
+.ui-pos-top>.ui-arrow:before {
     top: auto;
     bottom: 1.5px;
     border-color: #fff transparent transparent transparent;
     border-width: 6px 6px 0 6px;
 }
 
-.ui-popover.ui-pos-right .arrow {
+.ui-pos-right>.ui-arrow {
     left: 0;
     top: 50%;
     border-color: transparent rgba(0, 0, 0, 0.2) transparent  transparent;
     border-width: 7px 7px 7px 0;
 }
-.ui-popover.ui-pos-right .arrow:before {
+.ui-pos-right>.ui-arrow:before {
     left: 2px;
     top: auto;
     bottom: -5.5px;

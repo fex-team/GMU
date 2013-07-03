@@ -5,7 +5,7 @@
 (function( gmu ) {
     var Popover = gmu.Popover;
 
-    Popover.template.arrow = '<span class="arrow"></span>';
+    Popover.template.arrow = '<span class="ui-arrow"></span>';
     Popover.options.arrow = true;    // 默认开启arrow
 
     Popover.option( 'arrow', true, function() {
