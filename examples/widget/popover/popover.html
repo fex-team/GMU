@@ -27,14 +27,63 @@
             -webkit-user-select:none;
             display: inline-block;
         }
+
+        ul.list {
+            margin: 4em 1em 1em;
+        }
+
+        ul.list>li {
+            position: relative;
+            display: inline-block;
+            padding: 0.5em 1em;
+        }
+
+        .ui-popover {
+            white-space:nowrap;/*内容不换行*/
+            opacity: 0;
+            display: block;
+            -webkit-transition: opacity 200ms ease-in-out;
+            top: 40px;
+        }
+
+        .ui-popover:before {
+            position: absolute;
+            left: 20px;
+            top: -7px;
+            display: inline-block;
+            border-style: solid;
+            border-color: transparent transparent rgba(0, 0, 0, 0.2) transparent;
+            border-width: 0 7px 7px 7px;
+            content: '';
+        }
+
+        .ui-popover:after {
+            position: absolute;
+            top: -6px;
+            left: 21px;
+            display: inline-block;
+            border-style: solid;
+            border-color: transparent transparent #fff transparent;
+            border-width: 0 6px 6px 6px;
+            content: '';
+        }
+
+        .ui-popover.in {
+            opacity: 1;
+        }
     </style>
 </head>
 <body>
 
 <h1>基础版本</h1>
-<a id="btn1" class="btn">Dropmenu</a>
+<ul class="list">
+    <li><a id="btn1" class="btn">Popover</a></li>
+</ul>
+
 <script type="text/javascript">
-    $('#btn1').dropmenu();
+    $('#btn1').popover({
+        content: 'Hello world!'
+    });
 </script>
 
 <!--demo公用头部展示所用js，可以不用加载 begin-->

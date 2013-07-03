@@ -4,100 +4,24 @@
  */
 
 (function( gmu, $, undefined ) {
-
-    // 工具集
-    var toString = Object.prototype.toString,
-        isString = function( obj ) {
-            return toString.call( obj ) === '[object String]';
-        },
-
+    var slice = [].slice,
         blankFn = function() {},
-
-        dataAttr = function( el, attr ) {
-            var attrName = 'data-' + attr,
-                data = el.getAttribute( attrName );
-
-            if ( typeof data === 'string' ) {
-                try {
-                    data = data === 'true' ? true :
-                        data === 'false' ? false :
-                        data === 'null' ? null :
-                        +data + '' === data ? +data :
-                        /(?:\{[\s\S]*\}|\[[\s\S]*\])$/.test( data ) ? JSON.parse( data ):
-                        data;
-                } catch ( ex ) {
-                    data = null;
-                }
-            }
-
-            return data;
-        },
-
-        // 从DOM节点上获取配置项
-        getDomOptions = function( el, keys ) {
-            var _result = {},
-                data;
-
-            if ( !el ) {
-                return _result;
-            }
-
-            el = $( el )[ 0 ];
-
-            for ( var key in keys ) {
-                if ( keys.hasOwnProperty( key ) ) {
-                    data = dataAttr( el, key );
-                    data !== null && (_result[ key ] = data);
-                }
-            }
-
-            return _result;
-        },
-
-        // 返回字符串的首字母小写形式
-        getFnName = function( name ) {
-            return name.replace( /^([a-zA-Z])(.*)/, function( $1, $2, $3 ) {
-                return $2.toLowerCase() + $3;
-            } );
-        },
-
-        _zeptoLize = function( name ) {
-            $.fn[ getFnName( name ) ] = function( opts ) {
-                var args = Array.prototype.slice.call( arguments, 1 ),
-                    ret,
-                    obj;
-
-                $.each( this, function( i, el ) {
-
-                    obj = record( el, name ) || new gmu[ name ]( el, $.extend( $.isPlainObject( opts ) ? opts : {}, {setup: true} ) );
-
-                    if ( isString( opts ) ) {
-                        if ( !$.isFunction( obj[ opts ] ) && opts !== 'this' ) {
-                            throw new Error( '组件没有此方法：' + opts );    //当不是取方法时，抛出错误信息
-                        }
-                        ret = $.isFunction( obj[ opts ] ) ? obj[ opts ].apply( obj, args ) : undefined;
-                    }
-
-                    if ( ret !== undefined && ret !== obj || opts === 'this' && ( ret = obj ) ) {
-                        return false;
-                    }
-                    ret = undefined;
-                } );
-
-                return ret !== undefined ? ret : this;
-            };
-        },
 
         // 挂到组件类上的属性、方法
         staticlist = [ 'options', 'template', 'tpl2html' ],
 
+        // 存储和读取数据到指定对象，任何对象包括dom对象
+        // 注意：数据不直接存储在object上，而是存在内部闭包中，通过_gid关联
+        // record( object, key ) 获取object对应的key值
+        // record( object, key, value ) 设置object对应的key值
+        // record( object, key, null ) 删除数据
         record = (function() {
             var data = {},
                 id = 0,
-                iKey = 'GMUWidget' + (+new Date());    // internal key.
+                ikey = '_gid';    // internal key.
 
             return function( obj, key, val ) {
-                var dkey = obj[ iKey ] || (obj[ iKey ] = ++id),
+                var dkey = obj[ ikey ] || (obj[ ikey ] = ++id),
                     store = data[ dkey ] || (data[ dkey ] = {});
 
                 val !== undefined && (store[ key ] = val);
@@ -107,232 +31,314 @@
             };
         })(),
 
-        /**
-         * @desc 创建一个类，构造函数默认为init方法, superClass默认为gmu.Base
-         * @name createClass
-         * @grammar createClass(object[, superClass]) => fn
-         */
-        createClass = function( object, superClass ) {
-            if ( typeof superClass !== 'function' ) {
-                superClass = gmu.Base;
-            }
+        event = gmu.event;
 
-            var widgetInit = object._init || blankFn,
-                uuid = 0,
-                fn = function( el, options ) {
+    // 遍历对象
+    function eachObject( obj, iterator ) {
+        obj && Object.keys( obj ).forEach(function( key ) {
+            iterator( key, obj[ key ] );
+        });
+    }
 
-                    if ( !(this instanceof fn) ) {
-                        return new fn( el, options );
-                    }
+    // 从某个元素上读取某个属性。
+    function dataAttr( el, attr ) {
+        var data = el.getAttribute( 'data-' + attr );
 
-                    var me = this,
-                        _optioned = fn._optioned || {};
+        try {    // JSON.parse可能报错
 
-                    if ( $.isPlainObject( el ) ) {
-                        options = el;
-                        el = undefined;
-                    }
-                    el && (this.$el = $( el ));
-                    // options中存在container时，覆盖el
-                    options && options.container && (el = this.$el = $( options.container ));
+            // 当data===null表示，没有此属性
+            data = data === null ? undefined : data === 'true' ? true :
+                    data === 'false' ? false : data === 'null' ? null :
 
-                    // 从el上获取option
-                    var dom_options = getDomOptions( el, fn.options );
-                    var options = me._options = $.extend( true, {}, fn.options, dom_options, options );
-
-                    // 将template和tpl2html挂到实例上
-                    if ( options.template !== undefined ) {
-                        me.template = options.template;
-                    }
-                    if ( options.tpl2html !== undefined )  {
-                        me.tpl2html = options.tpl2html;
-                    }
-
-                    // 生成eventNs
-                    me.eventNs = '.' + fn._fullname_ + uuid++;
-
-                    // 执行父类的构造函数
-                    superClass.apply( me, [ el, options ] );
-                    this.superClass = fn.superClass = superClass;
-
-                    // 初始化配置项监听
-                    for( var opt in _optioned ){
-                        if ( _optioned.hasOwnProperty(opt)) {
-                            $( _optioned[ opt ] ).each( function( i, item ){
-                                if ( item[0] === '*' || ($.isFunction( item[0] ) &&  item[0].call(me)) || item[0] === options[ opt ] ) {
-                                    item[ 1 ].call( me );
-                                }
-                            });
-                        }
-                    }
-                    
-                    widgetInit.call( me, options );
-
-                    // 组件初始化时才挂载插件，这样可以保证不同实例之间相互独立地使用插件，默认开启
-                    for ( var i in fn.plugins ) {
-                        var plugin = fn.plugins[ i ];
-                        if( fn.plugins.hasOwnProperty( i ) && options[ i ] !== false ){
-                            $.each( plugin, function( key, val ) {
-                                var originFunction;
-
-                                if ( ( originFunction = me[ key ] ) && $.isFunction( val ) ) {
-                                    me[ key ] = function() {
-                                        var _origin = me.origin,
-                                            result;
-
-                                        me.origin = originFunction;
-                                        result = val.apply( me, arguments );
-
-                                        if( _origin !== undefined ) {
-                                            me.origin = _origin;
-                                        } else {
-                                            delete me.origin;
-                                        }
-                                        return result;
-                                    };
-                                }else{
-                                    me[ key ] = val;
-                                }
-                            });
-
-                            fn.plugins[ i ]._init.call( me );
-                        }
-                    }
-
-                    // 进行创建DOM等操作
-                    me._create();
-                    me.trigger('ready');
-
-                    record( this.$el[ 0 ], fn._fullname_, me );
-
-                    me.on( 'destroy', function() {
-                        record( this.$el[ 0 ], fn._fullname_, null );
-                    } );
-                    
-                    return me;
-                };
-
-            $.extend( fn, {
-                extend: function( obj ){
-                    $( staticlist ).each( function( i, item ) {
-                        if(obj[ item ] !== undefined){
-                            fn[ item ] = obj[ item ];
-                            delete obj[ item ];
-                        }
-                    } );
-
-                    if ( typeof fn.options === 'undefined' ) {
-                        fn.options = {};
-                    }
-                    fn.options.template = fn.template;
-                    fn.options.tpl2html = fn.tpl2html;
-
-                    $.extend( fn.prototype, obj );
-                },
-
-                /**
-                 * @name register
-                 * @grammar fn.register({})
-                 * @desc 注册插件
-                 */
-                register: function( name, obj ){
-                    obj._init === undefined && ( obj._init = function(){} );
-                    ( fn.plugins || ( fn.plugins = {} ) )[ name ] = obj;
-                    
-                    return fn;
-                },
-
-                /**
-                 * @name inherits
-                 * @grammar fn.inherits({})
-                 * @desc 从该类继承出一个子类，不会被挂到gmu命名空间
-                 */
-                inherits: function( obj ){
-                    return createClass( obj, fn );
-                },
-
-                /**
-                 * @name option
-                 * @grammar fn.option(option, value, method)
-                 * @desc 扩充组件的配置项
-                 */
-                _optioned: {},
-                option: function( option, value, method ){
-                    var covered = false;
-
-                    if ( !fn._optioned[option] ) {
-                        fn._optioned[option] = [];
-                    }
-
-                    $( fn._optioned[option] ).each( function( i, item ){
-                        if ( item[0] === value ) {
-                            fn._optioned[option][i][1] = method;
-                            covered = true;
-                        }
-                    } );
-
-                    !covered && fn._optioned[option].push( [value, method] );
-
-                    return fn;
-                }
-            } );
-            
-            fn.prototype = Object.create( superClass.prototype );
-            fn.extend( object );
-
-            // 可以在方法中通过this.$super(name)方法调用父级方法。如：this.$super('enable');
-            fn.prototype.$super = function( name ) {
-                var fn = superClass.prototype[name];
-                return $.isFunction(fn) ? fn.apply(this, Array.prototype.slice.call(arguments, 1)) : fn;
-            };
-
-            return fn;
-        };
-
-    /**
-     *  @desc 定义一个gmu组件，只支持单继承
-     */
-    gmu.define = function( name, object, superClass ) {
-        if ( /\./.test( name ) ) {
-            return;
+                    // 如果是数字类型，则将字符串类型转成数字类型
+                    +data + '' === data ? +data :
+                    /(?:\{[\s\S]*\}|\[[\s\S]*\])$/.test( data ) ?
+                    JSON.parse( data ) : data;
+        } catch ( ex ) {
+            data = undefined;
         }
 
-        var fnName = getFnName( name );
+        return data;
+    }
 
-        gmu[ name ] = createClass( object, superClass );
-        gmu[ name ]._fullname_ = name;
+    // 从DOM节点上获取配置项
+    function getDomOptions( el, keys ) {
+        var ret = {},
+            data;
 
-        var old = $.fn[ fnName ];
-        _zeptoLize( name );
+        el && eachObject( keys, function( key ) {
+            data = dataAttr( el, key );
+            data === undefined || (ret[ key ] = data);
+        } );
 
-        /* NO CONFLICT 
+        return ret;
+    }
+
+    // 在$.fn上挂对应的组件方法呢
+    // $('#btn').button( options );实例化组件
+    // $('#btn').button( 'select' ); 调用实例方法
+    // $('#btn').button( 'this' ); 取组件实例
+    // 此方法遵循get first set all原则
+    function zeptolize( name ) {
+        var key = name.substring( 0, 1 ).toLowerCase() + name.substring( 1 ),
+            old = $.fn[ key ];
+
+        $.fn[ key ] = function( opts ) {
+            var args = slice.call( arguments, 1 ),
+                method = typeof opts === 'string' && opts,
+                ret,
+                obj;
+
+            $.each( this, function( i, el ) {
+
+                // 从缓存中取，没有则创建一个
+                obj = record( el, name ) || new gmu[ name ]( el,
+                        $.isPlainObject( opts ) ? opts : undefined );
+
+                // 取实例
+                if ( method === 'this' ) {
+                    ret = obj;
+                    return false;    // 断开each循环
+                } else if ( method ) {
+
+                    // 当取的方法不存在时，抛出错误信息
+                    if ( !$.isFunction( obj[ method ] ) ) {
+                        throw new Error( '组件没有此方法：' + method );
+                    }
+
+                    ret = obj[ method ].apply( obj, args );
+
+                    // 断定它是getter性质的方法，所以需要断开each循环，把结果返回
+                    if ( ret !== undefined && ret !== obj ) {
+                        return false;
+                    }
+
+                    // ret为obj时为无效值，为了不影响后面的返回
+                    ret = undefined;
+                }
+            } );
+
+            return ret !== undefined ? ret : this;
+        };
+
+        /* 
+         * NO CONFLICT 
          * var gmuPanel = $.fn.panel.noConflict();
          * gmuPanel.call(test, 'fnname');
          */
-        $.fn[ fnName ].noConflict = function () {
-            $.fn[ fnName ] = old;
+        $.fn[ key ].noConflict = function() {
+            $.fn[ key ] = old;
             return this;
+        };
+    }
+
+    // 加载注册的option
+    function loadOption( klass, opts ) {
+        var me = this;
+
+        // 先加载父级的
+        if ( klass.superClass ) {
+            loadOption.call( me, klass.superClass, opts );
         }
-    };
-})( window.gmu, window.gmu.$ );
 
-// 向下兼容
-window.gmu.$.ui = gmu;
+        eachObject( record( klass, 'options' ), function( key, option ) {
+            option.forEach(function( item ) {
+                var condition = item[ 0 ],
+                    fn = item[ 1 ];
 
-(function( gmu ) {
-    var blankFn = function() {
-        },
-        slice = [].slice,
-        event = gmu.event;
+                if ( condition === '*' ||
+                        ($.isFunction( condition ) &&
+                        condition.call( me, opts[ key ] )) ||
+                        condition === opts[ key ] ) {
+
+                    fn.call( me );
+                }
+            });
+        } );
+    }
+
+    // 加载注册的插件
+    function loadPlugins( klass, opts ) {
+        var me = this;
+
+        // 先加载父级的
+        if ( klass.superClass ) {
+            loadPlugins.call( me, klass.superClass, opts );
+        }
+
+        eachObject( record( klass, 'plugins' ), function( opt, plugin ) {
+
+            // 如果配置项关闭了，则不启用此插件
+            if ( opts[ opt ] === false ) {
+                return;
+            }
+
+            eachObject( plugin, function( key, val ) {
+                var oringFn;
+
+                if ( $.isFunction( val ) && (oringFn = me[ key ]) ) {
+                    me[ key ] = function() {
+                        var origin = me.origin,
+                            ret;
+
+                        me.origin = oringFn;
+                        ret = val.apply( me, arguments );
+                        origin === undefined ? delete me.origin :
+                                (me.origin = origin);
+                    };
+                } else {
+                    me[ key ] = val;
+                }
+            } );
+
+            plugin._init.call( me );
+        } );
+    }
+
+    // 合并对象
+    function mergeObj() {
+        var args = slice.call( arguments ),
+            i = args.length,
+            last;
+
+        while ( i-- ) {
+            last = last || args[ i ];
+            $.isPlainObject( args[ i ] ) || args.splice( i, 1 );
+        }
+
+        return args.length ?
+                $.extend.apply( null, [ true, {} ].concat( args ) ) : last;
+    }
 
     /**
-     * GMU组件的基类
-     * @class
-     * @name gmu.Base
+     * @desc 创建一个类，构造函数默认为init方法, superClass默认为Base
+     * @name createClass
+     * @grammar createClass(object[, superClass]) => fn
      */
-    gmu.Base = function(){};
+    function createClass( name, object, superClass ) {
+        if ( typeof superClass !== 'function' ) {
+            superClass = Base;
+        }
+
+        var uuid = 0,
+            suid = 0,
+
+            fn = function( el, options ) {
+
+                if ( !(this instanceof fn) ) {
+                    return new fn( el, options );
+                }
+
+                var me = this,
+                    opts;
+
+                if ( $.isPlainObject( el ) ) {
+                    options = el;
+                    el = undefined;
+                }
+
+                // options中存在el时，覆盖el
+                options && options.el && (el = $( options.el ));
+                el && (me.$el = $( el ), el = me.$el[ 0 ]);
+
+                opts = me._options = mergeObj( fn.options,
+                        getDomOptions( el, fn.options ), options );
+
+                me.template = mergeObj( fn.template, opts.template );
+
+                me.tpl2html = mergeObj( me.tpl2html, fn.tpl2html,
+                        opts.tpl2html );
+
+                // 生成eventNs widgetName
+                me.eventNs = '.' + name + uuid++;
+                me.widgetName = name.toLowerCase();
+
+                me._init( opts );
+                loadOption.call( me, fn, opts );
+                loadPlugins.call( me, fn, opts );
+
+                // 进行创建DOM等操作
+                me._create();
+                me.trigger( 'ready' );
+
+                el && record( el, name, me ) && me.on( 'destroy', function() {
+                    record( el, name, null );
+                } );
+                
+                return me;
+            };
+
+        $.extend( fn, {
+            
+            /**
+             * @name register
+             * @grammar fn.register({})
+             * @desc 注册插件
+             */
+            register: function( name, obj ) {
+                var plugins = record( fn, 'plugins' ) ||
+                        record( fn, 'plugins', {} );
+
+                obj._init = obj._init || blankFn;
+
+                plugins[ name ] = obj;
+                return fn;
+            },
+
+            /**
+             * @name option
+             * @grammar fn.option(option, value, method)
+             * @desc 扩充组件的配置项
+             */
+            option: function( option, value, method ) {
+                var options = record( fn, 'options' ) ||
+                        record( fn, 'options', {} );
+
+                options[ option ] || (options[ option ] = []);
+                options[ option ].push([ value, method ]);
+
+                return fn;
+            },
+
+            /**
+             * @name inherits
+             * @grammar fn.inherits({})
+             * @desc 从该类继承出一个子类，不会被挂到gmu命名空间
+             */
+            inherits: function( obj ) {
+
+                // 生成 Sub class
+                return createClass( name + 'Sub' + (++suid), obj, fn );
+            },
+
+            extend: function( obj ) {
+                staticlist.forEach(function( item ) {
+                    obj[ item ] = mergeObj( superClass[ item ], obj[ item ] );
+                    obj[ item ] && (fn[ item ] = obj[ item ]);
+                    delete obj[ item ];
+                });
+                $.extend( fn.prototype, obj );
+            }
+        } );
+
+        fn.superClass = superClass;
+        fn.prototype = Object.create( superClass.prototype );
+        fn.extend( object );
+        
+        // 可以在方法中通过this.$super(name)方法调用父级方法。如：this.$super('enable');
+        fn.prototype.$super = function( name ) {
+            var fn = superClass.prototype[ name ];
+            return $.isFunction( fn ) && fn.apply( this,
+                    slice.call( arguments, 1 ) );
+        };
+
+        return fn;
+    }
+
+    // 基类定义
+    function Base() {}
     
-    gmu.Base.prototype = {
+    Base.prototype = {
 
         /**
          *  @override
@@ -356,7 +362,7 @@ window.gmu.$.ui = gmu;
          *  @grammar instance.getEl() => $el
          *  @desc 返回组件的$el
          */
-        getEl: function(){
+        getEl: function() {
             return this.$el;
         },
 
@@ -391,7 +397,7 @@ window.gmu.$.ui = gmu;
         trigger: function( name ) {
             var evt = typeof name === 'string' ? new gmu.Event( name ) : name,
                 args = [ evt ].concat( slice.call( arguments, 1 ) ),
-                opEvent = this._options[ name ],
+                opEvent = this._options[ evt.type ],
 
                 // 先存起来，否则在下面使用的时候，可能已经被destory给删除了。
                 $el = this.getEl();
@@ -399,13 +405,13 @@ window.gmu.$.ui = gmu;
             if ( opEvent && $.isFunction( opEvent ) ) {
                 
                 // 如果返回值是false,相当于执行stopPropagation()和preventDefault();
-                false === opEvent.apply( this, args ) && (evt.stopPropagation(), evt.preventDefault());
+                false === opEvent.apply( this, args ) &&
+                        (evt.stopPropagation(), evt.preventDefault());
             }
 
             event.trigger.apply( this, args );
 
             // triggerHandler不冒泡
-
             $el && $el.triggerHandler( evt, (args.shift(), args) );
 
             return this;
@@ -440,19 +446,37 @@ window.gmu.$.ui = gmu;
             this.trigger( 'destroy' );
 
             // 解绑element上的事件
-            this.$el.off( this.eventNs );
+            this.$el && this.$el.off( this.eventNs );
             
             // 解绑所有自定义事件
             this.off();
-            for (var pro in this ) {
-                if ( !$.isFunction( this[pro] ) ) {
-                    delete this[pro];
-                } else {
-                    this[pro] = blankFn;
-                }
-            }
 
             this.destroyed = true;
         }
     };
-})(window.gmu, window.gmu.$);
+
+    /**
+     * @desc 定义一个gmu组件
+     */
+    gmu.define = function( name, object, superClass ) {
+        gmu[ name ] = createClass( name, object, superClass );
+        zeptolize( name );
+    };
+
+    /**
+     * @desc 判断object是不是 widget实例, klass不传时，默认为Base基类
+     */
+    gmu.isWidget = function( obj, klass ) {
+        
+        // 处理字符串的case
+        klass = typeof klass === 'string' ? gmu[ klass ] || blankFn : klass;
+        klass = klass || Base;
+        return obj instanceof klass;
+    };
+
+    // 暴露Base
+    gmu.Base = Base;
+
+    // 向下兼容
+    $.ui = gmu;
+})( gmu, gmu.$ );
