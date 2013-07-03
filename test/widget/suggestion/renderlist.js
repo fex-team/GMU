@@ -71,7 +71,7 @@ test('默认options及renderlist功能是否可用', function () {
     stop();
 
     var sug = gmu.Suggestion({
-            container: "#sugg-input",
+            el: "#sugg-input",
             sendrequest: sendrequest
         }),
         opts = sug._options;
@@ -107,7 +107,7 @@ test('参数usePlus,listCount,form能正确起作用', function () {
     $('<form id="sug-form2" action="http://www.baidu.com/s?form=2" method="get"></form>').appendTo('body');
 
     var sug = gmu.Suggestion({
-        container: '#sugg-input',
+        el: '#sugg-input',
         form: '#sug-form2',
         usePlus: true,
         listCount: 6,
@@ -134,7 +134,7 @@ test("isHistory = true", function() {
     stop();
 
     var sug = gmu.Suggestion({
-        container: "#sugg-input",
+        el: "#sugg-input",
         sendrequest: sendrequest
         }).on('submit', function(e) {
             try {
@@ -177,7 +177,7 @@ test("isHistory = false", function() {
     stop();
 
     var sug = gmu.Suggestion({
-            container: "#sugg-input",
+            el: "#sugg-input",
             sendrequest: sendrequest,
             isHistory: false
         }).on('submit', function(e) {
@@ -221,7 +221,7 @@ test('事件:select,submit', function() {
     stop();
 
     var sug = gmu.Suggestion({
-            container: "#sugg-input",
+            el: "#sugg-input",
             sendrequest: sendrequest
         }),
         count = 0;
@@ -346,7 +346,7 @@ test('点击“+”,词条上框', function () {
     stop();
     expect(3);
     var sug = gmu.Suggestion({
-            container: "#sugg-input",
+            el: "#sugg-input",
             sendrequest: sendrequest,
             usePlus:true
         });
