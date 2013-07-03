@@ -695,3 +695,12 @@ test( 'noConflict', function() {
     delete $.fn.widgetA;
     delete gmu.widgetA;
 });
+
+test( '尝试实例化Base', function() {
+    expect(1);
+    try {
+        gmu.Base();
+    } catch( ex ) {
+        equal( ex.message, 'Base类不能直接实例化' );
+    }
+});
