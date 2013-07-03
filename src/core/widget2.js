@@ -33,11 +33,10 @@
 
         event = gmu.event;
 
-    // 遍历对象，接口与$.each统一，但是不能断开循环。
+    // 遍历对象
     function eachObject( obj, iterator ) {
         obj && Object.keys( obj ).forEach(function( key ) {
-            var val = obj[ key ];
-            iterator.call( val, key, val );
+            iterator( key, obj[ key ] );
         });
     }
 
@@ -280,7 +279,7 @@
                 var plugins = record( fn, 'plugins' ) ||
                         record( fn, 'plugins', {} );
 
-                obj._init === undefined && (obj._init = blankFn);
+                obj._init = obj._init || blankFn;
 
                 plugins[ name ] = obj;
                 return fn;
