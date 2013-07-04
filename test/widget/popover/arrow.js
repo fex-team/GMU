@@ -42,7 +42,7 @@
         container = ins.$root;
 
         equal( ins._options.arrow, true, 'ok' );
-        equal( container.find('.arrow').length, 1, 'ok');
+        equal( container.find('.ui-arrow').length, 1, 'ok');
 
         dom.popover('destroy').remove();
     });
