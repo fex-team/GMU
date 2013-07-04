@@ -11,10 +11,11 @@
 
         _init: function() {
             var me = this,
-                $input = me.getEl(),
+                $input,
                 ns;
 
             me.on( 'ready', function() {
+                $input = me.getEl();
                 ns = me.eventNs;
 
                 me.$mask.append( me.$quickDel =

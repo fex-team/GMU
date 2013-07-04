@@ -77,18 +77,14 @@
 
     <!--组件依赖js begin-->
     <script type="text/javascript" src="../../../dist/zepto.js"></script>
-    <script type="text/javascript" src="../../../src/core/extend.js"></script>
-    <script type="text/javascript" src="../../../src/core/ui.js"></script>
-    <script type="text/javascript" src="../../../src/core/highlight.js"></script>
-    <script type="text/javascript" src="../../../src/core/position.js"></script>
-    <script type="text/javascript" src="../../../src/widget/dialog.js"></script>
-    <script type="text/javascript" src="../../../src/widget/dialog.position.js"></script>
+    <script type="text/javascript" src="../../../src/extend/highlight.js"></script>
+    <script type="text/javascript" src="../../../src/extend/parseTpl.js"></script>
+    <script type="text/javascript" src="../../../src/core/gmu.js"></script>
+    <script type="text/javascript" src="../../../src/core/event.js"></script>
+    <script type="text/javascript" src="../../../src/core/widget.js"></script>
+    <script type="text/javascript" src="../../../src/widget/dialog/dialog.js"></script>
+    <script type="text/javascript" src="../../../src/widget/dialog/$position.js"></script>
     <!--组件依赖js end-->
-
-    <!--demo展示所用js begin-->
-    <script type="text/javascript" src="../../../src/core/fix.js"></script>
-    <script type="text/javascript" src="../../../src/widget/button.js"></script>
-    <!--demo展示所用js end-->
 </head>
 <body>
 <div id="top"></div>
@@ -166,11 +162,8 @@
         </div>
     </div>
 </div>
-<!--demo公用头部展示所用js，可以不用加载 begin-->
-<script id="bootstrap" src="../../example.js" type="text/javascript" data-page="弹出框|dialog.html,弹出框定位|dialog_position.html"></script>
-<!--demo公用头部展示所用js end-->
+
 <script>
-    $(document).on('headready', function(){
         var maping = [
             'left top', 'center top', 'right top',
             'left center', 'center center', 'right center',
@@ -207,7 +200,6 @@
         $('#select1, #select2').on('change', function(){
             position();
         });
-    });
 </script>
 </body>
 </html>

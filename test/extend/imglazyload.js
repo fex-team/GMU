@@ -9,7 +9,7 @@ module("zepto.imglazyload",{
             + '爱因斯坦（1879－1955），美籍德国犹太人。他创立了代表现代科学的相对论，并为核能开发奠定了理论基础，在现代科学技术和他的深刻影响及广泛应用方面开创了现代科学新纪元，被公认为自伽利略、牛顿以来最伟大的'
             + '科学家、思想家。1921年诺贝尔物理学奖获得者。现代物理学的开创者和奠基人，相对论——“质能关系”的提出者，“决定论量子力学诠释”的捍卫者（振动的粒子）——不掷骰子的上帝。1999年12月26日，爱因斯坦被美国《时代周刊》评选为“世纪伟人”。'
             +  '</p>'
-            + '<div class="ui-imglazyload" data-url="../../core/imglazyload/' + i + '.jpg"></div>');
+            + '<div class="ui-imglazyload" data-url="../../extend/imglazyload/' + i + '.jpg"></div>');
         }
         $('#container').append(html.join(' '));
         $('.ui-imglazyload').css({
@@ -177,7 +177,7 @@ test("iscroll:初始状态图片在iscroll wrapper区域内能正确加载", fun
             $wrapper.remove();
             start();
         }, 200);
-    }, 'window.iScroll', 'core/imglazyload');
+    }, 'window.iScroll', 'extend/imglazyload');
 });
 
 test("iscroll:滚动过程中在iscroll wrapper区域内能正确加载", function(){
@@ -237,7 +237,7 @@ test("iscroll:滚动过程中在iscroll wrapper区域内能正确加载", functi
                 }, 500);
             }, 300);   
         }, 200);
-    }, 'window.iScroll', 'core/imglazyload');
+    }, 'window.iScroll', 'extend/imglazyload');
 });
 
 test("refresh:增加图片后能正确加载 & error", function(){
@@ -251,7 +251,7 @@ test("refresh:增加图片后能正确加载 & error", function(){
         dis, $btn;    //滚动加载的张数
     stop();
 
-    $(container).prepend('<div class="ui-imglazyload" data-url="../../core/imglazyload/aa.jpg"></div>');
+    $(container).prepend('<div class="ui-imglazyload" data-url="../../extend/imglazyload/aa.jpg"></div>');
 
     $btn = $('<div id="btn">点击我加载新图片</div>').on('click', function () {
         $(container).append(htmlArr.join(' '));
