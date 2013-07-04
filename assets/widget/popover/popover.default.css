@@ -5,7 +5,7 @@
     border: 1px solid rgba(0,0,0,0.2);
 }
 
-.ui-arrow {
+.ui-popover>.ui-arrow {
     position: absolute;
     left: 50%;
     top: 0;
@@ -16,7 +16,7 @@
     border-width: 0 7px 7px 7px;
 }
 
-.ui-arrow:before {
+.ui-popover>.ui-arrow:before {
     position: absolute;
     top: 1.5px;
     left: -5.5px;
