@@ -23,7 +23,9 @@
             },
             presets = {},    // 支持的定位方式。
 
-            info;
+            info,
+
+            parentOffset;
 
         $.each( config, function( preset, args ) {
             args = args.split( /\s/g );
@@ -56,8 +58,8 @@
             }, preset ) : offset || {};
 
             return {
-                left: Math.round( left + (offset.left || 0) ),
-                top: Math.round( top + (offset.top || 0) )
+                left: left + (offset.left || 0),
+                top: top + (offset.top || 0)
             };
         }
 

@@ -10,29 +10,33 @@
 
     Popover.option( 'arrow', true, function() {
         var me = this,
-            opts = me._options;
+            opts = me._options,
+            placement = 'bottom',
+            align = '';
 
         // 在没有传入offset的时候，默认有arrow就会多10px偏移
-        opts.offset = opts.offset || function( coord, preset ) {
+        opts.offset = opts.offset || function( coord, placement ) {
             return {
-                left: (preset === 'left' ? -1 :
-                        preset === 'right' ? 1 : 0) * 15,
-                top: (preset === 'top' ? -1 :
-                        preset === 'bottom' ? 1 : 0) * 15
+                left: (placement === 'left' ? -1 :
+                        placement === 'right' ? 1 : 0) * 15,
+                top: (placement === 'top' ? -1 :
+                        placement === 'bottom' ? 1 : 0) * 15
             };
         };
 
-        me.on( 'done.dom', function( e, $root ) {
-            $root.append( me.tpl2html( 'arrow' ) );
-        } );
-
-        me.on( 'after.placement', function( e, coord, info ) {
-            var root = this.$root[ 0 ],
-                cls = root.className,
-                preset = info.placement;
-
-            root.className = cls.replace( /(?:\s|^)ui-pos-[^\s$]+/g, '' ) +
-                ' ui-pos-' + preset;
-        } );
+        me
+                .on( 'done.dom', function( e, $root ) {
+                    $root.append( me.tpl2html( 'arrow' ) );
+                } )
+                .on( 'after.placement', function( e, coord, info ){
+                    placement = info.placement,
+                    align = info.algin || '';
+                } ).on( 'placement', function( e ) {
+                    var root = this.$root[ 0 ],
+                        cls = root.className;
+                    
+                    root.className = cls.replace( /(?:\s|^)ui-pos-[^\s$]+/g, '' ) +
+                        ' ui-pos-' + placement + (align ? '-' + align : '');
+                } );
     } );
 })( gmu );
