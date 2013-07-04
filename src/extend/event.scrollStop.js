@@ -3,7 +3,7 @@
  * @name scrollStop
  * @short scrollStop
  * @desc 滚动停止事件
- * @import zepto.js
+ * @import zepto.js, extend/throttle.js
  */
 
 (function ($, win) {
@@ -27,6 +27,7 @@
         $(win).off('scroll');
         registerScrollStop();
     }
+    registerScrollStop();
 
     //todo 待统一解决后退事件触发问题
     $(win).on('pageshow', function (e) {

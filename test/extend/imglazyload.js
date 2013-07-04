@@ -68,7 +68,8 @@ test("初始状态:图片进入可视区能正确加载 & threshold", function()
     });
     setTimeout(function () {    //待图片加载完成
         window.scrollTo(0,0);
-        $(window).off('scrollStop');
+        // $(window).off('scrollStop');
+        $('.ui-imglazyload').off();
         start();
     }, 300);
 });
@@ -99,7 +100,8 @@ test("scrollStop:图片进入可视区能正确加载 & loadcomplete", function(
     	ta.scrollStop();
         setTimeout(function () {
             window.scrollTo(0,0);
-            $(window).off('scrollStop');
+            // $(window).off('scrollStop');
+            $('.ui-imglazyload').off();
             start();
         }, 200);
     }, 200);
@@ -141,8 +143,9 @@ test("scroll:图片进入可视区能正确加载 & startLoad", function(){
 
             setTimeout(function () {
                 window.scrollTo(0,0);
-                $(window).off('scrollStop');
-                $(window).off('scroll');
+                // $(window).off('scrollStop');
+                // $(window).off('scroll');
+                $('.ui-imglazyload').off();
                 start();
             }, 200);
         }, 200);
@@ -296,11 +299,16 @@ test("refresh:增加图片后能正确加载 & error", function(){
                 ta.scroll();
                 setTimeout(function () {
                     window.scrollTo(0,0);
-                    $(window).off('scrollStop');
-                    $(window).off('scroll');
+                    // $(window).off('scrollStop');
+                    // $(window).off('scroll');
+                    $('.ui-imglazyload').off();
                     start();
                 }, 200);
             }, 200);
         }, 200);
     }, 200);
 });
+
+
+
+// TODO 代码中会监听document.ready所以每个用例必须放在iframe中去执行

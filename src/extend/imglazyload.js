@@ -111,7 +111,6 @@
         });
 
         !opts.innerScroll && $(window).on(opts.eventName + ' ortchange', function () {    //不是内滚时，在window上绑定事件
-            debugger;
             _detect();
         });
 
