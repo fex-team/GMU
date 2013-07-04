@@ -180,14 +180,14 @@ if($.os.ios && canShow){
 	test('window scroll(fix)', function() {
 		expect(16);
 		stop();
-	    var w = window.top;
+	    var w = window;
         ua.loadcss(["reset.css", "widget/add2desktop/add2desktop.css"], function(){
             var s2 = w.document.createElement("script");
             s2.src = "../../../test/fet/bin/import.php?f=core/zepto.ui,core/zepto.extend,core/zepto.fix,core/zepto.highlight,core/zepto.iscroll,core/zepto.ui,widget/button,widget/dialog,widget/navigator,widget/add2desktop";
             w.document.head.appendChild(s2);
    		    s2.onload = function(){
    		    	var html = "";
-   	    		for(var i = 0; i < 80; i++){
+   	    		for(var i = 0; i < 800; i++){
    	    			html += "<br />";
    	    		}
    	    		w.$("body").append(html);
