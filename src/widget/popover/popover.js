@@ -11,7 +11,10 @@
             container: null,
 
             // popover 内容
-            content: null
+            content: null,
+
+            // 交互事件名。
+            event: 'click'
         },
 
         template: {
@@ -45,11 +48,18 @@
             $el.is( '.ui-mark-temp' ) && $el.remove();
         },
 
-        // 可以重复调用。
         show: function() {
-            var me = this;
+            var me = this,
+                evt = gmu.Event( 'beforeshow' );
+
+            me.trigger( evt );
+
+            // 如果外部阻止了关闭，则什么也不做。
+            if ( evt.isDefaultPrevented() ) {
+                return;
+            }
             
-            me.trigger( 'placement', me.$root.addClass( 'in' ), me.$target );
+            me.trigger( 'placement', me.$root.addClass( 'ui-in' ), me.$target );
             me._visible = true;
             me.trigger( 'show' );
         },
@@ -65,7 +75,7 @@
                 return;
             }
 
-            me.$root.removeClass( 'in' );
+            me.$root.removeClass( 'ui-in' );
             me._visible = false;
             me.trigger( 'hide' );
         },
@@ -87,7 +97,7 @@
             var me = this,
                 $el = $( el ),
                 orig = me.$target,
-                click = 'click' + me.eventNs;
+                click = me._options.event + me.eventNs;
 
             orig && orig.off( click );
 
@@ -110,7 +120,7 @@
         destroy: function() {
             var me = this;
             
-            me.$target.off( 'click' + me.eventNs );
+            me.$target.off( me._options.event + me.eventNs );
             me._checkTemp( me.$root );
             return me.$super( 'destroy' );
         }

@@ -55,31 +55,31 @@
         container = ins.$root;
 
         // 初始不显示
-        ok( !container.hasClass('in'), 'ok');
+        ok( !container.hasClass('ui-in'), 'ok');
 
         // 点击其他区域，不会显示
         ua.click( document.body );
-        ok( !container.hasClass('in'), 'ok');
+        ok( !container.hasClass('ui-in'), 'ok');
 
         // 点击target显示
         ua.click( dom[0] );
-        ok( container.hasClass('in'), 'ok');
+        ok( container.hasClass('ui-in'), 'ok');
 
         // 点击container啥也不做
         ua.click( container[0] );
-        ok( container.hasClass('in'), 'ok');
+        ok( container.hasClass('ui-in'), 'ok');
 
         // 点击target，不显示
         ua.click( dom[0] );
-        ok( !container.hasClass('in'), 'ok');
+        ok( !container.hasClass('ui-in'), 'ok');
 
         // 点击target显示
         ua.click( dom[0] );
-        ok( container.hasClass('in'), 'ok');
+        ok( container.hasClass('ui-in'), 'ok');
 
         // 点击其他区域，隐藏
         ua.click( document.body );
-        ok( !container.hasClass('in'), 'ok');
+        ok( !container.hasClass('ui-in'), 'ok');
 
         dom.popover('destroy').remove();
     });
