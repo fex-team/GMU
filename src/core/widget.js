@@ -5,6 +5,7 @@
 
 (function( gmu, $, undefined ) {
     var slice = [].slice,
+        toString = Object.prototype.toString,
         blankFn = function() {},
 
         // 挂到组件类上的属性、方法
@@ -32,6 +33,10 @@
         })(),
 
         event = gmu.event;
+
+    function isPlainObject( obj ) {
+        return toString.call( obj ) === '[object Object]';
+    }
 
     // 遍历对象
     function eachObject( obj, iterator ) {
@@ -93,7 +98,7 @@
 
                 // 从缓存中取，没有则创建一个
                 obj = record( el, name ) || new gmu[ name ]( el,
-                        $.isPlainObject( opts ) ? opts : undefined );
+                        isPlainObject( opts ) ? opts : undefined );
 
                 // 取实例
                 if ( method === 'this' ) {
@@ -185,6 +190,8 @@
                         ret = val.apply( me, arguments );
                         origin === undefined ? delete me.origin :
                                 (me.origin = origin);
+
+                        return ret;
                     };
                 } else {
                     me[ key ] = val;
@@ -203,11 +210,56 @@
 
         while ( i-- ) {
             last = last || args[ i ];
-            $.isPlainObject( args[ i ] ) || args.splice( i, 1 );
+            isPlainObject( args[ i ] ) || args.splice( i, 1 );
         }
 
         return args.length ?
                 $.extend.apply( null, [ true, {} ].concat( args ) ) : last;
+    }
+
+    // 初始化widget. 隐藏具体细节，因为如果放在构造器中的话，是可以看到方法体内容的
+    // 同时此方法可以公用。
+    function bootstrap( name, klass, uid, el, options ) {
+        var me = this,
+            opts;
+
+        if ( isPlainObject( el ) ) {
+            options = el;
+            el = undefined;
+        }
+
+        // options中存在el时，覆盖el
+        options && options.el && (el = $( options.el ));
+        el && (me.$el = $( el ), el = me.$el[ 0 ]);
+
+        opts = me._options = mergeObj( klass.options,
+                getDomOptions( el, klass.options ), options );
+
+        me.template = mergeObj( klass.template, opts.template );
+
+        me.tpl2html = mergeObj( klass.tpl2html, opts.tpl2html );
+
+        // 生成eventNs widgetName
+        me.eventNs = '.' + name + uid;
+        me.widgetName = name.toLowerCase();
+
+        me._init( opts );
+
+        // 设置setup参数，只有传入的$el在DOM中，才认为是setup模式
+        me._options.setup = (me.$el && me.$el.parent()[0]) ? true: false;
+
+        loadOption.call( me, klass, opts );
+        loadPlugins.call( me, klass, opts );
+
+        // 进行创建DOM等操作
+        me._create();
+        me.trigger( 'ready' );
+
+        el && record( el, name, me ) && me.on( 'destroy', function() {
+            record( el, name, null );
+        } );
+        
+        return me;
     }
 
     /**
@@ -217,132 +269,119 @@
      */
     function createClass( name, object, superClass ) {
         if ( typeof superClass !== 'function' ) {
-            superClass = Base;
+            superClass = gmu.Base;
         }
 
         var uuid = 0,
-            suid = 0,
+            suid = 1;
 
-            fn = function( el, options ) {
+        function klass( el, options ) {
+            if ( name === 'Base' ) {
+                throw new Error( 'Base类不能直接实例化' );
+            }
 
-                if ( !(this instanceof fn) ) {
-                    return new fn( el, options );
-                }
+            if ( !(this instanceof klass) ) {
+                return new klass( el, options );
+            }
 
-                var me = this,
-                    opts;
+            return bootstrap.call( this, name, klass, uuid++, el, options );
+        }
 
-                if ( $.isPlainObject( el ) ) {
-                    options = el;
-                    el = undefined;
-                }
-
-                // options中存在el时，覆盖el
-                options && options.el && (el = $( options.el ));
-                el && (me.$el = $( el ), el = me.$el[ 0 ]);
-
-                opts = me._options = mergeObj( fn.options,
-                        getDomOptions( el, fn.options ), options );
-
-                me.template = mergeObj( fn.template, opts.template );
-
-                me.tpl2html = mergeObj( me.tpl2html, fn.tpl2html,
-                        opts.tpl2html );
-
-                // 生成eventNs widgetName
-                me.eventNs = '.' + name + uuid++;
-                me.widgetName = name.toLowerCase();
-
-                me._init( opts );
-
-                // 设置setup参数，只有传入的$el在DOM中，才认为是setup模式
-                me._options.setup = (me.$el && me.$el.parent()[0]) ? true: false;
-
-                loadOption.call( me, fn, opts );
-                loadPlugins.call( me, fn, opts );
-
-                // 进行创建DOM等操作
-                me._create();
-                me.trigger( 'ready' );
-
-                el && record( el, name, me ) && me.on( 'destroy', function() {
-                    record( el, name, null );
-                } );
-                
-                return me;
-            };
-
-        $.extend( fn, {
+        $.extend( klass, {
             
             /**
              * @name register
-             * @grammar fn.register({})
+             * @grammar klass.register({})
              * @desc 注册插件
              */
             register: function( name, obj ) {
-                var plugins = record( fn, 'plugins' ) ||
-                        record( fn, 'plugins', {} );
+                var plugins = record( klass, 'plugins' ) ||
+                        record( klass, 'plugins', {} );
 
                 obj._init = obj._init || blankFn;
 
                 plugins[ name ] = obj;
-                return fn;
+                return klass;
             },
 
             /**
              * @name option
-             * @grammar fn.option(option, value, method)
+             * @grammar klass.option(option, value, method)
              * @desc 扩充组件的配置项
              */
             option: function( option, value, method ) {
-                var options = record( fn, 'options' ) ||
-                        record( fn, 'options', {} );
+                var options = record( klass, 'options' ) ||
+                        record( klass, 'options', {} );
 
                 options[ option ] || (options[ option ] = []);
                 options[ option ].push([ value, method ]);
 
-                return fn;
+                return klass;
             },
 
             /**
              * @name inherits
-             * @grammar fn.inherits({})
+             * @grammar klass.inherits({})
              * @desc 从该类继承出一个子类，不会被挂到gmu命名空间
              */
             inherits: function( obj ) {
 
                 // 生成 Sub class
-                return createClass( name + 'Sub' + (++suid), obj, fn );
+                return createClass( name + 'Sub' + suid++, obj, klass );
             },
 
+            /**
+             * @name extend
+             * @grammar klass.extend({})
+             * @desc 扩充现有组件
+             */
             extend: function( obj ) {
                 staticlist.forEach(function( item ) {
                     obj[ item ] = mergeObj( superClass[ item ], obj[ item ] );
-                    obj[ item ] && (fn[ item ] = obj[ item ]);
+                    obj[ item ] && (klass[ item ] = obj[ item ]);
                     delete obj[ item ];
                 });
-                $.extend( fn.prototype, obj );
+                $.extend( klass.prototype, obj );
             }
         } );
 
-        fn.superClass = superClass;
-        fn.prototype = Object.create( superClass.prototype );
-        fn.extend( object );
+        klass.superClass = superClass;
+        klass.prototype = Object.create( superClass.prototype );
+        
         
         // 可以在方法中通过this.$super(name)方法调用父级方法。如：this.$super('enable');
-        fn.prototype.$super = function( name ) {
+        object.$super = function( name ) {
             var fn = superClass.prototype[ name ];
             return $.isFunction( fn ) && fn.apply( this,
                     slice.call( arguments, 1 ) );
         };
 
-        return fn;
+        klass.extend( object );
+
+        return klass;
     }
 
-    // 基类定义
-    function Base() {}
-    
-    Base.prototype = {
+    /**
+     * @desc 定义一个gmu组件
+     */
+    gmu.define = function( name, object, superClass ) {
+        gmu[ name ] = createClass( name, object, superClass );
+        zeptolize( name );
+    };
+
+    /**
+     * @desc 判断object是不是 widget实例, klass不传时，默认为Base基类
+     */
+    gmu.isWidget = function( obj, klass ) {
+        
+        // 处理字符串的case
+        klass = typeof klass === 'string' ? gmu[ klass ] || blankFn : klass;
+        klass = klass || gmu.Base;
+        return obj instanceof klass;
+    };
+
+    // 创建基类
+    gmu.Base = createClass( 'Base', {
 
         /**
          *  @override
@@ -457,29 +496,8 @@
 
             this.destroyed = true;
         }
-    };
 
-    /**
-     * @desc 定义一个gmu组件
-     */
-    gmu.define = function( name, object, superClass ) {
-        gmu[ name ] = createClass( name, object, superClass );
-        zeptolize( name );
-    };
-
-    /**
-     * @desc 判断object是不是 widget实例, klass不传时，默认为Base基类
-     */
-    gmu.isWidget = function( obj, klass ) {
-        
-        // 处理字符串的case
-        klass = typeof klass === 'string' ? gmu[ klass ] || blankFn : klass;
-        klass = klass || Base;
-        return obj instanceof klass;
-    };
-
-    // 暴露Base
-    gmu.Base = Base;
+    }, Object );
 
     // 向下兼容
     $.ui = gmu;

@@ -33,7 +33,7 @@ test('默认options及sendrequest功能是否可用', function () {
     stop();
 
     var sug = gmu.Suggestion({
-            container: "#sugg-input",
+            el: "#sugg-input",
             source: upath + "../data/suggestion.php",
             renderlist: renderlist
         }),
@@ -93,7 +93,7 @@ test("isCache = true", function() {
     stop();
 
     var sug = new $.ui.Suggestion({
-        container: "#sugg-input",
+        el: "#sugg-input",
         source: upath + "../data/suggestion.php",
         renderlist: renderlist
     });
@@ -135,7 +135,7 @@ test("isCache = false", function() {
     stop();
 
     var sug = new $.ui.Suggestion({
-        container: "#sugg-input",
+        el: "#sugg-input",
         source: upath + "../data/suggestion.php",
         renderlist: renderlist,
         isCache: false
