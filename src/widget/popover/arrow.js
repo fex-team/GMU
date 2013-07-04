@@ -10,9 +10,7 @@
 
     Popover.option( 'arrow', true, function() {
         var me = this,
-            opts = me._options,
-            placement = 'bottom',
-            align = '';
+            opts = me._options;
 
         // 在没有传入offset的时候，默认有arrow就会多10px偏移
         opts.offset = opts.offset || function( coord, placement ) {
@@ -24,19 +22,18 @@
             };
         };
 
-        me
-                .on( 'done.dom', function( e, $root ) {
-                    $root.append( me.tpl2html( 'arrow' ) );
-                } )
-                .on( 'after.placement', function( e, coord, info ){
-                    placement = info.placement,
-                    align = info.algin || '';
-                } ).on( 'placement', function( e ) {
-                    var root = this.$root[ 0 ],
-                        cls = root.className;
-                    
-                    root.className = cls.replace( /(?:\s|^)ui-pos-[^\s$]+/g, '' ) +
-                        ' ui-pos-' + placement + (align ? '-' + align : '');
-                } );
+        me.on( 'done.dom', function( e, $root ) {
+            $root.append( me.tpl2html( 'arrow' ) );
+        } );
+
+        me.on( 'after.placement', function( e, coord, info ) {
+            var root = this.$root[ 0 ],
+                cls = root.className,
+                placement = info.placement,
+                align = info.algin || '';
+            
+            root.className = cls.replace( /(?:\s|^)ui-pos-[^\s$]+/g, '' ) +
+                ' ui-pos-' + placement + (align ? '-' + align : '');
+        } );
     } );
 })( gmu );

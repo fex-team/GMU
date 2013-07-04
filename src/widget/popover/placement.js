@@ -23,9 +23,7 @@
             },
             presets = {},    // 支持的定位方式。
 
-            info,
-
-            parentOffset;
+            info;
 
         $.each( config, function( preset, args ) {
             args = args.split( /\s/g );
