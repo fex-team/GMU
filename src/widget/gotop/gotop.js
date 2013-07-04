@@ -81,10 +81,11 @@
             var me = this,
                 $el,
                 _opts = me._options,
-                _eventHandler = $.proxy(me._eventHandler, me);
+                _eventHandler;
 
             me.on( 'ready', function(){
                 $el = me.$el;
+                _eventHandler = $.proxy(me._eventHandler, me);
 
                 _opts['useHide'] && $(document).on('touchmove', _eventHandler);
                 $(document).on('touchend touchcancel scrollStop', _eventHandler);
@@ -171,7 +172,7 @@
                 window.scrollTo(0, 1);
                 me.trigger('afterScroll');
             } else {
-                me._options['moveToTop'] = setTimeout(function() {
+                me._options['moveToTop'] = setInterval(function() {
                     if (from > 1) {
                         window.scrollBy(0, -Math.min(150,from - 1));
                         from -= 150;

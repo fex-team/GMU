@@ -71,11 +71,9 @@ test("iScrollInstance", function(){
             });
             setTimeout(function(){
                 //PC
-                if(/Windows/.test(window.navigator.userAgent)){
-                    ua.mouseup($("#scroller")[0]);
-                }else{
-                    ta.touchend($("#scroller")[0]);
-                }
+                ua.mouseup($("#scroller")[0]);
+                ta.touchend($("#scroller")[0]);
+
                 setTimeout(function(){
                     approximateEqual(s.y, -1500, "The page scrolled");
                     ok(ua.isShown(gotop.$el[0]), "The gotop shows");
@@ -98,25 +96,21 @@ test("iScrollInstance", function(){
                         }]
                     });
                     //PC
-                    if(/Windows/.test(window.navigator.userAgent)){
-                        ua.mousedown($("#scroller")[0], {
-                            clientX: 0,
-                            clientY: 0
-                        });
-                        ua.mousemove($("#scroller")[0], {
-                        	clientX: 0,
-                            clientY: -100
-                        });
-                    }
+                    ua.mousedown($("#scroller")[0], {
+                        clientX: 0,
+                        clientY: 0
+                    });
+                    ua.mousemove($("#scroller")[0], {
+                    	clientX: 0,
+                        clientY: -100
+                    });
                     ok(!ua.isShown(gotop.$el[0]), "The gotop hides");
                     
                     setTimeout(function(){
                         //PC
-                        if(/Windows/.test(window.navigator.userAgent)){
-                            ua.mouseup($("#scroller")[0]);
-                        }else{
-                            ta.touchend($("#scroller")[0]);
-                        }
+                        ua.mouseup($("#scroller")[0]);
+                        ta.touchend($("#scroller")[0]);
+
                         setTimeout(function(){
                             approximateEqual(s.y, -1600, "The page scrolled");
                             ok(ua.isShown(gotop.$el[0]), "The gotop shows");
@@ -124,8 +118,7 @@ test("iScrollInstance", function(){
 		                            (tablet ? 60 : 50) - 30, "The gotop left is right");
 	                        approximateEqual(gotop.$el.offset().top, window.innerHeight -
 		                            (tablet ? 60 : 50) - 20, "The gotop top is right"); //位置相对于整个页面没有变
-                           
-                            ua.click(gotop.$el[0]); //click gotop
+                            gotop.$el[0].click();
                         }, 400);
                     }, 300);
                 }, 300);
@@ -175,13 +168,11 @@ test("destroy", function(){
         gotop.destroy();
 
         var el2= w.dt.eventLength();
-        var ol = w.dt.objLength(gotop);
         var dl2 =w.dt.domLength(w);
 
         equal(dl1,dl2,"The dom is ok");
         equal(w.$(".ui-gotop").length, 0, "The dom is ok");
         equal(el1,el2,"The event is ok");
-        ok(ol==0,"The gotop is destroy");
         this.finish();
     });
 });
