@@ -2,7 +2,6 @@
 @fontface { /* for iOS6 fix bug */
     font-family:"FixFont";
     src:url();
-
 }
 .ui-add2desktop {
     position: fixed;
