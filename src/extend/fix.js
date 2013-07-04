@@ -6,7 +6,7 @@
 
 /**
  * @name fix
- * @grammar fix(options)   ⇒ self
+ * @grammar fix(options) => self
  * @desc 固顶fix方法，对不支持position:fixed的设备上将元素position设为absolute，
  * 在每次scrollstop时根据opts参数设置当前显示的位置，类似fix效果。
  *

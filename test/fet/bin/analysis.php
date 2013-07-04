@@ -79,9 +79,9 @@ class Analysis{
                     var_dump($d.$path);
 
                 $filepath = $d.$path;
-                if( $path === 'zepto.js') {
-                    $filepath = dirname($d)."/dist/".$path;
-                }
+                // if( $path === 'zepto.js') {
+                //     $filepath = dirname($d)."/dist/".$path;
+                // }
                 if(file_exists($filepath)){
                     $cnt = file_get_contents($filepath);
                     $cnt.="\n";//读取文件内容必须加个回车

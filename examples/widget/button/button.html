@@ -14,10 +14,11 @@
     <!--组件依赖css end-->
     <!--组件依赖js begin-->
     <script type="text/javascript" src="../../../dist/zepto.js"></script>
-    <script type="text/javascript" src="../../../src/core/extend.js"></script>
-    <script type="text/javascript" src="../../../src/core/highlight.js"></script>
-    <script type="text/javascript" src="../../../src/core/ui.js"></script>
-    <script type="text/javascript" src="../../../src/widget/button.js"></script>
+    <script type="text/javascript" src="../../../src/extend/highlight.js"></script>
+    <script type="text/javascript" src="../../../src/core/gmu.js"></script>
+    <script type="text/javascript" src="../../../src/core/event.js"></script>
+    <script type="text/javascript" src="../../../src/core/widget.js"></script>
+    <script type="text/javascript" src="../../../src/widget/button/button.js"></script>
     <!--组件依赖js end-->
 </head>
 <body>
@@ -45,7 +46,7 @@
     });
 
     //render模式
-    $.ui.button('<a>', {
+    new gmu.Button('<a>', {
         label: '点击后不可用',
         click: function() {
             this.disable();
@@ -53,7 +54,7 @@
         container: '#btsn_create'
     });
 
-    $.ui.button('<a>', {
+    new gmu.Button('<a>', {
         label: 'a按钮',
         attributes: {
             href: 'http://www.baidu.com'
@@ -61,13 +62,10 @@
         container: '#btsn_create'
     });
 
-    $.ui.button({
+    new gmu.Button({
         label: 'button按钮',
         container: '#btsn_create'
     });
 </script>
-<!--demo公用头部展示所用js，可以不用加载 begin-->
-<script id="bootstrap" src="../../example.js" type="text/javascript" data-theme="default" data-use="widget/button.js" data-page="普通按钮|button.html,带图标的按钮|button_icon.html,图标位置|button_iconpos.html,表单按钮|button_input.html"></script>
-<!--demo公用头部展示所用js end-->
 </body>
 </html>

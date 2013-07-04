@@ -159,6 +159,8 @@
                 opts = me._options,
                 hs = opts.historyShare;
 
+            opts.container && (me.$el = $(opts.container));
+
             // 若传默认传true，则使用默认key：'SUG-Sharing-History'
             // 若传false，即表示不共享history，以该sug的id作为key值
             // 若传string，则在此基础上加上'SUG-Sharing-History'
