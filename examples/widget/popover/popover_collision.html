@@ -63,10 +63,10 @@
     });
 
     // make btn dragable
-    $('#btn1').on('touchstart', function( e ){
+    $('#btn1').on('touchstart mousedown', function( e ){
         
         // 不处理多指
-        if( e.touches.length > 1 ) {
+        if( e.touches && e.touches.length > 1 ) {
             return;
         }
 
@@ -82,7 +82,7 @@
 
             moveHandler = function( e ) {
                 // 不处理多指
-                if( e.touches.length > 1 ) {
+                if( e.touches && e.touches.length > 1 ) {
                     return;
                 }
 
@@ -99,9 +99,9 @@
                 });
             };
 
-        $doc.on( 'touchmove', moveHandler ).on( 'touchend touchcancel', function( e ) {
-            $doc.off( 'touchmove', moveHandler );
-            $doc.off( 'touchend touchcancel', arguments.callee );
+        $doc.on( 'touchmove mousemove', moveHandler ).on( 'touchend touchcancel mouseup', function( e ) {
+            $doc.off( 'touchmove mousemove', moveHandler );
+            $doc.off( 'touchend touchcancel mouseup', arguments.callee );
 
             // prevent click
             moved && e.preventDefault();
