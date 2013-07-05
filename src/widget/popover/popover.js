@@ -45,7 +45,8 @@
 
         // 删除标记为组件临时的dom
         _checkTemp: function( $el ) {
-            $el.is( '.ui-mark-temp' ) && $el.remove();
+            $el.is( '.ui-mark-temp' ) && $el.off( this.eventNs ) &&
+                    $el.remove();
         },
 
         show: function() {
@@ -120,7 +121,7 @@
         destroy: function() {
             var me = this;
             
-            me.$target.off( me._options.event + me.eventNs );
+            me.$target.off( me.eventNs );
             me._checkTemp( me.$root );
             return me.$super( 'destroy' );
         }
