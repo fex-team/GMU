@@ -485,14 +485,13 @@
          */
         destroy: function() {
 
-            // 让外部先destroy
-            this.trigger( 'destroy' );
-
             // 解绑element上的事件
             this.$el && this.$el.off( this.eventNs );
             
             // 解绑所有自定义事件
             this.off();
+
+            this.trigger( 'destroy' );
 
             this.destroyed = true;
         }
