@@ -14,6 +14,7 @@
 
         // 在没有传入offset的时候，默认有arrow就会多10px偏移
         opts.offset = opts.offset || function( coord, placement ) {
+            placement = placement.split( '_' )[ 0 ];
             return {
                 left: (placement === 'left' ? -1 :
                         placement === 'right' ? 1 : 0) * 15,
@@ -30,8 +31,8 @@
             var root = this.$root[ 0 ],
                 cls = root.className,
                 placement = info.placement,
-                align = info.algin || '';
-            
+                align = info.align || '';
+                
             root.className = cls.replace( /(?:\s|^)ui-pos-[^\s$]+/g, '' ) +
                 ' ui-pos-' + placement + (align ? '-' + align : '');
         } );
