@@ -13,12 +13,13 @@
             opts = me._options;
 
         // 在没有传入offset的时候，默认有arrow就会多10px偏移
-        opts.offset = opts.offset || function( coord, preset ) {
+        opts.offset = opts.offset || function( coord, placement ) {
+            placement = placement.split( '_' )[ 0 ];
             return {
-                left: (preset === 'left' ? -1 :
-                        preset === 'right' ? 1 : 0) * 15,
-                top: (preset === 'top' ? -1 :
-                        preset === 'bottom' ? 1 : 0) * 15
+                left: (placement === 'left' ? -1 :
+                        placement === 'right' ? 1 : 0) * 15,
+                top: (placement === 'top' ? -1 :
+                        placement === 'bottom' ? 1 : 0) * 15
             };
         };
 
@@ -29,10 +30,11 @@
         me.on( 'after.placement', function( e, coord, info ) {
             var root = this.$root[ 0 ],
                 cls = root.className,
-                preset = info.placement;
-
+                placement = info.placement,
+                align = info.align || '';
+                
             root.className = cls.replace( /(?:\s|^)ui-pos-[^\s$]+/g, '' ) +
-                ' ui-pos-' + preset;
+                ' ui-pos-' + placement + (align ? '-' + align : '');
         } );
     } );
 })( gmu );
