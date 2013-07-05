@@ -19,23 +19,16 @@
     <script type="text/javascript" src="../../../src/core/event.js"></script>
     <script type="text/javascript" src="../../../src/core/widget.js"></script>
     <script type="text/javascript" src="../../../src/widget/popover/popover.js"></script>
-    <script type="text/javascript" src="../../../src/widget/popover/dismissible.js"></script>
     <!--组件依赖js end-->
 
     <style type="text/css">
+        #wrap {
+            padding: 5px;
+            position: relative;
+        }
         .btn {
             -webkit-user-select:none;
             display: inline-block;
-        }
-
-        ul.list {
-            margin: 4em 1em 1em;
-        }
-
-        ul.list>li {
-            position: relative;
-            display: inline-block;
-            padding: 0.5em 1em;
         }
 
         .ui-popover {
@@ -43,42 +36,42 @@
             opacity: 0;
             display: block;
             -webkit-transition: opacity 200ms ease-in-out;
-            top: 40px;
+            margin-top: 10px;
+        }
+
+        .ui-popover.ui-in {
+            opacity: 1;
         }
 
         .ui-popover:before {
             position: absolute;
             left: 20px;
-            top: -7px;
+            top: -11px;
             display: inline-block;
             border-style: solid;
             border-color: transparent transparent rgba(0, 0, 0, 0.2) transparent;
-            border-width: 0 7px 7px 7px;
+            border-width: 0 11px 11px 11px;
             content: '';
         }
 
         .ui-popover:after {
             position: absolute;
-            top: -6px;
+            top: -10px;
             left: 21px;
             display: inline-block;
             border-style: solid;
             border-color: transparent transparent #fff transparent;
-            border-width: 0 6px 6px 6px;
+            border-width: 0 10px 10px 10px;
             content: '';
-        }
-
-        .ui-popover.in {
-            opacity: 1;
         }
     </style>
 </head>
 <body>
 
-<h1>基础版本</h1>
-<ul class="list">
-    <li><a id="btn1" class="btn">Popover</a></li>
-</ul>
+<div id="wrap">
+    <h1>基础版本</h1>
+    <a id="btn1" class="btn">Popover</a>
+</div>
 
 <script type="text/javascript">
     $('#btn1').popover({

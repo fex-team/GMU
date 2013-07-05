@@ -49,6 +49,10 @@ class Testcase
         $this->print_common_js();
         print '<script type="text/javascript" src="../lib/js/calcov.js"></script>' . "\n";
 
+        // 页面中存在多个import.php请求时，每个import中都会包含Zepto，后面的Zepto会覆盖前面的Zepto，导致之前挂到$上的方法没了
+        // 因此直接在head中注入zepto，import中不再包含zepto
+        print '<script type="text/javascript" src="../../../dist/zepto.js"></script>' . "\n";
+
         if($release){  //为了支持release模式而修改 田丽丽
             print "<script type='text/javascript' src='zepto.js'></script>\n";
             print "<script type='text/javascript' src='iscroll.js'></script>\n";

@@ -10,10 +10,8 @@
         offset: null
     } );
 
-    gmu.Popover.option( 'placement', function() {
-
-        // 接收字符串类型的placement参数
-        return typeof this._options.placement === 'string';
+    gmu.Popover.option( 'placement', function( val ) {
+        return ~[ 'top', 'bottom', 'left', 'right' ].indexOf( val );
     }, function() {
         var config = {
                 'top': 'center top center bottom',
@@ -56,8 +54,8 @@
             }, preset ) : offset || {};
 
             return {
-                left: Math.round( left + (offset.left || 0) ),
-                top: Math.round( top + (offset.top || 0) )
+                left: left + (offset.left || 0),
+                top: top + (offset.top || 0)
             };
         }
 
@@ -81,6 +79,7 @@
 
             // 提供机会在设置之前修改位置
             me.trigger( 'before.placement', coord, info, presets );
+            info.preset && (info.placement = info.preset);
             $el.offset( coord );
 
             // 提供给arrow位置定位用
