@@ -86,7 +86,14 @@ module.exports = function(grunt) {
 
             all: ['src/**/*.js'],
             
-            slider: ['src/widget/slider/*.js']
+            slider: ['src/widget/slider/*.js'],
+
+            temp: [
+                'src/core/*.js',
+                'src/widget/dropmenu/*.js',
+                'src/widget/slider/*.js',
+                'src/widget/popover/*.js'
+            ]
         },
 
         size: {
@@ -98,6 +105,17 @@ module.exports = function(grunt) {
             dist: {
                 cwd: 'dist/',
                 src: ['gmu.js', 'zepto.js']
+            },
+
+            temp: {
+                cwd: 'src/',
+                src: [
+                    'core/*.js',
+                    'extend/*.js',
+                    'widget/dropmenu/*.js',
+                    'widget/slider/*.js',
+                    'widget/popover/*.js'
+                ]
             }
         },
 
@@ -122,8 +140,15 @@ module.exports = function(grunt) {
             temp: {
                 cwd: 'test/',
                 src: ['core/*.js'
+                    , 'extend/parsetpl.js'
+                    , 'extend/highlight.js'
+                    , 'extend/offset.js'
+                    , 'extend/position.js'
+                    , 'widget/popover/*.js'
+                    , 'widget/dropmenu/*.js'
                     , 'widget/add2desktop/*.js', 'widget/dialog/*.js', 'widget/panel/*.js', 'widget/progressbar/*.js'
-                    , 'widget/slider/*.js', 'widget/suggestion/*.js', 'widget/toolbar/*.js']
+                    , 'widget/slider/*.js', 'widget/suggestion/*.js', 'widget/toolbar/*.js'
+                    ]
             }
         },
 

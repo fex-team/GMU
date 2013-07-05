@@ -178,11 +178,15 @@
         ins.show();
         ins.hide();
 
-        ins.show();
-
-        dom.on( 'beforehide', function(e){
+        dom.one( 'beforehide', function(e){
             e.preventDefault();
         });
+        dom.one( 'beforeshow', function(e){
+            e.preventDefault();
+        });
+
+        ins.show();
+        ins.show();
 
         ins.hide();
 
