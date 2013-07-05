@@ -1,7 +1,7 @@
 (function () {
     var fixture;
 
-    module('Popover arrow', {
+    module('Popover collision', {
         setup:function () {
             fixture = $('<div id="fixture"></div>')
                 .css({

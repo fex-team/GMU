@@ -28,7 +28,7 @@
             var selector = opts.selector;
 
             arr.forEach(function( name ) {
-                var item = $el.find(selector[ name ]);
+                var item = $el.find( selector[ name ] );
                 item.length || $el.append( item = $( me.tpl2html( name ) ) );
                 me[ '_' + name ] = item;
             });
