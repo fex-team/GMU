@@ -3,68 +3,77 @@
     padding: 20px;
     border-radius: 6px;
     border: 1px solid rgba(0,0,0,0.2);
+    white-space:nowrap;/*内容不换行*/
 }
 
-.ui-popover>.ui-arrow {
+.ui-popover .ui-arrow, .ui-popover .ui-arrow:after {
     position: absolute;
-    left: 50%;
-    top: 0;
-    margin: -7px;
-    display: inline-block;
-    border-style: solid;
-    border-color: transparent transparent rgba(0, 0, 0, 0.2) transparent;
-    border-width: 0 7px 7px 7px;
+    display: block;
+    width: 0;
+    height: 0;
+    border: 11px solid transparent;
 }
-
-.ui-popover>.ui-arrow:before {
-    position: absolute;
-    top: 1.5px;
-    left: -5.5px;
-    display: inline-block;
-    border-style: solid;
-    border-color: transparent transparent #fff transparent;
-    border-width: 0 6px 6px 6px;
+.ui-popover .ui-arrow:after {
+    border-width: 10px;
     content: '';
 }
 
-.ui-pos-left>.ui-arrow {
-    left: auto;
-    right: 0;
-    top: 50%;
-    border-color: transparent transparent transparent rgba(0, 0, 0, 0.2);
-    border-width: 7px 0 7px 7px;
-}
-.ui-pos-left>.ui-arrow:before {
-    left: auto;
-    right: 1.5px;
-    top: -5.5px;
-    border-color: transparent transparent transparent #fff;
-    border-width: 6px 0 6px 6px;
+.ui-popover.ui-pos-bottom .ui-arrow {
+    left: 50%;
+    margin-left: -11px;
+    top: -11px;
+    border-top-width: 0;
+    border-bottom-color: rgba(0, 0, 0, 0.2);
 }
 
-.ui-pos-top>.ui-arrow {
-    top: auto;
-    bottom: 0;
-    border-color: rgba(0, 0, 0, 0.2) transparent transparent transparent;
-    border-width: 7px 7px 0 7px;
-}
-.ui-pos-top>.ui-arrow:before {
-    top: auto;
-    bottom: 1.5px;
-    border-color: #fff transparent transparent transparent;
-    border-width: 6px 6px 0 6px;
+.ui-popover.ui-pos-bottom .ui-arrow:after {
+    border-top-width: 0;
+    border-bottom-color: white;
+    margin-left: -10px;
+    top: 1px;
 }
 
-.ui-pos-right>.ui-arrow {
-    left: 0;
-    top: 50%;
-    border-color: transparent rgba(0, 0, 0, 0.2) transparent  transparent;
-    border-width: 7px 7px 7px 0;
+.ui-popover.ui-pos-top .ui-arrow {
+    left: 50%;
+    margin-left: -11px;
+    bottom: -11px;
+    border-bottom-width: 0;
+    border-top-color: rgba(0, 0, 0, 0.2);
 }
-.ui-pos-right>.ui-arrow:before {
-    left: 2px;
-    top: auto;
-    bottom: -5.5px;
-    border-color: transparent #fff transparent transparent;
-    border-width: 6px 6px 6px 0;
+
+.ui-popover.ui-pos-top .ui-arrow:after {
+    border-bottom-width: 0;
+    border-top-color: white;
+    margin-left: -10px;
+    bottom: 1px;
+}
+
+.ui-popover.ui-pos-left .ui-arrow {
+    top: 50%;
+    margin-top: -11px;
+    right: -11px;
+    border-right-width: 0;
+    border-left-color: rgba(0, 0, 0, 0.2);
+}
+
+.ui-popover.ui-pos-left .ui-arrow:after {
+    border-right-width: 0;
+    border-left-color: white;
+    bottom: -10px;
+    right: 1px;
+}
+
+.ui-popover.ui-pos-right .ui-arrow {
+    top: 50%;
+    margin-top: -11px;
+    left: -11px;
+    border-left-width: 0;
+    border-right-color: rgba(0, 0, 0, 0.2);
+}
+
+.ui-popover.ui-pos-right .ui-arrow:after {
+    border-left-width: 0;
+    border-right-color: white;
+    bottom: -10px;
+    left: 1px;
 }
