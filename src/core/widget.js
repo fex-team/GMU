@@ -246,7 +246,7 @@
         me._init( opts );
 
         // 设置setup参数，只有传入的$el在DOM中，才认为是setup模式
-        me._options.setup = (me.$el && me.$el.parent()[0]) ? true: false;
+        me._options.setup = (me.$el && me.$el.parent()[ 0 ]) ? true: false;
 
         loadOption.call( me, klass, opts );
         loadPlugins.call( me, klass, opts );

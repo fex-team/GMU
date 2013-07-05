@@ -2,7 +2,7 @@
  * @file 支持水平排列
  * @import widget/dropmenu/dropmenu.js
  */
-(function( gmu, $ ) {
+(function( gmu ) {
 
     gmu.Dropmenu.options.horizontal = true;
 

@@ -84,7 +84,8 @@
 
             // 提供机会在设置之前修改位置
             me.trigger( 'before.placement', coord, info, presets );
-            if( /^(\w+)_(\w+)$/.test( info.preset ) ) {
+            
+            if ( /^(\w+)_(\w+)$/.test( info.preset ) ) {
                 info.placement = RegExp.$1;
                 info.align = RegExp.$2;
             }

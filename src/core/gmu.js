@@ -13,11 +13,10 @@
 // limitations under the License.
 
 /**
- * 声明gmu命名空间
+ * @file 声明gmu命名空间
  * @namespace gmu
  * @import zepto.js
 */
-
 var gmu = gmu || {
     version: '@version',
     $: window.Zepto,

@@ -2,7 +2,7 @@
  * @file 附近弹出组件
  * @import core/widget.js, widget/popover/popover.js, extend/highlight.js
  */
-(function( gmu, $ ){
+(function( gmu, $ ) {
 
     gmu.define( 'Dropmenu', {
         options: {
