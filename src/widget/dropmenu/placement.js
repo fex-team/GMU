@@ -7,7 +7,7 @@
     // 设置默认Options
     $.extend( gmu.Dropmenu.options, {
         placement: 'bottom',    // 默认让其在下方显示
-        align: 'center',    // 默认左对齐
+        align: 'center',    // 默认居中对齐
         offset: null
     } );
 

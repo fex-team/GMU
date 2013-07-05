@@ -1,6 +1,6 @@
 /**
  * @file 附近弹出组件
- * @import core/widget.js, extend/highlight.js
+ * @import core/widget.js, widget/popover/popover.js, extend/highlight.js
  */
 (function( gmu, $ ){
 
@@ -61,7 +61,7 @@
 
             me.$super( '_create' );
             me.$list.on( 'click' + me.eventNs, '.ui-dropmenu-items>li:not(' +
-                    '.ui-state-disable)', function( e ) {
+                    '.ui-state-disable):not(.divider)', function( e ) {
 
                 var evt = gmu.Event( 'itemclick', e );
                 me.trigger( evt, this );
