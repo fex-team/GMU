@@ -361,7 +361,11 @@ test("基本操作：页面滚动过程的，panel的三种模式正常（scroll
     ).appendTo('#page2');
 
     $("<div id='page3' ></div>").appendTo('body');
-    $('<div id="contWrap3" style="height:1500px; width: 100%;">这是panel相对的内容</div>').appendTo('#page3');
+    if(window.parent === window){
+        $('<div id="contWrap3" style="height:1500px; width: 100%;">这是panel相对的内容</div>').appendTo('#page3');
+    }else{
+        $('<div id="contWrap3" style="height:15000px; width: 100%;">这是panel相对的内容</div>').appendTo('#page3');
+    }
     $('<div id="panel3"></div>').append(
         '<ul>' +
             '<li>目录目录目录</li>' +
@@ -463,14 +467,12 @@ test("window resize", function(){
 	        	w.$("body").css("height", 300).css("width", 600);
 	             
 	            setTimeout(function(){
-	            	// equals(w.$(".ui-panel-dismiss").width(), 600 - width1, "The mask width is right");
-                    // equals(w.$(".ui-panel-dismiss").height(), 300, "The mask height is right");
-                    // approximateEqual(w.$('#panel').offset().top, 100, "The panel top is right");
-
                     // 实际情况是mask尺寸不会变，原来的用例有问题
                     equals(w.$(".ui-panel-dismiss").width(), 300 - width1, "The mask width is right");
-                    equals(w.$(".ui-panel-dismiss").height(), 150, "The mask height is right");
-					approximateEqual(w.$('#panel').offset().top, 0, "The panel top is right");
+                    // equals(w.$(".ui-panel-dismiss").width(), 600 - width1, "The mask width is right");
+                    equals(w.$(".ui-panel-dismiss").height(), 300, "The mask height is right");
+                    approximateEqual(w.$('#panel').offset().top, 100, "The panel top is right");
+
 	            	
 	                w.$("#panel").panel('destroy');
 	                setTimeout(me.finish, 300);

@@ -58,7 +58,7 @@
                 me.$contentWrap.addClass('ui-panel-animate');
                 me.$el.on(transitionEnd, $.proxy(me._eventHandler, me)).hide();  //初始状态隐藏panel
                 opts.dismissible && me.$panelMask.hide().on('click', $.proxy(me._eventHandler, me));    //绑定mask上的关闭事件
-                opts.scrollMode !== 'follow' && $(document).on('scrollStop', $.proxy(me._eventHandler, me));
+                opts.scrollMode !== 'follow' && $(window).on('scrollStop', $.proxy(me._eventHandler, me));
                 $(window).on('ortchange', $.proxy(me._eventHandler, me));
             } );
         },
@@ -265,7 +265,7 @@
             this.$panelMask && this.$panelMask.off().remove();
             this.maskTimer && clearTimeout(this.maskTimer);
             this.$contentWrap.removeClass('ui-panel-animate');
-            $(document).off('scrollStop', this._eventHandler);
+            $(window).off('scrollStop', this._eventHandler);
             $(window).off('ortchange', this._eventHandler);
             return this.$super('destroy');
         }

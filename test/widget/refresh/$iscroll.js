@@ -768,7 +768,7 @@ test("公共方法 － enable&disable", function(){
         clientY: 0 - 300
     });
     ua.mouseup(target);
-	setTimeout(function(){
+	// setTimeout(function(){
 		refresh.enable();
 
 	    ta.touchstart(target, {
@@ -793,12 +793,13 @@ test("公共方法 － enable&disable", function(){
 	        clientX: 0,
 	        clientY: 0 - 300
 	    });
+        // debugger;
 	    ua.mouseup(target);
 
 	    setTimeout(function(){
 	    	start();
-	    }, 100);
-	}, 100);
+	    }, 400);
+	// }, 100);
 });
 
 test('显示 - topOffset', function () {
@@ -813,7 +814,9 @@ test('显示 - topOffset', function () {
     setTimeout(function(){
     	equals($wrapper.height(), tablet? 316:298, "iscroll高度正确");
         equals($wrapper.parent().height(), 150, "容器高度正确");
-        equals($wrapper.find(".ui-refresh-up").offset().top, $wrapper.parent().offset().top - $wrapper.find(".ui-refresh-up").height(), "topOffset正确");
+        // equals($wrapper.find(".ui-refresh-up").offset().top, $wrapper.parent().offset().top - $wrapper.find(".ui-refresh-up").height(), "topOffset正确");
+        // 减掉高度干嘛？
+        equals($wrapper.find(".ui-refresh-up").offset().top, $wrapper.parent().offset().top, "topOffset正确");
         start();
     }, 500);
 });
