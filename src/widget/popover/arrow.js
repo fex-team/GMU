@@ -24,7 +24,7 @@
         };
 
         me.on( 'done.dom', function( e, $root ) {
-            $root.append( me.tpl2html( 'arrow' ) );
+            $root.append( me.tpl2html( 'arrow' ) ).addClass( 'ui-pos-default' );
         } );
 
         me.on( 'after.placement', function( e, coord, info ) {
