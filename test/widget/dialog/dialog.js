@@ -68,7 +68,7 @@ test("非默认配置项", function () {
     expect(17);
     stop();
     var dialog = gmu.Dialog($('<div class="ui-dialog"></div>'), {
-        width : 400,
+        width : tablet?600:400,
         height : 500,
         title : '标题',
         content : '内容',
@@ -76,7 +76,7 @@ test("非默认配置项", function () {
         closeBtn : false,
         autoOpen: false
     });
-    equals(dialog._options.width , 400, 'The width is right');
+    equals(dialog._options.width , tablet?600:400, 'The width is right');
     equals(dialog._options.height , 500, 'The width is right');
     equals(dialog._options.title , '标题', 'The title is right');
     equals(dialog._options.content , '内容', 'The content is right');
@@ -88,8 +88,9 @@ test("非默认配置项", function () {
     setTimeout(function(){
         equals(dialog._options['_wrap'].parent()[0].tagName.toLowerCase(), "body", "The container is right");
         ok(ua.isShown(dialog._options['_wrap'][0]), 'The dialog is show');
-        equals(dialog._options['_wrap'].width(), 400, "The width is right");
+        equals(dialog._options['_wrap'].width(), tablet?600:400, "The width is right");
         equals(dialog._options['_wrap'].height(), 500, "The height is right");
+
         approximateEqual(dialog._options['_wrap'].offset().left, ($(window).width() - dialog._options['_wrap'].width()) / 2, 0.5, "The left is right");
         approximateEqual(dialog._options['_wrap'].offset().top , ($(window).height() - dialog._options['_wrap'].height()) / 2, 0.5, "The top is right");
         equals($(".ui-dialog-title h3", dialog._options['_wrap']).text(), "标题", "The title is right");

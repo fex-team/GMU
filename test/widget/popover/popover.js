@@ -140,6 +140,20 @@
         ua.click( dom2[ 0 ] );
         equal( container.hasClass('ui-in'), true, '新的dom交互正确' );
 
+        dom.popover('destroy');
+
+        ins = dom.popover({
+            target: dom2
+        }).popover('this');
+        container = ins.$root;
+        equal( container.hasClass('ui-in'), false, '初始状态不可见' );
+
+        ua.click( dom[ 0 ] );
+        equal( container.hasClass('ui-in'), false, '对dom的交互已经无效' );
+
+        ua.click( dom2[ 0 ] );
+        equal( container.hasClass('ui-in'), true, '新的dom交互正确' );
+
         dom.popover('destroy').remove();
     });
 
