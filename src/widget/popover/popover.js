@@ -24,7 +24,7 @@
         _create: function() {
             var me = this,
                 opts = me._options,
-                $el = opts.target && $( opts.target ) || me.getEl(),
+                $el = me.getEl(),
                 $root = opts.container && $( opts.container );
 
             // 没传 或者 就算传入了选择器，但是没有找到节点，还是得创建一个。
