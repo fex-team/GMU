@@ -315,8 +315,8 @@ test("el selector $ 多实例 $ 显示" ,function() {
     // ua.click($('.button2')[0]);
     button1.destroy();
     button2.destroy();
-    link1.remove();
-    link2.remove();
+    $(link1).remove();
+    $(link2).remove();
     $("#button").remove();
 });
 
@@ -352,8 +352,8 @@ test("多种实例化方式", function() {
 
     ok(btn1.$el.closest('#btsn_create').length, '按钮存在与#btsn_create下面');
     ok(btn1 instanceof gmu.Button, '按钮为button实例');
-    ok(btn1._options['_textSpan'], '按钮有文字节点');
-    ok(btn1._options['_iconSpan'], '按钮有图标节点');
+    ok(!!btn1._options['_textSpan'], '按钮有文字节点');
+    ok(!!btn1._options['_iconSpan'], '按钮有图标节点');
     btn1.destroy();
 
     //setup模式
@@ -361,8 +361,8 @@ test("多种实例化方式", function() {
     btn1 = $('a#btn1').button('this');
     ok(btn1.$el.closest('#btsn_create').length, '按钮存在与#btsn_create下面');
     ok(btn1 instanceof gmu.Button, '按钮为button实例');
-    ok(btn1._options['_textSpan'], '按钮有文字节点');
-    ok(btn1._options['_iconSpan'], '按钮有图标节点');
+    ok(!!btn1._options['_textSpan'], '按钮有文字节点');
+    ok(!!btn1._options['_iconSpan'], '按钮有图标节点');
     btn1.destroy();
     $('a#btn1').remove();
 
@@ -370,8 +370,8 @@ test("多种实例化方式", function() {
     btn1 = $('a#btn1').button('this');
     ok(btn1.$el.closest('#btsn_create').length, '按钮存在与#btsn_create下面');
     ok(btn1 instanceof gmu.Button, '按钮为button实例');
-    ok(btn1._options['_textSpan'], '按钮有文字节点');
-    ok(btn1._options['_iconSpan'], '按钮有图标节点');
+    ok(!!btn1._options['_textSpan'], '按钮有文字节点');
+    ok(!!btn1._options['_iconSpan'], '按钮有图标节点');
     equals(btn1._options['label'], 'button', 'label为button');
     equals(btn1._options['alttext'], '', 'alttext为空');
     equals(btn1._options['icon'], 'home', 'icon为home');
@@ -383,8 +383,8 @@ test("多种实例化方式", function() {
     btn1 = $('a#btn1').button('this');
     ok(btn1.$el.closest('#btsn_create').length, '按钮存在与#btsn_create下面');
     ok(btn1 instanceof gmu.Button, '按钮为button实例');
-    ok(btn1._options['_textSpan'], '按钮有文字节点');
-    ok(btn1._options['_iconSpan'], '按钮有图标节点');
+    ok(!!btn1._options['_textSpan'], '按钮有文字节点');
+    ok(!!btn1._options['_iconSpan'], '按钮有图标节点');
     equals(btn1._options['label'], '', 'label为空');
     equals(btn1._options['alttext'], 'button', 'alttext为button');
     equals(btn1._options['icon'], 'home', 'icon为home');
