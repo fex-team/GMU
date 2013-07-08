@@ -42,10 +42,6 @@
             display: inline-block;
             padding: 0.5em 1em;
         }
-
-        .ui-popover {
-            white-space:nowrap;/*内容不换行*/
-        }
     </style>
 </head>
 <body>
@@ -64,7 +60,7 @@
 
 <script type="text/javascript">
     var popover = $('#btn1').popover({
-        content: 'Hello World!',
+        content: '此popover内容将被<br />公用给4个button',
         placement: 'top',
         container: '#popover'
     }).popover( 'this' );    // 取实例

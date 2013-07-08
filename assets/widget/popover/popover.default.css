@@ -3,7 +3,6 @@
     padding: 20px;
     border-radius: 6px;
     border: 1px solid rgba(0,0,0,0.2);
-    white-space:nowrap;/*内容不换行*/
 }
 
 .ui-popover .ui-arrow, .ui-popover .ui-arrow:after {
