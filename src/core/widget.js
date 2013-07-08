@@ -501,7 +501,7 @@
             tpl =  typeof subpart === 'string' ? tpl[ subpart ] :
                     ((data = subpart), tpl);
             
-            return data ? $.parseTpl( tpl, data ) : tpl;
+            return data || ~tpl.indexOf( '<%' ) ? $.parseTpl( tpl, data ) : tpl;
         },
 
         /**
