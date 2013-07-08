@@ -86,11 +86,20 @@
 
     gmu.Button.register( 'input', {
         _init: function(){
-            var opts = this._options;
+            var opts = this._options,
+                me = this;
 
-            this.on( 'ready', function(){
-                (opts.type == 'checkbox' || opts.type =='radio') && this.$el.prop('checked', !!opts.selected);
+            me.on( 'ready', function(){
+                (opts.type == 'checkbox' || opts.type =='radio') && me.$el.prop('checked', !!opts.selected);
             } );
+
+            me.on( 'destroy', function(){
+                // setup模式，只移除label；render模式，将button元素和label都移除
+                opts._buttonElement.remove();
+                if ( !opts.setup ) {
+                    me.$el.remove();
+                }
+            });
         },
 
         _createDefEL: function(){

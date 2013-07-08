@@ -14,6 +14,7 @@
     <!--组件依赖js begin-->
     <script type="text/javascript" src="../../../dist/zepto.js"></script>
     <script type="text/javascript" src="../../../src/extend/touch.js"></script>
+    <script type="text/javascript" src="../../../src/extend/offset.js"></script>
     <script type="text/javascript" src="../../../src/extend/parseTpl.js"></script>
     <script type="text/javascript" src="../../../src/core/gmu.js"></script>
     <script type="text/javascript" src="../../../src/core/event.js"></script>
@@ -21,10 +22,12 @@
     <script type="text/javascript" src="../../../src/widget/popover/popover.js"></script>
     <script type="text/javascript" src="../../../src/widget/popover/placement.js"></script>
     <script type="text/javascript" src="../../../src/widget/popover/arrow.js"></script>
-    <script type="text/javascript" src="../../../src/widget/popover/dismissible.js"></script>
     <!--组件依赖js end-->
 
     <style type="text/css">
+        #wrap {
+            padding: 5px;
+        }
         .btn {
             -webkit-user-select:none;
             display: inline-block;
@@ -47,13 +50,15 @@
 </head>
 <body>
 
-<h1>公用一个PopOver</h1>
-<ul class="list">
-    <li><a id="btn1" class="btn">Popover top</a></li>
-    <li><a id="btn2" class="btn">Popover right</a></li>
-    <li><a id="btn3" class="btn">Popover bottom</a></li>
-    <li><a id="btn4" class="btn">Popover left</a></li>
-</ul>
+<div id="wrap">
+    <h1>可上下左右定位版本</h1>
+    <ul class="list">
+        <li><a id="btn1" class="btn">Popover top</a></li>
+        <li><a id="btn2" class="btn">Popover right</a></li>
+        <li><a id="btn3" class="btn">Popover bottom</a></li>
+        <li><a id="btn4" class="btn">Popover left</a></li>
+    </ul>
+</div>
 
 <div id="popover"></div>
 

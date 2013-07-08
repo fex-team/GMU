@@ -1,7 +1,7 @@
 (function () {
     var fixture;
 
-    module('Popover dismissible', {
+    module('Dropmenu dismissible', {
         setup:function () {
             fixture = $('<div id="fixture"></div>')
                 .css({
@@ -25,33 +25,54 @@
         stop();
         ua.loadcss([
             'reset.css',
-            'widget/popover/popover.css',
-            'widget/popover/popover.default.css'
+            'icons.default.css',
+            'widget/dropmenu/dropmenu.css',
+            'widget/dropmenu/dropmenu.default.css'
         ], function () {
             ok(true, '样式加载成功');
             start();
         });
     });
 
+    test('加载js', function(){
+        expect(1);
+        stop();
+
+        ua.importsrc('widget/popover/dismissible', function(){
+            ok( true, 'popover加载进来了');
+            start();
+        }, 'gmu.Popover.options.dismissible');
+    });
+
+    test('加载js', function(){
+        expect(1);
+        stop();
+
+        ua.importsrc('widget/dropmenu/dropmenu', function(){
+            ok( true, 'dropmenu加载进来了');
+            start();
+        }, 'gmu.Dropmenu', 'widget/popover/popover');
+    });
+
     test( 'dimissible参数应该自动开启', function(){
-        var dom = $('<a data-content="Hello World">Button</a>').appendTo(fixture),
+        var dom = $('<a data-content=\'["item1", "item2", "divider", "item3"]\'>Button</a>').appendTo(fixture),
             ins,
             container;
 
-        ins = dom.popover('this');
+        ins = dom.dropmenu('this');
         container = ins.$root;
 
         equal( ins._options.dismissible, true, 'ok' );
 
-        dom.popover('destroy').remove();
+        dom.dropmenu('destroy').remove();
     });
 
     test( '功能检测', function(){
-        var dom = $('<a data-content="Hello World">Button</a>').appendTo(fixture),
+        var dom = $('<a data-content=\'["item1", "item2", "divider", "item3"]\'>Button</a>').appendTo(fixture),
             ins,
             container;
 
-        ins = dom.popover('this');
+        ins = dom.dropmenu('this');
         container = ins.$root;
 
         // 初始不显示
@@ -81,26 +102,26 @@
         ua.click( document.body );
         ok( !container.hasClass('ui-in'), 'ok');
 
-        dom.popover('destroy').remove();
+        dom.dropmenu('destroy').remove();
     });
 
     test("destroy event", function () {
         ua.destroyTest(function (w, f) {
 
-            var elem = w.$('<a id="popover" data-content="Hello World">Button</a>');
+            var elem = w.$('<a id="dropmenu" data-content=\'["item1", "item2", "divider", "item3"]\'>Button</a>');
 
             w.$("body").append(elem);
 
             var el1 = w.dt.eventLength();
 
-            var obj = elem.popover('this');
+            var obj = elem.dropmenu('this');
             obj.destroy();
 
 
             var el2 = w.dt.eventLength();
 
             equal(el1, el2, "The event is ok");
-            equals(w.$("#popover").length, 1, "dom没有被移出");
+            equals(w.$("#dropmenu").length, 1, "dom没有被移出");
             this.finish();
         });
     });

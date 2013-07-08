@@ -330,7 +330,7 @@
                 opts = this._options;
 
             opts._buttonElement.off('click', me._eventHandler).highlight();
-
+            
             if ( !opts.setup ) {
                 opts._buttonElement.remove();
             }

@@ -97,23 +97,23 @@
         ins = dom.popover('this');
         container = ins.$root;
 
-        equal( container.hasClass('in'), false );
+        equal( container.hasClass('ui-in'), false );
 
         ins.show();
-        equal( container.hasClass('in'), true );
+        equal( container.hasClass('ui-in'), true );
 
         ins.toggle();
-        equal( container.hasClass('in'), false );
+        equal( container.hasClass('ui-in'), false );
 
         ins.toggle();
-        equal( container.hasClass('in'), true );
+        equal( container.hasClass('ui-in'), true );
 
         // 交互
         ua.click( dom[ 0 ] );
-        equal( container.hasClass('in'), false );
+        equal( container.hasClass('ui-in'), false );
 
         ua.click( dom[ 0 ] );
-        equal( container.hasClass('in'), true );
+        equal( container.hasClass('ui-in'), true );
 
         dom.popover('destroy').remove();
     });
@@ -132,13 +132,27 @@
 
         ins.target( dom2 );
 
-        equal( container.hasClass('in'), false, '初始状态不可见' );
+        equal( container.hasClass('ui-in'), false, '初始状态不可见' );
 
         ua.click( dom[ 0 ] );
-        equal( container.hasClass('in'), false, '对dom的交互已经无效' );
+        equal( container.hasClass('ui-in'), false, '对dom的交互已经无效' );
 
         ua.click( dom2[ 0 ] );
-        equal( container.hasClass('in'), true, '新的dom交互正确' );
+        equal( container.hasClass('ui-in'), true, '新的dom交互正确' );
+
+        dom.popover('destroy');
+
+        ins = dom.popover({
+            target: dom2
+        }).popover('this');
+        container = ins.$root;
+        equal( container.hasClass('ui-in'), false, '初始状态不可见' );
+
+        ua.click( dom[ 0 ] );
+        equal( container.hasClass('ui-in'), false, '对dom的交互已经无效' );
+
+        ua.click( dom2[ 0 ] );
+        equal( container.hasClass('ui-in'), true, '新的dom交互正确' );
 
         dom.popover('destroy').remove();
     });
@@ -178,15 +192,19 @@
         ins.show();
         ins.hide();
 
-        ins.show();
-
-        dom.on( 'beforehide', function(e){
+        dom.one( 'beforehide', function(e){
+            e.preventDefault();
+        });
+        dom.one( 'beforeshow', function(e){
             e.preventDefault();
         });
 
+        ins.show();
+        ins.show();
+
         ins.hide();
 
-        equal( container.hasClass('in'), true, 'ok' );
+        equal( container.hasClass('ui-in'), true, 'ok' );
         equal( counter, 3, 'ok' );
 
         dom.popover('destroy').remove();

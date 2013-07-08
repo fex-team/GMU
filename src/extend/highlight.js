@@ -5,54 +5,56 @@
  *  @import zepto.js
  */
 (function( $ ) {
-    var inited = false,
+    var $doc = $( document ),
+        $el,    // 当前按下的元素
+        timer;    // 考虑到滚动操作时不能高亮，所以用到了100ms延时
 
-        removeClass = function() {
-            var cls;
+    // 负责移除className.
+    function dismiss() {
+        var cls = $el.attr( 'hl-cls' );
 
-            clearTimeout( timer );
+        clearTimeout( timer );
+        $el.removeClass( cls ).removeAttr( 'hl-cls' );
+        $el = null;
+        $doc.off( 'touchend touchmove touchcancel', dismiss );
+    }
 
-            if ( actElem && (cls = actElem.attr( 'highlight-cls' )) ) {
-                actElem.removeClass( cls ).removeAttr( 'highlight-cls' );
-                actElem = null;
-            }
-        },
+    /**
+     * @name highlight
+     * @desc 禁用掉系统的高亮，当手指移动到元素上时添加指定class，手指移开时，移除该class.
+     * 当不传入className是，此操作将解除事件绑定。
+     * 
+     * 此方法支持传入selector, 此方式将用到事件代理，允许dom后加载。
+     * @grammar  highlight(className, selector )   ⇒ self
+     * @grammar  highlight(className )   ⇒ self
+     * @grammar  highlight()   ⇒ self
+     * @example var div = $('div');
+     * div.highlight('div-hover');
+     *
+     * $('a').highlight();// 把所有a的自带的高亮效果去掉。
+     */
+    $.fn.highlight = function( className, selector ) {
+        return this.each(function() {
+            var $this = $( this );
 
-        en = '.highlight',
+            $this.css( '-webkit-tap-highlight-color', 'rgba(255,255,255,0)' )
+                    .off( 'touchstart.hl' );
 
-        actElem, 
-        timer;
+            className && $this.on( 'touchstart.hl', function( e ) {
+                var match;
 
-    $.extend( $.fn, {
-        
-        /**
-         * @name highlight
-         * @desc 禁用掉系统的高亮，当手指移动到元素上时添加指定class，手指移开时，移除该class
-         * @grammar  highlight(className)   ⇒ self
-         * @example var div = $('div');
-         * div.highlight('div-hover');
-         *
-         * $('a').highlight();// 把所有a的自带的高亮效果去掉。
-         */
-        highlight: function( className ) {
-            inited = inited || !!$( document )
-                    .on( 'touchend' + en + ' touchmove' + en + ' touchcancel' +
-                    en, removeClass );
+                $el = selector ? (match = $( e.target ).closest( selector,
+                        this )) && match.length && match : $this;
 
-            removeClass();
-            return this.each(function() {
-                var $el = $( this );
-
-                $el.css( '-webkit-tap-highlight-color', 'rgba(255,255,255,0)' )
-                        .off( 'touchstart' + en );
-
-                className && $el.on( 'touchstart' + en, function() {
+                // selctor可能找不到元素。
+                if ( $el ) {
+                    $el.attr( 'hl-cls', className );
                     timer = setTimeout( function() {
-                        actElem = $el.attr( 'highlight-cls', className )
-                                .addClass( className );
+                        $el.addClass( className );
                     }, 100 );
-                } );
-            });
-        }
-    } );
+                    $doc.on( 'touchend touchmove touchcancel', dismiss );
+                }
+            } );
+        });
+    };
 })( Zepto );

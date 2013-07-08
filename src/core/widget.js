@@ -240,13 +240,13 @@
         me.tpl2html = mergeObj( klass.tpl2html, opts.tpl2html );
 
         // 生成eventNs widgetName
-        me.eventNs = '.' + name + uid;
         me.widgetName = name.toLowerCase();
+        me.eventNs = '.' + me.widgetName + uid;
 
         me._init( opts );
 
         // 设置setup参数，只有传入的$el在DOM中，才认为是setup模式
-        me._options.setup = (me.$el && me.$el.parent()[0]) ? true: false;
+        me._options.setup = (me.$el && me.$el.parent()[ 0 ]) ? true: false;
 
         loadOption.call( me, klass, opts );
         loadPlugins.call( me, klass, opts );
@@ -272,7 +272,7 @@
             superClass = gmu.Base;
         }
 
-        var uuid = 0,
+        var uuid = 1,
             suid = 1;
 
         function klass( el, options ) {
@@ -336,12 +336,38 @@
              * @desc 扩充现有组件
              */
             extend: function( obj ) {
+                var proto = klass.prototype,
+                    superProto = superClass.prototype;
+
                 staticlist.forEach(function( item ) {
                     obj[ item ] = mergeObj( superClass[ item ], obj[ item ] );
                     obj[ item ] && (klass[ item ] = obj[ item ]);
                     delete obj[ item ];
                 });
-                $.extend( klass.prototype, obj );
+
+                // todo 跟plugin的origin逻辑，公用一下
+                eachObject( obj, function( key, val ) {
+                    if ( typeof val === 'function' && superProto[ key ] ) {
+                        proto[ key ] = function() {
+                            var $super = this.$super,
+                                ret;
+
+                            // todo 直接让this.$super = superProto[ key ];
+                            this.$super = function() {
+                                var args = slice.call( arguments, 1 );
+                                return superProto[ key ].apply( this, args );
+                            };
+
+                            ret = val.apply( this, arguments );
+
+                            $super === undefined ? (delete this.$super) : 
+                                    (this.$super = $super);
+                            return ret;
+                        };
+                    } else {
+                        proto[ key ] = val;
+                    }
+                } );
             }
         } );
 
@@ -349,12 +375,12 @@
         klass.prototype = Object.create( superClass.prototype );
         
         
-        // 可以在方法中通过this.$super(name)方法调用父级方法。如：this.$super('enable');
+        /*// 可以在方法中通过this.$super(name)方法调用父级方法。如：this.$super('enable');
         object.$super = function( name ) {
             var fn = superClass.prototype[ name ];
             return $.isFunction( fn ) && fn.apply( this,
                     slice.call( arguments, 1 ) );
-        };
+        };*/
 
         klass.extend( object );
 
@@ -488,10 +514,10 @@
             // 解绑element上的事件
             this.$el && this.$el.off( this.eventNs );
             
+            this.trigger( 'destroy' );
             // 解绑所有自定义事件
             this.off();
 
-            this.trigger( 'destroy' );
 
             this.destroyed = true;
         }

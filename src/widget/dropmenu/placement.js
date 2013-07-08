@@ -1,23 +1,26 @@
 /**
  * @file 简单版定位
- * @import widget/popover/popover.js, extend/offset.js
+ * @import widget/dropmenu/dropmenu.js, extend/offset.js
  */
 (function( gmu, $ ) {
 
     // 设置默认Options
-    $.extend( gmu.Popover.options, {
+    $.extend( gmu.Dropmenu.options, {
         placement: 'bottom',    // 默认让其在下方显示
+        align: 'center',    // 默认居中对齐
         offset: null
     } );
 
-    gmu.Popover.option( 'placement', function( val ) {
-        return ~[ 'top', 'bottom', 'left', 'right' ].indexOf( val );
+    gmu.Dropmenu.option( 'placement', function( val ) {
+        return ~[ 'top', 'bottom' ].indexOf( val );
     }, function() {
         var config = {
-                'top': 'center top center bottom',
-                'right': 'right center left center',
-                'bottom': 'center bottom center top',
-                'left': 'left center right center'
+                'top_center': 'center top center bottom',
+                'top_left': 'left top left bottom',
+                'top_right': 'right top right bottom',
+                'bottom_center': 'center bottom center top',
+                'bottom_right': 'right bottom right top',
+                'bottom_left': 'left bottom left top'
             },
             presets = {},    // 支持的定位方式。
 
@@ -63,23 +66,30 @@
             var me = this,
                 opts = me._options,
                 placement = opts.placement,
+                align = opts.align,
                 coord;
 
             info = {
                 coord: $el.offset(),
                 of: $of.offset(),
                 placement: placement,
+                align: align,
                 $el: $el,
                 $of: $of,
                 offset: opts.offset
             };
 
             // 设置初始值
-            coord = presets[ placement ]();
+            coord = presets[ placement + '_' + align ]();
 
             // 提供机会在设置之前修改位置
             me.trigger( 'before.placement', coord, info, presets );
-            info.preset && (info.placement = info.preset);
+            
+            if ( /^(\w+)_(\w+)$/.test( info.preset ) ) {
+                info.placement = RegExp.$1;
+                info.align = RegExp.$2;
+            }
+
             $el.offset( coord );
 
             // 提供给arrow位置定位用

@@ -56,7 +56,7 @@
                 now = aviable.shift();
                 $.extend( coord, presets[ now ]() );
             }
-            info.placement = now;
+            info.preset = now;
         } );
     } );
 })( gmu, gmu.$ );

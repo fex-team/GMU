@@ -18,7 +18,7 @@
         // 节点且不为postion: absolute|fixed 定位时时，改元素的初始位置并不是{left:0, top: 0}
         // 会根据前面兄弟节点的内容大小而不一样。
         // 以下主要是借助zepto的offset的function接口来纠正定位值。
-        hook = coord && function() {
+        hook = coord && function( index, ofs ) {
             var $el = $( this ),
                 position = $el.css( 'position' ),
 
@@ -46,6 +46,11 @@
                 top: coord.top - (pos.top || 0),
                 left: coord.left - (pos.left || 0)
             };
+
+            // 迫于无赖，chrome下如果offset设置的top,left不是整型，会导致popOver中arrow样式有问题。
+            pos = $el.position();
+            coord.top = Math.round( coord.top ) + (ofs.top - pos.top) % 1;
+            coord.left = Math.round( coord.left ) + (ofs.left - pos.left) % 1;
 
             return coord;
         };

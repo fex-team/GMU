@@ -315,6 +315,8 @@ test("el selector $ 多实例 $ 显示" ,function() {
     // ua.click($('.button2')[0]);
     button1.destroy();
     button2.destroy();
+    link1.remove();
+    link2.remove();
     $("#button").remove();
 });
 
@@ -362,6 +364,7 @@ test("多种实例化方式", function() {
     ok(btn1._options['_textSpan'], '按钮有文字节点');
     ok(btn1._options['_iconSpan'], '按钮有图标节点');
     btn1.destroy();
+    $('a#btn1').remove();
 
     $('<a id="btn1" data-mode="true" class="ui-button ui-button-text-icon ui-button-icon-pos-right"><span class="ui-button-text">button</span><span class="ui-icon ui-icon-home"></span></a>').appendTo('#btsn_create');
     btn1 = $('a#btn1').button('this');
@@ -374,6 +377,7 @@ test("多种实例化方式", function() {
     equals(btn1._options['icon'], 'home', 'icon为home');
     equals(btn1._options['iconpos'], 'right', 'iconpos为right');
     btn1.destroy();
+    $('a#btn1').remove();
 
     $('<a id="btn1" data-mode="true" class="ui-button ui-button-icon-only"><span class="ui-button-text">button</span><span class="ui-icon ui-icon-home"></span></a>').appendTo('#btsn_create');
     btn1 = $('a#btn1').button('this');
