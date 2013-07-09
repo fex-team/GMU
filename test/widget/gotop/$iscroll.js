@@ -118,7 +118,7 @@ test("iScrollInstance", function(){
 		                            (tablet ? 60 : 50) - 30, "The gotop left is right");
 	                        approximateEqual(gotop.$el.offset().top, window.innerHeight -
 		                            (tablet ? 60 : 50) - 20, "The gotop top is right"); //位置相对于整个页面没有变
-                            gotop.$el[0].click();
+                            ua.click(gotop.$el[0]);
                         }, 400);
                     }, 300);
                 }, 300);
