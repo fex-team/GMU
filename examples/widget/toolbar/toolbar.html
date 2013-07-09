@@ -27,7 +27,63 @@
 </head>
 <body>
 
+<style type="text/css">
+    .ui-toolbar-backbtn {
+        display: block;
+        position: relative;
+        float: left;
+        cursor: pointer;
+        -webkit-box-sizing:border-box;
+        box-sizing:border-box;
+        -webkit-user-select: none;
+        user-select: none;
+        border: solid #d9d9d9;
+        border-width: 1px 1px 1px 0;
+        background: #f7f7f7;
+        line-height: 30px;
+        height: 30px;
+        margin: 5px 0 0 20px;
+        padding: 0 8px 0 6px;
+    }
 
+    .ui-toolbar-backbtn:before, .ui-toolbar-backbtn:after {
+        content: '\0020';
+        border-width:15px 8px 15px 0;
+        border-style:solid;
+        position: absolute;
+        left: -8px;
+        top: -1px;
+        width:0;
+        height:0;
+        display: block;
+    }
+
+    .ui-toolbar-backbtn:before {
+        border-color:transparent #d9d9d9 transparent transparent;
+    }
+
+    .ui-toolbar-backbtn:after {
+        border-color:transparent #f7f7f7 transparent transparent;
+        left: -7px;
+    }
+
+    .ui-toolbar .ui-toolbar-backbtn.ui-state-hover {
+        background-color: #d9d9d9;
+        border-color: #b3b3b3;
+    }
+    .ui-toolbar .ui-toolbar-backbtn.ui-state-hover:after {
+        border-color: transparent #d9d9d9 transparent transparent;
+    }
+    .ui-toolbar .ui-toolbar-backbtn.ui-state-hover:before {
+        border-color: transparent #b3b3b3 transparent transparent;
+    }
+
+    p {
+        margin-top: 20px;
+    }
+</style>
+
+<p>setup方式创建：</p>
 <div id="J_toolbar1">
     <a href="../">返回</a>  <!-- 如果按钮为a标签，则默认不会添加点击事件 ,若不为a标签，默认会添加上【点击 history(-1)】的事件,该事件可以自己覆写-->
     <h2>工具栏</h2>
@@ -38,14 +94,16 @@
         $('#J_toolbar1').toolbar({});
 </script>
 
+
+<p>setup方式创建：</p>
 <div id="J_toolbar2">
     <div class="ui-toolbar-left">
-        <a href="../">返回</a>
+        <a href="../" class="ui-toolbar-backbtn">返回</a>
     </div>
     <h3>工具栏</h3>
     <div class="ui-toolbar-right">
-        <span class="btn_1">百科</span>
-        <span class="btn_1">知道</span>
+        <span class="btn_1 ui-toolbar-button">百科</span>
+        <span class="btn_1 ui-toolbar-button">知道</span>
     </div>
 </div>
 <script>
@@ -56,8 +114,9 @@
         });
 </script>
 
+<p>render方式创建：</p>
 <script>
-        // 全render方式调用
+        // render方式调用
         var instance3 = new gmu.Toolbar({
             // container: document.body,
             title: '标题',
@@ -66,6 +125,7 @@
         });
 </script>
 
+<p>render方式创建：传入一个空的div元素</p>
 <div id="J_toolbar4"></div>
 <script>
         // 半render方式调用
@@ -85,7 +145,7 @@
                                                                     })]);
 </script>
 
-
+<p>render方式创建：传入的el元素不存在</p>
 <script>
         // 给的元素不存在，render方式调用
         var instance5 = new gmu.Toolbar('#J_toolbar5', {
@@ -104,6 +164,7 @@
                                                                     })]);
 </script>
 
+<p>render方式创建：传入的el为HTML片段</p>
 <script>
         // 传入的el为HTML片段，render方式调用
         var instance6 = new gmu.Toolbar('<div class="my-toolbar"></div>', {

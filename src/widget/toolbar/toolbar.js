@@ -89,9 +89,9 @@
 
             // render方式，需要先创建Toolbar节点
             if( !opts.setup ) {
-                ($el && $el.length > 0) ? $el.appendTo(container) :   // 如果el是一个HTML片段，将其插入DOM中
-                      ($el = me.$el = $('<div><div class="ui-toolbar-wrap"></div></div>').appendTo( container ));
-                $toolbarWrap = $el.find('.ui-toolbar-wrap');
+                ($el && $el.length > 0) ?
+                    $el.appendTo(container) :   // 如果el是一个HTML片段，将其插入container中
+                    ($el = me.$el = $('<div>').appendTo( container ));  // 否则，创建一个空div，将其插入container中
             }
 
             // 从DOM中取出按钮组
@@ -106,9 +106,9 @@
             children.forEach( function( child ) {
                 $toolbarWrap.append(child);
 
-                /^[hH]/.test( child.tagName ) && (currentGroup = btnGroups['right'], me.title = child);
-
-                !/^[hH]/.test( child.tagName ) && currentGroup.push( child );
+                /^[hH]/.test( child.tagName ) ? 
+                    (currentGroup = btnGroups['right'], me.title = child) :
+                    currentGroup.push( child );
             } );
 
             // 创建左侧按钮组的容器
@@ -120,7 +120,7 @@
                     leftBtnContainer.append( btn );
                 } );
                 
-                // 没有左侧容器，则认为也没有右侧容器，不需要再判断
+                // 没有左侧容器，则认为也没有右侧容器，不需要再判断是否存在右侧容器
                 rightBtnContainer = $('<div class="ui-toolbar-right">').appendTo($toolbarWrap);
                 btnGroups['right'].forEach( function( btn ) {
                     $(btn).addClass('ui-toolbar-button');
@@ -158,8 +158,9 @@
             }
 
             btns.forEach( function( btn, index ) {
+                // 如果是gmu组件实例，取实例的$el
                 if( btn instanceof gmu.Base ) {
-                    btn = btn.getEl();  // 如果不是HTML片段，就认为是Button实例，其他情况不考虑
+                    btn = btn.getEl();
                 }
                 me._addBtn( btnContainer, btn );
             });
