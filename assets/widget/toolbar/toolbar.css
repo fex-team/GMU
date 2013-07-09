@@ -19,17 +19,6 @@
     height: 100%;
 }
 
-.ui-toolbar-backbtn {
-    display: block;
-    position: relative;
-    float: left;
-    cursor: pointer;
-    -webkit-box-sizing:border-box;
-    box-sizing:border-box;
-    -webkit-user-select: none;
-    user-select: none;
-}
-
 .ui-toolbar-left, .ui-toolbar-right {
     position: absolute;
     top:0;

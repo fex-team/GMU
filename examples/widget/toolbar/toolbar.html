@@ -43,8 +43,10 @@
         <a href="../">返回</a>
     </div>
     <h3>工具栏</h3>
-    <span class="btn_1">百科</span>
-    <span class="btn_1">知道</span>
+    <div class="ui-toolbar-right">
+        <span class="btn_1">百科</span>
+        <span class="btn_1">知道</span>
+    </div>
 </div>
 <script>
         // 半setup方式调用
@@ -83,5 +85,41 @@
                                                                     })]);
 </script>
 
+
+<script>
+        // 给的元素不存在，render方式调用
+        var instance5 = new gmu.Toolbar('#J_toolbar5', {
+            container: document.body,
+            title: '标题',
+            leftBtns: ['<span class="btn_1">百科</span>'],
+            rightBtns: [new gmu.Button({
+                                        label: 'button按钮',
+                                        container: '#btsn_create'
+                                    }), '<span class="btn_1">百科</span>']
+        });
+
+        instance5.addBtns('left', ['<span class="btn_1">新闻</span>', new gmu.Button({
+                                                                        label: 'button按钮',
+                                                                        container: '#btsn_create'
+                                                                    })]);
+</script>
+
+<script>
+        // 传入的el为HTML片段，render方式调用
+        var instance6 = new gmu.Toolbar('<div class="my-toolbar"></div>', {
+            container: document.body,
+            title: '标题',
+            leftBtns: ['<span class="btn_1">百科</span>'],
+            rightBtns: [new gmu.Button({
+                                        label: 'button按钮',
+                                        container: '#btsn_create'
+                                    }), '<span class="btn_1">百科</span>']
+        });
+
+        instance6.addBtns('left', ['<span class="btn_1">新闻</span>', new gmu.Button({
+                                                                        label: 'button按钮',
+                                                                        container: '#btsn_create'
+                                                                    })]);
+</script>
 </body>
 </html>
