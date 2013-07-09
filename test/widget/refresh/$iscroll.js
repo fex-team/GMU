@@ -196,7 +196,7 @@ test('both-上拉加载', function () {
     ta.touchmove(target, {
         touches:[{
             pageX: 0,
-            pageY: -300
+            pageY: -500
         }]
     });
 
