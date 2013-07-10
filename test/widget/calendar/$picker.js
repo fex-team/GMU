@@ -230,7 +230,7 @@ test("user interface: select the input value", function(){
 	}, 200);
 });
 
-test("window resize", function(){
+test("window orientation change", function(){
     expect(2);
     stop();
     ua.frameExt(function(w, f){
@@ -244,12 +244,13 @@ test("window resize", function(){
 	        input.calendar('show');
 	
 	        setTimeout(function(){
-	        	equals(w.$('.ui-slideup').offset().height + w.$('.ui-slideup').offset().top, w.innerHeight, 'position is right');
+	        	approximateEqual(w.$('.ui-slideup').offset().height + w.$('.ui-slideup').offset().top, w.innerHeight, 'position is right');
 	
 	        	$(f).css("position", "absolute").css("left", 0).css("top", 0).css("height", 800).css("width", 600);
+                $(w).trigger('ortchange');
 	             
 	            setTimeout(function(){
-	            	equals(w.$('.ui-slideup').offset().height + w.$('.ui-slideup').offset().top, w.innerHeight, 'position is right');
+	            	approximateEqual(w.$('.ui-slideup').offset().height + w.$('.ui-slideup').offset().top, w.innerHeight, 'position is right');
 	            	
 	                input.calendar('destroy');
 	                setTimeout(me.finish, 300);
