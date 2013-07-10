@@ -411,7 +411,8 @@ test('addBtns方法', function(){
     ok(toolbar.$el.find(".ui-toolbar-left").children().length === 2 &&
            toolbar.$el.find(".ui-toolbar-right").children().length === 1 , "Toolbar 右侧添加一个按钮，按钮个数正确，当前为3");
 
-    toolbar.addBtns('right', [new gmu.Button({
+    // 不传position，认为在右侧添加按钮
+    toolbar.addBtns([new gmu.Button({
                                                 label: 'button按钮',
                                                 container: '#btsn_create'
                                             })]);

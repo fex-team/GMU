@@ -94,35 +94,35 @@ test("useAnimation = false", function(){
     }, 300);
 });
 
-// test("afterScroll & useAnimation = true", function(){
-// 	expect(4);
-// 	stop();
-// 	enSetup();
-// 	var a, b;
-// 	var gotop = gmu.Gotop($('<div class="ui-gotop">'), {
-// 		useAnimation:true,
-// 		afterScroll: function(){
-// 		    b = new Date();
-// 			ok(b - a > 160, "useAnimation=true");
-// 			ok(window.pageYOffset <= 1, "scroll to top");
-// 			ok(!ua.isShown(gotop.$el[0]), "The gotop hides");
-// 			setTimeout(function(){
-// 				gotop.destroy();
-// 				start();
-// 			}, 100);
-// 		},
-//         position: {right: 8, bottom: 8}
-// 	});
-// 	setTimeout(function(){
-// 		window.scrollTo(0, 1500);
-// 		ta.scrollStop(document);
-// 		setTimeout(function(){
-// 			ok(ua.isShown(gotop.$el[0]), "The gotop shows");
-// 			a = new Date();
-// 			ua.click(gotop.$el[0]);
-// 		}, 300);
-// 	},100);
-// });
+test("afterScroll & useAnimation = true", function(){
+	expect(4);
+	stop();
+	enSetup();
+	var a, b;
+	var gotop = gmu.Gotop($('<div class="ui-gotop">'), {
+		useAnimation:true,
+		afterScroll: function(){
+		    b = new Date();
+			ok(b - a > 160, "useAnimation=true");
+			ok(window.pageYOffset <= 1, "scroll to top");
+			ok(!ua.isShown(gotop.$el[0]), "The gotop hides");
+			setTimeout(function(){
+				gotop.destroy();
+				start();
+			}, 100);
+		},
+        position: {right: 8, bottom: 8}
+	});
+	setTimeout(function(){
+		window.scrollTo(0, 1500);
+		ta.scrollStop(document);
+		setTimeout(function(){
+			ok(ua.isShown(gotop.$el[0]), "The gotop shows");
+			a = new Date();
+			ua.click(gotop.$el[0]);
+		}, 300);
+	},100);
+});
 
 test("position", function(){
     stop();
@@ -135,7 +135,7 @@ test("position", function(){
 	equals(gotop.$el.offset().height, tablet?60:50, "The gotop height is right");
 	equals(gotop.$el.offset().width, tablet ? 60 : 50, "The gotop width is right");
 	approximateEqual(gotop.$el.offset().left, $("html").offset().width - (tablet ? 60:50) - 30, "The gotop left is right");
-	equals(gotop.$el.offset().top, document.documentElement.clientHeight -(tablet ? 60 :50) - 20, "The gotop top is right");
+	approximateEqual(gotop.$el.offset().top, document.documentElement.clientHeight -(tablet ? 60 :50) - 20, "The gotop top is right");
 	gotop.destroy();
     start();
 });
@@ -297,7 +297,7 @@ test("basic operations", function(){
 	}, 400);
 });
 test("fix && ortchange 转屏", function(){
-    expect(9);
+    expect(8);
     stop();
     ua.frameExt(function(w, f){
     	var me = this;
@@ -318,7 +318,8 @@ test("fix && ortchange 转屏", function(){
                 $(f).css("width", 150).css("height", 300);
                 w.$("body").css("width", 150).css("height", 300);
                 setTimeout(function(){
-                    ok(!ua.isShown(gotop.$el[0]), "The gotop hides");
+                    // 转屏需要人肉测
+                    // ok(!ua.isShown(gotop.$el[0]), "The gotop hides");
                     w.scrollTo(0, 400);
                     ta.scrollStop(w.document);
                     setTimeout(function(){
