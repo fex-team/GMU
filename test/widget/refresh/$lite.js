@@ -156,10 +156,10 @@ test("参数 － 不传threshold(list高度小于屏幕高度一半)", function(
         count = 0,
         refresh = $wrapper.refresh({
             load: function(){
-            	setTimeout(function(){
-            		refresh.afterDataLoading();
-            	}, 0);
-            	ok(true, "load 被触发");      
+                setTimeout(function(){
+                    refresh.afterDataLoading();
+                }, 0);
+                ok(true, "load 被触发");      
             }
         }).refresh('this'),
         target = $wrapper.get(0);
@@ -167,6 +167,8 @@ test("参数 － 不传threshold(list高度小于屏幕高度一半)", function(
     var l = $(target).offset().left;
     var t = $(target).offset().top;
     var h = $wrapper.height();
+    var triggerHeight = $(target).find('.ui-refresh-down').offset().height;
+    h = h - triggerHeight;
 
     ta.touchstart(target, {
         touches:[{
@@ -184,24 +186,24 @@ test("参数 － 不传threshold(list高度小于屏幕高度一半)", function(
     ta.touchend(target);
     
     setTimeout(function(){
-    	ta.touchstart(target, {
-	        touches:[{
-	            pageX: l,
-	            pageY: t + h/2 + 1
-	        }]
-	    });
-	    ta.touchmove(target, {
-	        touches:[{
-	            pageX: l,
-	            pageY: t + h/2 + 1 - 100
-	        }]
-	    });
+        ta.touchstart(target, {
+            touches:[{
+                pageX: l,
+                pageY: t + h/2 + 1
+            }]
+        });
+        ta.touchmove(target, {
+            touches:[{
+                pageX: l,
+                pageY: t + h/2 + 1 - 100
+            }]
+        });
 
-	    ta.touchend(target);
-	    
-	    setTimeout(function(){
-	    	start();
-	    }, 10);
+        ta.touchend(target);
+        
+        setTimeout(function(){
+            start();
+        }, 10);
     }, 10);
 });
 

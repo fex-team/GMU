@@ -140,14 +140,26 @@ module.exports = function(grunt) {
             temp: {
                 cwd: 'test/',
                 src: ['core/*.js'
-                    , 'extend/parsetpl.js'
+                    , 'extend/fix.js'
                     , 'extend/highlight.js'
+                    // , 'extend/imglazyload.js'
                     , 'extend/offset.js'
+                    , 'extend/parseTpl.js'
                     , 'extend/position.js'
-                    , 'widget/popover/*.js'
+                    , 'extend/throttle.js'
+                    , 'widget/add2desktop/*.js' // 在phantom中无法模拟IOS，所以跑不出结果
+                    , 'widget/button/*.js'
+                    // , 'widget/calendar/*.js'
+                    , 'widget/dialog/*.js'
                     , 'widget/dropmenu/*.js'
-                    , 'widget/add2desktop/*.js', 'widget/dialog/*.js', 'widget/panel/*.js', 'widget/progressbar/*.js'
-                    , 'widget/slider/*.js', 'widget/suggestion/*.js', 'widget/toolbar/*.js'
+                    , 'widget/gotop/*.js'
+                    , 'widget/panel/*.js'
+                    , 'widget/popover/*.js'
+                    , 'widget/progressbar/*.js'
+                    // , 'widget/refresh/*.js'
+                    , 'widget/slider/*.js'
+                    , 'widget/suggestion/*.js'
+                    , 'widget/toolbar/*.js'
                     ]
             }
         },

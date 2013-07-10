@@ -5,44 +5,10 @@
  * @name Gotop
  * @desc <qrcode align="right" title="Live Demo">../gmu/examples/widget/gotop/gotop.html</qrcode>
  * 提供一个快速回到页面顶部的按钮
- * @import core/widget.js, extend/fix.js, extend/throttle.js
+ * @import core/widget.js, extend/fix.js, extend/throttle.js, extend/event.scrollStop.js, extend/event.ortchange.js
  */
 
 (function( gmu, $, undefined ) {
-
-
-    /**
-        * @name Trigger Events
-        * @theme event
-        * @desc 扩展的事件
-        * - ***scrollStop*** : scroll停下来时触发, 考虑前进或者后退后scroll事件不触发情况。
-        * - ***ortchange*** : 当转屏的时候触发，兼容uc和其他不支持orientationchange的设备，利用css media query实现，解决了转屏延时及orientation事件的兼容性问题
-        * @example $(document).on('scrollStop', function () {        //scroll停下来时显示scrollStop
-        *     console.log('scrollStop');
-        * });
-        *
-        * $(window).on('ortchange', function () {        //当转屏的时候触发
-        *     console.log('ortchange');
-        * });
-    */
-    /** dispatch scrollStop */
-    function _registerScrollStop(){
-        $(window).on('scroll', $.debounce(80, function() {
-            $(document).trigger('scrollStop');
-        }, false));
-    }
-    //在离开页面，前进或后退回到页面后，重新绑定scroll, 需要off掉所有的scroll，否则scroll时间不触发
-    function _touchstartHander() {
-        $(window).off('scroll');
-        _registerScrollStop();
-    }
-    _registerScrollStop();
-    $(window).on('pageshow', function(e){
-        if(e.persisted) {//如果是从bfcache中加载页面
-            $(document).off('touchstart', _touchstartHander).one('touchstart', _touchstartHander);
-        }
-    });
-
 
     /**
      * @name     $.ui.Gotop
@@ -81,10 +47,11 @@
             var me = this,
                 $el,
                 _opts = me._options,
-                _eventHandler = $.proxy(me._eventHandler, me);
+                _eventHandler;
 
             me.on( 'ready', function(){
                 $el = me.$el;
+                _eventHandler = $.proxy(me._eventHandler, me);
 
                 _opts['useHide'] && $(document).on('touchmove', _eventHandler);
                 $(document).on('touchend touchcancel scrollStop', _eventHandler);
@@ -171,7 +138,7 @@
                 window.scrollTo(0, 1);
                 me.trigger('afterScroll');
             } else {
-                me._options['moveToTop'] = setTimeout(function() {
+                me._options['moveToTop'] = setInterval(function() {
                     if (from > 1) {
                         window.scrollBy(0, -Math.min(150,from - 1));
                         from -= 150;
