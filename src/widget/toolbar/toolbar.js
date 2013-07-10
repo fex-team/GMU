@@ -207,10 +207,6 @@
             var me = this,
                 $el = me.$el;
 
-            if( me.destroyed ) {
-                return;
-            }
-
             if( me._options.setup === false ) {   // 如果是通过render模式创建，移除节点
                 $el.remove();
             } else {    // 如果是通过setup模式创建，保留节点
