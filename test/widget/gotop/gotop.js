@@ -135,7 +135,7 @@ test("position", function(){
 	equals(gotop.$el.offset().height, tablet?60:50, "The gotop height is right");
 	equals(gotop.$el.offset().width, tablet ? 60 : 50, "The gotop width is right");
 	approximateEqual(gotop.$el.offset().left, $("html").offset().width - (tablet ? 60:50) - 30, "The gotop left is right");
-	equals(gotop.$el.offset().top, document.documentElement.clientHeight -(tablet ? 60 :50) - 20, "The gotop top is right");
+	approximateEqual(gotop.$el.offset().top, document.documentElement.clientHeight -(tablet ? 60 :50) - 20, "The gotop top is right");
 	gotop.destroy();
     start();
 });
