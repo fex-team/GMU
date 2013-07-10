@@ -142,7 +142,10 @@
         },
 
         _onEnd: function() {
-            this.$el.off( 'touchmove.slider touchend.slider touchcancel.slider',
+
+            // 解除事件
+            this.$el.off( 'touchmove' + this.eventNs + ' touchend' +
+                    this.eventNs + ' touchcancel' + this.eventNs,
                     this._handler );
 
             if ( !moved ) {

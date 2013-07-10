@@ -73,7 +73,9 @@
 
             attributes: null,
 
-            container: null
+            container: null,
+
+            mode: ''
         },
 
         _createDefEL: function(){
@@ -95,7 +97,7 @@
             } else if(mode == 'fullsetup') {
                 opts._textSpan = $('.ui-button-text', opts._buttonElement);
                 key = opts._buttonElement.hasClass('ui-button-icon-only')?'alttext':'label';
-                data[key] = data[key] || opts._textSpan.text();
+                opts[key] = opts[key] || opts._textSpan.text();
                 opts._iconSpan = $('.ui-icon', opts._buttonElement);
                 opts.icon = opts.icon || opts._iconSpan.attr('class').match(iconRE) && RegExp.$1;
                 opts.iconpos = opts.iconpos || opts._buttonElement.attr('class').match(iconposRE) && RegExp.$1;
@@ -111,45 +113,52 @@
             }
         },
 
-        _create: function () {
+        _init: function(){
             var me = this,
                 $el,
                 opts = me._options,
+                className;
+
+            me.on( 'ready', function(){
+                $el = me.$el;
                 className = me._prepareClassName();
 
-            !opts.icon && !opts.label && (opts.label = '按钮');//如果既没有设置icon, 又没有设置label，则设置label为'按钮'
+                opts.attributes && $el.attr(opts.attributes);
+                $el.prop('disabled', !!opts.disabled);
+                opts._buttonElement.addClass(className).highlight(opts.disabled?'':'ui-state-hover');
 
-            $el = me.$el || (me.$el = me._createDefEL());
-            opts._buttonElement = me._prepareBtnEL('create');
-            me._prepareDom('create');
-            $el.appendTo(opts._container = $(opts.container||'body'));
-            opts._buttonElement !== $el && opts._buttonElement.insertAfter($el);
+                //绑定事件
+                opts._buttonElement.on('click', $.proxy(me._eventHandler, me));
+                $.each(['click', 'change'], function(){ //绑定在options中的事件， 这里只需要绑定系统事件
+                    opts[this] && me.on(this, opts[this]);
+                    delete opts[this];
+                });
+            } );
+        },
 
+        _create: function () {
+            var me = this,
+                $el,
+                opts = me._options;
 
-            opts.attributes && $el.attr(opts.attributes);
-            $el.prop('disabled', !!opts.disabled);
-            opts._buttonElement.addClass(className).highlight(opts.disabled?'':'ui-state-hover');
+            if( !opts.setup ) {
+                !opts.icon && !opts.label && (opts.label = '按钮');//如果既没有设置icon, 又没有设置label，则设置label为'按钮'
 
-            //绑定事件
-            opts._buttonElement.on('click', $.proxy(me._eventHandler, me));
-            $.each(['click', 'change'], function(){ //绑定在data中的事件， 这里只需要绑定系统事件
-                opts[this] && me.on(this, opts[this]);
-                delete opts[this];
-            });
+                $el = me.$el || (me.$el = me._createDefEL());
+                opts._buttonElement = me._prepareBtnEL('create');
+                me._prepareDom('create');
+                $el.appendTo(opts._container = $(opts.container||'body'));
+                opts._buttonElement !== $el && opts._buttonElement.insertAfter($el);
+            } else {
+                mode = opts.mode ? 'fullsetup' : 'setup';
+                opts.type = me._detectType();
+                opts._buttonElement = me._prepareBtnEL( mode );
+                me._prepareDom( mode );
+            }
         },
 
         _detectType: function(){
             return 'button';
-        },
-
-        _setup: function( mode ){
-            var me = this,
-                opts = me._options;
-
-            mode = mode ? 'fullsetup' : 'setup';
-            opts.type = me._detectType();
-            opts._buttonElement = me._prepareBtnEL(mode);
-            me._prepareDom( mode );
         },
 
         _prepareClassName: function(){
@@ -164,10 +173,6 @@
             return className;
         },
 
-        _init: function(){
-            
-        },
-
         /**
          * 事件管理器
          * @private
@@ -177,8 +182,9 @@
 
             if(opts.disabled) {
                 event.preventDefault();
-                event.stopImmediatePropagation();
-            }
+                event.stopPropagation();
+            } 
+
         },
 
         /**
@@ -304,7 +310,7 @@
          * btn.toggleSelect();
          */
         toggleSelect: function(){
-            return this._setSelected(!this._opts.selected);
+            return this._setSelected(!this._options.selected);
         },
 
         /**
@@ -324,7 +330,10 @@
                 opts = this._options;
 
             opts._buttonElement.off('click', me._eventHandler).highlight();
-            opts._buttonElement.remove();
+            
+            if ( !opts.setup ) {
+                opts._buttonElement.remove();
+            }
             me.$super('destroy');
         }
 

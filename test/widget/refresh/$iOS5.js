@@ -394,7 +394,8 @@ if((!$.os.phone && !$.os.tablet)||($.os.ios && parseFloat($.os.version) > 5)){
 	    
 	    setTimeout(function(){
 	        equals($wrapper.height(), 150, "容器高度正确");
-	        equals($wrapper.find(".ui-refresh-up").offset().top, $wrapper.offset().top - $wrapper.find(".ui-refresh-up").height(), "topOffset正确");
+	        // equals($wrapper.find(".ui-refresh-up").offset().top, $wrapper.offset().top - $wrapper.find(".ui-refresh-up").height(), "topOffset正确");
+	        equals($wrapper.find(".ui-refresh-up").offset().top, $wrapper.offset().top, "topOffset正确");
 	        start();
 	    }, 500);
 	});

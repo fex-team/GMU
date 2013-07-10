@@ -3,43 +3,9 @@
  * @desc <qrcode align="right" title="Live Demo">../gmu/examples/widget/panel/panel_position.html</qrcode>
  * 面板组件
  * @name Panel
- * @import extend/touch.js, core/widget.js, extend/throttle.js
+ * @import extend/touch.js, core/widget.js, extend/throttle.js, extend/event.scrollStop.js, extend/event.ortchange.js
  */
 (function( gmu, $, undefined ) {
-
-
-    /**
-        * @name Trigger Events
-        * @theme event
-        * @desc 扩展的事件
-        * - ***scrollStop*** : scroll停下来时触发, 考虑前进或者后退后scroll事件不触发情况。
-        * - ***ortchange*** : 当转屏的时候触发，兼容uc和其他不支持orientationchange的设备，利用css media query实现，解决了转屏延时及orientation事件的兼容性问题
-        * @example $(document).on('scrollStop', function () {        //scroll停下来时显示scrollStop
-        *     console.log('scrollStop');
-        * });
-        *
-        * $(window).on('ortchange', function () {        //当转屏的时候触发
-        *     console.log('ortchange');
-        * });
-    */
-    /** dispatch scrollStop */
-    function _registerScrollStop(){
-        $(window).on('scroll', $.debounce(80, function() {
-            $(document).trigger('scrollStop');
-        }, false));
-    }
-    //在离开页面，前进或后退回到页面后，重新绑定scroll, 需要off掉所有的scroll，否则scroll时间不触发
-    function _touchstartHander() {
-        $(window).off('scroll');
-        _registerScrollStop();
-    }
-    _registerScrollStop();
-    $(window).on('pageshow', function(e){
-        if(e.persisted) {//如果是从bfcache中加载页面
-            $(document).off('touchstart', _touchstartHander).one('touchstart', _touchstartHander);
-        }
-    });
-
 
     var cssPrefix = $.fx.cssPrefix,
         transitionEnd = $.fx.transitionEnd;
@@ -92,7 +58,7 @@
                 me.$contentWrap.addClass('ui-panel-animate');
                 me.$el.on(transitionEnd, $.proxy(me._eventHandler, me)).hide();  //初始状态隐藏panel
                 opts.dismissible && me.$panelMask.hide().on('click', $.proxy(me._eventHandler, me));    //绑定mask上的关闭事件
-                opts.scrollMode !== 'follow' && $(document).on('scrollStop', $.proxy(me._eventHandler, me));
+                opts.scrollMode !== 'follow' && $(window).on('scrollStop', $.proxy(me._eventHandler, me));
                 $(window).on('ortchange', $.proxy(me._eventHandler, me));
             } );
         },
@@ -299,7 +265,7 @@
             this.$panelMask && this.$panelMask.off().remove();
             this.maskTimer && clearTimeout(this.maskTimer);
             this.$contentWrap.removeClass('ui-panel-animate');
-            $(document).off('scrollStop', this._eventHandler);
+            $(window).off('scrollStop', this._eventHandler);
             $(window).off('ortchange', this._eventHandler);
             return this.$super('destroy');
         }

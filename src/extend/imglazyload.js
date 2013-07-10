@@ -7,7 +7,7 @@
 (function ($) {
     /**
      * @name imglazyload
-     * @grammar  imglazyload(opts)   ⇒ self
+     * @grammar  imglazyload(opts) => self
      * @desc 图片延迟加载
      * **Options**
      * - ''placeHolder''     {String}:              (可选, 默认值:\'\')图片显示前的占位符

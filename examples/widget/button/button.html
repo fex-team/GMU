@@ -39,14 +39,13 @@
     //setup模式[推荐]
     $('.button').button();
 
-    $('#btn1').button({
-        click: function() {
-            this.disable();
-        }
+    var setup = $('#btn1').button('this');
+    setup.on( 'click', function() {
+            setup.disable();
     });
 
     //render模式
-    new gmu.Button('<a>', {
+    var btn1 = new gmu.Button('<a>', {
         label: '点击后不可用',
         click: function() {
             this.disable();
@@ -54,7 +53,7 @@
         container: '#btsn_create'
     });
 
-    new gmu.Button('<a>', {
+    var btn2 = new gmu.Button('<a>', {
         label: 'a按钮',
         attributes: {
             href: 'http://www.baidu.com'
@@ -62,7 +61,7 @@
         container: '#btsn_create'
     });
 
-    new gmu.Button({
+    var btn3 = new gmu.Button({
         label: 'button按钮',
         container: '#btsn_create'
     });

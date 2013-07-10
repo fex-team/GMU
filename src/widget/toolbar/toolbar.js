@@ -29,17 +29,18 @@
 
         _init: function() {
             var me = this,
+                opts = me._options,
                 $el;
 
             // 设置container的默认值
-            if( !me._options.container ) {
-                me._options.container = document.body;
+            if( !opts.container ) {
+                opts.container = document.body;
             }
 
             me.on( 'ready', function() {
                 $el = me.$el;
 
-                if( me._options.fix ) {
+                if( opts.fix ) {
                     // TODO 元素id的处理
                     var placeholder = $( '<div class="ui-toolbar-placeholder"></div>' ).height( $el.offset().height ).
                         insertBefore( $el ).append( $el ).append( $el.clone().css({'z-index': 1, position: 'absolute',top: 0}) ),
@@ -86,42 +87,43 @@
                 },
                 currentGroup = btnGroups['left'];
 
-            if( $el ) {  // setup方式创建，从DOM中取出按钮组
-                $el[0].parentNode || (me._bySetup = false, $el.appendTo(container));   // 如果是通过$()创建的元素，将其插入DOM中
-
-                children = $el.children();
-                $toolbarWrap = $el.find('.ui-toolbar-wrap');
-                if( $toolbarWrap.length === 0 ){
-                    $toolbarWrap = $('<div class="ui-toolbar-wrap"></div>').appendTo($el);
-                }else{
-                    children = $toolbarWrap.children();
-                }
-
-                children.forEach( function( child ) {
-                    $toolbarWrap.append(child);
-
-                    /^[hH]/.test( child.tagName ) && (currentGroup = btnGroups['right'], me.title = child);
-
-                    !/^[hH]/.test( child.tagName ) && currentGroup.push( child );
-                } );
-            } else {    // render方式，需要先创建Toolbar节点
-                me._bySetup = false;
-                $el = me.$el = $('<div><div class="ui-toolbar-wrap"></div></div>').appendTo( container );  // TODO 先放在documentFragment中，最后在插到container里
-                $toolbarWrap = $el.find('.ui-toolbar-wrap');
+            // render方式，需要先创建Toolbar节点
+            if( !opts.setup ) {
+                ($el && $el.length > 0) ?
+                    $el.appendTo(container) :   // 如果el是一个HTML片段，将其插入container中
+                    ($el = me.$el = $('<div>').appendTo( container ));  // 否则，创建一个空div，将其插入container中
             }
+
+            // 从DOM中取出按钮组
+            children = $el.children();
+            $toolbarWrap = $el.find('.ui-toolbar-wrap');
+            if( $toolbarWrap.length === 0 ){
+                $toolbarWrap = $('<div class="ui-toolbar-wrap"></div>').appendTo($el);
+            }else{
+                children = $toolbarWrap.children();
+            }
+
+            children.forEach( function( child ) {
+                $toolbarWrap.append(child);
+
+                /^[hH]/.test( child.tagName ) ? 
+                    (currentGroup = btnGroups['right'], me.title = child) :
+                    currentGroup.push( child );
+            } );
 
             // 创建左侧按钮组的容器
             var leftBtnContainer = $toolbarWrap.find('.ui-toolbar-left');
             if( leftBtnContainer.length === 0 ) {
                 leftBtnContainer = children.length ? $('<div class="ui-toolbar-left">').insertBefore(children[0]) : $('<div class="ui-toolbar-left">').appendTo($toolbarWrap);
                 btnGroups['left'].forEach( function( btn ) {
+                    $(btn).addClass('ui-toolbar-button');
                     leftBtnContainer.append( btn );
                 } );
-            }
-            var rightBtnContainer = $toolbarWrap.find('.ui-toolbar-right');
-            if( rightBtnContainer.length === 0 ) {
+                
+                // 没有左侧容器，则认为也没有右侧容器，不需要再判断是否存在右侧容器
                 rightBtnContainer = $('<div class="ui-toolbar-right">').appendTo($toolbarWrap);
                 btnGroups['right'].forEach( function( btn ) {
+                    $(btn).addClass('ui-toolbar-button');
                     rightBtnContainer.append( btn );
                 } );
             }
@@ -138,10 +140,10 @@
             me.addBtns( 'right', opts.rightBtns );
         },
 
-        _addBtn: function( contianer, btn ) {
+        _addBtn: function( container, btn ) {
             var me = this;
 
-            contianer.append( btn );
+            $( btn ).appendTo( container ).addClass('ui-toolbar-button');
         },
 
         addBtns: function( position, btns ) {
@@ -156,8 +158,9 @@
             }
 
             btns.forEach( function( btn, index ) {
-                if( toString.call(btn) != '[object String]' ) {
-                    btn = btn.getEl();  // 如果不是HTML片段，就认为是Button实例，其他情况不考虑
+                // 如果是gmu组件实例，取实例的$el
+                if( btn instanceof gmu.Base ) {
+                    btn = btn.getEl();
                 }
                 me._addBtn( btnContainer, btn );
             });
@@ -204,11 +207,7 @@
             var me = this,
                 $el = me.$el;
 
-            if( me.destroyed ) {
-                return;
-            }
-
-            if( me._bySetup === false ) {   // 如果是通过render模式创建，移除节点
+            if( me._options.setup === false ) {   // 如果是通过render模式创建，移除节点
                 $el.remove();
             } else {    // 如果是通过setup模式创建，保留节点
                 $el.css('position', 'static').css('top', 'auto');
