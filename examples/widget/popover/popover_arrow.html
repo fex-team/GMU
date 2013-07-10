@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 <head>
-    <title>Popover 节省方式调用</title>
+    <title>Popover Basic</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
     <!--demo展示所用css，不用关心 begin-->
@@ -14,66 +14,46 @@
     <!--组件依赖js begin-->
     <script type="text/javascript" src="../../../dist/zepto.js"></script>
     <script type="text/javascript" src="../../../src/extend/touch.js"></script>
-    <script type="text/javascript" src="../../../src/extend/offset.js"></script>
     <script type="text/javascript" src="../../../src/extend/parseTpl.js"></script>
     <script type="text/javascript" src="../../../src/core/gmu.js"></script>
     <script type="text/javascript" src="../../../src/core/event.js"></script>
     <script type="text/javascript" src="../../../src/core/widget.js"></script>
     <script type="text/javascript" src="../../../src/widget/popover/popover.js"></script>
-    <script type="text/javascript" src="../../../src/widget/popover/placement.js"></script>
     <script type="text/javascript" src="../../../src/widget/popover/arrow.js"></script>
     <!--组件依赖js end-->
 
     <style type="text/css">
         #wrap {
             padding: 5px;
+            position: relative;
         }
         .btn {
             -webkit-user-select:none;
             display: inline-block;
         }
 
-        ul.list {
-            margin: 4em 1em 1em;
+        .ui-popover {
+            white-space:nowrap;/*内容不换行*/
+            opacity: 0;
+            display: block;
+            -webkit-transition: opacity 200ms ease-in-out;
         }
 
-        ul.list>li {
-            position: relative;
-            display: inline-block;
-            padding: 0.5em 1em;
+        .ui-popover.ui-in {
+            opacity: 1;
         }
     </style>
 </head>
 <body>
 
 <div id="wrap">
-    <h1>可上下左右定位版本</h1>
-    <ul class="list">
-        <li><a id="btn1" class="btn">Popover top</a></li>
-        <li><a id="btn2" class="btn">Popover right</a></li>
-        <li><a id="btn3" class="btn">Popover bottom</a></li>
-        <li><a id="btn4" class="btn">Popover left</a></li>
-    </ul>
+    <h1>带剪头的Popover</h1>
+    <a id="btn1" class="btn">Popover</a>
 </div>
 
-<div id="popover"></div>
-
 <script type="text/javascript">
-    var popover = $('#btn1').popover({
-        content: '此popover内容将被<br />公用给4个button',
-        placement: 'top',
-        container: '#popover'
-    }).popover( 'this' );    // 取实例
-
-    $('.btn').on('click', function(){
-        // 如果就是本身，则不需要处理
-        if( popover.target() && popover.target().get(0) === this ) {
-            return ;
-        }
-        popover.hide();
-        popover.target(this);
-        popover._options.placement = ['top', 'right', 'bottom', 'left'][ $(this).parent().index() ];
-        popover.show();
+    $('#btn1').popover({
+        content: 'Hello world!'
     });
 </script>
 
