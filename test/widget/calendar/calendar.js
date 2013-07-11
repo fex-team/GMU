@@ -63,7 +63,7 @@ test("option: date & method: date", function(){
     var div = $('<div></div>').appendTo(document.body);
 
     div.calendar({
-    	date: new Date('2012-02-09')
+    	date: new Date(2012,1,9)
     });
 
     //测试getter方法（日期对象）
@@ -114,7 +114,7 @@ test("option: minDate & method: minDate", function(){
     var div = $('<div></div>').appendTo(document.body);
 
     div.calendar({
-    	minDate: new Date('2013-04-02'),
+    	minDate: new Date(2013,3,2),
 	    select: function(){
 	        ok(false, 'select事件不应该触发了');
 	    }
@@ -173,7 +173,7 @@ test("option: maxDate & method: maxDate", function(){
     var div = $('<div></div>').appendTo(document.body);
 
     div.calendar({
-    	maxDate: new Date('2013-04-02'),
+    	maxDate: new Date(2013,3,2),
     	select: function(){
     	    ok(false, 'select事件不应该触发了');
     	}
