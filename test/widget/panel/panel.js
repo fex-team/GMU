@@ -417,7 +417,9 @@ test("基本操作：页面滚动过程的，panel的三种模式正常（scroll
                         setTimeout(function () {
                             equal($('#panel3').panel('state'), true, 'fix模式：滚动过程中panel未隐藏');
                             equal($('#panel3').css('position'), 'absolute', 'fix模式：滚动过程中panel是fix的');
-                            approximateEqual($('#panel3').offset().top, 300, 'fix模式，panel不跟随滚动');
+                            // approximateEqual($('#panel3').offset().top, 300, 'fix模式，panel不跟随滚动');
+                            // iOS 6横屏时，window.scrollTo(0, 300)实际上没滚动到300像素，改用document.body.scrollTop判断
+                            equal($('#panel3').offset().top, document.body.scrollTop, 'fix模式，panel不跟随滚动');
                             $('#panel3').panel('destroy');
                             window.scrollTo(0, 0);
                             $('#page3').remove();

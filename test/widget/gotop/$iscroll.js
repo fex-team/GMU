@@ -57,7 +57,7 @@ test("iScrollInstance", function(){
             ta.touchmove($("#scroller")[0], {
                 touches: [{
                     clientX: 0,
-                    clientY: -1500
+                    clientY: -2000
                 }]
             });
             //PC
@@ -67,7 +67,7 @@ test("iScrollInstance", function(){
             });
             ua.mousemove($("#scroller")[0], {
             	clientX: 0,
-                clientY: -1500
+                clientY: -2000
             });
             setTimeout(function(){
                 //PC
@@ -75,7 +75,7 @@ test("iScrollInstance", function(){
                 ta.touchend($("#scroller")[0]);
 
                 setTimeout(function(){
-                    approximateEqual(s.y, -1500, "The page scrolled");
+                    approximateEqual(s.y, -2000, "The page scrolled");
                     ok(ua.isShown(gotop.$el[0]), "The gotop shows");
                     equals(gotop.$el.offset().left, $("html").offset().width -
 		                    (tablet ? 60 : 50) - 30, "The gotop left is right");
@@ -112,7 +112,7 @@ test("iScrollInstance", function(){
                         ta.touchend($("#scroller")[0]);
 
                         setTimeout(function(){
-                            approximateEqual(s.y, -1600, "The page scrolled");
+                            approximateEqual(s.y, -2100, "The page scrolled");
                             ok(ua.isShown(gotop.$el[0]), "The gotop shows");
                             equals(gotop.$el.offset().left, $("html").offset().width -
 		                            (tablet ? 60 : 50) - 30, "The gotop left is right");
@@ -135,11 +135,11 @@ test("disablePlugin", function(){
     	iscroll: false
     });
     setTimeout(function(){
-        window.scrollTo(0, 1500);
+        window.scrollTo(0, 2000);
         ta.scrollStop(document);
         setTimeout(function(){
             ok(ua.isShown(gotop.$el[0]), "The gotop shows");
-            ok(Math.abs(window.pageYOffset - 1500) <= 1, "The pageYOffset is right");
+            ok(Math.abs(window.pageYOffset - 2000) <= 1, "The pageYOffset is right");
             equals(gotop.$el.offset().left, $("html").offset().width  -
 		            (tablet ? 60 : 50) - 10, "The gotop left is right");
             equals(gotop.$el.offset().top, window.pageYOffset + $(window).height() -
