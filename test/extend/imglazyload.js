@@ -6,7 +6,7 @@ function createContainer(w){
     w.$("body").append("<div id='container'></div>");
     //创建dom
     while (i++ < 12) {
-        html.push('<p>'
+        html.push('<p>' + i
         + '爱因斯坦（1879－1955），美籍德国犹太人。他创立了代表现代科学的相对论，并为核能开发奠定了理论基础，在现代科学技术和他的深刻影响及广泛应用方面开创了现代科学新纪元，被公认为自伽利略、牛顿以来最伟大的'
         + '科学家、思想家。1921年诺贝尔物理学奖获得者。现代物理学的开创者和奠基人，相对论——“质能关系”的提出者，“决定论量子力学诠释”的捍卫者（振动的粒子）——不掷骰子的上帝。1999年12月26日，爱因斯坦被美国《时代周刊》评选为“世纪伟人”。'
         +  '</p>'
@@ -95,13 +95,13 @@ test("scrollStop:图片进入可视区能正确加载 & loadcomplete", function(
             ok(~w.$.inArray(this, viewImages), '图片成功加载' + this.getAttribute("data-url"));
         });
 
-        w.$(window).on('scrollStop', function () {
+        w.$(w).on('scrollStop', function () {
             viewImages = getImgsInView(w, w.$('.ui-imglazyload'), n*itemH, 0);
         });
         
         setTimeout(function(){
             w.scrollTo(0, n*itemH);
-            ta.scrollStop();
+            w.$(w).trigger('scrollStop');
             setTimeout(function () {
                 w.scrollTo(0,0);
                 w.$('.ui-imglazyload').off();
