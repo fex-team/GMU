@@ -142,7 +142,7 @@ module.exports = function(grunt) {
                 src: ['core/*.js'
                     , 'extend/fix.js'
                     , 'extend/highlight.js'
-                    , 'extend/imglazyload.js'
+                    // , 'extend/imglazyload.js'
                     , 'extend/offset.js'
                     , 'extend/parseTpl.js'
                     , 'extend/position.js'
