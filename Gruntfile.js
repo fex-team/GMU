@@ -159,6 +159,7 @@ module.exports = function(grunt) {
                     // , 'widget/refresh/*.js'
                     , 'widget/slider/*.js'
                     , 'widget/suggestion/*.js'
+                    , 'widget/navigator/*.js'
                     , 'widget/toolbar/*.js'
                     ]
             }
