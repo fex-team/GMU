@@ -1,27 +1,56 @@
 /** 一级导航样式 */
 .ui-navigator {
-    width: 100%;
     border-top: 1px solid #2468c9;
     border-bottom: 1px solid #0145a5;
     background:#2773dc;
 }
-.ui-navigator .ui-navigator-list li a, .ui-navigator .ui-navigator-fix{
-    padding: 0.6em 15px;
+.ui-navigator-list {
+    width: 100%;
+    display: -webkit-box;
+}
+.ui-navigator-list li {
+    line-height: 34px;
     font-size: 16px;
-    color: #ffffff;
-    text-decoration: none;
-    outline: none;
-    font-family: "微软雅黑" "黑体" ;
     font-weight: bold;
     text-align: center;
+    -webkit-box-flex: 1;
+    display: -webkit-box;
+    -webkit-box-align: center;
+    -webkit-box-pack: center;
 }
-/*css for pad*/
-@media all and (min-device-width: 768px) and (max-device-width: 1024px){
-    .ui-navigator .ui-navigator-list li a, .ui-navigator .ui-navigator-fix{
-        font-size: 18px;
-    }
+.ui-navigator-list li a {
+    text-decoration: none;
+    color: #ffffff;
+    display: block;
+    width: 100%;
+    -webkit-box-sizing:border-box;
+    padding: 0 15px;
+}
+.ui-navigator-list li.ui-state-hover,
+.ui-navigator-list li.ui-state-active {
+    background: #0c4da8;
 }
 
-.ui-navigator .ui-navigator-list li a.cur, .ui-navigator .ui-navigator-fix.cur{
-    background:#0c4da8;
+.ui-scroller {
+    padding: 0;
+    margin: 0;
+    display: inline-block;/*重要，靠他让宽度由子节点撑开*/
+}
+.ui-scroller .ui-navigator-list {
+    display: block;
+    white-space:nowrap;/*内容不换行*/
+    display: inline-block;
+    width: auto;
+}
+.ui-scroller .ui-navigator-list:after {
+    content: '';
+    clear: both;
+    display: inline-block;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+}
+.ui-scroller .ui-navigator-list li {
+    display: inline-block;
+    float: left;
 }
