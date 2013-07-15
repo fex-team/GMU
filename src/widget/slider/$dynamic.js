@@ -115,7 +115,7 @@
 
             // 到达边缘
             if ( !ignoreEdge && (index === opts.edgeThrottle || index ===
-                    length - opts.edgeThrottle - 1) ) {
+                    content.length - opts.edgeThrottle - 1) ) {
                 me.trigger( 'edge', index === opts.edgeThrottle, me._active );
             }
 

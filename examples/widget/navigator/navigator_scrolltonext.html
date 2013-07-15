@@ -22,46 +22,88 @@
     <script type="text/javascript" src="../../../src/core/event.js"></script>
     <script type="text/javascript" src="../../../src/core/widget.js"></script>
     <script type="text/javascript" src="../../../src/widget/navigator/navigator.js"></script>
-    <script type="text/javascript" src="../../../src/widget/navigator/$scrollable.js"></script>
     <script type="text/javascript" src="../../../src/widget/navigator/scrolltonext.js"></script>
+    <script type="text/javascript" src="../../../src/widget/navigator/$scrollable.js"></script>
     <!--组件依赖js end-->
 
     <style type="text/css">
-        .left-fixed {
-            display: -webkit-box;
-        }
-        .left-fixed>div {
+        #nav2 {
+            background: transparent;
+            border-width: 0;
             display: -webkit-box;
             -webkit-box-flex: 1;
         }
-        .left-fixed>div.left {
-            width: 80px;
-            -webkit-box-flex: 0;
-            border-top: 1px solid #2468c9;
-            border-bottom: 1px solid #0145a5;
-            background: #2773dc;
-            line-height: 34px;
+        #nav2 li a {
+            color: #333;
         }
-        .left-fixed>div.left a {
-            color: #fff;
+
+        #nav2 li.ui-state-active,
+        #nav2 li.ui-state-hover {
+            background: transparent;
+        }
+        #nav2 li.ui-state-active a,
+        #nav2 li.ui-state-hover a{
+            color: #e81459;
+        }
+
+        #nav2 .ui-scroller {
+            position: relative;
+        }
+        #nav2 .bar {
+            position: absolute;
+            height: 2px;
+            bottom: 0;
+            overflow: hidden;
+            -webkit-box-sizing:border-box;
+            padding: 0 10px;
+            -webkit-transition: left 200ms ease-out;
+        }
+        #nav2 .bar:after {
+            content: '';
             display: block;
-            width: 100%;
-            text-align: center;
-            height: 100%;
+            height: 2px;
+            background-color: #e81459;
         }
-        .left-fixed>div.left a.ui-state-active {
-            background: #0c4da8;
+        #nav2_wrap {
+            display: -webkit-box;
+        }
+        #arrow {
+            width: 30px;
+            -webkit-box-flex: 0;
+            -webkit-box-align: center;
+            -webkit-box-pack: center;
+            display: -webkit-box;
         }
     </style>
 </head>
 <body>
 
 <div id="wrap">
-    <h1>Navigator Fix Feature</h1>
-    <p>Fix feature已经不在navigator自带此功能，需要外部自己去实现</p>
-    <div class="left-fixed">
-        <div class="left"><a>Fix left</a></div>
-        <div id="nav">
+    <h1>Navigator可内滚版本 且同时会把下一个按钮滚动到可见, 尝试下点击边缘的按钮</h1>
+    <div id="nav">
+        <ul>
+            <li><a href="#test1">首页</a></li>
+            <li><a href="#test1">要闻</a></li>
+            <li><a href="javascript:;">国内</a></li>
+            <li><a href="#test2">国际</a></li>
+            <li><a href="#test3">军事</a></li>
+            <li><a href="#test4">社会</a></li>
+            <li><a href="#test5">娱乐</a></li>
+            <li><a href="#test6">女人</a></li>
+            <li><a href="#">体育</a></li>
+            <li><a href="#test7">科技</a></li>
+            <li><a href="#test8">互联网</a></li>
+            <li><a href="#test9">教育</a></li>
+            <li class="ui-state-active"><a href="#">财经</a></li>
+            <li><a href="#test11">房产</a></li>
+            <li><a href="#test12">汽车</a></li>
+        </ul>
+    </div>
+
+    <h2>其他风格</h2>
+
+    <div id="nav2_wrap">
+        <div id="nav2">
             <ul>
                 <li><a href="#test1">首页</a></li>
                 <li><a href="#test1">要闻</a></li>
@@ -75,29 +117,40 @@
                 <li><a href="#test7">科技</a></li>
                 <li><a href="#test8">互联网</a></li>
                 <li><a href="#test9">教育</a></li>
-                <li class="ui-state-active"><a href="#">财经</a></li>
+                <li><a href="#">财经</a></li>
                 <li><a href="#test11">房产</a></li>
                 <li><a href="#test12">汽车</a></li>
             </ul>
+            <span class="bar"></span>
         </div>
+        <a id="arrow"><span>&gt;</span></a>
     </div>
 </div>
 
 <script type="text/javascript">
-    (function(){
-        var leftBtn = $('.left-fixed .left a'),
-            nav = $('#nav');
+    $('#nav').navigator();
 
-        nav.navigator().on('select', function(){
-            leftBtn.removeClass('ui-state-active');
+    (function () {
+        var bar = $('#nav2 span.bar'),
+            left = $('#nav2 ul').offset().left;
+        $('#nav2').navigator({
+            select: function( e, index, li ){
+                bar.css({
+                    left: li.offsetLeft - left,
+                    width: li.childNodes[0].offsetWidth
+                });
+            },
+            ready: function() {
+                bar.appendTo($('#nav2').find('.ui-scroller'));
+            }
         });
 
-        leftBtn.click(function(){
-            nav.navigator('unselect');
-            $(this).addClass('ui-state-active');
+        $('#arrow').on('click', function(){
+            $('#nav2').iScroll( 'scrollTo', 100, 0, 400, true );
         });
+
+
     })();
-    
 </script>
 
 <!--demo公用头部展示所用js，可以不用加载 begin-->
