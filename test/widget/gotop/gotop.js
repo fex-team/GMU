@@ -131,13 +131,16 @@ test("position", function(){
 		position: {bottom: 20, right: 30}
 	});
 	gotop.show();
+    setTimeout(function(){
 	ok(ua.isShown(gotop.$el[0]), "The gotop shows");
-	equals(gotop.$el.offset().height, tablet?60:50, "The gotop height is right");
-	equals(gotop.$el.offset().width, tablet ? 60 : 50, "The gotop width is right");
-	approximateEqual(gotop.$el.offset().left, $("html").offset().width - (tablet ? 60:50) - 30, "The gotop left is right");
-	approximateEqual(gotop.$el.offset().top, document.documentElement.clientHeight -(tablet ? 60 :50) - 20, "The gotop top is right");
-	gotop.destroy();
-    start();
+        equals(gotop.$el.offset().height, tablet ? 60 : 50, "The gotop height is right");
+        equals(gotop.$el.offset().width, tablet ? 60 : 50, "The gotop width is right");
+        approximateEqual(gotop.$el.offset().left, $("html").offset().width - (tablet ? 60 : 50) - 30, "The gotop left is right");
+        approximateEqual(gotop.$el.offset().top, document.documentElement.clientHeight - (tablet ? 60 : 50) - 20, "The gotop top is right");
+        gotop.destroy();
+        start();
+    }, 1000);
+
 });
 
 test("useFix = false", function(){
@@ -211,6 +214,7 @@ test("show() & hide()", function(){
 	expect(8);
 	var gotop = gmu.Gotop($('<div class="ui-gotop">'), {});
 	gotop.show();
+    setTimeout(function(){
 	ok(ua.isShown(gotop.$el[0]), "The gotop shows");
 	equals(gotop.$el.offset().height, (tablet ? 60 :50), "The gotop height is right");
 	equals(gotop.$el.offset().width, (tablet ? 60 :50), "The gotop width is right");
@@ -222,6 +226,7 @@ test("show() & hide()", function(){
 	ok(!ua.isShown(gotop.$el[0]), "The gotop hides");
 	gotop.destroy();
     start();
+    }, 1000);
 });
 
 test("basic operations", function(){
