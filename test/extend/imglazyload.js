@@ -57,23 +57,25 @@ test("初始状态:图片进入可视区能正确加载 & threshold", function()
         f.style.height = '500px';
         f.style.width = '500px';
         createContainer(w);
-        var $images = w.$('.ui-imglazyload'),   //获取初始状态下在可视区内的图片
-            viewImages = getImgsInView(w, $images),
-            sucImages = [];
-        expect(viewImages.length+1);
+        setTimeout(function () {
+                var $images = w.$('.ui-imglazyload'),   //获取初始状态下在可视区内的图片
+                viewImages = getImgsInView(w, $images),
+                sucImages = [];
+            expect(viewImages.length+1);
 
-        w.$('.ui-imglazyload').imglazyload({
-            threshold: 400  // 使用这种方式测试不考虑， 需要根据iframe的尺寸调整threshold的值，来保证用例能够跑通
-        }).on('loadcomplete', function () {
-            sucImages.push(this);
-            sucImages.length > viewImages.length ? ok(true, 'threshold起作用了'): ok(~w.$.inArray(this, viewImages), '图片成功加载');
-        });
-        setTimeout(function () {    //待图片加载完成
-            w.scrollTo(0,0);
-            w.$('.ui-imglazyload').off();
-            w.$('#container').remove();
-            me.finish();
-        }, 300);
+            w.$('.ui-imglazyload').imglazyload({
+                threshold: 400  // 使用这种方式测试不考虑， 需要根据iframe的尺寸调整threshold的值，来保证用例能够跑通
+            }).on('loadcomplete', function () {
+                sucImages.push(this);
+                sucImages.length > viewImages.length ? ok(true, 'threshold起作用了'): ok(~w.$.inArray(this, viewImages), '图片成功加载');
+            });
+            setTimeout(function () {    //待图片加载完成
+                w.scrollTo(0,0);
+                w.$('.ui-imglazyload').off();
+                w.$('#container').remove();
+                me.finish();
+            }, 300);
+        }, 100);
     });
 });
 
@@ -84,31 +86,33 @@ test("scrollStop:图片进入可视区能正确加载 & loadcomplete", function(
         f.style.height = '500px';
         f.style.width = '500px';
         createContainer(w);
-        var viewImages = getImgsInView(w, w.$('.ui-imglazyload')),
-            container = w.$('#container').get(0),
-            itemH = w.$('p').height() + w.$('.ui-imglazyload').height(),
-            n = 2,sucImages = [];
-        expect(viewImages.length + n);
+        setTimeout(function () {
+            var viewImages = getImgsInView(w, w.$('.ui-imglazyload')),
+                container = w.$('#container').get(0),
+                itemH = w.$('p').height() + w.$('.ui-imglazyload').height(),
+                n = 2,sucImages = [];
+            expect(viewImages.length + n);
 
-        w.$('.ui-imglazyload').imglazyload().on('loadcomplete', function () {
-            sucImages.push(this);
-            ok(~w.$.inArray(this, viewImages), '图片成功加载' + this.getAttribute("data-url"));
-        });
+            w.$('.ui-imglazyload').imglazyload().on('loadcomplete', function () {
+                sucImages.push(this);
+                ok(~w.$.inArray(this, viewImages), '图片成功加载' + this.getAttribute("data-url"));
+            });
 
-        w.$(w).on('scrollStop', function () {
-            viewImages = getImgsInView(w, w.$('.ui-imglazyload'), n*itemH, 0);
-        });
-        
-        setTimeout(function(){
-            w.scrollTo(0, n*itemH);
-            w.$(w).trigger('scrollStop');
-            setTimeout(function () {
-                w.scrollTo(0,0);
-                w.$('.ui-imglazyload').off();
-                w.$('#container').remove();
-                me.finish();
+            w.$(w).on('scrollStop', function () {
+                viewImages = getImgsInView(w, w.$('.ui-imglazyload'), n*itemH, 0);
+            });
+
+            setTimeout(function(){
+                w.scrollTo(0, n*itemH);
+                w.$(w).trigger('scrollStop');
+                setTimeout(function () {
+                    w.scrollTo(0,0);
+                    w.$('.ui-imglazyload').off();
+                    w.$('#container').remove();
+                    me.finish();
+                }, 200);
             }, 200);
-        }, 200);
+        }, 100);
     });
 });
 
@@ -119,46 +123,48 @@ test("scroll:图片进入可视区能正确加载 & startLoad", function(){
         f.style.height = '500px';
         f.style.width = '500px';
         createContainer(w);
-        var viewImages = getImgsInView(w, w.$('.ui-imglazyload')),
-            container = w.$('#container').get(0),
-            itemH = w.$('p').height() + w.$('.ui-imglazyload').height(),
-            n = 6,
-            sucImages = [],
-            startload = false,
-            dis;    //滚动加载的张数
+        setTimeout(function () {
+            var viewImages = getImgsInView(w, w.$('.ui-imglazyload')),
+                container = w.$('#container').get(0),
+                itemH = w.$('p').height() + w.$('.ui-imglazyload').height(),
+                n = 6,
+                sucImages = [],
+                startload = false,
+                dis;    //滚动加载的张数
 
-        w.$('.ui-imglazyload').imglazyload({
-            startload: function () {
-                !startload && ok(startload = true, 'startload triggered');
-            },
-            eventName: 'scroll'
-        }).on('loadcomplete', function () {
-            sucImages.push(this);
-            ok(~w.$.inArray(this, viewImages), '图片成功加载' + this.getAttribute("data-url"));
-        });
+            w.$('.ui-imglazyload').imglazyload({
+                startload: function () {
+                    !startload && ok(startload = true, 'startload triggered');
+                },
+                eventName: 'scroll'
+            }).on('loadcomplete', function () {
+                sucImages.push(this);
+                ok(~w.$.inArray(this, viewImages), '图片成功加载' + this.getAttribute("data-url"));
+            });
 
-        w.$(window).on('scroll', function () {
-            viewImages = getImgsInView(w, w.$('.ui-imglazyload'), dis);
-        });
+            w.$(window).on('scroll', function () {
+                viewImages = getImgsInView(w, w.$('.ui-imglazyload'), dis);
+            });
 
-        setTimeout(function(){
-            dis = n*itemH;
-            window.scrollTo(0, dis);
-            ta.scroll();
-            
             setTimeout(function(){
-                dis = (n - 3)*itemH;
-                window.scrollTo(0, dis);    //两次滑动，触发scroll效果
+                dis = n*itemH;
+                window.scrollTo(0, dis);
                 ta.scroll();
 
-                setTimeout(function () {
-                    window.scrollTo(0,0);
-                    w.$('.ui-imglazyload').off();
-                    w.$('#container').remove();
-                    me.finish();
+                setTimeout(function(){
+                    dis = (n - 3)*itemH;
+                    window.scrollTo(0, dis);    //两次滑动，触发scroll效果
+                    ta.scroll();
+
+                    setTimeout(function () {
+                        window.scrollTo(0,0);
+                        w.$('.ui-imglazyload').off();
+                        w.$('#container').remove();
+                        me.finish();
+                    }, 200);
                 }, 200);
             }, 200);
-        }, 200);
+        }, 100);
     });
 });
 
@@ -169,6 +175,7 @@ test("refresh:增加图片后能正确加载 & error", function(){
         f.style.height = '500px';
         f.style.width = '500px';
         createContainer(w);
+        setTimeout(function () {
         var viewImages = getImgsInView(w, w.$('.ui-imglazyload')),
             container = w.$('#container').get(0),
             itemH = w.$('p').height() + w.$('.ui-imglazyload').height(),
@@ -229,6 +236,7 @@ test("refresh:增加图片后能正确加载 & error", function(){
                 }, 200);
             }, 200);
         }, 200);
+        }, 50);
     });
 });
 
@@ -239,7 +247,6 @@ test("iscroll:初始状态图片在iscroll wrapper区域内能正确加载", fun
         f.style.height = '500px';
         f.style.width = '500px';
         createContainer(w);
-
         var script1 = w.document.createElement('script');
         script1.type = 'text/javascript';
         script1.src = '../lib/js/UserAction.js';
@@ -288,7 +295,6 @@ test("iscroll:滚动过程中在iscroll wrapper区域内能正确加载", functi
         f.style.height = '500px';
         f.style.width = '500px';
         createContainer(w);
-
         var script1 = w.document.createElement('script');
         script1.type = 'text/javascript';
         script1.src = '../lib/js/UserAction.js';
