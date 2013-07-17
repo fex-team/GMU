@@ -1,0 +1,95 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <title>dragdelete demo</title>
+    <!--demo展示所用css，不用关心 begin-->
+    <link rel="stylesheet" type="text/css" href="../../../assets/reset.css" />
+    <!--demo展示所用css end-->
+    <!--组件依赖css begin-->
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/dragdelete/dragdelete.css" />
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/dragdelete/dragdelete.default.css" />
+    <!--皮肤文件，若不使用该皮肤，可以不加载-->
+    <!--组件依赖css end-->
+
+    <!--组件依赖js begin-->
+    <script type="text/javascript" src="../../../dist/zepto.js"></script>
+    <script type="text/javascript" src="../../../src/extend/parseTpl.js"></script>
+    <script type="text/javascript" src="../../../src/extend/touch.js"></script>
+    <script type="text/javascript" src="../../../src/core/gmu.js"></script>
+    <script type="text/javascript" src="../../../src/core/event.js"></script>
+    <script type="text/javascript" src="../../../src/core/widget.js"></script>
+    <script type="text/javascript" src="../../../src/widget/dragdelete/dragdelete.js"></script>
+    <!--组件依赖js end-->
+</head>
+<body>
+
+<style type="text/css">
+    #J_framework {
+        width: 320px;
+        height: 500px;
+        margin-left: 200px;
+        border: 1px solid #E1E1E1;
+        background-color: #FCFCFC;
+        padding: 8px;
+    }
+    .input-text {
+        height: 35px;
+        width: 268px;
+        border: 1px solid #E1E1E1;
+    }
+    .input-button {
+        height: 37px;
+        width: 50px;
+        background-color: #FCFCFC;
+        border: 1px solid #E1E1E1;
+        border-width: 1px 1px 1px 0;
+    }
+
+    #J_historyWrap {
+        margin-top: 8px;
+        box-shadow: 2px 2px 2px #F3F3F3;
+    }
+</style>
+
+<div id="J_framework">
+    <p><input type="text" class="input-text" /><input type="button" value="取消" class="input-button" /></p>
+    <div id="J_historyWrap"></div>
+</div>
+
+<script type="text/javascript">
+    
+    // 初始化(初始化后默认显示)
+    var instance = new gmu.Dragdelete({
+        container: $('#J_historyWrap'), // 页面上需要有一个已经存在的容器来存放组件
+        items: ['baidu', 'google', 'QQ', 'alibaba', 'taobao'],   // 历史记录的列表
+        itemTouch: function(e, data) {  // 某条记录被点击后的响应事件
+            console.log( data.item );   // data.item是某条记录的内容
+        },
+        itemDelete: function(e, data) { // 某条记录被删除后的响应事件
+            console.log( data.item );   // data.item是某条记录的内容
+        },
+        clear: function() {  // 用户确认清空搜索历史后的响应事件
+            // 在这里删除localstorage里面存的历史数据
+            console.log( 'clear triggered' );
+        }
+    });
+
+    // // 添加记录
+    // instance.addItems( ['item1', 'item2', 'item3'] );
+
+    // // 添加一条记录
+    // instance.addItem( 'item' );
+
+    // // 显示
+    // instance.show();
+
+    // // 隐藏
+    // instance.hide();
+
+    // // 销毁
+    // instance.destroy();
+</script>
+</body>
+</html>
