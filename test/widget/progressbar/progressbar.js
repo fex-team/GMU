@@ -110,7 +110,7 @@ test("transitionDuration & horizontal", function() {
     	equals(progressbar.$el.height(), 400, "The horizontal is right");
         progressbar.destroy();
         start();
-    }, 250);
+    }, 1000);
 });
 
 test("initValue, transitionDuration, value()", function() {
@@ -132,7 +132,7 @@ test("initValue, transitionDuration, value()", function() {
         equal(progressbar.value(), 0, 'the value is right');
         progressbar.destroy();
         start();
-    }, 350);
+    }, 1000);
 });
 
 test("show(), hide()", function() {
