@@ -19,7 +19,7 @@
 
         template: {
             wrap: '<ul class="ui-dragdelete">',
-            item: '<li><p class="ui-dragdelete-itemwrap"><span class="ui-dragdelete-item"><%=item%></span></p></li>',
+            item: '<li data-item="<%=item%>"><p class="ui-dragdelete-itemwrap"><span class="ui-dragdelete-item"><%=item%></span></p></li>',
             clear: '<p class="ui-dragdelete-clear">清空搜索历史</p>'
         },
 
@@ -41,9 +41,9 @@
                 opts = me._options;
 
 
-            me.$wrap = $( me.tpl2html( 'wrap' ) ).appendTo(opts.container);
+            me.$wrap = $( me.tpl2html( 'wrap' ) ).appendTo( opts.container );
 
-            me.$clear = $( me.tpl2html( 'clear' ) ).appendTo(opts.container);
+            me.$clear = $( me.tpl2html( 'clear' ) ).appendTo( opts.container );
 
             me.addItems( opts.items );
         },
@@ -56,18 +56,17 @@
                 endTimestamp,
                 touchstartx,
                 currentX,
-                velocity;
+                velocity,
+                movedPercentage;
 
             me.$clear.on( 'tap' + me.eventNs, function() {
                 //TODO confirm 改成插件
-                me.$wrap.html('');
-
-                me.trigger( 'clear' );
+                me.clear();
             } );
 
             me.$wrap.on( "touchstart", function(ev) {
                 touch = ev.touches[0],
-                $target = $(touch.target),
+                $target = $( touch.target ),
                 startTimestamp = ev.timeStamp;
                 currentX = touchstartx = parseInt( ev.touches[0].pageX );
 
@@ -87,9 +86,11 @@
                     return;
                 }
                 currentX = ev.touches[0].pageX;
-                $target.css('-webkit-transform', 'translate3d(' + (currentX - touchstartx) + 'px, 0, 0)');
-                // TODO 透明度变化
+                movedPercentage = (currentX - touchstartx)/me.$wrap.width();
 
+                // TODO 有点卡，需要优化
+                $target.css( '-webkit-transform', 'translate3d(' + (currentX - touchstartx) + 'px, 0, 0)' );
+                $target.css( 'opacity', 1 - movedPercentage );
                 
                 ev.preventDefault();
                 ev.stopPropagation();
@@ -111,6 +112,7 @@
                         $target.css( 'width', 'auto' );
                         $target.css( 'transition-duration', '120ms' );
                         $target.css( '-webkit-transform', 'translate3d(0, 0, 0)' );
+                        $target.css( 'opacity', 1 );
                     }
                 }else{
                     me.removeItem( $target );
@@ -121,13 +123,24 @@
         },
 
         show: function() {
-            this.$el.show();
+            var me = this;
+
+            if( me.sync === false ) {
+                me.$wrap.html( '' );
+                me.addItems( items );
+                me.sync = true;
+            }
+            me.$el.show();
+            me.isShow = true;
 
             return me;
         },
 
         hide: function() {
-            this.$el.hide();
+            var me = this;
+
+            me.$el.hide();
+            me.isShow = false;
 
             return me;
         },
@@ -135,7 +148,17 @@
         addItem: function( item ) {
             var me = this;
 
-            me.$wrap.append( me.tpl2html( 'item', {'item': item} ) );
+            // 检查me.items中是否已存在该项
+            me.items.forEach( function( _item, index ) {
+                if ( _item === item ) {
+                    me.items.splice( index, 1);
+                    $( me.$wrap.children()[index] ).remove();
+                }
+            } );
+
+            me.$wrap.children().length === 0 ? 
+                me.$wrap.append( me.tpl2html( 'item', {'item': item} ) ) : 
+                $( me.tpl2html( 'item', {'item': item} ) ).insertBefore( me.$wrap.children()[0] );
             me.items.unshift( item );
 
             return me;
@@ -151,17 +174,55 @@
             return me;
         },
 
-        removeItem: function( item ) {
+        /*
+         * 更新数据，重新渲染列表
+         */
+        update: function( items ) {
             var me = this;
 
-            item.css( 'transition-duration', '500ms' );
-            item.css( '-webkit-transform', 'translate3d(' + item.width() + 'px, 0, 0)' );
+            me.items = items;
 
-            item.on( 'transitionend', function(){
-                item.parent().remove();
-                me.trigger( 'itemDelete', {item: item});
+            if( me.isShow ) {
+                me.$wrap.html( '' );
+                me.addItems( items );
+                me.sync = true;
+            } else {
+                me.sync = false;
+            }
+
+            return me;
+        },
+
+        removeItem: function( $target ) {
+            var me = this;
+
+            $target.css( 'transition-duration', '300ms' );
+            $target.css( '-webkit-transform', 'translate3d(' + $target.width() + 'px, 0, 0)' );
+
+            // TODO 根据位移计算透明度
+
+            $target.on( 'transitionend', function() {
+                $target.parent().remove();
+                me.items.forEach( function( _item, index ) {
+                    if ( _item === $target.parent().attr( 'data-item' ) ) {
+                        me.items.splice( index, 1);
+                    }
+                } );
+                me.trigger( 'itemDelete', {'item': $target} );
             } );
 
+        },
+
+        clear: function() {
+            var me = this;
+
+            me.$wrap.html( '' );
+            me.items = [];
+            me.sync = true;
+
+            me.trigger( 'clear' );
+
+            return me;
         }
     } );
 })( gmu, gmu.$ );
