@@ -1,11 +1,18 @@
 .ui-dragdelete {
+    overflow: hidden;
+    padding-top: 1px;
+}
+.ui-dragdelete-itemwrap {
     border: 1px solid #E1E1E1;
     border-width: 1px 1px 0 1px;
-    background-color: #FFF;
-}
-.ui-dragdelete p {
     line-height: 2.5em;
+    background-color: #FFF;
+    margin-top: -1px;
 }
+/*.ui-dragdelete li:first-child .ui-dragdelete-itemwrap {
+    margin-top: 0;
+}
+*/
 .ui-dragdelete-item {
     height: 100%;
     display: block;
@@ -19,6 +26,6 @@
     line-height: 2.5em;
     text-align: center;
     border: 1px solid #E1E1E1;
-    border-width: 0 1px 1px 1px;
     background-color: #FFF;
+    margin-top: -1px;
 }

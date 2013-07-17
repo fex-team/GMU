@@ -49,7 +49,14 @@
         },
 
         _bindUI: function() {
-            var me = this;
+            var me = this,
+                touch,
+                $target,
+                startTimestamp,
+                endTimestamp,
+                touchstartx,
+                currentX,
+                velocity;
 
             me.$clear.on( 'tap' + me.eventNs, function() {
                 //TODO confirm 改成插件
@@ -58,37 +65,59 @@
                 me.trigger( 'clear' );
             } );
 
-            me.$wrap.on("touchstart", function(ev){
+            me.$wrap.on( "touchstart", function(ev) {
+                touch = ev.touches[0],
+                $target = $(touch.target),
                 startTimestamp = ev.timeStamp;
-                x = parseInt(ev.touches[0].pageX);
-                console.log(x);
-            });
+                currentX = touchstartx = parseInt( ev.touches[0].pageX );
 
-            me.$wrap.on("touchmove", function(ev) {
-                currentX = ev.touches[0].pageX;
-                me.$wrap.css('marginLeft', currentX - x);
-                ev.preventDefault();
-                ev.stopPropagation();
-            });
-
-            me.$wrap.on("touchend", function(ev){
-                currentTarget = null;
-                
-                endTimestamp = ev.timeStamp;
-
-                // 如果移动的距离小于1/3，不删除，速度超过**时删除
-                if(Math.abs(currentX - x) < window.innerWidth/3){
-                    var velocity = (currentX - x) / (endTimestamp - startTimestamp);
-                    if(Math.abs(velocity) > 0.1){
-                        me.removeItem();
-                    }else{
-                        // 还原
-                    }
-                }else{
-                    me.removeItem();
+                if( !$target.hasClass( 'ui-dragdelete-itemwrap' ) && 
+                    !($target = $target.parents( '.ui-dragdelete-itemwrap') ).length ) {
+                    $target = null;
+                    return;
                 }
 
-            });
+                $target.css( 'transition-duration', '0' );
+                $target.css( 'transition-property', '-webkit-transform' );
+                $target.css( 'width',  $target.width() - parseInt( $target.css( 'border-left-width' ) ) - parseInt( $target.css( 'border-right-width' ) ));
+            } );
+
+            me.$wrap.on( "touchmove", function(ev) {
+                if( !$target ) {
+                    return;
+                }
+                currentX = ev.touches[0].pageX;
+                $target.css('-webkit-transform', 'translate3d(' + (currentX - touchstartx) + 'px, 0, 0)');
+                // TODO 透明度变化
+
+                
+                ev.preventDefault();
+                ev.stopPropagation();
+            } );
+
+            me.$wrap.on( "touchend", function(ev) {
+                if( !$target ) {
+                    return;
+                }
+
+                endTimestamp = ev.timeStamp;
+
+                // 如果移动的距离小于1/3，速度快则删除，速度慢则还原
+                if(Math.abs( currentX - touchstartx ) < me.$wrap.width()/3){
+                    velocity = (currentX - touchstartx) / (endTimestamp - startTimestamp);
+                    if(Math.abs( velocity ) > 0.1){
+                        me.removeItem( $target );
+                    }else{
+                        $target.css( 'width', 'auto' );
+                        $target.css( 'transition-duration', '120ms' );
+                        $target.css( '-webkit-transform', 'translate3d(0, 0, 0)' );
+                    }
+                }else{
+                    me.removeItem( $target );
+                }
+
+                $target = null;
+            } );
         },
 
         show: function() {
@@ -122,7 +151,16 @@
             return me;
         },
 
-        removeItem: function() {
+        removeItem: function( item ) {
+            var me = this;
+
+            item.css( 'transition-duration', '500ms' );
+            item.css( '-webkit-transform', 'translate3d(' + item.width() + 'px, 0, 0)' );
+
+            item.on( 'transitionend', function(){
+                item.parent().remove();
+                me.trigger( 'itemDelete', {item: item});
+            } );
 
         }
     } );
