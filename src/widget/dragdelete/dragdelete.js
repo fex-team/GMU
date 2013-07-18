@@ -79,24 +79,31 @@
                
             } );
 
-            me.$clear.on( 'tap' + me.eventNs, function() {
-                gmu.Dialog({
-                    closeBtn: false,
-                    buttons: {
-                        '清空': function(){
-                            me.clear();
-                            this.destroy();
+            me.$clear.on( 'tap' + me.eventNs, function( ev ) {
+                // 防止穿透
+                setTimeout( function() {
+                    gmu.Dialog({
+                        closeBtn: false,
+                        buttons: {
+                            '清空': function(){
+                                me.clear();
+                                this.destroy();
+                            },
+                            '取消': function(){
+                                this.destroy();
+                            }
                         },
-                        '取消': function(){
-                            this.destroy();
+                        title: '清空历史',
+                        content: '<p>是否清空搜索历史？</p>',
+                        open: function(){
+                            this._options._wrap.addClass( 'ui-dragdelete-dialog' );
                         }
-                    },
-                    title: '清空历史',
-                    content: '<p>是否清空搜索历史？</p>',
-                    open: function(){
-                        this._options._wrap.addClass( 'ui-dragdelete-dialog' );
-                    }
-                });
+                    });
+                    
+                }, 10 );
+
+                    ev.preventDefault();
+                    ev.stopPropagation();
             } );
 
             me.$wrap.on( 'touchstart' + me.eventNs, function(ev) {
@@ -114,6 +121,7 @@
                 $target.css( 'transition-duration', '0' );
                 $target.css( 'transition-property', '-webkit-transform' );
                 $target.css( 'width',  $target.width() - parseInt( $target.css( 'border-left-width' ) ) - parseInt( $target.css( 'border-right-width' ) ));
+
             } );
 
             me.$wrap.on( 'touchmove' + me.eventNs, function(ev) {
