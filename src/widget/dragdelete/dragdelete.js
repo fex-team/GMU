@@ -3,7 +3,7 @@
  * @name Dragdelete
  * @desc <qrcode align="right" title="Live Demo">../gmu/examples/widget/dragdelete/dragdelete.html</qrcode>
  * 滑动删除组件
- * @import core/widget.js, extend/touch.js
+ * @import core/widget.js, extend/touch.js, widget/dialog.js
  */
 (function( gmu, $ ) {
     
@@ -19,7 +19,7 @@
 
         template: {
             wrap: '<ul class="ui-dragdelete">',
-            item: '<li data-item="<%=item%>"><p class="ui-dragdelete-itemwrap"><span class="ui-dragdelete-item"><%=item%></span></p></li>',
+            item: '<li data-id="<%=id%>"><p class="ui-dragdelete-itemwrap"><span class="ui-dragdelete-item"><%=context%></span></p></li>',
             clear: '<p class="ui-dragdelete-clear">清空搜索历史</p>'
         },
 
@@ -52,6 +52,7 @@
             var me = this,
                 touch,
                 $target,
+                targetId,
                 startTimestamp,
                 endTimestamp,
                 touchstartx,
@@ -59,12 +60,46 @@
                 velocity,
                 movedPercentage;
 
-            me.$clear.on( 'tap' + me.eventNs, function() {
-                //TODO confirm 改成插件
-                me.clear();
+            me.$wrap.on( 'tap' + me.eventNs, function(ev) {
+                $target = $( ev.target );
+
+                if( !$target.hasClass( 'ui-dragdelete-itemwrap' ) && 
+                    !($target = $target.parents( '.ui-dragdelete-itemwrap') ).length ) {
+                    $target = null;
+                    return;
+                }
+
+                targetId = $target.parent().attr( 'data-id' );
+
+                me.items.forEach( function( _item, index ) {
+                    if ( _item.id === targetId ) {
+                         me.trigger( 'itemTouch', {'item': _item.value} );
+                    }
+                } );
+               
             } );
 
-            me.$wrap.on( "touchstart", function(ev) {
+            me.$clear.on( 'tap' + me.eventNs, function() {
+                gmu.Dialog({
+                    closeBtn: false,
+                    buttons: {
+                        '清空': function(){
+                            me.clear();
+                            this.destroy();
+                        },
+                        '取消': function(){
+                            this.destroy();
+                        }
+                    },
+                    title: '清空历史',
+                    content: '<p>是否清空搜索历史？</p>',
+                    open: function(){
+                        this._options._wrap.addClass( 'ui-dragdelete-dialog' );
+                    }
+                });
+            } );
+
+            me.$wrap.on( 'touchstart' + me.eventNs, function(ev) {
                 touch = ev.touches[0],
                 $target = $( touch.target ),
                 startTimestamp = ev.timeStamp;
@@ -81,7 +116,7 @@
                 $target.css( 'width',  $target.width() - parseInt( $target.css( 'border-left-width' ) ) - parseInt( $target.css( 'border-right-width' ) ));
             } );
 
-            me.$wrap.on( "touchmove", function(ev) {
+            me.$wrap.on( 'touchmove' + me.eventNs, function(ev) {
                 if( !$target ) {
                     return;
                 }
@@ -96,7 +131,7 @@
                 ev.stopPropagation();
             } );
 
-            me.$wrap.on( "touchend", function(ev) {
+            me.$wrap.on( 'touchend' + me.eventNs, function(ev) {
                 if( !$target ) {
                     return;
                 }
@@ -145,20 +180,50 @@
             return me;
         },
 
-        addItem: function( item ) {
+        _getItemId: function() {
             var me = this;
+
+            me._itemId === undefined ? (me._itemId = 1) : ++me._itemId;
+
+            return '__dd__' + me._itemId;
+        },
+
+        _getFormatItem: function( item ) {
+            var me = this;
+
+            if( Object.prototype.toString.call( item ) === '[object String]' ) {
+                return {
+                    'context': item,
+                    'value': item,
+                    'id': me._getItemId()
+                }
+            } else {
+                return {
+                    'context': item.context || item.value,
+                    'value': item.value || item.context,
+                    'id': me._getItemId()
+                }
+            }
+        },
+
+        addItem: function( item ) {
+            var me = this,
+                item = me._getFormatItem( item );
 
             // 检查me.items中是否已存在该项
             me.items.forEach( function( _item, index ) {
-                if ( _item === item ) {
+                if ( _item.value === item.value ) {
                     me.items.splice( index, 1);
                     $( me.$wrap.children()[index] ).remove();
+
+                    return;
                 }
             } );
 
             me.$wrap.children().length === 0 ? 
-                me.$wrap.append( me.tpl2html( 'item', {'item': item} ) ) : 
-                $( me.tpl2html( 'item', {'item': item} ) ).insertBefore( me.$wrap.children()[0] );
+                me.$wrap.append( me.tpl2html( 'item', item ) ) : 
+                $( me.tpl2html( 'item', item ) ).insertBefore( me.$wrap.children()[0] );
+            
             me.items.unshift( item );
 
             return me;
@@ -204,11 +269,13 @@
             $target.on( 'transitionend', function() {
                 $target.parent().remove();
                 me.items.forEach( function( _item, index ) {
-                    if ( _item === $target.parent().attr( 'data-item' ) ) {
+                    if ( _item.id === $target.parent().attr( 'data-id' ) ) {
                         me.items.splice( index, 1);
+                        me.trigger( 'itemDelete', {'item': _item.value} );
+
+                        return;
                     }
                 } );
-                me.trigger( 'itemDelete', {'item': $target} );
             } );
 
         },
@@ -223,6 +290,11 @@
             me.trigger( 'clear' );
 
             return me;
+        },
+
+        destroy: function() {
+            // remove dom
+            // remove event
         }
     } );
 })( gmu, gmu.$ );

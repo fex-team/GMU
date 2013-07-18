@@ -22,6 +22,11 @@
     <script type="text/javascript" src="../../../src/core/widget.js"></script>
     <script type="text/javascript" src="../../../src/widget/dragdelete/dragdelete.js"></script>
     <!--组件依赖js end-->
+
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/dialog/dialog.css" />
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/dialog/dialog.default.css" />
+    <script type="text/javascript" src="../../../src/extend/highlight.js"></script>
+    <script type="text/javascript" src="../../../src/widget/dialog/dialog.js"></script>
 </head>
 <body>
 
@@ -50,6 +55,9 @@
         margin-top: 8px;
         box-shadow: 2px 2px 2px #F3F3F3;
     }
+    #J_historyWrap b {
+        font-weight: bold;
+    }
 </style>
 
 <div id="J_framework">
@@ -62,7 +70,13 @@
     // 初始化(初始化后默认显示)
     var instance = new gmu.Dragdelete({
         container: $('#J_historyWrap'), // 页面上需要有一个已经存在的容器来存放组件
-        items: ['baidu', 'google', 'QQ', 'alibaba', 'taobao'],   // 历史记录的列表
+        items: [
+                {'value': 'global', 'context': '<b>global</b> adj. 全球的；综合的'},
+                'google',
+                {'value': 'visual', 'context': '<b>visual</b> adj. 视觉的'},
+                'alibaba',
+                'taobao'
+               ],   // 历史记录的列表
         itemTouch: function(e, data) {  // 某条记录被点击后的响应事件
             console.log( data.item );   // data.item是某条记录的内容
         },
