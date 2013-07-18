@@ -118,8 +118,6 @@
                     return;
                 }
 
-                $target.css( 'transition-duration', '0' );
-                $target.css( 'transition-property', '-webkit-transform' );
                 $target.css( 'width',  $target.width() - parseInt( $target.css( 'border-left-width' ) ) - parseInt( $target.css( 'border-right-width' ) ));
 
             } );
@@ -155,7 +153,6 @@
                         me.removeItem( $target );
                     }else{
                         $target.css( 'width', 'auto' );
-                        $target.css( 'transition-duration', '120ms' );
                         $target.css( '-webkit-transform', 'translate3d(0, 0, 0)' );
                         $target.css( 'opacity', 1 );
                     }
@@ -271,7 +268,6 @@
         removeItem: function( $target ) {
             var me = this;
 
-            $target.css( 'transition-duration', '300ms' );
             $target.css( '-webkit-transform', 'translate3d(' + $target.width() + 'px, 0, 0)' );
 
             // TODO 根据位移计算透明度
@@ -303,8 +299,14 @@
         },
 
         destroy: function() {
-            // remove dom
-            // remove event
+            var me = this;
+
+            me.$wrap.off( me.eventNs );
+            me.$clear.off( me.eventNs );
+
+            me.$wrap.remove();
+
+            return me.$super( 'destroy' );
         }
     } );
 })( gmu, gmu.$ );
