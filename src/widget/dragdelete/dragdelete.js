@@ -11,7 +11,7 @@
 
         options: {
 
-            // 容器，默认为document.body，这个时候body还没渲染完，所以在init里面要重新赋值
+            // 容器，默认为 document.body ，这个时候 body 还没渲染完，所以在 init 里面要重新赋值
             container: document.body,
 
             items: []
@@ -48,36 +48,30 @@
             me.addItems( opts.items );
         },
 
+        _filterItemsById: function( id, callback ) {
+            var me = this;
+
+            me.items.forEach( function( _item, index ) {
+                if ( _item.id === id ) {
+                    callback.call( me, _item, index );
+
+                    return;
+                }
+            } );
+        },
+
         _bindUI: function() {
             var me = this,
                 touch,
                 $target,
-                targetId,
+                itemId,
                 startTimestamp,
                 endTimestamp,
                 touchstartx,
                 currentX,
                 velocity,
-                movedPercentage;
-
-            me.$wrap.on( 'tap' + me.eventNs, function(ev) {
-                $target = $( ev.target );
-
-                if( !$target.hasClass( 'ui-dragdelete-itemwrap' ) && 
-                    !($target = $target.parents( '.ui-dragdelete-itemwrap') ).length ) {
-                    $target = null;
-                    return;
-                }
-
-                targetId = $target.parent().attr( 'data-id' );
-
-                me.items.forEach( function( _item, index ) {
-                    if ( _item.id === targetId ) {
-                         me.trigger( 'itemTouch', {'item': _item.value} );
-                    }
-                } );
-               
-            } );
+                movedPercentage,
+                movedDistance;
 
             me.$clear.on( 'tap' + me.eventNs, function( ev ) {
                 // 防止穿透
@@ -99,18 +93,17 @@
                             this._options._wrap.addClass( 'ui-dragdelete-dialog' );
                         }
                     });
-                    
                 }, 10 );
 
-                    ev.preventDefault();
-                    ev.stopPropagation();
+                ev.preventDefault();
+                ev.stopPropagation();
             } );
 
             me.$wrap.on( 'touchstart' + me.eventNs, function(ev) {
-                touch = ev.touches[0],
-                $target = $( touch.target ),
+                touch = ev.touches[0];
+                $target = $( touch.target );
                 startTimestamp = ev.timeStamp;
-                currentX = touchstartx = parseInt( ev.touches[0].pageX );
+                currentX = touchstartx = parseInt( touch.pageX );
 
                 if( !$target.hasClass( 'ui-dragdelete-itemwrap' ) && 
                     !($target = $target.parents( '.ui-dragdelete-itemwrap') ).length ) {
@@ -119,18 +112,18 @@
                 }
 
                 $target.css( 'width',  $target.width() - parseInt( $target.css( 'border-left-width' ) ) - parseInt( $target.css( 'border-right-width' ) ));
-
             } );
 
             me.$wrap.on( 'touchmove' + me.eventNs, function(ev) {
                 if( !$target ) {
                     return;
                 }
+
                 currentX = ev.touches[0].pageX;
                 movedPercentage = (currentX - touchstartx)/me.$wrap.width();
 
-                // TODO 有点卡，需要优化
-                $target.addClass('ui-dragdelete-itemmoving');
+                // TODO 有些设备上有点卡，需要优化
+                $target.addClass( 'ui-dragdelete-itemmoving' );
                 $target.css( '-webkit-transform', 'translate3d(' + (currentX - touchstartx) + 'px, 0, 0)' );
                 $target.css( 'opacity', 1 - movedPercentage );
                 
@@ -143,21 +136,26 @@
                     return;
                 }
 
+                itemId = $target.parent().attr( 'data-id' );
                 endTimestamp = ev.timeStamp;
+                velocity = (currentX - touchstartx) / (endTimestamp - startTimestamp);
+                movedDistance = Math.abs( currentX - touchstartx );
+
                 $target.removeClass('ui-dragdelete-itemmoving');
 
-                // 如果移动的距离小于1/3，速度快则删除，速度慢则还原
-                if(Math.abs( currentX - touchstartx ) < me.$wrap.width()/3){
-                    velocity = (currentX - touchstartx) / (endTimestamp - startTimestamp);
-                    if(Math.abs( velocity ) > 0.1){
-                        me.removeItem( $target );
-                    }else{
-                        $target.css( 'width', 'auto' );
-                        $target.css( '-webkit-transform', 'translate3d(0, 0, 0)' );
-                        $target.css( 'opacity', 1 );
-                    }
-                }else{
-                    me.removeItem( $target );
+                // 当移动的距离小于 1/3 时，速度快则删除，速度慢则还原
+                if( (movedDistance < me.$wrap.width()/3 && Math.abs( velocity ) > 0.1) ||
+                     movedDistance >= me.$wrap.width()/3 ) {
+                        me.removeItem( itemId, $target );
+                } else {
+                    $target.css( 'width', 'auto' );
+                    $target.css( '-webkit-transform', 'translate3d(0, 0, 0)' );
+                    $target.css( 'opacity', 1 );
+
+                    // 移动小于3个像素时，则认为是点击，派发 itemTouch 事件
+                    movedDistance < 3 && me._filterItemsById( itemId, function( _item ) {
+                        me.trigger( 'itemTouch', {'item': _item.value} );
+                    });
                 }
 
                 $target = null;
@@ -265,23 +263,20 @@
             return me;
         },
 
-        removeItem: function( $target ) {
+        removeItem: function( itemId, $itemTarget ) {
             var me = this;
 
-            $target.css( '-webkit-transform', 'translate3d(' + $target.width() + 'px, 0, 0)' );
+            $itemTarget.css( '-webkit-transform', 'translate3d(' + $itemTarget.width() + 'px, 0, 0)' );
 
             // TODO 根据位移计算透明度
 
-            $target.on( 'transitionEnd' + me.eventNs +  ' webkitTransitionEnd' + me.eventNs, function() {
-                $target.parent().remove();
-                me.items.forEach( function( _item, index ) {
-                    if ( _item.id === $target.parent().attr( 'data-id' ) ) {
-                        me.items.splice( index, 1);
-                        me.trigger( 'itemDelete', {'item': _item.value} );
+            $itemTarget.on( 'transitionEnd' + me.eventNs +  ' webkitTransitionEnd' + me.eventNs, function() {
+                $itemTarget.parent().remove();
 
-                        return;
-                    }
-                } );
+                me._filterItemsById( itemId, function( _item, index ) {
+                    me.items.splice( index, 1);
+                    me.trigger( 'itemDelete', {'item': _item.value} );
+                });
             } );
 
         },

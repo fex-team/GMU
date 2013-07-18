@@ -79,10 +79,10 @@
                 'taobao'
                ],   // 历史记录的列表
         itemTouch: function(e, data) {  // 某条记录被点击后的响应事件
-            console.log( data.item );   // data.item是某条记录的内容
+            console.log( 'item touched: ' + data.item );   // data.item是某条记录的内容
         },
         itemDelete: function(e, data) { // 某条记录被删除后的响应事件
-            console.log( data.item );   // data.item是某条记录的内容
+            console.log( 'item delete:' + data.item );   // data.item是某条记录的内容
         },
         clear: function() {  // 用户确认清空搜索历史后的响应事件
             // 在这里删除localstorage里面存的历史数据
