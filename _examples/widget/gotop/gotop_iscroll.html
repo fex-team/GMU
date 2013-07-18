@@ -10,6 +10,12 @@
     <!--demo展示所用css end-->
     <!--组件依赖css begin-->
     <link rel="stylesheet" type="text/css" href="../../../assets/widget/gotop/gotop.css" />
+
+    <style type="text/css">
+        #main {
+
+        }
+    </style>
     <!--组件依赖css end-->
     <!--组件依赖js begin-->
     <script type="text/javascript" src="../../../_src/core/zepto.js"></script>
@@ -26,7 +32,10 @@
 </head>
 <body>
 <div id="main">
-    <div id="thelist" >
+    <div>
+        <div style="height: 40px;">ajfdka</div>
+        <div id="thelist" >
+        </div>
     </div>
 </div>
 <div id="gotop"></div>
@@ -35,6 +44,7 @@
     //填充页面
     for(var i = 0, html = []; i < 50; i++) {html.push('<li>第 ' + i + ' 行</li>');}
     $('#thelist').html(html.join(''));
+
     //创建iScroll
     var iScroll_1 = new iScroll('main');
 
@@ -42,6 +52,13 @@
     $('#gotop').gotop({
         iScrollInstance: iScroll_1      //将iscroll实例传入
     });
+
+    function refresh() {
+        $('#main').height( window.innerHeight - 44 );    // 44是toolbar的高度
+        iScroll_1.refresh();
+    }
+    $(window).on('ortchange', refresh);
+    refresh();
 </script>
 <!--demo公用头部展示所用js，可以不用加载 begin-->
 <script id="bootstrap" src="../../example.js" type="text/javascript" data-page="普通页面|gotop.html,使用iScroll|gotop_iscroll.html"></script>
