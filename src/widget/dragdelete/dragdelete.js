@@ -266,6 +266,7 @@
         removeItem: function( itemId, $itemTarget ) {
             var me = this;
 
+            // TODO 根据当前位移的正负，判断是从右滑出还是从左滑出
             $itemTarget.css( '-webkit-transform', 'translate3d(' + $itemTarget.width() + 'px, 0, 0)' );
 
             // TODO 根据位移计算透明度
