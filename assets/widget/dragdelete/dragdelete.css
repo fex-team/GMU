@@ -3,6 +3,8 @@
 }
 .ui-dragdelete-itemwrap {
     line-height: 2.5em;
+    overflow: hidden;
+    white-space: nowrap;
 }
 .ui-dragdelete-item {
     height: 100%;
