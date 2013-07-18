@@ -305,6 +305,7 @@
             me.$clear.off( me.eventNs );
 
             me.$wrap.remove();
+            me.$clear.remove();
 
             return me.$super( 'destroy' );
         }
