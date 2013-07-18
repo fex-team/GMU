@@ -1,13 +1,18 @@
-
+html, body {
+    position: relative;
+    height: 100%;
+}
 #main {
-    height: 360px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    -webkit-box-sizing:border-box;
+    padding: 44px 0 0 0;
 }
 #thelist{
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    width: 100%;
-    text-align: left;
+    height: 100%;
 }
 
 #thelist li {
