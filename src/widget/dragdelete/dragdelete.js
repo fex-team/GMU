@@ -132,6 +132,7 @@
                 movedPercentage = (currentX - touchstartx)/me.$wrap.width();
 
                 // TODO 有点卡，需要优化
+                $target.addClass('ui-dragdelete-itemmoving');
                 $target.css( '-webkit-transform', 'translate3d(' + (currentX - touchstartx) + 'px, 0, 0)' );
                 $target.css( 'opacity', 1 - movedPercentage );
                 
@@ -145,6 +146,7 @@
                 }
 
                 endTimestamp = ev.timeStamp;
+                $target.removeClass('ui-dragdelete-itemmoving');
 
                 // 如果移动的距离小于1/3，速度快则删除，速度慢则还原
                 if(Math.abs( currentX - touchstartx ) < me.$wrap.width()/3){
@@ -274,7 +276,7 @@
 
             // TODO 根据位移计算透明度
 
-            $target.on( 'transitionend', function() {
+            $target.on( 'transitionEnd' + me.eventNs +  ' webkitTransitionEnd' + me.eventNs, function() {
                 $target.parent().remove();
                 me.items.forEach( function( _item, index ) {
                     if ( _item.id === $target.parent().attr( 'data-id' ) ) {
