@@ -354,7 +354,7 @@
             cls = 'gmu-media-detect',
             transitionEnd = $.fx.transitionEnd,
             cssPrefix = $.fx.cssPrefix,
-            $style = $('<style></style>').append('.' + cls + '{' + cssPrefix + 'transition: width 0.001ms; width: 0; position: absolute; top: -10000px;}\n').appendTo('head');
+            $style = $('<style></style>').append('.' + cls + '{' + cssPrefix + 'transition: width 0.001ms; width: 0; position: relative; bottom: -999999px;}\n').appendTo('head');
 
         return function (query) {
             var id = cls + mediaId++,
@@ -362,20 +362,20 @@
                 listeners = [],
                 ret;
 
-            $style.append('@media ' + query + ' { #' + id + ' { width: 1px; } }\n') ;   //原生matchMedia也需要添加对应的@media才能生效
-            if ('matchMedia' in window) {
-                return window.matchMedia(query);
-            }
+            $style.append('@media ' + query + ' { #' + id + ' { width: 100px; } }\n') ;   //原生matchMedia也需要添加对应的@media才能生效
+            // if ('matchMedia' in window) {
+            //     return window.matchMedia(query);
+            // }
 
             $mediaElem.on(transitionEnd, function() {
-                ret.matches = $mediaElem.width() === 1;
+                ret.matches = $mediaElem.width() === 100;
                 $.each(listeners, function (i,fn) {
                     $.isFunction(fn) && fn.call(ret, ret);
                 });
             });
 
             ret = {
-                matches: $mediaElem.width() === 1 ,
+                matches: $mediaElem.width() === 100 ,
                 media: query,
                 addListener: function (callback) {
                     listeners.push(callback);
@@ -394,8 +394,12 @@
 
     $(function () {
         var handleOrtchange = function (mql) {
-                $(window).trigger('ortchange');
-            };
+                if ( state !== mql.matches ) {
+                    $( window ).trigger( 'ortchange' );
+                    state = mql.matches;
+                }
+            },
+            state = true;
         $.mediaQuery = {
             ortchange: 'screen and (width: ' + window.innerWidth + 'px)'
         };

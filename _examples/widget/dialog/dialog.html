@@ -175,6 +175,13 @@
                 break;
         }
     }});
+
+    // 由于某些机型，postion:fixed的元素 zindex最高，所以这里做了处理
+    $(document).on('open', function( e ){
+        $('.ui-toolbar').css('visibility', 'hidden');
+    }).on('close', function(e){
+        $('.ui-toolbar').css('visibility', 'visible');
+    });
 </script>
 <!--demo公用头部展示所用js，可以不用加载 begin-->
 <script id="bootstrap" src="../../example.js" type="text/javascript" data-page="弹出框|dialog.html,弹出框定位|dialog_position.html"></script>

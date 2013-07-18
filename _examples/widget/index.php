@@ -2,10 +2,10 @@
 error_reporting(E_ERROR | E_WARNING | E_PARSE);
 header("Content-type: text/html; charset=utf-8");
 
-if(!preg_match('#webkit#i', $_SERVER['HTTP_USER_AGENT'])){
+/*if(!preg_match('#webkit#i', $_SERVER['HTTP_USER_AGENT'])){
     echo 'GMU组件demo需要在无线设备上使用，请使用webkit引擎（chrome, safari等）浏览器浏览';
     exit;
-}
+}*/
 
 //collect demos
 $setting = require_once('./setting/setting.php');
