@@ -71,6 +71,7 @@
                 currentX,
                 velocity,
                 movedPercentage,
+                moved,
                 movedDistance;
 
             me.$clear.on( 'tap' + me.eventNs, function( ev ) {
@@ -104,6 +105,7 @@
                 $target = $( touch.target );
                 startTimestamp = ev.timeStamp;
                 currentX = touchstartx = parseInt( touch.pageX );
+                moved = false;
 
                 if( !$target.hasClass( 'ui-dragdelete-itemwrap' ) && 
                     !($target = $target.parents( '.ui-dragdelete-itemwrap') ).length ) {
@@ -120,6 +122,7 @@
                 }
 
                 currentX = ev.touches[0].pageX;
+                moved = moved || ((currentX - touchstartx >= 3) ? true : false);
                 movedPercentage = (currentX - touchstartx)/me.$wrap.width();
 
                 // TODO 有些设备上有点卡，需要优化
@@ -153,7 +156,8 @@
                     $target.css( 'opacity', 1 );
 
                     // 移动小于3个像素时，则认为是点击，派发 itemTouch 事件
-                    movedDistance < 3 && me._filterItemsById( itemId, function( _item ) {
+                    // 如果移出3像素外，再移到3像素内，认为不是点击
+                    !moved && movedDistance < 3 && me._filterItemsById( itemId, function( _item ) {
                         me.trigger( 'itemTouch', {'item': _item.value} );
                     });
                 }
