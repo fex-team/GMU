@@ -19,7 +19,38 @@ function createContainer(w){
     });
     htmlArr = html;
 }
-
+function createContainer_img(w){
+    var i = 0, html = [];
+    w.$("body").append("<div id='container'></div>");
+    //创建dom
+    while (i++ < 12) {
+        html.push('<p>' + i
+            + '爱因斯坦（1879－1955），美籍德国犹太人。他创立了代表现代科学的相对论，并为核能开发奠定了理论基础，在现代科学技术和他的深刻影响及广泛应用方面开创了现代科学新纪元，被公认为自伽利略、牛顿以来最伟大的'
+            + '科学家、思想家。1921年诺贝尔物理学奖获得者。现代物理学的开创者和奠基人，相对论——“质能关系”的提出者，“决定论量子力学诠释”的捍卫者（振动的粒子）——不掷骰子的上帝。1999年12月26日，爱因斯坦被美国《时代周刊》评选为“世纪伟人”。'
+            +  '</p>'
+            + '<img class="ui-imglazyload" data-url="../../extend/imglazyload/' + i + '.jpg"/>');
+    }
+    w.$('#container').append(html.join(' '));
+    w.$('.ui-imglazyload').css({
+        height: 220,
+        width: 176
+    });
+    htmlArr = html;
+}
+function createContainer_h(w){
+    var i = 0, html = [];
+    w.$("body").append("<div id='container' style='width:10000px'></div>");
+    //创建dom
+    while (i++ < 12) {
+        html.push('<div style="display: inline-block;" class="ui-imglazyload" data-url="../../extend/imglazyload/' + i + '.jpg"></div>');
+    }
+    w.$('#container').append(html.join(' '));
+    w.$('.ui-imglazyload').css({
+        height: 220,
+        width: 176
+    });
+    htmlArr = html;
+}
 function getImgsInView (w, $images, scrollTop, placeHolder) {
     var imgs = [],
         winH,
@@ -35,7 +66,21 @@ function getImgsInView (w, $images, scrollTop, placeHolder) {
     });
     return imgs;
 }
-
+function getImgsInView_h (w, $images, scrollLeft, placeHolder) {
+    var imgs = [],
+        winW,
+        offset,
+        placeHolder = placeHolder || 0,
+        scrollLeft = scrollLeft || 0;
+    $images.each(function () {
+        winW = w.innerWidth;
+        offset = w.$(this).offset();
+        if (offset.left + placeHolder <= winW + scrollLeft  && offset.left + w.$(this).width() >= scrollLeft) {
+            imgs.push(this);
+        }
+    });
+    return imgs;
+}
 function getImgsInWrapper (w, $images, $wrapper, placeHolder) {
     var imgs = [],
         offset,wOffset,
@@ -49,7 +94,87 @@ function getImgsInWrapper (w, $images, $wrapper, placeHolder) {
     });
     return imgs;
 }
+test("图片加载前有占位符", function(){
+    stop();
+    ua.frameExt(function(w, f){
+        var me = this;
+        f.style.height = '500px';
+        f.style.width = '500px';
+        createContainer(w);
+        setTimeout(function () {
+            var $images = w.$('.ui-imglazyload'),   //获取初始状态下在可视区内的图片
+                viewImages = getImgsInView(w, $images),
+                sucImages = [];
+            var placeHolderDiv = document.createElement('div');//background-color: rgb(255, 0, 0)
+            $(placeHolderDiv).css('width','400px').css('height','400px').css('background-color', 'rgb(255, 0, 0)');
+            $(placeHolderDiv).attr( 'class','holder');
 
+            w.$('.ui-imglazyload').imglazyload({placeHolder:placeHolderDiv}).on('loadcomplete', function () {
+                sucImages.push(this);
+                ok(~w.$.inArray(this, viewImages), '图片成功加载');
+            });
+            equal(w.document.getElementsByClassName('holder').length,$images.length,'');
+            setTimeout(function () {    //待图片加载完成
+                w.scrollTo(0,0);
+                w.$('.ui-imglazyload').off();
+                w.$('#container').remove();
+                me.finish();
+            }, 300);
+        }, 100);
+    });
+});
+test("初始状态:图片进入可视区能正确加载 (container==img)", function(){
+    stop();
+    ua.frameExt(function(w, f){
+        var me = this;
+        f.style.height = '500px';
+        f.style.width = '500px';
+        createContainer_img(w);
+        setTimeout(function () {
+            var $images = w.$('.ui-imglazyload'),   //获取初始状态下在可视区内的图片
+                viewImages = getImgsInView(w, $images),
+                sucImages = [];
+            expect(viewImages.length);
+
+            w.$('.ui-imglazyload').imglazyload().on('loadcomplete', function () {
+                    sucImages.push(this);
+                    ok(~w.$.inArray(this, viewImages), '图片成功加载');
+                });
+            setTimeout(function () {    //待图片加载完成
+                w.scrollTo(0,0);
+                w.$('.ui-imglazyload').off();
+                w.$('#container').remove();
+                me.finish();
+            }, 300);
+        }, 100);
+    });
+});
+test("初始状态:图片进入可视区能正确加载 isVertical: false", function(){
+    stop();
+    ua.frameExt(function(w, f){
+        var me = this;
+        f.style.height = '500px';
+        f.style.width = '500px';
+        createContainer_h(w);
+        setTimeout(function () {
+            var viewImages = getImgsInView_h(w, w.$('.ui-imglazyload')),
+            container = w.$('#container').get(0),
+                sucImages = [];
+            expect(viewImages.length);
+
+            w.$('.ui-imglazyload').imglazyload({isVertical: false}).on('loadcomplete', function () {
+                sucImages.push(this);
+                ok(~w.$.inArray(this, viewImages), '图片成功加载' + this.getAttribute("data-url"));
+            });
+            setTimeout(function () {    //待图片加载完成
+                w.scrollTo(0,0);
+                w.$('.ui-imglazyload').off();
+                w.$('#container').remove();
+                me.finish();
+            }, 300);
+        }, 100);
+    });
+});
 test("初始状态:图片进入可视区能正确加载 & threshold", function(){
     stop();
     ua.frameExt(function(w, f){
@@ -348,18 +473,18 @@ test("iscroll:滚动过程中在iscroll wrapper区域内能正确加载", functi
                     clientX: 0,
                     clientY: -400
                 });
-                
+
                 setTimeout(function(){
                     ta.touchend($scroller[0]);
                     ua.mouseup($scroller[0]);
-                    
+
                     setTimeout(function () {
                         $wrapper.remove();
                         w.$('.ui-imglazyload').off();
                         w.$('#container').remove();
                         me.finish();
                     }, 500);
-                }, 300);   
+                }, 300);
             }, 200);
         }, 'window.iScroll', 'extend/imglazyload', w);
     });
