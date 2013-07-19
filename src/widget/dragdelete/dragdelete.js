@@ -264,10 +264,15 @@
         },
 
         removeItem: function( itemId, $itemTarget ) {
-            var me = this;
+            var me = this,
+                distance,
+                transform;
 
-            // TODO 根据当前位移的正负，判断是从右滑出还是从左滑出
-            $itemTarget.css( '-webkit-transform', 'translate3d(' + $itemTarget.width() + 'px, 0, 0)' );
+            // 根据当前位移的正负，判断是从右滑出还是从左滑出
+            transform = $itemTarget.css( '-webkit-transform');
+            /translate3d\((.*?),.*/.test(transform);
+            distance = parseInt( RegExp.$1, 10) > 0 ? $itemTarget.width() : -$itemTarget.width();
+            $itemTarget.css( '-webkit-transform', 'translate3d(' + distance + 'px, 0, 0)' );
 
             // TODO 根据位移计算透明度
 
