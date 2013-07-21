@@ -5,6 +5,8 @@
  * 滑动删除组件
  * @import core/widget.js, extend/touch.js, widget/dialog.js
  */
+
+ // TODO 列表区域支持iScroll
 (function( gmu, $ ) {
     
     gmu.define( 'Dragdelete', {
@@ -108,11 +110,13 @@
                 moved = false;
 
                 if( !$target.hasClass( 'ui-dragdelete-itemwrap' ) && 
-                    !($target = $target.parents( '.ui-dragdelete-itemwrap') ).length ) {
+                    !($target = $target.parents( '.ui-dragdelete-itemwrap' )).length ) {
                     $target = null;
                     return;
                 }
 
+
+                // TODO 用了-webkit-box，就不需要去动态设置width了
                 $target.css( 'width',  $target.width() - parseInt( $target.css( 'border-left-width' ) ) - parseInt( $target.css( 'border-right-width' ) ));
             } );
 
@@ -278,7 +282,7 @@
             distance = parseInt( RegExp.$1, 10) > 0 ? $itemTarget.width() : -$itemTarget.width();
             $itemTarget.css( '-webkit-transform', 'translate3d(' + distance + 'px, 0, 0)' );
 
-            // TODO 根据位移计算透明度
+            // TODO 根据位移改变透明度，感觉不出来，没必要加
 
             $itemTarget.on( 'transitionEnd' + me.eventNs +  ' webkitTransitionEnd' + me.eventNs, function() {
                 $itemTarget.parent().remove();
@@ -316,3 +320,4 @@
         }
     } );
 })( gmu, gmu.$ );
+
