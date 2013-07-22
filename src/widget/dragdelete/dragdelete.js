@@ -42,12 +42,14 @@
             var me = this,
                 opts = me._options;
 
-
+            me.$el.hide();
             me.$wrap = $( me.tpl2html( 'wrap' ) ).appendTo( opts.container );
 
             me.$clear = $( me.tpl2html( 'clear' ) ).appendTo( opts.container );
 
             me.addItems( opts.items );
+
+            me.show();
         },
 
         _filterItemsById: function( id, callback ) {
