@@ -69,8 +69,12 @@
                 itemId,
                 startTimestamp,
                 endTimestamp,
-                touchstartx,
+                wantDelete = false,
+                timeout,
+                touchstartX,
                 currentX,
+                touchstartY,
+                currentY,
                 velocity,
                 movedPercentage,
                 moved,
@@ -106,15 +110,16 @@
                 touch = ev.touches[0];
                 $target = $( touch.target );
                 startTimestamp = ev.timeStamp;
-                currentX = touchstartx = parseInt( touch.pageX );
+                currentX = touchstartX = parseInt( touch.pageX );
+                currentY = touchstartY = parseInt( touch.pageY );
                 moved = false;
+                wantDelete = false;
 
                 if( !$target.hasClass( 'ui-dragdelete-itemwrap' ) && 
                     !($target = $target.parents( '.ui-dragdelete-itemwrap' )).length ) {
                     $target = null;
                     return;
                 }
-
 
                 // TODO 用了-webkit-box，就不需要去动态设置width了
                 $target.css( 'width',  $target.width() - parseInt( $target.css( 'border-left-width' ) ) - parseInt( $target.css( 'border-right-width' ) ));
@@ -126,33 +131,48 @@
                 }
 
                 currentX = ev.touches[0].pageX;
-                moved = moved || ((currentX - touchstartx >= 3) ? true : false);
-                movedPercentage = (currentX - touchstartx)/me.$wrap.width();
+                currentY = ev.touches[0].pageY;
+                (timeout === undefined) && (timeout = setTimeout( function() {
+                    // 竖向移动的距离大于横向移动距离的一半时，认为用户是企图滚动，而不是删除
+                    if( Math.abs( currentY - touchstartY ) > Math.abs (currentX - touchstartX )/2 ){
+                        wantDelete = false;
+                    }else{
+                        wantDelete = true;
+                    }
+
+                }, 10 ));
+                moved = moved || ((currentX - touchstartX >= 3 || currentY - touchstartY >= 3) ? true : false);
+                if( !wantDelete ) {
+                    return;
+                }
+
+                movedPercentage = (currentX - touchstartX)/me.$wrap.width();
 
                 // TODO 有些设备上有点卡，需要优化
                 $target.addClass( 'ui-dragdelete-itemmoving' );
-                $target.css( '-webkit-transform', 'translate3d(' + (currentX - touchstartx) + 'px, 0, 0)' );
+                $target.css( '-webkit-transform', 'translate3d(' + (currentX - touchstartX) + 'px, 0, 0)' );
                 $target.css( 'opacity', 1 - movedPercentage );
                 
                 ev.preventDefault();
                 ev.stopPropagation();
             } );
 
-            me.$wrap.on( 'touchend' + me.eventNs, function(ev) {
-                if( !$target ) {
+            me.$wrap.on( 'touchend' + me.eventNs + ' touchcancel' + me.eventNs, function(ev) {
+                if( !$target) {
                     return;
                 }
+                timeout = undefined;
 
                 itemId = $target.parent().attr( 'data-id' );
                 endTimestamp = ev.timeStamp;
-                velocity = (currentX - touchstartx) / (endTimestamp - startTimestamp);
-                movedDistance = Math.abs( currentX - touchstartx );
+                velocity = (currentX - touchstartX) / (endTimestamp - startTimestamp);
+                movedDistance = Math.abs( currentX - touchstartX );
 
                 $target.removeClass('ui-dragdelete-itemmoving');
 
                 // 当移动的距离小于 1/3 时，速度快则删除，速度慢则还原
-                if( (movedDistance < me.$wrap.width()/3 && Math.abs( velocity ) > 0.1) ||
-                     movedDistance >= me.$wrap.width()/3 ) {
+                if( ((movedDistance < me.$wrap.width()/3 && Math.abs( velocity ) > 0.1) && wantDelete) ||
+                     (movedDistance >= me.$wrap.width()/3 && wantDelete) ) {
                         me.removeItem( itemId, $target );
                 } else {
                     $target.css( 'width', 'auto' );
@@ -161,7 +181,7 @@
 
                     // 移动小于3个像素时，则认为是点击，派发 itemTouch 事件
                     // 如果移出3像素外，再移到3像素内，认为不是点击
-                    !moved && movedDistance < 3 && me._filterItemsById( itemId, function( _item ) {
+                    !moved && movedDistance < 3 && (endTimestamp - startTimestamp < 100) && me._filterItemsById( itemId, function( _item ) {
                         me.trigger( 'itemTouch', {'item': _item.value} );
                     });
                 }
@@ -172,6 +192,11 @@
 
         show: function() {
             var me = this;
+
+            // 没有历史记录时，不显示
+            if( me.items.length === 0 ) {
+                return;
+            }
 
             if( me.sync === false ) {
                 me.$wrap.html( '' );
@@ -274,12 +299,13 @@
         removeItem: function( itemId, $itemTarget ) {
             var me = this,
                 distance,
-                transform;
+                transform,
+                x;
 
             // 根据当前位移的正负，判断是从右滑出还是从左滑出
             transform = $itemTarget.css( '-webkit-transform');
-            /translate3d\((.*?),.*/.test(transform);
-            distance = parseInt( RegExp.$1, 10) > 0 ? $itemTarget.width() : -$itemTarget.width();
+            x = /translate3d\((.*?),.*/.test(transform) ? RegExp.$1: 0;
+            distance = parseInt( x, 10) >= 0 ? $itemTarget.width() : -$itemTarget.width();
             $itemTarget.css( '-webkit-transform', 'translate3d(' + distance + 'px, 0, 0)' );
 
             // TODO 根据位移改变透明度，感觉不出来，没必要加

@@ -61,12 +61,29 @@
         font-weight: bold;
     }
 </style>
-
+<p>test</p>
+<p>test</p>
+<p>test</p>
+<p>test</p>
+<p>test</p>
+<p>test</p>
+<p>test</p>
+<p>test</p>
+<p>test</p>
+<p>test</p>
+<p>test</p>
 <div id="J_framework">
-    <p><input type="text" class="input-text" /><input type="button" value="取消" class="input-button" /></p>
+    <p><input type="text" class="input-text" id="J_input" /><input type="button" value="取消" class="input-button" /></p>
     <div id="J_historyWrap"></div>
 </div>
-
+<p>test</p>
+<p>test</p>
+<p>test</p>
+<p>test</p>
+<p>test</p>
+<p>test</p>
+<p>test</p>
+<p>test</p>
 <script type="text/javascript">
     
     // 初始化(初始化后默认显示)
@@ -81,6 +98,7 @@
                ],   // 历史记录的列表
         itemTouch: function(e, data) {  // 某条记录被点击后的响应事件
             console.log( 'item touched: ' + data.item );   // data.item是某条记录的内容
+            $('#J_input').val(data.item);
         },
         itemDelete: function(e, data) { // 某条记录被删除后的响应事件
             console.log( 'item delete:' + data.item );   // data.item是某条记录的内容
