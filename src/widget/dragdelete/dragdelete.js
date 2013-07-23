@@ -123,6 +123,8 @@
                     return;
                 }
 
+                $target.addClass( 'ui-dragdelete-ontap' );
+
                 // TODO 用了-webkit-box，就不需要去动态设置width了
                 $target.css( 'width',  $target.width() - parseInt( $target.css( 'border-left-width' ) ) - parseInt( $target.css( 'border-right-width' ) ));
             } );
@@ -132,6 +134,8 @@
                     return;
                 }
 
+                $target.removeClass( 'ui-dragdelete-ontap' );
+                
                 currentX = ev.touches[0].pageX;
                 currentY = ev.touches[0].pageY;
                 (timeout === undefined) && (timeout = setTimeout( function() {
@@ -170,7 +174,8 @@
                 velocity = (currentX - touchstartX) / (endTimestamp - startTimestamp);
                 movedDistance = Math.abs( currentX - touchstartX );
 
-                $target.removeClass('ui-dragdelete-itemmoving');
+                $target.removeClass( 'ui-dragdelete-ontap' );
+                $target.removeClass( 'ui-dragdelete-itemmoving' );
 
                 // 当移动的距离小于 1/3 时，速度快则删除，速度慢则还原
                 if( ((movedDistance < me.$wrap.width()/3 && Math.abs( velocity ) > 0.1) && wantDelete) ||
@@ -329,7 +334,7 @@
             me.$wrap.html( '' );
             me.items = [];
             me.sync = true;
-
+            me.hide();
             me.trigger( 'clear' );
 
             return me;
