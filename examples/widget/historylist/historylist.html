@@ -3,13 +3,13 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-    <title>dragdelete demo</title>
+    <title>historylist demo</title>
     <!--demo展示所用css，不用关心 begin-->
     <link rel="stylesheet" type="text/css" href="../../../assets/reset.css" />
     <!--demo展示所用css end-->
     <!--组件依赖css begin-->
-    <link rel="stylesheet" type="text/css" href="../../../assets/widget/dragdelete/dragdelete.css" />
-    <link rel="stylesheet" type="text/css" href="../../../assets/widget/dragdelete/dragdelete.default.css" />
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/historylist/historylist.css" />
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/historylist/historylist.default.css" />
     <!--皮肤文件，若不使用该皮肤，可以不加载-->
     <!--组件依赖css end-->
 
@@ -20,7 +20,7 @@
     <script type="text/javascript" src="../../../src/core/gmu.js"></script>
     <script type="text/javascript" src="../../../src/core/event.js"></script>
     <script type="text/javascript" src="../../../src/core/widget.js"></script>
-    <script type="text/javascript" src="../../../src/widget/dragdelete/dragdelete.js"></script>
+    <script type="text/javascript" src="../../../src/widget/historylist/historylist.js"></script>
     <!--组件依赖js end-->
 
     <link rel="stylesheet" type="text/css" href="../../../assets/widget/dialog/dialog.css" />
@@ -87,7 +87,7 @@
 <script type="text/javascript">
     
     // 初始化(初始化后默认显示)
-    var instance = new gmu.Dragdelete({
+    var instance = new gmu.Historylist({
         container: $('#J_historyWrap'), // 页面上需要有一个已经存在的容器来存放组件
         items: [
                 {'value': 'global', 'context': '<b>global</b> adj. 全球的；综合的'},
@@ -123,6 +123,10 @@
 
     // // 销毁
     // instance.destroy();
+
+    $('#J_input').on('input', function(){
+        console.log($(this).val());
+    })
 </script>
 </body>
 </html>

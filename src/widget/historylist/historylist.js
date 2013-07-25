@@ -1,28 +1,31 @@
 /**
- * @file 滑动删除组件
- * @name Dragdelete
- * @desc <qrcode align="right" title="Live Demo">../gmu/examples/widget/dragdelete/dragdelete.html</qrcode>
- * 滑动删除组件
+ * @file 历史记录组件
+ * @name Historylist
+ * @desc <qrcode align="right" title="Live Demo">../gmu/examples/widget/historylist/historylist.html</qrcode>
+ * 历史记录组件
  * @import core/widget.js, extend/touch.js, widget/dialog.js
  */
 
  // TODO 列表区域支持iScroll
 (function( gmu, $ ) {
     
-    gmu.define( 'Dragdelete', {
+    gmu.define( 'Historylist', {
 
         options: {
 
             // 容器，默认为 document.body ，这个时候 body 还没渲染完，所以在 init 里面要重新赋值
             container: document.body,
 
+            // 是否支持删除，默认支持
+            delete: true,
+
             items: []
         },
 
         template: {
-            wrap: '<ul class="ui-dragdelete">',
-            item: '<li data-id="<%=id%>"><p class="ui-dragdelete-itemwrap"><span class="ui-dragdelete-item"><%=context%></span></p></li>',
-            clear: '<p class="ui-dragdelete-clear">清空搜索历史</p>'
+            wrap: '<ul class="ui-historylist">',
+            item: '<li data-id="<%=id%>"><p class="ui-historylist-itemwrap"><span class="ui-historylist-item"><%=context%></span></p></li>',
+            clear: '<p class="ui-historylist-clear">清空搜索历史</p>'
         },
 
         _init: function() {
@@ -46,6 +49,7 @@
             me.$wrap = $( me.tpl2html( 'wrap' ) ).appendTo( opts.container );
 
             me.$clear = $( me.tpl2html( 'clear' ) ).appendTo( opts.container );
+            !me._options.delete && me.$clear.hide();
 
             me.addItems( opts.items );
 
@@ -99,7 +103,7 @@
                         title: '清空历史',
                         content: '<p>是否清空搜索历史？</p>',
                         open: function(){
-                            this._options._wrap.addClass( 'ui-dragdelete-dialog' );
+                            this._options._wrap.addClass( 'ui-historylist-dialog' );
                         }
                     });
                 }, 10 );
@@ -108,7 +112,31 @@
                 ev.stopPropagation();
             } );
 
+            me.$wrap.on( 'tap' + me.eventNs, function(ev) {
+                if( me._options.delete ) {
+                    return;
+                }
+
+                $target = $( ev.target );
+
+                if( !$target.hasClass( 'ui-historylist-itemwrap' ) && 
+                    !($target = $target.parents( '.ui-historylist-itemwrap' )).length ) {
+                    $target = null;
+                    return;
+                }
+
+                itemId = $target.parent().attr( 'data-id' );
+                me._filterItemsById( itemId, function( _item ) {
+                    me.trigger( 'itemTouch', {'item': _item.value} );
+                });
+
+            } );
+
             me.$wrap.on( 'touchstart' + me.eventNs, function(ev) {
+
+                if( !me._options.delete ) {
+                    return;
+                }
                 touch = ev.touches[0];
                 $target = $( touch.target );
                 startTimestamp = ev.timeStamp;
@@ -117,13 +145,13 @@
                 moved = false;
                 wantDelete = false;
 
-                if( !$target.hasClass( 'ui-dragdelete-itemwrap' ) && 
-                    !($target = $target.parents( '.ui-dragdelete-itemwrap' )).length ) {
+                if( !$target.hasClass( 'ui-historylist-itemwrap' ) && 
+                    !($target = $target.parents( '.ui-historylist-itemwrap' )).length ) {
                     $target = null;
                     return;
                 }
 
-                $target.addClass( 'ui-dragdelete-ontap' );
+                $target.addClass( 'ui-historylist-ontap' );
 
                 // TODO 用了-webkit-box，就不需要去动态设置width了
                 $target.css( 'width',  $target.width() - parseInt( $target.css( 'border-left-width' ) ) - parseInt( $target.css( 'border-right-width' ) ));
@@ -134,7 +162,7 @@
                     return;
                 }
 
-                $target.removeClass( 'ui-dragdelete-ontap' );
+                $target.removeClass( 'ui-historylist-ontap' );
                 
                 currentX = ev.touches[0].pageX;
                 currentY = ev.touches[0].pageY;
@@ -155,7 +183,7 @@
                 movedPercentage = (currentX - touchstartX)/me.$wrap.width();
 
                 // TODO 有些设备上有点卡，需要优化
-                $target.addClass( 'ui-dragdelete-itemmoving' );
+                $target.addClass( 'ui-historylist-itemmoving' );
                 $target.css( '-webkit-transform', 'translate3d(' + (currentX - touchstartX) + 'px, 0, 0)' );
                 $target.css( 'opacity', 1 - movedPercentage );
                 
@@ -174,8 +202,8 @@
                 velocity = (currentX - touchstartX) / (endTimestamp - startTimestamp);
                 movedDistance = Math.abs( currentX - touchstartX );
 
-                $target.removeClass( 'ui-dragdelete-ontap' );
-                $target.removeClass( 'ui-dragdelete-itemmoving' );
+                $target.removeClass( 'ui-historylist-ontap' );
+                $target.removeClass( 'ui-historylist-itemmoving' );
 
                 // 当移动的距离小于 1/3 时，速度快则删除，速度慢则还原
                 if( ((movedDistance < me.$wrap.width()/3 && Math.abs( velocity ) > 0.1) && wantDelete) ||
@@ -188,7 +216,7 @@
 
                     // 移动小于3个像素时，则认为是点击，派发 itemTouch 事件
                     // 如果移出3像素外，再移到3像素内，认为不是点击
-                    !moved && movedDistance < 3 && (endTimestamp - startTimestamp < 100) && me._filterItemsById( itemId, function( _item ) {
+                    !moved && movedDistance < 3 && me._filterItemsById( itemId, function( _item ) {
                         me.trigger( 'itemTouch', {'item': _item.value} );
                     });
                 }
@@ -207,7 +235,7 @@
 
             if( me.sync === false ) {
                 me.$wrap.html( '' );
-                me.addItems( items );
+                me.addItems( me.syncitems );
                 me.sync = true;
             }
             me.$el.show();
@@ -290,13 +318,13 @@
         update: function( items ) {
             var me = this;
 
-            me.items = items;
 
             if( me.isShow ) {
                 me.$wrap.html( '' );
                 me.addItems( items );
                 me.sync = true;
             } else {
+                me.syncitems = items;
                 me.sync = false;
             }
 
@@ -336,6 +364,24 @@
             me.sync = true;
             me.hide();
             me.trigger( 'clear' );
+
+            return me;
+        },
+
+        disableDelete: function() {
+            var me = this;
+
+            me._options.delete = false;
+            me.$clear.hide();
+
+            return me;
+        },
+
+        enableDelete: function() {
+            var me = this;
+
+            me._options.delete = true;
+            me.$clear.show();
 
             return me;
         },
