@@ -39,6 +39,13 @@
             me.on( 'ready', function() {
                 me._bindUI();
             } );
+
+            me.on( 'itemDelete', function() {
+                // 历史记录为空时，隐藏
+                if( me.items.length === 0 ) {
+                    me.hide();
+                }
+            } );
         },
 
         _create: function() {

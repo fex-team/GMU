@@ -10,8 +10,8 @@
 .ui-historylist-item {
     padding-left: 50px;
     border-bottom: 1px solid #E1E1E1;
-    background: url('./icon.gif') no-repeat 10px 7px;
-    background-size: 26px 26px;
+    background: url('./icon.png') no-repeat 15px 11px;
+    background-size: 18px 18px;
 }
 .ui-historylist-clear {
     border: 1px solid #E1E1E1;
