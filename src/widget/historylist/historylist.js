@@ -171,23 +171,21 @@
 
                 currentX = ev.touches[0].pageX;
                 currentY = ev.touches[0].pageY;
-                if ( timeout === undefined ) {
-                    timeout = setTimeout( function() {
-                        // 竖向移动的距离大于横向移动距离的一半时，认为用户是企图滚动，而不是删除
-                        if( Math.abs( currentY - touchstartY ) > Math.abs (currentX - touchstartX )/2 ){
-                            wantDelete = false;
-                        }else{
-                            wantDelete = true;
-                        }
+                timeout === undefined && (timeout = setTimeout( function() {
+                    // 竖向移动的距离大于横向移动距离的一半时，认为用户是企图滚动，而不是删除
+                    if( Math.abs( currentY - touchstartY ) > Math.abs (currentX - touchstartX )/2 ){
+                        wantDelete = false;
+                    }else{
+                        wantDelete = true;
+                    }
 
-                    }, 10 )
-
-                    return;
-                }
+                }, 10 ));
                 
                 moved = moved || ((currentX - touchstartX >= 3 || currentY - touchstartY >= 3) ? true : false);
                 if( !wantDelete ) {
-                    $target.removeClass( 'ui-historylist-ontap' );
+                    setTimeout( function() {
+                        $target && $target.removeClass( 'ui-historylist-ontap' );
+                    }, 150 );   // 延时长一点，这样不会因为class改变太快，导致闪
                     return;
                 }
 
@@ -195,8 +193,6 @@
 
                 // TODO 有些设备上有点卡，需要优化
                 $target.addClass( 'ui-historylist-itemmoving' );
-
-                // 先addClass再removeClass，这样就不会闪一下
                 $target.removeClass( 'ui-historylist-ontap' );
                 $target.css( '-webkit-transform', 'translate3d(' + (currentX - touchstartX) + 'px, 0, 0)' );
                 $target.css( 'opacity', 1 - movedPercentage );
