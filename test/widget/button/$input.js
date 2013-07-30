@@ -12,7 +12,6 @@ test("默认配置项，在什么都不传的情况下是否正确",function(){
     stop();
     ua.loadcss(["reset.css", "widget/button/button.css"], function(){
         var btn = gmu.Button();
-
         strictEqual(btn._options['disabled'], false, '默认配置中disalbe为false');
         strictEqual(btn._options['selected'], false, '默认配置中selected为false');
         strictEqual(btn._options['label'], "按钮", '默认配置中label为\'按钮\'');
@@ -341,7 +340,7 @@ test("点击效果",function(){
 });
 
 test("方法",function(){
-    expect(13);
+    expect(16);
     var btn;
 
     btn = gmu.Button({
@@ -374,6 +373,10 @@ test("方法",function(){
     strictEqual(btn._options['icon'], 'home', 'icon目前为home');
     ok(btn.$el.hasClass('ui-button-text-icon') && !btn.$el.hasClass('ui-button-text-only'), 'class正确');
     ok(btn._options['_iconSpan'] && btn._options['_iconSpan'].hasClass('ui-icon-home'), 'class正确');
+    btn.setIcon && btn.setIcon('test');
+    strictEqual(btn._options['icon'], 'test', 'icon目前为test');
+    ok(btn.$el.hasClass('ui-button-text-icon') && !btn.$el.hasClass('ui-button-text-only'), 'class正确');
+    ok(btn._options['_iconSpan'] && btn._options['_iconSpan'].hasClass('ui-icon-test'), 'class正确');
     btn.setIcon && btn.setIcon('');
     strictEqual(btn._options['icon'], '', 'icon目前为空');
     ok(!btn.$el.hasClass('ui-button-text-icon') && btn.$el.hasClass('ui-button-text-only'), 'class正确');
@@ -531,7 +534,7 @@ test("disablePlugin = true",function(){
     	input: false,
         type:'input'
     });
-    
+
     equals(btn.$el.attr("tagName").toLowerCase(), 'button', "disable plugin");
     equals(btn.setIcon, undefined, "disable plugin");
     btn.destroy();
@@ -554,4 +557,49 @@ test('destroy()', function(){
         this.finish();
     })
 });
-
+test("单选",function(){
+    expect(7);
+    $('<form id="form_create" ></form>').appendTo($('#btsn_create'));
+    var btn1 = gmu.Button({
+        type: 'radio',
+        label: '单选1',
+        attributes: {
+            id:'label_test1',
+            name: 'test',
+            from :"form_create"
+        },
+        container: '#form_create'
+    });
+    var btn2 = gmu.Button({
+        type: 'radio',
+        label: '单选2',
+        attributes: {
+            id:'label_test2',
+            name: 'test',
+            from :"form_create"
+        },
+        container: '#form_create'
+    });
+    var btn3 = gmu.Button({
+        type: 'radio',
+        label: '单选3',
+        attributes: {
+            id:'label_test3',
+            from :"form_create"
+        },
+        container: '#form_create'
+    });
+    ua.click($('#label_test1')[0].nextSibling);
+    equal($('#label_test1')[0].checked,true,'选中第一个,1,2互斥');
+    equal($('#label_test2')[0].checked,false,'选中第一个,1,2互斥');
+    ua.click($('#label_test2')[0].nextSibling);
+    equal($('#label_test1')[0].checked,false,'选中第二个,1,2互斥');
+    equal($('#label_test2')[0].checked,true,'选中第二个,1,2互斥');
+    ua.click($('#label_test3')[0].nextSibling);
+    equal($('#label_test1')[0].checked,false,'选中第三个,与1,2不互斥');
+    equal($('#label_test2')[0].checked,true,'选中第三个,与1,2不互斥');
+    equal($('#label_test3')[0].checked,true,'选中第三个,与1,2不互斥');
+    btn1.destroy();
+    btn2.destroy();
+    $('#form_create').remove();
+});
