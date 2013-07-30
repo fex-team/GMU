@@ -176,3 +176,61 @@ test("destroy", function(){
         this.finish();
     });
 });
+test("iScroll没有覆盖原有的onScrollMove, onScrollEnd", function(){
+    stop();
+    expect(2);
+    enSetup();
+    ua.loadcss(["widget/gotop/gotop.css"], function () {
+        $("#thelist").css("height", window.innerHeight);
+        var num = 0;
+        var s = new iScroll("thelist",{
+            onScrollMove: function () {
+                num++;
+            }, onScrollEnd: function () {
+                approximateEqual(s.y, -2000, "The page scrolled");
+                ok(num>0, 'onScrollMove, onScrollEnd');
+                gotop.destroy();
+                start();
+            }
+        });
+
+        var gotop = gmu.Gotop($('<div class="ui-gotop">'), {
+            iScrollInstance: s,
+            position: {bottom: 20, right: 30}
+        });
+        setTimeout(function () {
+            //滑动页面
+            ta.touchstart($("#scroller")[0], {
+                touches: [
+                    {
+                        clientX: 0,
+                        clientY: 0
+                    }
+                ]
+            });
+            ta.touchmove($("#scroller")[0], {
+                touches: [
+                    {
+                        clientX: 0,
+                        clientY: -2000
+                    }
+                ]
+            });
+            //PC
+            ua.mousedown($("#scroller")[0], {
+                clientX: 0,
+                clientY: 0
+            });
+            ua.mousemove($("#scroller")[0], {
+                clientX: 0,
+                clientY: -2000
+            });
+            setTimeout(function () {
+                //PC
+                ua.mouseup($("#scroller")[0]);
+                ta.touchend($("#scroller")[0]);
+//                s._scrollTo();        //todo 待确定 这个没影响
+            }, 400);
+        }, 100);
+    });
+});

@@ -7,22 +7,23 @@ module('webapp.progressbar', {
     }
 });
 
+
 test("smart setup", function() {
     expect(8);
     stop();
     ua.loadcss(["widget/progressbar/progressbar.css"], function() {
         var progressbar = $('#progressbar').progressbar('this');
-        
+
         equals(progressbar._options.initValue, 0, "The _data is right");
         equals(progressbar._options.horizontal, true, "The _data is right");
         equals(progressbar._options.transitionDuration, 300, "The _data is right");
-        
+
         ok(ua.isShown(progressbar.$el[0]), "The bar shows");
         ok(progressbar.$el.is(".ui-progressbar-h"), "The bar is right");
         equals(progressbar.$el.find(".ui-progressbar-bg").length, 1 , "The background is right");
         equals(progressbar.$el.find(".ui-progressbar-button").length, 1 , "The button is right");
         equals(progressbar.$el.find(".ui-progressbar-button").offset().left, -14, "The button is right");
-        
+
         progressbar.destroy();
         start();
     });
@@ -37,18 +38,18 @@ test("full setup", function() {
     ok(progressbar.$el.is(".ui-progressbar-h"), "The bar is right");
     equals(progressbar.$el.find(".ui-progressbar-bg").length, 1 , "The background is right");
     equals(progressbar.$el.find(".ui-progressbar-button").length, 1 , "The button is right");
-    progressbar.destroy();     
+    progressbar.destroy();
 });
 
 test("render, no el", function() {
     expect(9);
     stop();
     var progressbar = gmu.Progressbar();
-    
+
     equals(progressbar._options.initValue, 0, "The _data is right");
     equals(progressbar._options.horizontal, true, "The _data is right");
     equals(progressbar._options.transitionDuration, 300, "The _data is right");
-    
+
     ok(ua.isShown(progressbar.$el[0]), "The bar shows");
     ok(progressbar.$el.is(".ui-progressbar-h"), "The bar is right");
     equals(progressbar.$el.parent()[0], document.body, "The container is right");
@@ -64,9 +65,9 @@ test("render, el(selector)", function() {
     stop();
     $('#progressbar').remove();
     $('body').append('<div id="test"><div id="progressbar"></div></div>');
-    
+
     var progressbar = gmu.Progressbar("#progressbar");
-   
+
     ok(ua.isShown(progressbar.$el[0]), "The bar shows");
     ok(progressbar.$el.is(".ui-progressbar-h"), "The bar is right");
     ok(progressbar.$el.is("#progressbar"), "The bar is right");
@@ -81,11 +82,11 @@ test("render, el(zepto)", function() {
     stop();
     $('#progressbar').remove();
     $('body').append('<div id="container"></div>');
-    
+
     var progressbar = gmu.Progressbar($('<div id="progressbar"></div>'),{
     	container: "#container"
     });
-   
+
     ok(ua.isShown(progressbar.$el[0]), "The bar shows");
     ok(progressbar.$el.is(".ui-progressbar-h"), "The bar is right");
     ok(progressbar.$el.is("#progressbar"), "The bar is right");
@@ -110,7 +111,7 @@ test("transitionDuration & horizontal", function() {
     	equals(progressbar.$el.height(), 400, "The horizontal is right");
         progressbar.destroy();
         start();
-    }, 250);
+    }, 1000);
 });
 
 test("initValue, transitionDuration, value()", function() {
@@ -132,7 +133,7 @@ test("initValue, transitionDuration, value()", function() {
         equal(progressbar.value(), 0, 'the value is right');
         progressbar.destroy();
         start();
-    }, 350);
+    }, 1000);
 });
 
 test("show(), hide()", function() {
@@ -305,4 +306,104 @@ test("destroy()", function() {
         equal(el2, el1, "The event is ok");
         this.finish();
     })
+});
+test("y的差大于x向的差,不能横向滚动 && x的差大于y向的差,不能竖向滚动", function() {
+    expect(4);
+    stop();
+    var progressbar = $('#progressbar').progressbar('this');
+    progressbar.show();//多次显示不出错
+// todo 源码里这一句怎么else :if(!opts.T) {..
+    ta.touchstart($(".ui-progressbar-button")[0], {
+        touches: [{
+            clientX: 0,
+            clientY: 0
+        }]
+    });
+    ta.touchmove($(".ui-progressbar-button")[0], {
+        touches:[{
+            clientX: 200,
+            clientY: 300
+        }]
+    });
+    ta.touchend($(".ui-progressbar-button")[0]);
+    setTimeout(function(){
+        ok(ua.isShown(progressbar.$el[0]), "The bar shows");
+        equals(progressbar.value(), 0,"y的差大于x向的差,不能横向滚动");
+        progressbar.destroy();
+        $('#progressbar').remove();
+        setTimeout(function(){
+            $('body').append('<div id="progressbar"></div>');
+            progressbar = $('#progressbar').progressbar({horizontal:false}).progressbar('this');
+            ta.touchstart($(".ui-progressbar-button")[0], {
+                touches: [{
+                    clientX: 0,
+                    clientY: 0
+                }]
+            });
+            ta.touchmove($(".ui-progressbar-button")[0], {
+                touches:[{
+                    clientX: 100,
+                    clientY: 50
+                }]
+            });
+            ta.touchend($(".ui-progressbar-button")[0]);
+            setTimeout(function(){
+                equals(progressbar.value(), 0,"x的差大于y向的差,不能竖向滚动");
+                progressbar.hide();
+                progressbar.hide();
+                setTimeout(function(){
+                    ok(!ua.isShown(progressbar.$el[0]), "The progressbar hides");
+                    progressbar.destroy();
+                    start();
+                }, 50);
+            }, 550);
+        }, 50);
+    }, 550);
+});
+test("百分比超出的", function() {
+    expect(2);
+    stop();
+    var progressbar = $('#progressbar').progressbar('this');
+    ta.touchstart($(".ui-progressbar-button")[0], {
+        touches: [{
+            clientX: 0,
+            clientY: 0
+        }]
+    });
+    ta.touchmove($(".ui-progressbar-button")[0], {
+        touches:[{
+            clientX: progressbar.$el.offset().width+100,
+            clientY: 0
+        }]
+    });
+    ta.touchend($(".ui-progressbar-button")[0]);
+    setTimeout(function(){
+        equals(progressbar.value(), 0,"x百分比超出的,不能横向滚动");
+        progressbar.destroy();
+        $('#progressbar').remove();
+        setTimeout(function(){
+            $('body').append('<div id="progressbar"></div>');
+            progressbar = $('#progressbar').progressbar({horizontal:false}).progressbar('this');
+            ta.touchstart($(".ui-progressbar-button")[0], {
+                touches: [{
+                    clientX: 0,
+                    clientY: 0
+                }]
+            });
+            ta.touchmove($(".ui-progressbar-button")[0], {
+                touches:[{
+                    clientX: 0,
+                    clientY: progressbar.$el.offset().height+100
+                }]
+            });
+            ta.touchend($(".ui-progressbar-button")[0]);
+            setTimeout(function(){
+                equals(progressbar.value(), 0,"y百分比超出的,不能竖向滚动");
+                setTimeout(function(){
+                    progressbar.destroy();
+                    start();
+                }, 50);
+            }, 550);
+        }, 50);
+    }, 550);
 });

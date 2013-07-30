@@ -165,7 +165,23 @@ test("close() ", function () {
         }, 500);
     }, 300);
 });
+test('refresh()--_isOpen==false', function(){
+    expect(1);
+    stop();
+    var d = gmu.Dialog({
+        title: '标题',
+        content: '内容',
+        autoOpen:false
+    });
 
+    var topBefore = d.getWrap().offset().top;
+    d.refresh();
+    setTimeout(function(){
+        equal(d.getWrap().offset().top,topBefore,'不打开的dialog不重设样式');
+        d.destroy();
+        start();
+    }, 100);
+});
 test('open()', function(){
     expect(2);
     stop();
@@ -174,6 +190,7 @@ test('open()', function(){
         content: '内容',
         autoOpen:false
     });
+
     d.open();
     setTimeout(function(){
 
@@ -408,8 +425,8 @@ test('container', function(){
     var dialog = $('<div title="标题">内容</div>').dialog({container: container}).dialog('this');
 
     equals(dialog._options['_mask'].height(), 500, 'mask的高度正确');
-    approximateEqual(dialog._options['_wrap'].offset().top, 250+$("#container").offset().top-dialog._options['_wrap'].height()/2, 0.5, "The top is right");
-    approximateEqual(dialog._options['_wrap'].offset().left, 150+$("#container").offset().left-dialog._options['_wrap'].width()/2, 0.5, "The left is right");
+    approximateEqual(dialog.getWrap().offset().top, 250+$("#container").offset().top-dialog.getWrap().height()/2, 0.5, "The top is right");//同时测试一下： getWrap
+    approximateEqual(dialog.getWrap().offset().left, 150+$("#container").offset().left-dialog.getWrap().width()/2, 0.5, "The left is right");
 
     container.remove();
     dialog.destroy();

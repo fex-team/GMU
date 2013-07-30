@@ -141,6 +141,7 @@
         equal(items.eq(0).text(), 'I am item 1', 'ok');
         equal(items.eq(1).text(), 'I am item 2', 'ok');
         equal(items.eq(2).text(), 'I am item 3', 'ok');
+        dom.slider('destroy').remove();
     });
 
     test('loop条件检测', function () {
