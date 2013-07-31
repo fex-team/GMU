@@ -13,5 +13,5 @@ if($debug){
 
 function _preg_callback($m){
     $key = $m[1];
-    return isset($_REQUEST[$key])?$_REQUEST[$key]:'';
+    return isset($_REQUEST[$key])?htmlspecialchars($_REQUEST[$key]):'';
 }
