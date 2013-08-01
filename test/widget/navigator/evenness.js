@@ -42,7 +42,7 @@
             var me = this;
             ua.loadcss(["reset.css", "widget/navigator/navigator.css", "widget/navigator/navigator.default.css"], function(){
                 w.$("html").css("overflow", "hidden");
-
+                w.$("body").css("height", 150).css("width", 300);//在Andriod UC下默认不是300,要设置一下
                 // iframe 默认是300x150的
 
                 var dom = w.$('<div><ul>' +
@@ -55,6 +55,8 @@
                 '</ul></div>').appendTo('body');
 
                 var ins = dom.navigator('this');
+
+
 
                 approximateEqual( dom.find('li').width(), 300/6 );
 
@@ -78,7 +80,7 @@
             var me = this;
             ua.loadcss(["reset.css", "widget/navigator/navigator.css", "widget/navigator/navigator.default.css"], function(){
                 w.$("html").css("overflow", "hidden");
-
+                w.$("body").css("height", 150).css("width", 300);
                 // iframe 默认是300x150的
 
                 var dom = w.$('<div><ul>' +
