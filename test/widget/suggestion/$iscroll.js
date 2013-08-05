@@ -93,7 +93,7 @@ test('sug及iscroll是否正确创建', function () {
     equal(sug.$clearBtn.hasClass('ui-suggestion-clear'), true, 'clear btn正确创建');
     equal(sug.$closeBtn.hasClass('ui-suggestion-close'), true, 'close btn正确创建');
 
-    ok(sug.$content.attr('data--iscroll-'), 'iscroll实例正确创建');
+    ok(sug.$content.iScroll('this').scrollTo, 'iscroll实例正确创建');
 
     sug.destroy();
 });

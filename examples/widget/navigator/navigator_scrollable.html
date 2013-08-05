@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 <head>
-    <title>Navigator</title>
+    <title>Navigator Scrollable</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
     <!--demo展示所用css，不用关心 begin-->
@@ -15,63 +15,43 @@
     <!--组件依赖js begin-->
     <script type="text/javascript" src="../../../dist/zepto.js"></script>
     <script type="text/javascript" src="../../../src/extend/touch.js"></script>
+    <script type="text/javascript" src="../../../src/extend/iscroll.js"></script>
     <script type="text/javascript" src="../../../src/extend/highlight.js"></script>
     <script type="text/javascript" src="../../../src/extend/parseTpl.js"></script>
     <script type="text/javascript" src="../../../src/core/gmu.js"></script>
     <script type="text/javascript" src="../../../src/core/event.js"></script>
     <script type="text/javascript" src="../../../src/core/widget.js"></script>
     <script type="text/javascript" src="../../../src/widget/navigator/navigator.js"></script>
+    <script type="text/javascript" src="../../../src/widget/navigator/$scrollable.js"></script>
     <!--组件依赖js end-->
 </head>
 <body>
 
 <div id="wrap">
-    <h1>Navigator 基础版本</h1>
-    <h2>Setup Mode</h2>
-    <ul id="nav">
-        <li><a href="#test1">首页</a></li>
-        <li><a href="#test2">电影</a></li>
-        <li><a class="cur" href="#test3">电视剧</a></li>
-        <li><a>动漫</a></li>
-    </ul>
-
-    <h2>Render Mode</h2>
-    <div id="nav2"></div>
+    <h1>Navigator可内滚版本</h1>
+    <div id="nav">
+        <ul>
+            <li><a href="#test1">首页</a></li>
+            <li><a href="#test1">要闻</a></li>
+            <li><a href="javascript:;">国内</a></li>
+            <li><a href="#test2">国际</a></li>
+            <li><a href="#test3">军事</a></li>
+            <li><a href="#test4">社会</a></li>
+            <li><a href="#test5">娱乐</a></li>
+            <li><a href="#test6">女人</a></li>
+            <li><a href="#">体育</a></li>
+            <li><a href="#test7">科技</a></li>
+            <li><a href="#test8">互联网</a></li>
+            <li><a href="#test9">教育</a></li>
+            <li class="ui-state-active"><a href="#">财经</a></li>
+            <li><a href="#test11">房产</a></li>
+            <li><a href="#test12">汽车</a></li>
+        </ul>
+    </div>
 </div>
 
 <script type="text/javascript">
     $('#nav').navigator();
-
-    $('#nav2').navigator({
-        content: [
-            {
-                text: '首页',
-                href: '#home'
-            },
-
-            {
-                text: '电影',
-                href: '#movie'
-            },
-
-            {
-                text: '电视剧',
-                href: '#series'
-            },
-
-            {
-                text: '动漫',
-                href: '#manga'
-            }
-        ]
-    });
-
-    $('#nav, #nav2').on('beforeselect', function( e, li ){
-        if( $(li).text() === '首页' ) {
-            e.preventDefault();
-            alert('beforeselect事件被阻止，点击事件将无效');
-        }
-    });
 </script>
 
 <!--demo公用头部展示所用js，可以不用加载 begin-->
