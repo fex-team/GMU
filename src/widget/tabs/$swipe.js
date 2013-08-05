@@ -94,7 +94,7 @@
         destroy: function(){
             var _opts = this._options, idx;
             ~(idx = $.inArray(_opts._content.get(0), tabs)) && tabs.splice(idx, 1);
-            this._el.off('tabsSwipeLeft tabsSwipeRight', this._eventHandler);
+            this.$el.off('tabsSwipeLeft tabsSwipeRight', this._eventHandler);
             tabs.length || ($(document).off('touchstart.tabs'), eventBinded = false);
             return this.origin();
         }

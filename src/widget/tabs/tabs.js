@@ -64,9 +64,10 @@
         _create:function () {
             var me = this, _opts = me._options;
 
-            if( me._options.setup ) {
+            if( me._options.setup && me.$el.children().length > 0 ) {
                 me._prepareDom('setup', _opts);
             } else {
+                _opts.setup = false;
                 me.$el = me.$el || $('<div></div>');
                 me._prepareDom('create', _opts);
             }
@@ -172,7 +173,7 @@
                 from.index = _opts.active;
 
                 eventData = gmu.Event('beforeActivate');
-                me.trigger(eventData, [to, from]);
+                me.trigger(eventData, to, from);
                 if(eventData.isDefaultPrevented()) return me;
 
                 _opts._content.children().removeClass('ui-state-active');
@@ -191,12 +192,12 @@
                         from.div.removeClass('out reverse');
                         to.div.removeClass('in reverse');
                         _opts._content.removeClass('ui-viewport-transitioning');
-                        me.trigger('animateComplete', [to, from]);
+                        me.trigger('animateComplete', to, from);
                         me._fitToContent(to.div);
                     });
                 }
                 _opts.active = index;
-                me.trigger('activate', [to, from]);
+                me.trigger('activate', to, from);
                 _opts.transition ||  me._fitToContent(to.div);
             }
             return me;
@@ -221,6 +222,10 @@
             var _opts = this._options, eventHandler = this._eventHandler;
             _opts._nav.off('tap', eventHandler).children().highlight();
             _opts.swipe && _opts._content.off('swipeLeft swipeRight', eventHandler);
+
+            if( !_opts.setup ) {
+                this.$el.remove();
+            }
             return this.$super('destroy');
         }
 
