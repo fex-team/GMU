@@ -11,7 +11,7 @@ if(!preg_match('#(webkit|android|ios)#i', $_SERVER['HTTP_USER_AGENT'])){
 $setting = require_once('./setting/setting.php');
 $components = array();
 foreach ($setting as $item) {
-    empty($item['group']) && ($item['group'] = 'Components');
+    empty($item['group']) && ($item['group'] = 'Widgets');
     if (empty($components[$item['group']])) {
         $components[$item['group']] = array();
     }
@@ -95,9 +95,7 @@ foreach ($setting as $item) {
     </style>
 
     <script type="text/javascript" src="../../dist/zepto.js"></script>
-    <script type="text/javascript" src="../../src/core/extend.js"></script>
-    <script type="text/javascript" src="../../src/core/ui.js"></script>
-    <script type="text/javascript" src="../../src/core/highlight.js"></script>
+    <script type="text/javascript" src="../../src/extend/highlight.js"></script>
     <script type="text/javascript">
         (function ($) {
             $(function(){$('.thelist ul li').highlight('ui-state-hover');});
