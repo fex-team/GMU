@@ -3,23 +3,13 @@
  * @desc 选项卡组件
  * @name Tabs
  * @desc <qrcode align="right" title="Live Demo">../gmu/examples/widget/tabs/tabs.html</qrcode>
- * @import core/touch.js, core/ui.js,core/highlight.js
+ * @import extend/touch.js, core/widget.js, extend/highlight.js
  * @importCSS transitions.css, loading.css
  */
-(function ($, undefined) {
+(function( gmu, $, undefined ) {
     var _uid = 1,
         uid = function(){
             return _uid++;
-        },
-        tpl = {
-            nav:'<ul class="ui-tabs-nav">'+
-                '<% var item; for(var i=0, length=items.length; i<length; i++) { item=items[i]; %>'+
-                    '<li<% if(i==active){ %> class="ui-state-active"<% } %>><a href="javascript:;"><%=item.title%></a></li>'+
-                '<% } %></ul>',
-            content:'<div class="ui-viewport ui-tabs-content">' +
-                '<% var item; for(var i=0, length=items.length; i<length; i++) { item=items[i]; %>'+
-                    '<div<% if(item.id){ %> id="<%=item.id%>"<% } %> class="ui-panel ui-tabs-panel <%=transition%><% if(i==active){ %> ui-state-active<% } %>"><%=item.content%></div>'+
-                '<% } %></div>'
         },
         idRE = /^#(.+)$/;
 
@@ -31,15 +21,15 @@
      * - ''active'' {Number}: (可选，默认：0) 初始时哪个为选中状态，如果时setup模式，如果第2个li上加了ui-state-active样式时，active值为1
      * - ''items'' {Array}: 在render模式下需要必须设置 格式为\[{title:\'\', content:\'\', href:\'\'}\], href可以不设，可以用来设置ajax内容。
      * - ''transition'' {\'\'|\'slide\'}: 设置切换动画
-     * - ''events'' 所有[Trigger Events](#tabs_triggerevents)中提及的事件都可以在此设置Hander, 如init: function(e){}。
+     * - ''events'' 所有[Trigger Events](#tabs_triggerevents)中提及的事件都可以在此设置Hander, 如ready: function(e){}。
      *
      * **Demo**
      * <codepreview href="../examples/widget/tabs/tabs.html">
      * ../gmu/examples/widget/tabs/tabs.html
      * </codepreview>
      */
-    $.ui.define('tabs', {
-        _data:{
+    gmu.define( 'Tabs', {
+        options: {
             active: 0,
             items:null,//[{title:'', content:'', href: ''}] href可以用来设置连接，表示为ajax内容, 需要引入tabs.ajax插件
             transition: 'slide',//目前只支持slide动画，或无动画
@@ -48,22 +38,55 @@
             animateComplete: null//如果用了transtion，这个事件将在动画执行完成后触发.
         },
 
-        _prepareDom:function (mode, data) {
-            var me = this, content, $el = me._el, items, nav, contents, id;
+        template: {
+            nav:'<ul class="ui-tabs-nav">'+
+                '<% var item; for(var i=0, length=items.length; i<length; i++) { item=items[i]; %>'+
+                    '<li<% if(i==active){ %> class="ui-state-active"<% } %>><a href="javascript:;"><%=item.title%></a></li>'+
+                '<% } %></ul>',
+            content:'<div class="ui-viewport ui-tabs-content">' +
+                '<% var item; for(var i=0, length=items.length; i<length; i++) { item=items[i]; %>'+
+                    '<div<% if(item.id){ %> id="<%=item.id%>"<% } %> class="ui-panel ui-tabs-panel <%=transition%><% if(i==active){ %> ui-state-active<% } %>"><%=item.content%></div>'+
+                '<% } %></div>'
+        },
+
+        _init:function () {
+            var me = this, _opts = me._options, $el, eventHandler = $.proxy(me._eventHandler, me);
+
+            me.on( 'ready', function(){
+                $el = me.$el;
+                $el.addClass('ui-tabs');
+                _opts._nav.on('tap', eventHandler).children().highlight('ui-state-hover');
+            } );
+            
+            $(window).on('ortchange', eventHandler);
+        },
+
+        _create:function () {
+            var me = this, _opts = me._options;
+
+            if( me._options.setup ) {
+                me._prepareDom('setup', _opts);
+            } else {
+                me.$el = me.$el || $('<div></div>');
+                me._prepareDom('create', _opts);
+            }
+        },
+
+        _prepareDom:function (mode, _opts) {
+            var me = this, content, $el = me.$el, items, nav, contents, id;
             switch (mode) {
-                case 'fullsetup':
                 case 'setup':
-                    data._nav =  me._findElement('ul').first();
-                    if(data._nav) {
-                        data._content = me._findElement('div.ui-tabs-content');
-                        data._content = ((data._content && data._content.first()) || $('<div></div>').appendTo($el)).addClass('ui-viewport ui-tabs-content');
+                    _opts._nav =  me._findElement('ul').first();
+                    if(_opts._nav) {
+                        _opts._content = me._findElement('div.ui-tabs-content');
+                        _opts._content = ((_opts._content && _opts._content.first()) || $('<div></div>').appendTo($el)).addClass('ui-viewport ui-tabs-content');
                         items = [];
-                        data._nav.addClass('ui-tabs-nav').children().each(function(){
+                        _opts._nav.addClass('ui-tabs-nav').children().each(function(){
                             var $a = me._findElement('a', this), href = $a?$a.attr('href'):$(this).attr('data-url'), id, $content;
                             id = idRE.test(href)? RegExp.$1: 'tabs_'+uid();
                             ($content = me._findElement('#'+id) || $('<div id="'+id+'"></div>'))
-                                .addClass('ui-panel ui-tabs-panel'+(data.transition?' '+data.transition:''))
-                                .appendTo(data._content);
+                                .addClass('ui-panel ui-tabs-panel'+(_opts.transition?' '+_opts.transition:''))
+                                .appendTo(_opts._content);
                             items.push({
                                 id: id,
                                 href: href,
@@ -71,16 +94,16 @@
                                 content: $content
                             });
                         });
-                        data.items = items;
-                        data.active = Math.max(0, Math.min(items.length-1, data.active || $('.ui-state-active', data._nav).index()||0));
-                        me._getPanel().add(data._nav.children().eq(data.active)).addClass('ui-state-active');
+                        _opts.items = items;
+                        _opts.active = Math.max(0, Math.min(items.length-1, _opts.active || $('.ui-state-active', _opts._nav).index()||0));
+                        me._getPanel().add(_opts._nav.children().eq(_opts.active)).addClass('ui-state-active');
                         break;
                     } //if cannot find the ul, switch this to create mode. Doing this by remove the break centence.
                 default:
-                    items = data.items = data.items || [];
+                    items = _opts.items = _opts.items || [];
                     nav = [];
                     contents = [];
-                    data.active = Math.max(0, Math.min(items.length-1, data.active));
+                    _opts.active = Math.max(0, Math.min(items.length-1, _opts.active));
                     $.each(items, function(key, val){
                         id = 'tabs_'+uid();
                         nav.push({
@@ -93,50 +116,32 @@
                         });
                         items[key].id = id;
                     });
-                    data._nav = $($.parseTpl(tpl.nav, {items: nav, active: data.active})).prependTo($el);
-                    data._content = $($.parseTpl(tpl.content, {items: contents, active: data.active, transition: data.transition})).appendTo($el);
-                    data.container = data.container || ($el.parent().length ? null : 'body');
+                    _opts._nav = $( this.tpl2html( 'nav', {items: nav, active: _opts.active} ) ).prependTo($el);
+                    _opts._content = $( this.tpl2html( 'content', {items: contents, active: _opts.active, transition: _opts.transition} ) ).appendTo($el);
+                    _opts.container = _opts.container || ($el.parent().length ? null : 'body');
             }
-            data.container && $el.appendTo(data.container);
+            _opts.container && $el.appendTo(_opts.container);
             me._fitToContent(me._getPanel());
         },
 
         _getPanel: function(index){
-            var data = this._data;
-            return $('#'+data.items[index===undefined?data.active:index].id);
+            var _opts = this._options;
+            return $('#' + _opts.items[index === undefined ? _opts.active : index].id);
         },
 
         _findElement:function (selector, el) {
-            var ret = $(el || this._el).find(selector);
+            var ret = $(el || this.$el).find(selector);
             return ret.length ? ret : null;
         },
 
-        _create:function () {
-            var me = this, data = me._data;
-            me._el = me._el || $('<div></div>');
-            me._prepareDom('create', data);
-        },
-
-        _setup:function (mode) {
-            var me = this, data = me._data;
-            me._prepareDom(mode ? 'fullsetup' : 'setup', data);
-        },
-
-        _init:function () {
-            var me = this, data = me._data, $el = me.root(), eventHandler = $.proxy(me._eventHandler, me);
-            $el.addClass('ui-tabs');
-            data._nav.on('tap', eventHandler).children().highlight('ui-state-hover');
-            $(window).on('ortchange', eventHandler);
-        },
-
         _eventHandler:function (e) {
-            var match, data = this._data;
+            var match, _opts = this._options;
             switch(e.type) {
                 case 'ortchange':
                     this.refresh();
                     break;
                 default:
-                    if((match = $(e.target).closest('li', data._nav.get(0))) && match.length) {
+                    if((match = $(e.target).closest('li', _opts._nav.get(0))) && match.length) {
                         e.preventDefault();
                         this.switchTo(match.index());
                     }
@@ -144,9 +149,9 @@
         },
 
         _fitToContent: function(div) {
-            var data = this._data, $content = data._content;
-            data._plus === undefined && (data._plus = parseFloat($content.css('border-top-width'))+parseFloat($content.css('border-bottom-width')))
-            $content.height( div.height() + data._plus);
+            var _opts = this._options, $content = _opts._content;
+            _opts._plus === undefined && (_opts._plus = parseFloat($content.css('border-top-width'))+parseFloat($content.css('border-bottom-width')))
+            $content.height( div.height() + _opts._plus);
             return this;
         },
 
@@ -156,43 +161,43 @@
          * @desc 切换到tab。
          */
         switchTo: function(index) {
-            var me = this, data = me._data, items = data.items, eventData, to, from, reverse, endEvent;
-            if(!data._buzy && data.active != (index = Math.max(0, Math.min(items.length-1, index)))) {
+            var me = this, _opts = me._options, items = _opts.items, eventData, to, from, reverse, endEvent;
+            if(!_opts._buzy && _opts.active != (index = Math.max(0, Math.min(items.length-1, index)))) {
                 to = $.extend({}, items[index]);//copy it.
                 to.div = me._getPanel(index);
                 to.index = index;
 
-                from = $.extend({}, items[data.active]);//copy it.
+                from = $.extend({}, items[_opts.active]);//copy it.
                 from.div = me._getPanel();
-                from.index = data.active;
+                from.index = _opts.active;
 
-                eventData = $.Event('beforeActivate');
+                eventData = gmu.Event('beforeActivate');
                 me.trigger(eventData, [to, from]);
-                if(eventData.defaultPrevented) return me;
+                if(eventData.isDefaultPrevented()) return me;
 
-                data._content.children().removeClass('ui-state-active');
+                _opts._content.children().removeClass('ui-state-active');
                 to.div.addClass('ui-state-active');
-                data._nav.children().removeClass('ui-state-active').eq(to.index).addClass('ui-state-active');
-                if(data.transition) { //use transition
-                    data._buzy = true;
+                _opts._nav.children().removeClass('ui-state-active').eq(to.index).addClass('ui-state-active');
+                if(_opts.transition) { //use transition
+                    _opts._buzy = true;
                     endEvent = $.fx.animationEnd + '.tabs';
-                    reverse = index>data.active?'':' reverse';
-                    data._content.addClass('ui-viewport-transitioning');
+                    reverse = index>_opts.active?'':' reverse';
+                    _opts._content.addClass('ui-viewport-transitioning');
                     from.div.addClass('out'+reverse);
                     to.div.addClass('in'+reverse).on(endEvent, function(e){
                         if (e.target != e.currentTarget) return //如果是冒泡上来的，则不操作
                         to.div.off(endEvent, arguments.callee);//解除绑定
-                        data._buzy = false;
+                        _opts._buzy = false;
                         from.div.removeClass('out reverse');
                         to.div.removeClass('in reverse');
-                        data._content.removeClass('ui-viewport-transitioning');
+                        _opts._content.removeClass('ui-viewport-transitioning');
                         me.trigger('animateComplete', [to, from]);
                         me._fitToContent(to.div);
                     });
                 }
-                data.active = index;
+                _opts.active = index;
                 me.trigger('activate', [to, from]);
-                data.transition ||  me._fitToContent(to.div);
+                _opts.transition ||  me._fitToContent(to.div);
             }
             return me;
         },
@@ -213,9 +218,9 @@
          * @grammar destroy()  ⇒ instance
          */
         destroy:function () {
-            var data = this._data, eventHandler = this._eventHandler;
-            data._nav.off('tap', eventHandler).children().highlight();
-            data.swipe && data._content.off('swipeLeft swipeRight', eventHandler);
+            var _opts = this._options, eventHandler = this._eventHandler;
+            _opts._nav.off('tap', eventHandler).children().highlight();
+            _opts.swipe && _opts._content.off('swipeLeft swipeRight', eventHandler);
             return this.$super('destroy');
         }
 
@@ -225,11 +230,11 @@
          * @desc 组件内部触发的事件
          *
          * ^ 名称 ^ 处理函数参数 ^ 描述 ^
-         * | init | event | 组件初始化的时候触发，不管是render模式还是setup模式都会触发 |
+         * | ready | event | 组件初始化的时候触发，不管是render模式还是setup模式都会触发 |
          * | activate | event, to, from | 内容切换后触发, to和from为Object, 成员有: div(内容div), index(位置), title(标题), content(内容),href(链接) |
          * | beforeActivate | event, to, from | 内容切换之前触发，可以通过e.preventDefault()来阻止 |
          * | animateComplete | event, to, from | 动画完成后执行，如果没有设置动画，此时间不会触发 |
          * | destroy | event | 组件在销毁的时候触发 |
          */
     });
-})(Zepto);
+})( gmu, gmu.$ );

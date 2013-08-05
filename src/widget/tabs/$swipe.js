@@ -3,7 +3,7 @@
  * @name Tabs - 左右滑动手势插件
  * @short Tabs.swipe
  * @desc <qrcode align="right" title="Live Demo">../gmu/examples/widget/tabs/tabs.html</qrcode>
- * @import widget/tabs.js
+ * @import widget/tabs/tabs.js
  */
 (function ($, undefined) {
     var durationThreshold = 1000, // 时间大于1s就不算。
@@ -64,40 +64,39 @@
      * **在Tabs基础上新增的Options**
      * @desc tabs插件, 添加 swipe功能，zepto的swipeLeft, swipeRight不太准，所以在这另外实现了一套。
      */
-    $.ui.tabs.register(function () {
-        return {
-            name:'swipe',
-            _init:function () {
-                var data = this._data;
-                this._initOrg();
-                tabs.push(data._content.get(0));
+    gmu.Tabs.register( 'swipe', {
+        _init:function () {
+            var _opts = this._options;
+
+            this.on( 'ready', function(){
+                tabs.push(_opts._content.get(0));
                 eventBinded =  eventBinded || (tabsSwipeEvents(), true);
-                this._el.on('tabsSwipeLeft tabsSwipeRight', $.proxy(this._eventHandler, this));
-            },
-            _eventHandler:function (e) {
-                var data = this._data, items, index;
-                switch (e.type) {
-                    case 'tabsSwipeLeft':
-                    case 'tabsSwipeRight':
-                        items = data.items;
-                        if (e.type == 'tabsSwipeLeft' && data.active < items.length - 1) {
-                            index = data.active + 1;
-                        } else if (e.type == 'tabsSwipeRight' && data.active > 0) {
-                            index = data.active - 1;
-                        }
-                        index !== undefined && (e.stopPropagation(), this.switchTo(index));
-                        break;
-                    default://tap
-                        return this._eventHandlerOrg(e);
-                }
-            },
-            destroy: function(){
-                var data = this._data, idx;
-                ~(idx = $.inArray(data._content.get(0), tabs)) && tabs.splice(idx, 1);
-                this._el.off('tabsSwipeLeft tabsSwipeRight', this._eventHandler);
-                tabs.length || ($(document).off('touchstart.tabs'), eventBinded = false);
-                return this.destroyOrg();
+                this.$el.on('tabsSwipeLeft tabsSwipeRight', $.proxy(this._eventHandler, this));
+            } );
+        },
+        _eventHandler:function (e) {
+            var _opts = this._options, items, index;
+            switch (e.type) {
+                case 'tabsSwipeLeft':
+                case 'tabsSwipeRight':
+                    items = _opts.items;
+                    if (e.type == 'tabsSwipeLeft' && _opts.active < items.length - 1) {
+                        index = _opts.active + 1;
+                    } else if (e.type == 'tabsSwipeRight' && _opts.active > 0) {
+                        index = _opts.active - 1;
+                    }
+                    index !== undefined && (e.stopPropagation(), this.switchTo(index));
+                    break;
+                default://tap
+                    return this.origin(e);
             }
+        },
+        destroy: function(){
+            var _opts = this._options, idx;
+            ~(idx = $.inArray(_opts._content.get(0), tabs)) && tabs.splice(idx, 1);
+            this._el.off('tabsSwipeLeft tabsSwipeRight', this._eventHandler);
+            tabs.length || ($(document).off('touchstart.tabs'), eventBinded = false);
+            return this.origin();
         }
-    });
+    } );
 })(Zepto);

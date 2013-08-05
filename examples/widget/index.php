@@ -126,12 +126,5 @@ foreach ($setting as $item) {
     </div>
 </div>
 <link rel="stylesheet" type="text/css" href="../../assets/widget/toolbar/toolbar.blue.css">
-<script id="bootstrap" src="../example.js"
-        type="text/javascript"
-        data-jspath = '../../src/'
-        data-csspath = '../../assets/'
-        data-backurl="../../"
-        data-page="">
-</script>
 </body>
 </html>
