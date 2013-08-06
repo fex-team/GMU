@@ -93,7 +93,7 @@
             var me = this,
                 index = me.data('index'),
                 root = me.root(),
-                _eventHandler = $.proxy(me._eventHandler, me);
+                _eventHandler = $.proxy( me._eventHandler, me );
             me._setWidth();
             $(me.data('wheel')).on('touchstart touchmove touchend touchcancel webkitTransitionEnd', _eventHandler);
             $(window).on('ortchange', _eventHandler);
@@ -194,6 +194,7 @@
          * 事件管理函数
          */
         _eventHandler:function(e) {
+            debugger;
             var me = this;
             switch (e.type) {
                 case 'touchmove':
@@ -219,6 +220,7 @@
          * touchstart事件
          */
         _touchStart:function(e) {
+            debugger;
             var me = this;
             me.data({
                 pageX:      e.touches[0].pageX,
