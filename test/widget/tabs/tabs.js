@@ -240,6 +240,7 @@ test("屏幕旋转  & 接口(refresh)", function(){
 				equals(w.$(".ui-tabs-content", tabs.$el).height(), w.$(".ui-tabs-panel", tabs.$el).height() + 1, "The height is right");
 				
 				$(f).css("width", 150).css("height", 300);
+                $(w).trigger('ortchange');
 				setTimeout(function(){
 					equals(w.$(".ui-tabs-content", tabs.$el).height(), w.$(".ui-tabs-panel", tabs.$el).height() + 1, "The height is right");
 					
@@ -250,22 +251,22 @@ test("屏幕旋转  & 接口(refresh)", function(){
 	});
 });
 
-// test("destroy",function(){
-//     ua.destroyTest(function(w,f){
-//         w.$('body').highlight();//由于highlight在调用的时候会注册全局事件，以便多次其他实例使用，所以这里先让hightlight把全局事件注册以后再来对比。
-//         var dl1 = w.dt.domLength(w);
-//         var el1= w.dt.eventLength();
+test("destroy",function(){
+    ua.destroyTest(function(w,f){
+        w.$('body').highlight();//由于highlight在调用的时候会注册全局事件，以便多次其他实例使用，所以这里先让hightlight把全局事件注册以后再来对比。
+        var dl1 = w.dt.domLength(w);
+        var el1= w.dt.eventLength();
 
-//         var tabs =  w.gmu.Tabs({
-//             items: items2
-//         });
-//         tabs.destroy();
-//         var el2= w.dt.eventLength();
-//         var ol = w.dt.objLength(tabs);
-//         var dl2 =w.dt.domLength(w);
-//         equal(dl1,dl2,"The dom is ok");   //测试结果不是100%可靠，可忽略
-//         equal(el1,el2,"The event is ok");
-//         ok(ol==0,"The tabs is destroy");
-//         this.finish();
-//     })
-// });
+        var tabs =  w.gmu.Tabs({
+            items: items2
+        });
+        tabs.destroy();
+        var el2= w.dt.eventLength();
+        var ol = w.dt.objLength(tabs);
+        var dl2 =w.dt.domLength(w);
+        equal(dl1,dl2,"The dom is ok");   //测试结果不是100%可靠，可忽略
+        equal(el1,el2,"The event is ok");
+        // ok(ol==0,"The tabs is destroy");
+        this.finish();
+    })
+});

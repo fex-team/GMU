@@ -91,14 +91,14 @@
                 context:me.$el.get(0),
                 beforeSend:function (xhr, settings) {
                     var eventData = gmu.Event('beforeLoad');
-                    me.trigger(eventData, [xhr, settings]);
+                    me.trigger(eventData, xhr, settings);
                     if (eventData.isDefaultPrevented())return false;
                 },
                 success:function (response, xhr) {
-                    var eventData = $.Event('beforeRender');
+                    var eventData = gmu.Event('beforeRender');
                     clearTimeout(_opts._loadingTimer);//清除显示loading的计时器
-                    me.trigger(eventData, [response, $panel, index, xhr])//外部可以修改data，或者直接把pannel修改了
-                    if (!event_opts.defaultPrevented) {
+                    me.trigger(eventData, response, $panel, index, xhr)//外部可以修改data，或者直接把pannel修改了
+                    if (!eventData.isDefaultPrevented()) {
                         $panel.html(response);
                     }
                     _opts._fitLock = false;
