@@ -333,6 +333,29 @@ if($.os.ios && canShow){
         },100);
     });
 
+    test('多次show() & hide()', function(){
+        expect(4);
+        stop();
+        window.localStorage.removeItem("_gmu_adddesktop_key");
+        var add2desktop = gmu.Add2desktop();
+        setTimeout(function(){
+            ok(ua.isShown(add2desktop.$el[0]), "The add2desktop shows");
+            add2desktop.show()
+            ok(ua.isShown(add2desktop.$el[0]), "The add2desktop shows");
+            add2desktop.hide();
+            setTimeout(function(){
+                ok(!ua.isShown(add2desktop.$el[0]), "The add2desktop hides");
+                add2desktop.hide();
+                add2desktop.show();
+                setTimeout(function(){
+                    ok(ua.isShown(add2desktop.$el[0]), "The add2desktop shows");
+                    add2desktop.destroy();
+                    start();
+                },100);
+            },200);
+        },100);
+    });
+
     test('destroy()', function(){
         ua.destroyTest(function(w,f){
         	var dl1 = w.dt.domLength(w);
@@ -362,25 +385,3 @@ else{
 		ok(true, "Doesn't support android");
 	});
 }
-test('多次show() & hide()', function(){
-    expect(4);
-    stop();
-    window.localStorage.removeItem("_gmu_adddesktop_key");
-    var add2desktop = gmu.Add2desktop();
-    setTimeout(function(){
-        ok(ua.isShown(add2desktop.$el[0]), "The add2desktop shows");
-        add2desktop.show()
-        ok(ua.isShown(add2desktop.$el[0]), "The add2desktop shows");
-        add2desktop.hide();
-        setTimeout(function(){
-            ok(!ua.isShown(add2desktop.$el[0]), "The add2desktop hides");
-            add2desktop.hide();
-            add2desktop.show();
-            setTimeout(function(){
-                ok(ua.isShown(add2desktop.$el[0]), "The add2desktop shows");
-                add2desktop.destroy();
-                start();
-            },100);
-        },200);
-    },100);
-});

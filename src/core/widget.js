@@ -214,7 +214,7 @@
         }
 
         return args.length ?
-                $.extend.apply( null, [ true, {} ].concat( args ) ) : last;
+                $.extend.apply( null, [ true, {} ].concat( args ) ) : last; // 深拷贝，options中某项为object时，用例中不能用==判断
     }
 
     // 初始化widget. 隐藏具体细节，因为如果放在构造器中的话，是可以看到方法体内容的

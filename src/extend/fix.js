@@ -1,7 +1,7 @@
 /**
  * @file 实现了通用fix方法。
  * @name Fix
- * @import zepto.js
+ * @import zepto.js, extend/event.scrollStop.js, extend/event.ortchange.js
  */
 
 /**
@@ -37,10 +37,10 @@
                         if(buff[0].getBoundingClientRect().top !== top) {
                             me.css('position', 'absolute');
                             doFixed();
-                            $(document).on('scrollStop', doFixed);
+                            $(window).on('scrollStop', doFixed);
                             $(window).on('ortchange', doFixed);
                         }
-                        $(document).off('scrollStop', checkFixed);
+                        $(window).off('scrollStop', checkFixed);
                         buff.remove();
                     }
                 },
@@ -51,7 +51,9 @@
                     });
                     opts.width == '100%' && me.css('width', document.body.offsetWidth);
                 };
-            $(document).on('scrollStop', checkFixed);
+
+            $(window).on('scrollStop', checkFixed);
+
             return me;
         }
     });
