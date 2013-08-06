@@ -111,16 +111,11 @@
     $.extend($.fn, {
         on: function(event, selector, callback) {
 
+            var targetActived = false;
             var transedEvent = transFn(event);
 
             var callback = function(e){
                 var options = e || {};
-                // if(event != "touchend" && event !="touchcancel"){
-                if(/touch/.test(e.type)){
-                    // options.touches = options.touches || [];
-                    options.touches = [e.target];
-                    options.targetTouches = options.targetTouches || [];
-                }
                 options.changedTouches = options.changedTouches || [];
                 var bubbles = typeof options.bubbles != 'undefined' ? options.bubbles : true ;
                 var cancelable = typeof options.cancelable != 'undefined' ? options.cancelable : (event != "touchcancel");
@@ -135,16 +130,29 @@
                 var scale = typeof options.scale != 'undefined' ? options.scale : 1.0;
                 var rotation = typeof options.rotation != 'undefined' ? options.rotation : 0.0;
                 var relatedTarget = typeof options.relatedTarget != 'undefined' ? options.relatedTarget : null;
-                var touches = createTouchList(options.touches, e.target);
-                var targetTouches = createTouchList(options.targetTouches, e.target);
-                var changedTouches = createTouchList(options.changedTouches, e.target);
+                var touches = [];
+                var targetTouches = [];
+                var changedTouches = [];
 
-                debugger;
                 var _event = document.createEvent('MouseEvents');
-                _event.initMouseEvent(reversalEvent[e.type] || e.type, bubbles, cancelable, view, /*detail*/ 1, 
-                    /*screenX*/ 0, /*screenY*/ 0, clientX, clientY, ctrlKey, altKey, shiftKey, metaKey, 
+                _event.initMouseEvent(reversalEvent[e.type] || e.type, bubbles, cancelable, view, 1, 
+                    0, 0, clientX, clientY, ctrlKey, altKey, shiftKey, metaKey, 
                     touches, targetTouches, changedTouches, scale, rotation, relatedTarget);
                 _event.touches = [e];
+
+                // 如果touchstart没触发，touchmove(mousemove)应该不响应
+                if (e.type === 'mousedown') {
+                    targetActived = true;
+                }
+
+                if (e.type === 'mousemove' && !targetActived) {
+                    return;
+                }
+
+                if (e.type === 'mouseup') {
+                    targetActived = false;
+                }
+
                 selector.call(null, _event);
             };
 

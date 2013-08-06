@@ -198,13 +198,17 @@
             var me = this;
             switch (e.type) {
                 case 'touchmove':
+                    console.log('touchmove');
                     me._touchMove(e);
                     break;
                 case 'touchstart':
+                    console.log('touchstart');
                     me._touchStart(e);
                     break;
                 case 'touchcancel':
                 case 'touchend':
+                    console.log('touchend');
+                    debugger;
                     me._touchEnd();
                     break;
                 case 'webkitTransitionEnd':
