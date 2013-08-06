@@ -5,7 +5,6 @@
  * @desc 滚动停止事件
  * @import zepto.js, extend/throttle.js
  */
-
 (function ($, win) {
     /**
      * @name scrollStop

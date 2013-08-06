@@ -149,7 +149,7 @@ module.exports = function(grunt) {
                     , 'extend/throttle.js'
                     , 'widget/add2desktop/*.js' // 在phantom中无法模拟IOS，所以跑不出结果
                     , 'widget/button/*.js'
-                    // , 'widget/calendar/*.js'
+                    , 'widget/calendar/*.js'
                     , 'widget/dialog/*.js'
                     , 'widget/dropmenu/*.js'
                     , 'widget/gotop/*.js'

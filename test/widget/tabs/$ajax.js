@@ -36,7 +36,7 @@ test("测试ajax Render模式",function(){
         status = '',
         tabs;
 
-    tabs = $.ui.tabs({
+    tabs = gmu.Tabs({
         ajax: {
             type: 'POST',
             contentType: 'application/x-www-form-urlencoded'
@@ -64,7 +64,7 @@ test("测试ajax Render模式",function(){
             status += 'beforeLoad '
             var ui = this;
             settings.data = $.param({
-                index: ui.data('active')
+                index: ui._options['active']
             });
         },
         beforeRender : function(event, response, panel, index, xhr){
@@ -81,7 +81,7 @@ test("测试ajax Render模式",function(){
             equals($(panel).find('p').length, 1, 'content p loaded');
             if (count == 1) {
                 ok(true, '第二次点击开始');
-                ta.tap(tabs.root().find('.ui-tabs-nav li').get(2));
+                ta.tap(tabs.$el.find('.ui-tabs-nav li').get(2));
                 setTimeout(function () {
                     tabs.destroy();
                     start();
@@ -90,7 +90,7 @@ test("测试ajax Render模式",function(){
         }
     });
 
-    ta.tap(tabs.root().find('.ui-tabs-nav li').get(1));
+    ta.tap(tabs.$el.find('.ui-tabs-nav li').get(1));
     ok(true, '第一次点击开始');
 
 });
@@ -115,7 +115,7 @@ test("加载成功&事件测试:beforeLoad,load,beforeRender", function(){
             status += 'beforeLoad '
             var ui = this;
             settings.data = $.param({
-                index: ui.data('active')
+                index: ui._options['active']
             });
         },
         beforeRender : function(event, response, panel, index, xhr){
@@ -270,7 +270,7 @@ test("destroy",function(){
         var dl1 = w.dt.domLength(w);
         var el1= w.dt.eventLength();
 
-        var tabs =  w.$.ui.tabs({
+        var tabs =  w.gmu.Tabs({
         	items: [
                 {title:'tab1', href:'http://www.baidu.com'},
                 {title:'tab2'},

@@ -26,12 +26,14 @@
     <!--组件依赖css end-->
     <!--组件依赖js begin-->
     <script type="text/javascript" src="../../../dist/zepto.js"></script>
-    <script type="text/javascript" src="../../../src/core/touch.js"></script>      <!--新版zepto合并版中不包括touch.js-->
-    <script type="text/javascript" src="../../../src/core/extend.js"></script>
-    <script type="text/javascript" src="../../../src/core/ui.js"></script>
-    <script type="text/javascript" src="../../../src/core/highlight.js"></script>
-    <script type="text/javascript" src="../../../src/widget/tabs.js"></script>
-    <script type="text/javascript" src="../../../src/widget/tabs.swipe.js"></script>
+    <script type="text/javascript" src="../../../src/extend/touch.js"></script>
+    <script type="text/javascript" src="../../../src/extend/highlight.js"></script>
+    <script type="text/javascript" src="../../../src/extend/parseTpl.js"></script>
+    <script type="text/javascript" src="../../../src/core/gmu.js"></script>
+    <script type="text/javascript" src="../../../src/core/event.js"></script>
+    <script type="text/javascript" src="../../../src/core/widget.js"></script>
+    <script type="text/javascript" src="../../../src/widget/tabs/tabs.js"></script>
+    <script type="text/javascript" src="../../../src/widget/tabs/$swipe.js"></script>
     <!--组件依赖js end-->
 </head>
 <body>
@@ -48,7 +50,7 @@
 <script>
     window.scrollTo(0, 1);//收起地址栏
 
-    $.ui.tabs({
+    gmu.Tabs({
         container: '#container',
         items: [
             {
@@ -70,7 +72,7 @@
         ]
     });
 
-    $.ui.tabs({
+    gmu.Tabs({
         transition: '',
         container: '#container2',
         items: [
@@ -93,12 +95,6 @@
         ]
     });
 
-</script>
-<script id="bootstrap" src="../../example.js"
-        type="text/javascript"
-        data-theme="default"
-        data-use="widget/tabs.swipe.js"
-        data-page="选项卡|tabs.html,选项卡render模式|tabs_render.html,选项卡-ajax|tabs_ajax.html,选项卡-json|tabs_json.html,选项卡嵌套|tabs_tabs.html,不缓存内容选项卡|tabs_nocache.html,选项卡－历史纪录|tabs_history.html">
 </script>
 </body>
 </html>

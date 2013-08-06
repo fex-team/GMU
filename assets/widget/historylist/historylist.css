@@ -1,0 +1,16 @@
+.ui-historylist {
+    overflow: hidden;
+}
+.ui-historylist-itemwrap {
+    line-height: 2.5em;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.ui-historylist-item {
+    height: 100%;
+    display: block;
+}
+.ui-historylist-clear {
+    line-height: 2.5em;
+    text-align: center;
+}
