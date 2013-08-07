@@ -93,7 +93,7 @@
             var me = this,
                 index = me.data('index'),
                 root = me.root(),
-                _eventHandler = $.proxy(me._eventHandler, me);
+                _eventHandler = $.proxy( me._eventHandler, me );
             me._setWidth();
             $(me.data('wheel')).on('touchstart touchmove touchend touchcancel webkitTransitionEnd', _eventHandler);
             $(window).on('ortchange', _eventHandler);
