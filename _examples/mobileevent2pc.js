@@ -79,29 +79,35 @@
                 var changedTouches = [];
 
                 var _event = document.createEvent('MouseEvents');
-                _event.initMouseEvent(reversalEvent[e.type] || e.type, bubbles, cancelable, view, 1, 
-                    0, 0, clientX, clientY, ctrlKey, altKey, shiftKey, metaKey, 
+                _event.initMouseEvent(reversalEvent[e.type] || e.type, bubbles, cancelable, view, 1,
+                    0, 0, clientX, clientY, ctrlKey, altKey, shiftKey, metaKey,
                     touches, targetTouches, changedTouches, scale, rotation, relatedTarget);
                 _event.touches = [e];
-                
+
                 switch( e.type ){
                     case 'mousedown':
                         targetActived = true;
                         callback.call(null, _event);
+                        e.preventDefault();
                         break;
                     case 'mousemove':
                         if( !targetActived ) {  // 如果touchstart没触发，touchmove(mousemove)应该不响应
                             return;
                         } else {
                             callback.call(null, _event);
+                            e.preventDefault();
                             break;
                         }
                     case 'mouseup':
                         targetActived = false;
                         callback.call(null, _event);
+                        e.preventDefault();
+                        break;
+
+                    default:
+                        callback.call(null, e);
                         break;
                 }
-                
             };
 
             callbackStack.push({
