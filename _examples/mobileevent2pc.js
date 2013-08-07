@@ -141,19 +141,25 @@
                 _event.touches = [e];
 
                 // 如果touchstart没触发，touchmove(mousemove)应该不响应
-                if (e.type === 'mousedown') {
-                    targetActived = true;
+                switch( e.type ){
+                    case 'mousedown':
+                        targetActived = true;
+                        selector.call(null, _event);
+                        break;
+                    case 'mousemove':
+                        if( !targetActived ) {
+                            return;
+                        } else {
+                            selector.call(null, _event);
+                            break;
+                        }
+                    case 'mouseup':
+                        targetActived = false;
+                        selector.call(null, _event);
+                        break;
                 }
 
-                if (e.type === 'mousemove' && !targetActived) {
-                    return;
-                }
-
-                if (e.type === 'mouseup') {
-                    targetActived = false;
-                }
-
-                selector.call(null, _event);
+                
             };
 
             if ( Object.prototype.toString.call(selector) === '[object String]' ) {
