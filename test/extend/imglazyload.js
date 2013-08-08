@@ -387,8 +387,9 @@ test("iscroll:初始状态图片在iscroll wrapper区域内能正确加载", fun
                 itemH = w.$('p').height() + w.$('.ui-imglazyload').height(),
                 n = 3,$wrapper;    //滚动加载的张数
             expect(n);
-
-            $scroller.wrap($wrapper = w.$('<div id="wrapper"></div>').height(n*itemH));
+            $scroller.wrap($wrapper = w.$('<div id="wrapper"></div>'));
+            itemH = w.$('p').height() + w.$('.ui-imglazyload').height();
+            $wrapper.height(n*itemH);
             viewImages = getImgsInWrapper(w, w.$('.ui-imglazyload'),$wrapper, 0)
             $wrapper.iScroll({
                 hScroll: false,
@@ -400,8 +401,8 @@ test("iscroll:初始状态图片在iscroll wrapper区域内能正确加载", fun
                 innerScroll:true,
                 container: $wrapper
             }).on('loadcomplete', function () {
-                    ok(~w.$.inArray(this, viewImages), '图片成功加载' + this.getAttribute("data-url"));
-                });
+                ok(~w.$.inArray(this, viewImages), '图片成功加载' + this.getAttribute("data-url"));
+            });
 
             setTimeout(function () {
                 $wrapper.remove();
@@ -436,15 +437,19 @@ test("iscroll:滚动过程中在iscroll wrapper区域内能正确加载", functi
                 n = 3,$wrapper;    //滚动加载的张数
             expect(n * 2);
 
-            $scroller.wrap($wrapper = w.$('<div id="wrapper"></div>').height(n*itemH + 300));   // 300这个值，是根据iframe的高度调出来的，这种方法不合理
+            $scroller.wrap($wrapper = w.$('<div id="wrapper"></div>'));
+            itemH = w.$('p').height() + w.$('.ui-imglazyload').height();
+            $wrapper.height(n*itemH);   // 300这个值，是根据iframe的高度调出来的，这种方法不合理
             viewImages = getImgsInWrapper(w, w.$('.ui-imglazyload'),$wrapper, 0);
-            $wrapper.iScroll({
+            var config = new w.Object({
                 hScroll: false,
                 onScrollEnd: function () {
                     viewImages = getImgsInWrapper(w, w.$('.ui-imglazyload'),$wrapper, 0);
                     w.$.fn.imglazyload.detect();
                 }
             });
+            config.__proto__ = w.Object.prototype;
+            $wrapper.iScroll(config);
             w.$('.ui-imglazyload').imglazyload({
                 container: $wrapper
             }).on('loadcomplete', function () {
@@ -461,7 +466,7 @@ test("iscroll:滚动过程中在iscroll wrapper区域内能正确加载", functi
                 ta.touchmove($scroller[0], {
                     touches:[{
                         pageX: 0,
-                        pageY: -400
+                        pageY: -1*n*itemH+200
                     }]
                 });
 
@@ -471,7 +476,7 @@ test("iscroll:滚动过程中在iscroll wrapper区域内能正确加载", functi
                 });
                 ua.mousemove($scroller[0], {
                     clientX: 0,
-                    clientY: -400
+                    clientY: -1*n*itemH+200
                 });
 
                 setTimeout(function(){
