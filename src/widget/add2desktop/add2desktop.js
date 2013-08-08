@@ -106,7 +106,7 @@
                 if(!$.os.ios || $.browser.uc || $.browser.qq || $.browser.chrome) return me; //todo 添加iOS原生浏览器的判断
                 var event = new gmu.Event('beforeshow');
                 me.trigger(event);
-                if(event.defaultPrevented) return me;
+                if(event.isDefaultPrevented()) return me;
                 me.$el.css('display', 'block');
                 me._options['_isShow'] = true;
             }
