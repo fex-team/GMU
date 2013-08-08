@@ -274,7 +274,7 @@ test("点击进度条 - 竖向", function() {
     });
     ta.touchend($(".ui-progressbar-bg")[0]);
     setTimeout(function(){
-        equals(progressbar.value(), (progressbar.$el.offset().height - 300) / progressbar.$el.offset().height * 100,"The value is right");
+        approximateEqual(progressbar.value(), (progressbar.$el.offset().height - 300) / progressbar.$el.offset().height * 100,"The value is right");
         ta.touchstart($(".ui-progressbar-bg")[0], {
             touches: [{
                 clientX: 0,

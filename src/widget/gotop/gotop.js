@@ -54,11 +54,12 @@
                 _eventHandler = $.proxy(me._eventHandler, me);
 
                 _opts['useHide'] && $(document).on('touchmove', _eventHandler);
-                $(document).on('touchend touchcancel scrollStop', _eventHandler);
+                $(window).on('touchend touchcancel scrollStop', _eventHandler);
                 $(window).on('scroll ortchange', _eventHandler);
                 $el.on('click', _eventHandler);
                 me.on('destroy', function() {
-                    $(document).off('touchmove touchend touchcancel scrollStop', _eventHandler);
+                    $(window).off('touchend touchcancel scrollStop', _eventHandler);
+                    $(document).off('touchmove', _eventHandler);
                     $(window).off('scroll ortchange', _eventHandler);
                 });
                 _opts['useFix'] && $el.fix(_opts['position']);
