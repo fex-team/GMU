@@ -88,6 +88,7 @@
                     case 'mousedown':
                         targetActived = true;
                         arguments[ 0 ] = _event;
+                        callback.apply( this, arguments );
                         e.preventDefault();
                         break;
                     case 'mousemove':
@@ -95,17 +96,21 @@
                             return;
                         } else {
                             arguments[ 0 ] = _event;
+                            callback.apply( this, arguments );
                             e.preventDefault();
                             break;
                         }
                     case 'mouseup':
                         targetActived = false;
                         arguments[ 0 ] = _event;
+                        callback.apply( this, arguments );
                         e.preventDefault();
                         break;
-                }
 
-                _callback.apply( this, arguments );
+                    default:
+                        callback.apply( this, arguments );
+                        break;
+                }
             };
 
             callbackStack.push({
