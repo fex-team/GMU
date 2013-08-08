@@ -87,27 +87,25 @@
                 switch( e.type ){
                     case 'mousedown':
                         targetActived = true;
-                        callback.call(this, _event);
+                        arguments[ 0 ] = _event;
                         e.preventDefault();
                         break;
                     case 'mousemove':
                         if( !targetActived ) {  // 如果touchstart没触发，touchmove(mousemove)应该不响应
                             return;
                         } else {
-                            callback.call(this, _event);
+                            arguments[ 0 ] = _event;
                             e.preventDefault();
                             break;
                         }
                     case 'mouseup':
                         targetActived = false;
-                        callback.call(this, _event);
+                        arguments[ 0 ] = _event;
                         e.preventDefault();
                         break;
-
-                    default:
-                        callback.call(this, e);
-                        break;
                 }
+
+                _callback.apply( this, arguments );
             };
 
             callbackStack.push({
