@@ -439,7 +439,7 @@ test("iscroll:滚动过程中在iscroll wrapper区域内能正确加载", functi
 
             $scroller.wrap($wrapper = w.$('<div id="wrapper"></div>'));
             itemH = w.$('p').height() + w.$('.ui-imglazyload').height();
-            $wrapper.height(n*itemH);   // 300这个值，是根据iframe的高度调出来的，这种方法不合理
+            $wrapper.height(n*itemH);
             viewImages = getImgsInWrapper(w, w.$('.ui-imglazyload'),$wrapper, 0);
             var config = new w.Object({
                 hScroll: false,
