@@ -152,7 +152,7 @@ test('自定义配置项el为zepto对象', function(){
 });
 
 
-//只有PC和ios5以上支持fix
+//只有PC和ios5以上支持fix，某些版本的UC上UA中的Android后面不带版本号，导致zepto的$.os.phone判断出错
 if((!$.os.phone && !$.os.tablet)||($.os.ios && parseFloat($.os.version) > 5)){
     test('fix参数', function(){
         stop();

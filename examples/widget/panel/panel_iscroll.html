@@ -38,6 +38,8 @@
 </head>
 
 <body>
+<div id="height"></div>
+<div id="result"></div>
 <div id="page">
     <div class="cont">
         <section id="cont-panel" class="option">
@@ -164,12 +166,12 @@
             swipeClose: false
         }).on('open', function () {
             $('.panel').iScroll('refresh');
-        })
+        });
         
         function resetHeight() {
             $('.panel').css('height', window.innerHeight).iScroll('refresh');
         }
-        $(window).on('scrollStop ortchange', resetHeight);
+        $(window).on('scrollStop ortchange resize', resetHeight);
 
         $('.panel').panel('toggle');
     }(Zepto));
