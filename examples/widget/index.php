@@ -96,6 +96,7 @@ foreach ($setting as $item) {
 
     <script type="text/javascript" src="../../dist/zepto.js"></script>
     <script type="text/javascript" src="../../src/extend/highlight.js"></script>
+    <script type="text/javascript" src="../demos.js"></script>
     <script type="text/javascript">
         (function ($) {
             $(function(){$('.thelist ul li').highlight('ui-state-hover');});
@@ -108,23 +109,38 @@ foreach ($setting as $item) {
         <?php foreach ($components as $group => $demos): ?>
         <div class="group">
             <h3><?php echo $group?></h3>
-            <ul>
-                <?php foreach ($demos as $demo): ?>
-                <li>
-                    <a href="<?php echo $demo['href']?>">
-                        <img src="setting/<?php echo $demo['icon']?>" alt="<?php echo $demo['name']?>"/>
-                        <span class="title"><?php echo $demo['name']?></span>
-                        <span class="desc"><?php echo $demo['description']?></span>
-                        <?php if ($demo['newIcon']): ?><img class="newIcon" src="setting/<?php echo $demo['newIcon']?>" />
-                        <?php endif;?>
-                    </a>
-                </li>
-                <?php endforeach;?>
-            </ul>
+            <div id="widgetWrap">
+                <ul id="widgetList">
+                    <?php foreach ($demos as $demo): ?>
+                    <li>
+                        <a href="<?php echo strtolower($demo['name']);?>">
+                            <img src="setting/<?php echo $demo['icon']?>" alt="<?php echo $demo['name']?>"/>
+                            <span class="title"><?php echo $demo['name']?></span>
+                            <span class="desc"><?php echo $demo['description']?></span>
+                            <?php if ($demo['newIcon']): ?><img class="newIcon" src="setting/<?php echo $demo['newIcon']?>" />
+                            <?php endif;?>
+                        </a>
+                    </li>
+                    <?php endforeach;?>
+                </ul>
+                <ul id="demoList"></ul>
+            </div>
         </div>
         <?php endforeach;?>
     </div>
 </div>
 <link rel="stylesheet" type="text/css" href="../../assets/widget/toolbar/toolbar.blue.css">
+<script type="text/javascript">
+    $(function($){
+        $('.group a').click(function(e){
+            console.log(demos[$(this).attr('href')]);
+            e.preventDefault();
+        });
+
+        $('#widgetWrap').width(window.innerWidth);
+        $('#widgetList').width(window.innerWidth);
+        $('#demoList').width(window.innerWidth);
+    });
+</script>
 </body>
 </html>
