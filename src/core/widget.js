@@ -46,13 +46,11 @@
     }
 
     // 从某个元素上读取某个属性。
-    function dataAttr( el, attr ) {
-        var data = el.getAttribute( 'data-' + attr );
-
+    function parseData( data ) {
         try {    // JSON.parse可能报错
 
             // 当data===null表示，没有此属性
-            data = data === null ? undefined : data === 'true' ? true :
+            data = data === 'true' ? true :
                     data === 'false' ? false : data === 'null' ? null :
 
                     // 如果是数字类型，则将字符串类型转成数字类型
@@ -67,14 +65,26 @@
     }
 
     // 从DOM节点上获取配置项
-    function getDomOptions( el, keys ) {
+    function getDomOptions( el ) {
         var ret = {},
+            attrs = el && el.attributes,
+            len = attrs && attrs.length,
+            key,
             data;
 
-        el && eachObject( keys, function( key ) {
-            data = dataAttr( el, key );
+        while ( len-- ) {
+            data = attrs[ len ];
+            key = data.name;
+            
+            if ( key.substring(0, 5) !== 'data-' ) {
+                continue;
+            }
+
+            key = key.substring( 5 );
+            data = parseData( data.value );
+
             data === undefined || (ret[ key ] = data);
-        } );
+        }
 
         return ret;
     }
@@ -233,7 +243,7 @@
         el && (me.$el = $( el ), el = me.$el[ 0 ]);
 
         opts = me._options = mergeObj( klass.options,
-                getDomOptions( el, klass.options ), options );
+                getDomOptions( el ), options );
 
         me.template = mergeObj( klass.template, opts.template );
 

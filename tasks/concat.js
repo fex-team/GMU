@@ -79,7 +79,7 @@ module.exports = function( grunt ) {
                         cssFiles.push(obj[theme]);
 
                 // 收集images
-                matches = arr.join('\n').match(/url\(((['"]?)(?!data)([^'"\n]+?)\2)\)/ig);
+                matches = arr.join('\n').match(/url\(((['"]?)(?!data)([^'"\n\r]+?)\2)\)/ig);
 
                 if (matches) {
 
@@ -87,7 +87,7 @@ module.exports = function( grunt ) {
 
                         // 苦恼，为何matches结果里面不带分组结果呢？
                         url = matches[i].match(
-                                /url\(((['"]?)(?!data)([^'"\n]+?)\2)\)/i)[3];
+                                /url\(((['"]?)(?!data)([^'"\n\r]+?)\2)\)/i)[3];
 
                         images[url] = path.resolve(cssPrefix + 
                                 path.dirname(obj.structor || obj[theme]) + 
@@ -244,7 +244,7 @@ module.exports = function( grunt ) {
             files = f.src.filter(function( filepath ){
 
                 // Warn on and remove invalid source files (if nonull was set).
-                if ( !grunt.file.exists( cwd + filepath ) ) {
+                if ( !grunt.file.exists( path.join( cwd, filepath ) ) ) {
                     grunt.log.warn( 'Source file "' + filepath + '" not found.' );
                     return false;
                 } else {
