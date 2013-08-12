@@ -104,8 +104,8 @@
                     data.items = group.children().each(function (i) {
                         this.style.cssText += 'width:' + width + 'px;position:absolute;-webkit-transform:translate3d(' + i * width + 'px,0,0);z-index:' + (900 - i);
                     });
-                    data.wheel.style.cssText += '-webkit-transition:0ms;-webkit-transform:translate3d(-' + data.index * width + 'px,0,0);';
                 }
+                data.wheel.style.cssText += '-webkit-transition:0ms;-webkit-transform:translate3d(-' + data.index * width + 'px,0,0);';
                 if (index === 0 || index === length - 1) {
                     //到达边缘
                     this.trigger('edge', [index === 0, this._active]);

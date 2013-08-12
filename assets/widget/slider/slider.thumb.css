@@ -1,0 +1,30 @@
+.ui-slider-thumb {
+    width: 100%;
+}
+
+.ui-slider-thumb ul {
+    display: inline-block;
+    white-space:nowrap;/*内容不换行*/
+    position: relative;
+    -webkit-transform: translateZ(0);
+}
+
+.ui-slider-thumb ul li {
+    display: inline-block;
+    list-style: none;
+    border: 1px solid #ccc;
+    width: 50px;
+    height: 30px;
+    margin: 5px;
+    background: #ccc;
+    overflow: hidden;
+    opacity: 0.3;
+    -webkit-transform: translateZ(0);
+}
+.ui-slider-thumb ul li img {
+    display: block;
+    width: 100%;
+}
+.ui-slider-thumb ul li.ui-state-active {
+    opacity: 1;
+}

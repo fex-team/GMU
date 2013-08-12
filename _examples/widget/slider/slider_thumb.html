@@ -1,0 +1,98 @@
+<!doctype html>
+<html>
+<head>
+    <title>slider demo - 显示多张图片</title>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <!--demo展示所用css，不用关心 begin-->
+    <link rel="stylesheet" type="text/css" href="../../../assets/reset.css"/>
+    <!--demo展示所用css end-->
+    <!--组件依赖css begin-->
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/slider/slider.css"/>
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/slider/slider.default.css"/>
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/slider/slider.thumb.css"/>
+    <!--皮肤文件，若不使用该皮肤，可以不加载-->
+    <!--组件依赖css end-->
+    <!--组件依赖js begin-->
+    <script type="text/javascript" src="../../../_src/core/zepto.js"></script>
+    <script type="text/javascript" src="../../../_src/core/touch.js"></script>      <!--新版zepto合并版中不包括touch.js-->
+    <script type="text/javascript" src="../../../_src/core/zepto.iscroll.js"></script>      <!--新版zepto合并版中不包括touch.js-->
+    <script type="text/javascript" src="../../../_src/core/zepto.extend.js"></script>
+    <script type="text/javascript" src="../../../_src/core/zepto.ui.js"></script>
+    <script type="text/javascript" src="../../../_src/widget/slider.js"></script>
+    <script type="text/javascript" src="../../../_src/widget/slider.dynamic.js"></script>
+    <script type="text/javascript" src="../../../_src/widget/slider.thumb.js"></script>
+    <!--组件依赖js end-->
+</head>
+<body>
+
+<div id="slider" style="height: 140px;"></div>
+<script>
+    var fullfilled = false,
+        len = 50,
+        slider, parts;
+
+
+    function gennerate( num ) {
+        var i = 0,
+            group = [],
+            titles = [
+                '白昼冷光',
+                '听风者',
+                '暮光之城2',
+                '搞定岳父大人',
+                '三个火枪手',
+                '人在囧途',
+                '第一次',
+                '婚前试爱',
+                '青春期'
+            ];
+
+        for (; i < num; i++) {
+            group.push({
+                href: "http://www.baidu.com",
+                pic: "pic" + (i%9 + 1) + ".jpg",
+                thumb: "pic" + (i%9 + 1) + ".jpg",
+                title: titles[i%9]
+            });
+        }
+
+        return group;
+    }
+
+    //当前group
+    parts = gennerate( 50 );
+
+    $(document).one('headready', function(){//等demo的公共头部完工了
+        slider = $.ui.slider('#slider', {
+            showDot: false,
+            index: 0,
+            content: parts,
+            slide: function(e, index, active){
+                //显示当前item的信息
+                $('h2.ui-toolbar-title').text('图集 : ' + (index + 1) + ' / ' + len);
+            }
+        });
+
+        slider.on('edge', function (e, prev, active) {
+            // if ( !fullfilled && !prev ) {
+            //     parts = parts.concat( gennerate( len - 4 ) );
+
+            //     fullfilled = true;
+
+            //     slider.update( parts );
+            // }
+
+        });
+    });
+
+    //FYI：如果item里面的结构不合意，可以转入一个itemRender为key的Fn给构造器.
+</script>
+
+<!--demo公用头部展示所用js，可以不用加载 begin-->
+<script id="bootstrap" src="../../example.js" type="text/javascript"
+        data-page="图片轮播|slider.html,无缝滑动|slider_loop.html,显示多张图片|slider_multiview.html,动态加载图片|slider_dynamic.html"></script>
+<!--demo公用头部展示所用js end-->
+</body>
+</html>

@@ -727,39 +727,80 @@
     if (typeof exports !== 'undefined') exports.iScroll = iScroll;
     else window.iScroll = iScroll;
 
-    (function($){
+    // 给$.fn上挂iScroll方法
+    (function( $, ns, undefined ){
         if(!$)return;
-        var orgiScroll = iScroll,
-            id = 0,
-            cacheInstance = {};
-        function createInstance(el,options){
-            var uqid = 'iscroll' + id++;
-            el.data('_iscroll_',uqid);
-            return cacheInstance[uqid] = new orgiScroll(el[0],options)
-        }
-        window.iScroll = function(el,options){
-            return createInstance($(typeof el == 'string' ? '#' + el : el),options)
-        };
-        $.fn.iScroll = function(method){
-            var resultArr = [];
-            this.each(function(i,el){
-                if(typeof method == 'string'){
-                    var instance = cacheInstance[$(el).data('_iscroll_')],pro;
-                    if(instance && (pro = instance[method])){
-                        var result = $.isFunction(pro) ? pro.apply(instance, Array.prototype.slice.call(arguments,1)) : pro;
-                        if(result !== instance && result !== undefined){
-                            resultArr.push(result);
-                        }
-                    }
-                }else{
-                    if(!$(el).data('_iscroll_'))
-                        createInstance($(el),method)
-                }
-            });
 
-            return resultArr.length ? resultArr : this;
-        }
-    })(window.Zepto || null)
+        var _iScroll = ns.iScroll,
+
+            slice = [].slice,
+
+            record = (function() {
+                var data = {},
+                    id = 0,
+                    ikey = '_sid';    // internal key.
+
+                return function( obj, val ) {
+                    var key = obj[ ikey ] || (obj[ ikey ] = ++id);
+
+                    val !== undefined && (data[ key ] = val);
+                    val === null && delete data[ key ];
+
+                    return data[ key ];
+                };
+            })(),
+
+            iScroll;
+
+        ns.iScroll = iScroll = function( el, options ){
+            var args = [].slice.call( arguments, 0 ),
+                ins = new _iScroll( el, options );
+
+            record( el, ins );
+            return ins;
+        };
+        iScroll.prototype = _iScroll.prototype;
+
+
+        $.fn.iScroll = function( opts ) {
+            var args = slice.call( arguments, 1 ),
+                method = typeof opts === 'string' && opts,
+                ret,
+                obj;
+
+            $.each( this, function( i, el ) {
+
+                // 从缓存中取，没有则创建一个
+                obj = record( el ) || iScroll( el, $.isPlainObject( opts ) ?
+                        opts : undefined );
+
+                // 取实例
+                if ( method === 'this' ) {
+                    ret = obj;
+                    return false;    // 断开each循环
+                } else if ( method ) {
+
+                    // 当取的方法不存在时，抛出错误信息
+                    if ( !$.isFunction( obj[ method ] ) ) {
+                        throw new Error( 'iScroll没有此方法：' + method );
+                    }
+
+                    ret = obj[ method ].apply( obj, args );
+
+                    // 断定它是getter性质的方法，所以需要断开each循环，把结果返回
+                    if ( ret !== undefined && ret !== obj ) {
+                        return false;
+                    }
+
+                    // ret为obj时为无效值，为了不影响后面的返回
+                    ret = undefined;
+                }
+            } );
+
+            return ret !== undefined ? ret : this;
+        };
+
+    })( window.Zepto || null, window );
 
 
 
