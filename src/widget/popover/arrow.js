@@ -6,8 +6,22 @@
     var Popover = gmu.Popover;
 
     Popover.template.arrow = '<span class="ui-arrow"></span>';
+
+    /**
+     * @property {Boolean} [arrow=true] 是否显示剪头
+     * @namespace options
+     * @for Popover
+     * @uses Popover.arrow
+     */
     Popover.options.arrow = true;    // 默认开启arrow
 
+    /**
+     * 扩展Popover显示剪头功能。当此文件引入后，Popover实例将自动开启显示剪头。
+     * 剪头的位置会根据不同的placement显示在不同的位置。
+     * @class arrow
+     * @namespace Popover
+     * @pluginfor Popover
+     */
     Popover.option( 'arrow', true, function() {
         var me = this,
             opts = me._options;
@@ -32,7 +46,7 @@
                 cls = root.className,
                 placement = info.placement,
                 align = info.align || '';
-                
+
             root.className = cls.replace( /(?:\s|^)ui-pos-[^\s$]+/g, '' ) +
                 ' ui-pos-' + placement + (align ? '-' + align : '');
         } );

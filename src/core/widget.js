@@ -1,6 +1,7 @@
 /**
  * @file gmu底层，定义了创建gmu组件的方法
  * @import core/gmu.js, core/event.js, extend/parseTpl.js
+ * @module GMU
  */
 
 (function( gmu, $, undefined ) {
@@ -46,13 +47,11 @@
     }
 
     // 从某个元素上读取某个属性。
-    function dataAttr( el, attr ) {
-        var data = el.getAttribute( 'data-' + attr );
-
+    function parseData( data ) {
         try {    // JSON.parse可能报错
 
             // 当data===null表示，没有此属性
-            data = data === null ? undefined : data === 'true' ? true :
+            data = data === 'true' ? true :
                     data === 'false' ? false : data === 'null' ? null :
 
                     // 如果是数字类型，则将字符串类型转成数字类型
@@ -67,14 +66,26 @@
     }
 
     // 从DOM节点上获取配置项
-    function getDomOptions( el, keys ) {
+    function getDomOptions( el ) {
         var ret = {},
+            attrs = el && el.attributes,
+            len = attrs && attrs.length,
+            key,
             data;
 
-        el && eachObject( keys, function( key ) {
-            data = dataAttr( el, key );
+        while ( len-- ) {
+            data = attrs[ len ];
+            key = data.name;
+
+            if ( key.substring(0, 5) !== 'data-' ) {
+                continue;
+            }
+
+            key = key.substring( 5 );
+            data = parseData( data.value );
+
             data === undefined || (ret[ key ] = data);
-        } );
+        }
 
         return ret;
     }
@@ -126,8 +137,8 @@
             return ret !== undefined ? ret : this;
         };
 
-        /* 
-         * NO CONFLICT 
+        /*
+         * NO CONFLICT
          * var gmuPanel = $.fn.panel.noConflict();
          * gmuPanel.call(test, 'fnname');
          */
@@ -233,7 +244,7 @@
         el && (me.$el = $( el ), el = me.$el[ 0 ]);
 
         opts = me._options = mergeObj( klass.options,
-                getDomOptions( el, klass.options ), options );
+                getDomOptions( el ), options );
 
         me.template = mergeObj( klass.template, opts.template );
 
@@ -258,7 +269,7 @@
         el && record( el, name, me ) && me.on( 'destroy', function() {
             record( el, name, null );
         } );
-        
+
         return me;
     }
 
@@ -288,7 +299,7 @@
         }
 
         $.extend( klass, {
-            
+
             /**
              * @name register
              * @grammar klass.register({})
@@ -360,7 +371,7 @@
 
                             ret = val.apply( this, arguments );
 
-                            $super === undefined ? (delete this.$super) : 
+                            $super === undefined ? (delete this.$super) :
                                     (this.$super = $super);
                             return ret;
                         };
@@ -373,8 +384,8 @@
 
         klass.superClass = superClass;
         klass.prototype = Object.create( superClass.prototype );
-        
-        
+
+
         /*// 可以在方法中通过this.$super(name)方法调用父级方法。如：this.$super('enable');
         object.$super = function( name ) {
             var fn = superClass.prototype[ name ];
@@ -388,7 +399,41 @@
     }
 
     /**
+     * @method define
+     * @grammar gmu.define( name, object[, superClass] )
+     * @class
+     * @param {String} name 组件名字标识符。
+     * @param {Object} object
      * @desc 定义一个gmu组件
+     * @example
+     * ####组件定义
+     * ```javascript
+     * gmu.define( 'Button', {
+     *     _create: function() {
+     *         var $el = this.getEl();
+     *
+     *         $el.addClass( 'ui-btn' );
+     *     },
+     *
+     *     show: function() {
+     *         console.log( 'show' );
+     *     }
+     * } );
+     * ```
+     *
+     * ####组件使用
+     * html部分
+     * ```html
+     * <a id='btn'>按钮</a>
+     * ```
+     *
+     * javascript部分
+     * ```javascript
+     * var btn = $('#btn').button();
+     *
+     * btn.show();    // => show
+     * ```
+     *
      */
     gmu.define = function( name, object, superClass ) {
         gmu[ name ] = createClass( name, object, superClass );
@@ -397,67 +442,78 @@
 
     /**
      * @desc 判断object是不是 widget实例, klass不传时，默认为Base基类
+     * @method isWidget
+     * @grammar gmu.isWidget( anything[, klass] ) => Boolean
+     * @param {*} anything 需要判断的对象
+     * @param {String|Class} klass 字符串或者类。
+     * @example
+     * var a = new gmu.Button();
+     *
+     * console.log( gmu.isWidget( a ) );    // => true
+     * console.log( gmu.isWidget( a, 'Dropmenu' ) );    // => false
      */
     gmu.isWidget = function( obj, klass ) {
-        
+
         // 处理字符串的case
         klass = typeof klass === 'string' ? gmu[ klass ] || blankFn : klass;
         klass = klass || gmu.Base;
         return obj instanceof klass;
     };
 
-    // 创建基类
+    /**
+     * @class Base
+     * @description widget基类。不能直接使用。
+     */
     gmu.Base = createClass( 'Base', {
 
         /**
-         *  @override
-         *  @name _init
-         *  @grammar instance._init() => instance
-         *  @desc 组件的初始化方法，子类需要重写该方法
+         * @method _init
+         * @grammar instance._init() => instance
+         * @desc 组件的初始化方法，子类需要重写该方法
          */
         _init: blankFn,
 
         /**
-         *  @override
-         *  @name _create
-         *  @grammar instance._create() => instance
-         *  @desc 组件创建DOM的方法，子类需要重写该方法
+         * @override
+         * @method _create
+         * @grammar instance._create() => instance
+         * @desc 组件创建DOM的方法，子类需要重写该方法
          */
         _create: blankFn,
 
 
         /**
-         *  @name getEl
-         *  @grammar instance.getEl() => $el
-         *  @desc 返回组件的$el
+         * @method getEl
+         * @grammar instance.getEl() => $el
+         * @desc 返回组件的$el
          */
         getEl: function() {
             return this.$el;
         },
 
         /**
-         * @name on
+         * @method on
          * @grammar instance.on(name, callback, context) => self
          * @desc 订阅事件
          */
         on: event.on,
 
         /**
-         * @name one
+         * @method one
          * @grammar instance.one(name, callback, context) => self
          * @desc 订阅事件（只执行一次）
          */
         one: event.one,
 
         /**
-         * @name off
+         * @method off
          * @grammar instance.off(name, callback, context) => self
          * @desc 解除订阅事件
          */
         off: event.off,
 
         /**
-         * @name trigger
+         * @method trigger
          * @grammar instance.trigger( name ) => self
          * @desc 派发事件, 此trigger会优先把options上的事件回调函数先执行
          * options上回调函数可以通过调用event.stopPropagation()来阻止事件系统继续派发,
@@ -472,7 +528,7 @@
                 $el = this.getEl();
 
             if ( opEvent && $.isFunction( opEvent ) ) {
-                
+
                 // 如果返回值是false,相当于执行stopPropagation()和preventDefault();
                 false === opEvent.apply( this, args ) &&
                         (evt.stopPropagation(), evt.preventDefault());
@@ -487,7 +543,7 @@
         },
 
         /**
-         * @name tpl2html
+         * @method tpl2html
          * @grammar instance.tpl2html() => String
          * @grammar instance.tpl2html( data ) => String
          * @grammar instance.tpl2html( subpart, data ) => String
@@ -500,12 +556,12 @@
 
             tpl =  typeof subpart === 'string' ? tpl[ subpart ] :
                     ((data = subpart), tpl);
-            
+
             return data || ~tpl.indexOf( '<%' ) ? $.parseTpl( tpl, data ) : tpl;
         },
 
         /**
-         * @name destroy
+         * @method destroy
          * @grammar instance.destroy()
          * @desc 注销组件
          */
@@ -513,7 +569,7 @@
 
             // 解绑element上的事件
             this.$el && this.$el.off( this.eventNs );
-            
+
             this.trigger( 'destroy' );
             // 解绑所有自定义事件
             this.off();
