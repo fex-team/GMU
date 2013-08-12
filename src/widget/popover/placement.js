@@ -4,16 +4,41 @@
  */
 (function( gmu, $ ) {
 
-    // 设置默认Options
+    /**
+     * @property {String} [placement="bottom"] 设置定位位置。
+     * @namespace options
+     * @uses Popover.placement
+     * @for Popover
+     */
+
+    /**
+     * @property {Object|Function} [offset=null] 设置偏移量。
+     * @namespace options
+     * @for Popover
+     * @uses Popover.placement
+     */
     $.extend( gmu.Popover.options, {
         placement: 'bottom',    // 默认让其在下方显示
         offset: null
     } );
 
+    /**
+     * 支持弹出层相对于按钮上下左右定位。
+     * @class placement
+     * @namespace Popover
+     * @pluginfor Popover
+     */
     gmu.Popover.option( 'placement', function( val ) {
         return ~[ 'top', 'bottom', 'left', 'right' ].indexOf( val );
     }, function() {
-        var config = {
+
+        var me = this,
+
+            // 第一个值：相对于目标位置的水平位置
+            // 第二个值：相对于目标位置的垂直位置
+            // 第三个值：中心点的水平位置
+            // 第四个值：中心点的垂直位置
+            config = {
                 'top': 'center top center bottom',
                 'right': 'right center left center',
                 'bottom': 'center bottom center top',
@@ -23,6 +48,7 @@
 
             info;
 
+        // 根据配置项生成方法。
         $.each( config, function( preset, args ) {
             args = args.split( /\s/g );
             args.unshift( preset );
@@ -59,6 +85,7 @@
             };
         }
 
+        // 此事件在
         this.on( 'placement', function( e, $el, $of ) {
             var me = this,
                 opts = me._options,
@@ -84,6 +111,11 @@
 
             // 提供给arrow位置定位用
             me.trigger( 'after.placement', coord, info );
+        } );
+
+        // 当屏幕旋转的时候需要需要重新计算。
+        $( window ).on( 'ortchange', function() {
+            me._visible && me.trigger( 'placement', me.$target, me.$root );
         } );
     } );
 })( gmu, gmu.$ );
