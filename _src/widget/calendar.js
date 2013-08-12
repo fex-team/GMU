@@ -6,10 +6,10 @@
  * @import core/touch.js, core/zepto.ui.js, core/zepto.highlight.js
  */
 (function($, undefined) {
-    var monthNames = ["01月", "02月", "03月", "04月", "05月", "06月",
+    var defaultMonthNames = ["01月", "02月", "03月", "04月", "05月", "06月",
         "07月", "08月", "09月", "10月", "11月", "12月"],
 
-        dayNames = ["日", "一", "二", "三", "四", "五", "六"],
+        defaultWeekNames = ["日", "一", "二", "三", "四", "五", "六"],
         offsetRE = /^(\+|\-)?(\d+)(M|Y)$/i,
 
         //获取月份的天数
@@ -64,7 +64,10 @@
             minDate: null,
             swipeable: false,
             monthChangeable: false,
-            yearChangeable: false
+            yearChangeable: false,
+            weekNames: null,
+            monthNames: null,
+            numberOfMonths: 1
         },
 
         _create: function() {
@@ -82,8 +85,12 @@
 
             this.minDate(data.minDate)
                 .maxDate(data.maxDate)
-                .date(data.date || new Date())
-                .refresh();
+                .date(data.date || new Date());
+
+            data._drawYear = data._selectedYear;
+            data._drawMonth = data._selectedMonth;
+
+            this.refresh();
 
             el.addClass('ui-calendar')
                 .on('click', eventHandler)
@@ -104,7 +111,7 @@
             switch (e.type) {
                 case 'swipeLeft':
                 case 'swipeRight':
-                    return this.switchMonthTo((e.type == 'swipeRight' ? '-' : '+') + '1M');
+                    return this.switchMonthTo((e.type == 'swipeRight' ? '-' : '+') + data.numberOfMonths + 'M');
 
                 case 'change':
                     elems = $('.ui-calendar-header .ui-calendar-year, ' +
@@ -123,14 +130,14 @@
                         cell = match.parent();
 
                         this._option('selectedDate',
-                        date = new Date(cell.attr('data-year'), cell.attr('data-month'), match.text()));
+                        date = new Date(cell.attr('data-year'), cell.attr('data-month'), cell.attr('data-day') || match.text()));
 
                         this.trigger('select', [date, $.calendar.formatDate(date), this]);
                         this.refresh();
                     } else if ((match = $(target).closest('.ui-calendar-prev, .ui-calendar-next', root)) && match.length) {
 
                         e.preventDefault();
-                        this.switchMonthTo((match.is('.ui-calendar-prev') ? '-' : '+') + '1M');
+                        this.switchMonthTo((match.is('.ui-calendar-prev') ? '-' : '+') + data.numberOfMonths + 'M');
                     }
             }
         },
@@ -159,8 +166,8 @@
                         maxDate = data.maxDate;
                         val = $.calendar.parseDate(val);
                         val = minDate && minDate > val ? minDate : maxDate && maxDate < val ? maxDate : val;
-                        data._selectedYear = data._drawYear = val.getFullYear();
-                        data._selectedMonth = data._drawMonth = val.getMonth();
+                        data._selectedYear = val.getFullYear();
+                        data._selectedMonth = val.getMonth();
                         data._selectedDay = val.getDate();
                         break;
 
@@ -290,19 +297,33 @@
                 minDate = this.minDate(),
                 maxDate = this.maxDate(),
                 selectedDate = this.selectedDate(),
+                firstDay = ~~data.firstDay,
                 html = '',
+                i = 0;
+
+            tempDate = new Date( drawYear, drawMonth, 1);
+            for(; i<data.numberOfMonths; i++) {
+                html += this._renderMonth(data, tempDate.getFullYear(), tempDate.getMonth(), today, minDate, maxDate, selectedDate, firstDay);
+                tempDate.setMonth( tempDate.getMonth() + 1);
+            }
+
+            return html;
+        },
+
+        _renderMonth: function( data, drawYear, drawMonth, today, minDate, maxDate, selectedDate, firstDay ) {
+            var html = '',
+                weekNames = data.weekNames || defaultWeekNames,
+                navRender = data.navRender || this._renderHead,
+                dayRender = data.dayRender || this._renderDay,
                 i,
                 j,
-                firstDay,
                 day,
                 leadDays,
                 daysInMonth,
                 rows,
                 printDate;
 
-            firstDay = (isNaN(firstDay = parseInt(data.firstDay, 10)) ? 0 : firstDay);
-
-            html += this._renderHead(data, drawYear, drawMonth, minDate, maxDate) +
+            html += navRender(data, drawYear, drawMonth, minDate, maxDate) +
                 '<table  class="ui-calendar-calendar"><thead><tr>';
 
             for (i = 0; i < 7; i++) {
@@ -312,7 +333,7 @@
 
                 //如果是周末则加上ui-calendar-week-end的class给th
                 ' class="ui-calendar-week-end"' : '') + '>' +
-                    '<span>' + dayNames[day] + '</span></th>';
+                    '<span>' + weekNames[day] + '</span></th>';
             }
 
             //添加一个间隙，样式需求
@@ -328,7 +349,7 @@
                 html += '<tr>';
 
                 for (j = 0; j < 7; j++) {
-                    html += this._renderDay(j, printDate, firstDay, drawMonth, selectedDate, today, minDate, maxDate);
+                    html += dayRender(printDate, selectedDate, today, drawMonth, minDate, maxDate, firstDay, j);
                     printDate.setDate(printDate.getDate() + 1);
                 }
                 html += '</tr>';
@@ -345,6 +366,7 @@
 
                 //下一个月的第一天
                 fnd = new Date(drawYear, drawMonth + 1, 1),
+                monthNames = data.monthNames || defaultMonthNames,
                 i,
                 max;
 
@@ -380,7 +402,7 @@
             return html;
         },
 
-        _renderDay: function(j, printDate, firstDay, drawMonth, selectedDate, today, minDate, maxDate) {
+        _renderDay: function(printDate, selectedDate, today, drawMonth, minDate, maxDate, firstDay, j) {
 
             var otherMonth = (printDate.getMonth() !== drawMonth),
                 unSelectable;

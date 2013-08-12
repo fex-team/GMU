@@ -22,7 +22,7 @@ test("option: el(default) & container(default)", function(){
     equals(calendar.root().parent()[0], document.body, "The container is right");
     ok(ua.isShown(calendar.root()[0]), "The container shows");
     equals(calendar.data("container"), undefined, "The option is right");
-    
+
     equals(calendar.root().find('.ui-calendar-today').text(), (new Date()).getDate(), "today is right");
     calendar.destroy();
 });
@@ -71,7 +71,7 @@ test("option: date & method: date", function(){
     equal(date.getFullYear(), 2012, 'ok');
     equal(date.getMonth(), 1, 'ok');
     equal(date.getDate(), 9, 'ok');
-    
+
     //测试样式
     equal(div.find('.ui-calendar-current-day').attr('data-year'), 2012, 'ok');
     equal(div.find('.ui-calendar-current-day').attr('data-month'), 1, 'ok');
@@ -83,13 +83,14 @@ test("option: date & method: date", function(){
     equal(date.getFullYear(), 2013, 'ok');
     equal(date.getMonth(), 2, 'ok');
     equal(date.getDate(), 10, 'ok');
-    
+
     //测试样式
+    div.calendar('switchMonthTo', 02, 2013);
     div.calendar('refresh');
     equal(div.find('.ui-calendar-current-day').attr('data-year'), 2013, 'ok');
     equal(div.find('.ui-calendar-current-day').attr('data-month'), 2, 'ok');
     equal(div.find('.ui-calendar-current-day').text(), 10, 'ok');
-    
+
     //测试方法setter是否返回对象集合
     equal(s, div, 'ok');
 
@@ -98,13 +99,13 @@ test("option: date & method: date", function(){
     //默认值
     div = $('<div></div>').appendTo(document.body);
     div.calendar();
-    
+
     date = div.calendar('date');
     today = new Date();
     equal(date.getFullYear(), today.getFullYear(), 'ok');
     equal(date.getMonth(), today.getMonth(), 'ok');
     equal(date.getDate(), today.getDate(), 'ok');
-    
+
     div.calendar('destroy');
 });
 
@@ -125,7 +126,7 @@ test("option: minDate & method: minDate", function(){
     equal(date.getFullYear(), 2013, 'ok');
     equal(date.getMonth(), 3, 'ok');
     equal(date.getDate(), 2, 'ok');
-    
+
     //测试样式和作用
     div.calendar('switchMonthTo', 2, 2012);
     equal(div.calendar('data', '_drawMonth'), 3, '尝试切换到3月，结果将是4月');
@@ -142,7 +143,7 @@ test("option: minDate & method: minDate", function(){
     equal(date.getFullYear(), 2013, 'ok');
     equal(date.getMonth(), 2, 'ok');
     equal(date.getDate(), 10, 'ok');
-    
+
     //测试样式和作用
     div.calendar('refresh');
     div.calendar('switchMonthTo', 1, 2013);
@@ -153,13 +154,13 @@ test("option: minDate & method: minDate", function(){
     });
     ok(td.hasClass('ui-calendar-unSelectable'), '小于最小日期的天不可点');
     ua.click(td.get(0));
-    
+
     div.calendar('destroy');
 
     //默认值
     div = $('<div></div>').appendTo(document.body);
     div.calendar();
-    
+
     date = div.calendar('minDate');
     today = new Date();
     equal(date, null, 'ok');
@@ -184,7 +185,7 @@ test("option: maxDate & method: maxDate", function(){
     equal(date.getFullYear(), 2013, 'ok');
     equal(date.getMonth(), 3, 'ok');
     equal(date.getDate(), 2, 'ok');
-    
+
     //测试样式和作用
     div.calendar('switchMonthTo', 4, 2014);
     equal(div.calendar('data', '_drawMonth'), 3, '尝试切换到5月，结果将是4月');
@@ -201,7 +202,7 @@ test("option: maxDate & method: maxDate", function(){
     equal(date.getFullYear(), 2013, 'ok');
     equal(date.getMonth(), 2, 'ok');
     equal(date.getDate(), 10, 'ok');
-    
+
     //测试样式和作用
     div.calendar('refresh');
     div.calendar('switchMonthTo', 3, 2013);
@@ -212,13 +213,13 @@ test("option: maxDate & method: maxDate", function(){
     });
     ok(td.hasClass('ui-calendar-unSelectable'), '小于最小日期的天不可点');
     ua.click(td.get(0));
-    
+
     div.calendar('destroy');
 
     //默认值
     div = $('<div></div>').appendTo(document.body);
     div.calendar();
-    
+
     date = div.calendar('maxDate');
     today = new Date();
     equal(date, null, 'ok');
@@ -235,7 +236,7 @@ test("option: swipeable", function(){
     });
 
     equal( div.calendar('data', 'swipeable'), false, '默认为false');
-    
+
     div.trigger('swipeLeft');
 
     equal(div.calendar('data', '_drawMonth'), 0, '向左滑动，不切换');
@@ -243,11 +244,11 @@ test("option: swipeable", function(){
     div.trigger('swipeRight');
 
     equal(div.calendar('data', '_drawMonth'), 0, '向右滑动，不切换');
-    
+
     div.calendar('destroy');
 
     div = $('<div></div>').appendTo(document.body);
-    
+
     div.calendar({
         date: '2013-01-24',
         swipeable: true
@@ -261,7 +262,7 @@ test("option: swipeable", function(){
     equal(div.calendar('data', '_drawYear'), 2012, '向右滑动，应该切换到2012年');
     equal(div.find('.ui-calendar-month').text().replace(/[^\d]/g, ''), 12, '向右滑动，应该切换到12月');
     equal(div.find('.ui-calendar-year').text().replace(/[^\d]/g, ''), 2012, '向右滑动，应该切换到2012年');
-    
+
 
     div.trigger('swipeLeft');
     div.trigger('swipeLeft');
@@ -302,11 +303,11 @@ test("option: monthChangeable & yearChangeable", function(){
         opt[name+'Changeable'] = true;
 
         div = $('<div></div>').appendTo(document.body);
-        
+
         div.calendar(opt);
 
         ok(div.find('.ui-calendar-'+name).is('select'), '可选的时候是select标签');
-        
+
         div.trigger('swipeRight');
 
         if(name == 'month'){
@@ -325,7 +326,7 @@ test("option: monthChangeable & yearChangeable", function(){
         equal(div.calendar('data', '_draw'+fcfirst(name)), newValue, '修改select，并触发select事件应该让试图修改');
         equal(div.find('.ui-calendar-'+name).val(), newValue, '修改select，并触发select事件应该让试图修改');
 
-        
+
         div.calendar('destroy');
     });
 });
@@ -412,14 +413,14 @@ test("method: switchMonthTo", function(){
     div.calendar({date: '2013-04-24'});
     equal(div.calendar('data', '_drawYear'), 2013, 'ok');
     equal(div.calendar('data', '_drawMonth'), 3, 'ok');
-    
+
     div.calendar('switchMonthTo', '+2M');
 
     equal(div.calendar('data', '_drawYear'), 2013, 'ok');
     equal(div.calendar('data', '_drawMonth'), 5, 'ok');
     equal(div.find('.ui-calendar-year').text().replace(/[^\d]/g, ''), 2013, 'ok');
     equal(div.find('.ui-calendar-month').text().replace(/[^\d]/g, ''), 6, 'ok');
-    
+
     div.calendar('switchMonthTo', '-10Y');
 
     equal(div.calendar('data', '_drawYear'), 2003, 'ok');
@@ -465,7 +466,7 @@ test("method: refresh", function(){
     equal(div.find('.ui-calendar-year').text().replace(/[^\d]/g, ''), 2012, 'ok');
     equal(div.find('.ui-calendar-month').text().replace(/[^\d]/g, ''), 4, 'ok');
 
-    div.calendar('refresh');
+    div.calendar('switchMonthTo', 04, 2013);
     equal(div.find('.ui-calendar-year').text().replace(/[^\d]/g, ''), 2013, 'ok');
     equal(div.find('.ui-calendar-month').text().replace(/[^\d]/g, ''), 5, 'ok');
 
@@ -510,7 +511,7 @@ test("method: destroy",function(){
         var el2= w.dt.eventLength();
         var ol = w.dt.objLength(instance);
         var dl2 =w.dt.domLength(w);
-        equal(dl1,dl2,"The dom is ok");   
+        equal(dl1,dl2,"The dom is ok");
         equal(el1,el2,"The event is ok");
         ok(ol==0,"The widget is destroy");
         this.finish();
@@ -533,12 +534,12 @@ test("user interface: next-prev month & click day", function(){
     div.find('.ui-calendar-prev').trigger('click');
 
     equal(div.find('.ui-calendar-title').text().replace(/[^\d]+/g, ''), '201312');
-    
+
     a = div.find('td a').filter(function(){
         return $(this).text() === '3';
     });
     ua.click(a[0]);
-    
+
     equal(div.find('.ui-calendar-current-day').text(), 3);
 
     div.calendar('destroy');
