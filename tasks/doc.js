@@ -1,8 +1,8 @@
 module.exports = function( grunt ) {
-    grunt.registerTask( "doc", function() {
+    /*grunt.registerTask( "doc", function() {
         var done = this.async(),
             path = require('path');
-        
+
         grunt.verbose.writeln( "生成doc文档..." );
         grunt.util.spawn({
             cmd: "which",
@@ -26,5 +26,23 @@ module.exports = function( grunt ) {
                 done();
             });
         });
+    });*/
+
+    var Doc = require( 'gmudoc/lib/doc.js' );
+
+
+    grunt.registerTask( 'doc', function() {
+        var opts = this.options({
+                cwd: '',
+                files: [],
+                theme: 'gmu',
+                outputDir: './doc'
+            }),
+            done = this.async();
+
+
+        var ins = new Doc( opts );
+
+        ins.run( done );
     });
 };

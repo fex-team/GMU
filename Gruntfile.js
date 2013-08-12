@@ -14,12 +14,12 @@ module.exports = function(grunt) {
 
                 // polyfill zepto detect event ajax form fx
                 src: [
-                    '<%= concat.zepto.options.dir %>polyfill.js', 
-                    '<%= concat.zepto.options.dir %>zepto.js', 
-                    '<%= concat.zepto.options.dir %>detect.js', 
-                    '<%= concat.zepto.options.dir %>event.js', 
-                    '<%= concat.zepto.options.dir %>ajax.js', 
-                    '<%= concat.zepto.options.dir %>form.js', 
+                    '<%= concat.zepto.options.dir %>polyfill.js',
+                    '<%= concat.zepto.options.dir %>zepto.js',
+                    '<%= concat.zepto.options.dir %>detect.js',
+                    '<%= concat.zepto.options.dir %>event.js',
+                    '<%= concat.zepto.options.dir %>ajax.js',
+                    '<%= concat.zepto.options.dir %>form.js',
                     '<%= concat.zepto.options.dir %>fx.js'
                 ],
 
@@ -39,6 +39,15 @@ module.exports = function(grunt) {
 
                 src: [ 'widget/*.js' ],
                 dest: 'dist/gmu.js'
+            }
+        },
+
+        doc: {
+            options: {
+                cwd: './src/',
+                files: [ 'core/*.js', 'widget/popover/*.js', 'zeptodoc/core.js', 'zeptodoc/ajax.js', 'zeptodoc/*.js'],
+                theme: 'gmu',
+                outputDir: './doc'
             }
         },
 
@@ -85,7 +94,7 @@ module.exports = function(grunt) {
             },
 
             all: ['src/**/*.js'],
-            
+
             slider: ['src/widget/slider/*.js'],
 
             temp: [
@@ -105,6 +114,11 @@ module.exports = function(grunt) {
             dist: {
                 cwd: 'dist/',
                 src: ['gmu.js', 'zepto.js']
+            },
+
+            iscroll: {
+                cwd: 'src/extend/',
+                src: ['iscroll.js','iscroll_raw.js']
             },
 
             temp: {
@@ -131,7 +145,7 @@ module.exports = function(grunt) {
                 url: 'http://localhost/GMU/test/fet/bin/run.php?case=',
                 cov: true
             },
-            
+
             all: {
                 cwd: 'test/',
                 src: [ '**/*.js', '!fet/**/*.js', '!mindmap/**/*.js' ]
@@ -173,7 +187,7 @@ module.exports = function(grunt) {
 
             }
         }
-        
+
     });
 
     // 加载build目录下的所有task
