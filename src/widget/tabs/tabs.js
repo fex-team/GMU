@@ -1,11 +1,10 @@
 /**
  * @file 选项卡组件
- * @desc 选项卡组件
- * @name Tabs
- * @desc <qrcode align="right" title="Live Demo">../gmu/examples/widget/tabs/tabs.html</qrcode>
  * @import extend/touch.js, core/widget.js, extend/highlight.js
  * @importCSS transitions.css, loading.css
+ * @module GMU
  */
+
 (function( gmu, $, undefined ) {
     var _uid = 1,
         uid = function(){
@@ -14,28 +13,53 @@
         idRE = /^#(.+)$/;
 
     /**
-     * @name $.ui.tabs
-     * @grammar $.ui.tabs(options) ⇒ instance
-     * @grammar tabs(options) ⇒ self
-     * @desc **Options**
-     * - ''active'' {Number}: (可选，默认：0) 初始时哪个为选中状态，如果时setup模式，如果第2个li上加了ui-state-active样式时，active值为1
-     * - ''items'' {Array}: 在render模式下需要必须设置 格式为\[{title:\'\', content:\'\', href:\'\'}\], href可以不设，可以用来设置ajax内容。
-     * - ''transition'' {\'\'|\'slide\'}: 设置切换动画
-     * - ''events'' 所有[Trigger Events](#tabs_triggerevents)中提及的事件都可以在此设置Hander, 如ready: function(e){}。
+     * 选项卡组件
      *
-     * **Demo**
-     * <codepreview href="../examples/widget/tabs/tabs.html">
-     * ../gmu/examples/widget/tabs/tabs.html
-     * </codepreview>
+     * [![Live Demo](qrcode:http://gmu.baidu.com/demo/widget/tabs/tabs.html)](http://gmu.baidu.com/demo/widget/tabs/tabs.html "Live Demo")
+     * @class Tabs
+     * @constructor Html部分
+     * ```html
+     * <div id="tabs">
+     *      <ul>
+     *         <li><a href="#conten1">Tab1</a></li>
+     *         <li><a href="#conten2">Tab2</a></li>
+     *         <li><a href="#conten3">Tab3</a></li>
+     *     </ul>
+     *     <div id="conten1">content1</div>
+     *     <div id="conten2"><input type="checkbox" id="input1" /><label for="input1">选中我后tabs不可切换</label></div>
+     *     <div id="conten3">content3</div>
+     * </div>
+     * ```
+     *
+     * javascript部分
+     * ```javascript
+     * $('#tabs').tabs();
+     * ```
+     * @param {dom | zepto | selector} [el] 用来初始化Tab的元素
+     * @param {Object} [options] 组件配置项。具体参数请查看[Options](#GMU:Tabs:options)
+     * @grammar $( el ).tabs( options ) => zepto
+     * @grammar new gmu.Tabs( el, options ) => instance
      */
     gmu.define( 'Tabs', {
         options: {
+
+            /**
+             * @property {Number} [active=0] 初始时哪个为选中状态，如果时setup模式，如果第2个li上加了ui-state-active样式时，active值为1
+             * @namespace options
+             */
             active: 0,
-            items:null,//[{title:'', content:'', href: ''}] href可以用来设置连接，表示为ajax内容, 需要引入tabs.ajax插件
-            transition: 'slide',//目前只支持slide动画，或无动画
-            activate: null,// events
-            beforeActivate: null, //event
-            animateComplete: null//如果用了transtion，这个事件将在动画执行完成后触发.
+
+            /**
+             * @property {Array} [items=null] 在render模式下需要必须设置 格式为\[{title:\'\', content:\'\', href:\'\'}\], href可以不设，可以用来设置ajax内容
+             * @namespace options
+             */
+            items:null,
+
+            /**
+             * @property {String} [transition='slide'] 设置切换动画，目前只支持slide动画，或无动画
+             * @namespace options
+             */
+            transition: 'slide'
         },
 
         template: {
@@ -157,9 +181,11 @@
         },
 
         /**
-         * @name switchTo
-         * @grammar switchTo(index)  ⇒ instance
-         * @desc 切换到tab。
+         * 切换到某个Tab
+         * @method switchTo
+         * @param {Number} index Tab编号
+         * @chainable
+         * @return {self} 返回本身。
          */
         switchTo: function(index) {
             var me = this, _opts = me._options, items = _opts.items, eventData, to, from, reverse, endEvent;
@@ -204,19 +230,18 @@
         },
 
         /**
-         * @name refresh
-         * @grammar refresh() => instance
-         * @desc 当外部修改tabs内容好，需要调用refresh让tabs自动更新高度。
-         * @return instance
+         * 当外部修改tabs内容好，需要调用refresh让tabs自动更新高度
+         * @method refresh
+         * @chainable
+         * @return {self} 返回本身。
          */
         refresh: function(){
             return this._fitToContent(this._getPanel());
         },
 
         /**
-         * @desc 销毁组件。
-         * @name destroy
-         * @grammar destroy()  ⇒ instance
+         * 销毁组件
+         * @method destroy
          */
         destroy:function () {
             var _opts = this._options, eventHandler = this._eventHandler;
@@ -230,16 +255,39 @@
         }
 
         /**
-         * @name Trigger Events
-         * @theme event
-         * @desc 组件内部触发的事件
-         *
-         * ^ 名称 ^ 处理函数参数 ^ 描述 ^
-         * | ready | event | 组件初始化的时候触发，不管是render模式还是setup模式都会触发 |
-         * | activate | event, to, from | 内容切换后触发, to和from为Object, 成员有: div(内容div), index(位置), title(标题), content(内容),href(链接) |
-         * | beforeActivate | event, to, from | 内容切换之前触发，可以通过e.preventDefault()来阻止 |
-         * | animateComplete | event, to, from | 动画完成后执行，如果没有设置动画，此时间不会触发 |
-         * | destroy | event | 组件在销毁的时候触发 |
+         * @event ready
+         * @param {Event} e gmu.Event对象
+         * @description 当组件初始化完后触发。
+         */
+        
+        /**
+         * @event beforeActivate
+         * @param {Event} e gmu.Event对象
+         * @param {Object} to 包含如下属性：div(内容div), index(位置), title(标题), content(内容), href(链接)
+         * @param {Object} from 包含如下属性：div(内容div), index(位置), title(标题), content(内容), href(链接)
+         * @description 内容切换之前触发，可以通过e.preventDefault()来阻止
+         */
+        
+        /**
+         * @event activate
+         * @param {Event} e gmu.Event对象
+         * @param {Object} to 包含如下属性：div(内容div), index(位置), title(标题), content(内容), href(链接)
+         * @param {Object} from 包含如下属性：div(内容div), index(位置), title(标题), content(内容), href(链接)
+         * @description 内容切换之后触发
+         */
+        
+        /**
+         * @event animateComplete
+         * @param {Event} e gmu.Event对象
+         * @param {Object} to 包含如下属性：div(内容div), index(位置), title(标题), content(内容), href(链接)
+         * @param {Object} from 包含如下属性：div(内容div), index(位置), title(标题), content(内容), href(链接)
+         * @description 动画完成后执行，如果没有设置动画，此时间不会触发
+         */
+        
+        /**
+         * @event destroy
+         * @param {Event} e gmu.Event对象
+         * @description 组件在销毁的时候触发
          */
     });
 })( gmu, gmu.$ );
