@@ -11,6 +11,7 @@
     <!--组件依赖css begin-->
     <link rel="stylesheet" type="text/css" href="../../../assets/widget/button/button.css" />
     <link rel="stylesheet" type="text/css" href="../../../assets/widget/button/button.default.css" />
+    <link rel="stylesheet" type="text/css" href="../../../assets/icons.default.css" />
     <!--组件依赖css end-->
     <!--组件依赖js begin-->
     <script type="text/javascript" src="../../../dist/zepto.js"></script>
@@ -66,6 +67,7 @@
     gmu.Button('<a>', {
         label: '点击后不可用',
         click: function() {
+            debugger;
             this.disable();
         },
         container: '#btsn_create'

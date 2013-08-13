@@ -129,9 +129,9 @@
 
                 //绑定事件
                 opts._buttonElement.on('click', $.proxy(me._eventHandler, me));
-                $.each(['click', 'change'], function(){ //绑定在options中的事件， 这里只需要绑定系统事件
-                    opts[this] && me.on(this, opts[this]);
-                    delete opts[this];
+                $.each(['click', 'change'], function(index, item){ //绑定在options中的事件， 这里只需要绑定系统事件
+                    opts[item] && me.on(item, opts[item]);
+                    delete opts[item];
                 });
             } );
         },
@@ -183,6 +183,7 @@
             if(opts.disabled) {
                 event.preventDefault();
                 event.stopPropagation();
+                event.stopImmediatePropagation();
             } 
 
         },
