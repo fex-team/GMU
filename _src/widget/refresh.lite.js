@@ -2,7 +2,7 @@
  * @file 加载更多组件 － lite版本
  * @name Refresh.lite
  * @short Refresh.lite
- * @desc <qrcode align="right" title="Live Demo">../gmu/_examples/widget/refresh/refresh_lite.html</qrcode>
+ * @desc <qrcode align="right" title="Live Demo">./_examples/widget/refresh/refresh_lite.html</qrcode>
  * 上拉加载更多，利用原生滚动，不使用iscroll
  * @import widget/refresh.js
  */
@@ -15,8 +15,8 @@
      * - ''threshold'' {Number}: (可选) 加载的阀值，默认手指在屏幕的一半，并且拉动距离超过10px即可触发加载操作，配置该值后，可以将手指在屏幕位置进行修重情重改，若需要实现连续加载效果，可将该值配置很大，如1000等
      * - ''seamless''  {Boolean}: (可选) 是否连续加载，解决设置threshold在部分手机上惯性滚动，或滚动较快时不触发touchmove的问题
      * **Demo**
-     * <codepreview href="../gmu/_examples/widget/refresh/refresh_lite.html">
-     * ../gmu/_examples/widget/refresh/refresh_lite.html
+     * <codepreview href="./_examples/widget/refresh/refresh_lite.html">
+     * ./_examples/widget/refresh/refresh_lite.html
      * </codepreview>
      */
     $.ui.refresh.register(function () {

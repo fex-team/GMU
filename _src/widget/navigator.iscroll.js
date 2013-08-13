@@ -1,7 +1,7 @@
 /**
  * @file 导航栏组件 － iScroll插件
  * @name Navigator.iscroll
- * @desc <qrcode align="right" title="Live Demo">../gmu/_examples/webapp/naivgator/navigator.html</qrcode>
+ * @desc <qrcode align="right" title="Live Demo">./_examples/webapp/naivgator/navigator.html</qrcode>
  * navigator iscroll插件，可滚动导航栏
  * @import core/zepto.iscroll.js, widget/navigator.js
  */
@@ -49,9 +49,9 @@
      * </div>
      * </code>
      * **Demo**
-     * <codepreview href="../gmu/_examples/widget/navigator/navigator.html">
-     * ../gmu/_examples/widget/navigator/navigator.html
-     * ../gmu/_examples/widget/navigator/navigator_fix.html
+     * <codepreview href="./_examples/widget/navigator/navigator.html">
+     * ./_examples/widget/navigator/navigator.html
+     * ./_examples/widget/navigator/navigator_fix.html
      * </codepreview>
      */
 

@@ -2,7 +2,7 @@
  * @file 选项卡组件
  * @desc 选项卡组件
  * @name Tabs
- * @desc <qrcode align="right" title="Live Demo">../gmu/_examples/widget/tabs/tabs.html</qrcode>
+ * @desc <qrcode align="right" title="Live Demo">./_examples/widget/tabs/tabs.html</qrcode>
  * @import core/touch.js, core/zepto.ui.js,core/zepto.highlight.js
  * @importCSS transitions.css, loading.css
  */
@@ -34,8 +34,8 @@
      * - ''events'' 所有[Trigger Events](#tabs_triggerevents)中提及的事件都可以在此设置Hander, 如init: function(e){}。
      *
      * **Demo**
-     * <codepreview href="../gmu/_examples/widget/tabs/tabs.html">
-     * ../gmu/_examples/widget/tabs/tabs.html
+     * <codepreview href="./_examples/widget/tabs/tabs.html">
+     * ./_examples/widget/tabs/tabs.html
      * </codepreview>
      */
     $.ui.define('tabs', {

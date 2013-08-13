@@ -2,7 +2,7 @@
 /**
  * @file 返回顶部组件
  * @name Gotop
- * @desc <qrcode align="right" title="Live Demo">../gmu/_examples/widget/gotop/gotop.html</qrcode>
+ * @desc <qrcode align="right" title="Live Demo">./_examples/widget/gotop/gotop.html</qrcode>
  * 提供一个快速回到页面顶部的按钮
  * @import core/zepto.extend.js, core/zepto.ui.js,core/zepto.fix.js
  */
@@ -23,9 +23,9 @@
      * - ''iScrollInstance'' {Object}: (可选) 使用iscroll时需要传入iScroll实例，用来判定显示与隐藏
      * - ''disablePlugin'' {Boolean}: (可选,默认：false) 是否禁用插件，当加载了gotop.iscroll.js插件但又不想用该插件时，可传入这个参数来禁用插件
      * **Demo**
-     * <codepreview href="../gmu/_examples/widget/gotop/gotop.html">
-     * ../gmu/_examples/widget/gotop/gotop.html
-     * ../gmu/_examples/widget/gotop/gotop_demo.css
+     * <codepreview href="./_examples/widget/gotop/gotop.html">
+     * ./_examples/widget/gotop/gotop.html
+     * ./_examples/widget/gotop/gotop_demo.css
      * </codepreview>
      */
     $.ui.define('gotop', {

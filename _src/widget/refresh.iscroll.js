@@ -1,7 +1,7 @@
 /**
  * @file 加载更多组件 － iScroll版
  * @name Refresh.iscroll
- * @desc <qrcode align="right" title="Live Demo">../gmu/_examples/widget/refresh/refresh_iscroll.html</qrcode>
+ * @desc <qrcode align="right" title="Live Demo">./_examples/widget/refresh/refresh_iscroll.html</qrcode>
  * 拉动加载更多iscroll插件
  * @short Refresh.iscroll
  * @import core/zepto.iscroll.js, widget/refresh.js
@@ -15,8 +15,8 @@
      * - ''threshold''   {Number}: (可选) 加载的阀值，默认向上或向下拉动距离超过5px，即可触发拉动操作，该值只能为正值，若该值是10，则需要拉动距离大于15px才可触发加载操作
      * - ''iScrollOpts'' {Object}: (可选) iScroll的配置项
      * **Demo**
-     * <codepreview href="../gmu/_examples/widget/refresh/refresh_iscroll.html">
-     * ../gmu/_examples/widget/refresh/refresh_iscroll.html
+     * <codepreview href="./_examples/widget/refresh/refresh_iscroll.html">
+     * ./_examples/widget/refresh/refresh_iscroll.html
      * </codepreview>
      */
     $.ui.refresh.register(function () {

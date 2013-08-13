@@ -1,7 +1,7 @@
 /**
  * @file 搜索建议组件
  * @name Suggestion
- * @desc <qrcode align="right" title="Live Demo">../gmu/_examples/widget/suggestion/suggestion_setup.html</qrcode>
+ * @desc <qrcode align="right" title="Live Demo">./_examples/widget/suggestion/suggestion_setup.html</qrcode>
  * 搜索建议组件
  * @import core/touch.js, core/zepto.ui.js, core/zepto.iscroll.js, core/zepto.highlight.js
  */
@@ -44,8 +44,8 @@
      * <input type="text" id="input">
      * </code>
      * **Demo**
-     * <codepreview href="../gmu/_examples/widget/suggestion/suggestion_setup.html">
-     * ../gmu/_examples/widget/suggestion/suggestion_setup.html
+     * <codepreview href="./_examples/widget/suggestion/suggestion_setup.html">
+     * ./_examples/widget/suggestion/suggestion_setup.html
      * </codepreview>
      */
     $.ui.define('suggestion', {
@@ -112,7 +112,7 @@
             me._create();
         },
 
-        /** 
+        /**
          * 初始化属性
          * @private
          */
@@ -122,7 +122,7 @@
                 $input = me.root(),
                 customOffset = me.data('offset'),
                 border = 2 * parseInt($elem.css('border-left-width') || 0);
-                
+
             me.data('pos', $input.height() + (customOffset.y || 0));
             me.data('realWidth', (me.data('width') || $input.width()) - border);
             $elem.css({
@@ -132,7 +132,7 @@
             return me;
         },
 
-        /** 
+        /**
          * 设置size
          * @private
          */
@@ -178,8 +178,8 @@
             }
             return me;
         },
-    
-        /** 
+
+        /**
          * input输入处理
          * @private
          */
@@ -191,7 +191,7 @@
             return data && isCache ? me._render(query, data) : me._sendRequest(query);
         },
 
-        /** 
+        /**
          * 事件管理器
          * @private
          */
@@ -225,7 +225,7 @@
             }
         },
 
-        /** 
+        /**
          * 显示下拉浮层
          * @private
          */
@@ -239,8 +239,8 @@
             }
             return query ? me._change(query) : data ? me._render(null, {s: data.split(encodeURIComponent(','))}) : me.hide();
         },
-        
-        /** 
+
+        /**
          * 绑定下拉浮层中的事件
          * @private
          */
@@ -260,7 +260,7 @@
             return me;
         },
 
-        /** 
+        /**
          * 绑定关闭按钮事件
          * @private
          */
@@ -278,9 +278,9 @@
                 me.hide().leaveInput().trigger('close');
             });
             return me;
-        },  
+        },
 
-        /** 
+        /**
          * 发送异步请求
          * @private
          */
@@ -322,7 +322,7 @@
             return $.trim(this.root().val());
         },
 
-        /** 
+        /**
          * 渲染下拉浮层
          * @private
          */
@@ -359,11 +359,11 @@
                     $content.on('touchstart', function(e){e.preventDefault()});
                 }
             } else me.hide();
-            
-            return me;
-        },      
 
-        /** 
+            return me;
+        },
+
+        /**
          * 渲染list HTML片段
          * @private
          */
@@ -392,8 +392,8 @@
         _htmlEncode: function(str){
             return $('<div></div>').text(str).html();
         },
-        
-        /** 
+
+        /**
          * 提交搜索提示
          * @private
          */
@@ -406,9 +406,9 @@
                 window.location = 'http://www.baidu.com/s?wd=' + encodeURIComponent(keyValue);
             return me;
         },
-            
 
-        /** 
+
+        /**
          * 选择搜索提示
          * @private
          */
@@ -419,9 +419,9 @@
             me.root().val(targetContent);
             me.data('isStorage') && me._localStorage(targetContent);
             return me.trigger("select", target).hide();
-        },      
+        },
 
-        /** 
+        /**
          * 缓存搜索提示
          * @private
          */
@@ -430,9 +430,9 @@
             if (me.data('isCache')) {
                 return value !== undefined ? me.data('cacheData')[key] = value : me.data('cacheData')[key];
             }
-        },  
+        },
 
-        /** 
+        /**
          * 操作历史记录
          * @private
          */
@@ -460,7 +460,7 @@
             return ret;
         },
 
-        /** 
+        /**
          * 显示suggestion
          * @private
          */
@@ -474,7 +474,7 @@
             me.data('wrapper').css("display", "block");
             me.data('posAdapt') && me._posAdapt(1);
             return me.trigger('show');
-        },  
+        },
 
         /**
          * @desc 隐藏suggestion

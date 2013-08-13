@@ -1,7 +1,7 @@
 /**
  * @file Dialog － 父容器插件
  * @name Dialog.position
- * @desc <qrcode align="right" title="Live Demo">../gmu/_examples/widget/dialog/dialog_position.html</qrcode>
+ * @desc <qrcode align="right" title="Live Demo">./_examples/widget/dialog/dialog_position.html</qrcode>
  * @short Dialog.position
  * @import widget/dialog.js, core/zepto.position.js
  */
@@ -19,8 +19,8 @@
      *
      *
      * **Demo**
-     * <codepreview href="../gmu/_examples/widget/dialog/dialog_position.html">
-     * ../gmu/_examples/widget/dialog/dialog_position.html
+     * <codepreview href="./_examples/widget/dialog/dialog_position.html">
+     * ./_examples/widget/dialog/dialog_position.html
      * </codepreview>
      */
     $.ui.dialog.register(function () {
@@ -47,7 +47,7 @@
                 } else $.extend(data.position, x);
                 return this.refresh();
             },
-            
+
             _calculate:function () {
                 var me = this, data = me._data, position = data.position,
                     ret = this._calculateOrg();

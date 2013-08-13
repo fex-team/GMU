@@ -2,7 +2,7 @@
 /**
  * @file 进度条组件
  * @name Progressbar
- * @desc <qrcode align="right" title="Live Demo">../gmu/_examples/widget/progresssbar/progresssbar.html</qrcode>
+ * @desc <qrcode align="right" title="Live Demo">./_examples/widget/progresssbar/progresssbar.html</qrcode>
  * 提供一个可调整百分比的进度条
  * @import core/touch.js, core/zepto.extend.js, core/zepto.ui.js
  */
@@ -20,9 +20,9 @@
      * - ''horizontal'' {Boolean}: (可选，默认：true) 组件是否为横向(若设为false,则为竖向)
      * - ''transitionDuration'' {Number}: (可选，默认：300) 按钮滑动时动画效果持续的时间,单位为ms,设为0则无动画
      * **Demo**
-     * <codepreview href="../gmu/_examples/widget/progressbar/progressbar.html">
-     * ../gmu/_examples/widget/progressbar/progressbar.html
-     * ../gmu/_examples/widget/progressbar/progressbar_demo.css
+     * <codepreview href="./_examples/widget/progressbar/progressbar.html">
+     * ./_examples/widget/progressbar/progressbar.html
+     * ./_examples/widget/progressbar/progressbar_demo.css
      * </codepreview>
      */
     $.ui.define('progressbar', {

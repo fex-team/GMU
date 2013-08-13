@@ -1,7 +1,7 @@
 /**
  * @file
  * @name BarChart
- * @desc <qrcode align="right" title="Live Demo">../gmu/_examples/chart/barchart/barchart_demo.html</qrcode>
+ * @desc <qrcode align="right" title="Live Demo">./_examples/chart/barchart/barchart_demo.html</qrcode>
  * 柱状图
  * @import core/zepto.js, core/zepto.extend.js, core/zepto.ui.js, chart/base/Chart.js
  */
@@ -11,9 +11,9 @@
      * @grammar $.ui.BarChart(el, options) ⇒ instance
      * @grammar $.ui.BarChart(options) ⇒ instance
      * @grammar BarChart(options) ⇒ self
-     * @desc **el** 
+     * @desc **el**
      * css选择器, 或者zepto对象
-     * 
+     *
      * 根元素选择器或者对象
      * **Options**
      * - ''width''              {Number|Percent}: (可选)图表区域的宽度，可以使像素值或者百分比。若不设置，则为父容器宽度。
@@ -27,9 +27,9 @@
      * - ''gridYStep''          {Number}: (可选)纵轴间隔数。TODO...
      *
      * **Demo**
-     * <codepreview href="../gmu/_examples/chart/barchart/barchart_demo.html">
-     * ../gmu/_examples/chart/barchart/barchart_demo.html
-     * ../gmu/_examples/chart/barchart/barChart.css
+     * <codepreview href="./_examples/chart/barchart/barchart_demo.html">
+     * ./_examples/chart/barchart/barchart_demo.html
+     * ./_examples/chart/barchart/barChart.css
      * </codepreview>
      */
      $.ui.define("BarChart", {
@@ -38,15 +38,15 @@
             tipsHeight:0,          // 标注高
             maxVal:0,              // y轴的最大值
             minVal:0,              // y轴的最小值
-            
+
             BAR_CHART_OFFSET:4,   // 图表起点在Canvas中的偏移，这个值在线图中是为了边界的点不要被盖住;
             COLLISION_OFFSET:40,   //
             barCollections:[],
             icons:[],
             tips:[],
-            
+
             inherit:$.ui.Chart,
-            
+
             _data:{
                 chartOffsetX:60,            // 图表内容在容器中x方向上的偏移量
                 chartOffsetY:5,             // 图表内容在容器中y方向上的偏移量
@@ -66,24 +66,24 @@
                 touchTimeout:500,
                 barWidth:12
             },
-            
+
             _create:function(){
                 this.tipsContainer = $("<div class='tips-container'></div>");
                 this.root().append(this.tipsContainer);
                 this.canvas = $("<canvas class='chart-canvas'></canvas>");
                 this.root().append(this.canvas);
             },
-            
+
              _setup:function(){
                 this.tipsContainer = $("#barchart .tips-container");
                 this.canvas = $("#barchart canvas");
             },
-            
+
             _init:function(){
                 me = this;
                 $.ui.Chart.prototype._init.call(this);
             },
-            
+
             _do_init:function(){
                 var rect = this.root()[0].getBoundingClientRect();
                 var reg = new RegExp("([0-9]+)%$", "gi");
@@ -108,12 +108,12 @@
                 this.canvas.on("touchstart", this._touchStartEvent); // 因为tap没法拿到点击坐标，所以用touchstart来代替tap
                 //this.canvas.on("touchend", this._touchEndEvent);
             },
-            
+
             _drawChart:function(){
                 this._drawLabels();
                 this._drawGrids();
             },
-            
+
             _drawLabels:function(){
                 // 绘制Category标注
                 this.hlabs = this.hlabs || [];
@@ -137,7 +137,7 @@
                     $span.css({"top":(this.data("chartOffsetY") + this.canvas[0].offsetHeight + this.tipsHeight) + "px", "left":(this.data("chartOffsetX") + this.chartWidth - 0.5 * categoryUnit - this.BAR_CHART_OFFSET - box.width * 0.5)+"px"});
                     this.hlabs.push($span);
                 }
-                
+
                 this.vlabs = this.vlabs || [];
                 while(this.vlabs.length){
                     this.vlabs.shift().remove();
@@ -168,7 +168,7 @@
                     this.vlabs.push($span);
                 }
             },
-            
+
             _drawGrids:function(){
                 var canvas = this.canvas[0];
                 var context2d = canvas.getContext("2d");
@@ -184,7 +184,7 @@
                 context2d.beginPath();
                 drawLines(context2d, [{x:x1, y:y1}, {x:x1, y:y2}, {x:x2, y:y2}]);
                 context2d.stroke();
-                
+
                 // draw grids
                 context2d.strokeStyle = this.data("gridColor");
                 context2d.lineWidth = this.data("gridLineWidth");
@@ -199,7 +199,7 @@
                     dest = this.chartWidth - this.BAR_CHART_OFFSET;
                     drawLines(context2d, [{x:dest, y:this.BAR_CHART_OFFSET}, {x:dest, y:this.chartHeight - this.BAR_CHART_OFFSET}]);
                 }
-                
+
                 var valueUnit = (this.chartHeight - 2 * this.BAR_CHART_OFFSET) / (this.values.length - 1);  // y轴画线需要间隔的距离
                 for(ystep = this.data("gridYStep"), i = ystep, iLen = this.values.length - 1; i < iLen; i+=ystep){
                     dest = this.chartHeight - this.BAR_CHART_OFFSET - i * valueUnit;
@@ -212,7 +212,7 @@
 
                 context2d.stroke();
             },
-            
+
             _drawData:function(){
                 var i = 0, iLen = 0, j = 0, jLen = 0, temp = 0,
                     xval = 0, yval = 0,
@@ -223,7 +223,7 @@
                     height = this.chartHeight - 2 * this.BAR_CHART_OFFSET,
                     context2d = this.canvas[0].getContext("2d"),
                     bar = null;
-                
+
                 for(i = 0, iLen = this.categorys.length; i < iLen; i++){
                     startx = this.BAR_CHART_OFFSET + (i + 0.5) * categoryUnit;
                     for(j = 0, jLen = this.barCollections.length; j < jLen; j++){
@@ -232,13 +232,13 @@
                             bar = this.barCollections[j][k];
                             context2d.fillStyle = bar.color;
                             temp = height * bar.data[i] / (this.maxVal - this.minVal);
-                            
+
                             xval = startx + minx + j * barWidth;
                             yval = this.BAR_CHART_OFFSET + height - temp - starty;
-                            
+
                             context2d.fillRect(xval, yval, barWidth, temp);
                             starty = starty + temp;
-                            
+
                             bar.area[i] = bar.area[i] || {};
                             bar.area[i].left = xval;
                             bar.area[i].top = yval;
@@ -248,7 +248,7 @@
                     }
                 }
             },
-            
+
             /**
              * 真正完成添加线对象的方法。
              * @private
@@ -258,7 +258,7 @@
                     var $tmp = $("<div style='width:" + this.data("chartOffsetX") +"px;height:25px;margin-right:5px;float:left;'></div>");
                     this.tipsContainer.append($tmp);
                 }
-            
+
                 var i = 0, iLen = 0, arr = [];
                 if(typeof obj == "object" && obj.length && obj.constructor == Array){   // 是数组
                     for(i = 0, iLen = obj.length; i < iLen; i++){
@@ -272,7 +272,7 @@
                     this.barCollections.push([new Bar(obj)]);
                 }
             },
-            
+
             _addTip:function(obj){
                 var $group  = $("<span class='tip-group'></span>");
                 var $icon = $("<span class='tip-color' style='background-color:"+obj.color+"'>"+obj.name+":"+"</span>");
@@ -284,7 +284,7 @@
                 this.tips.push($txt);
                 this.tipsContainer.append($group);
             },
-            
+
             _touchStartEvent:function(event){
                 var rect = me.root()[0].getBoundingClientRect();
                 me.containerLeft = rect.left + document.body.scrollLeft;
@@ -299,7 +299,7 @@
                     for(j = 0, jLen = me.barCollections.length; j < jLen; j++){
                         for(k = 0, kLen = me.barCollections[j].length; k < kLen; k++){
                             bar = me.barCollections[j][k];
-                            if(xpos <= bar.area[i].right 
+                            if(xpos <= bar.area[i].right
                                 && xpos >= bar.area[i].left
                                 && ypos >= bar.area[i].top
                                 && ypos <= bar.area[i].bottom){
@@ -320,9 +320,9 @@
                     }
                 }
             },
-        
+
             /**
-             * @private 
+             * @private
              */
             draw:function(){
                 if(this.invalidHash[this.INVALID_TYPE.INIT]){
@@ -338,7 +338,7 @@
 
                 $.ui.Chart.prototype.draw.apply(this);
             },
-            
+
             /**
              * @name    setCategoryGrid
              * @desc    设置横轴标注
@@ -357,7 +357,7 @@
                 this.invalide(this.INVALID_TYPE.ALL);
                 return this;
             },
-            
+
             /**
              * @name    setValueGrid
              * @desc    设置纵轴标注
@@ -376,7 +376,7 @@
                 this.invalide(this.INVALID_TYPE.ALL);
                 return this;
             },
-            
+
             /**
              * @name    setWidth
              * @desc    设置图表宽度
@@ -395,7 +395,7 @@
                 this._data.width = value;
 
                 this._do_init();
-                
+
                 var i = 0, iLen = 0, j = 0, jLen = 0, newarr = [], temp;
                 for(i = 0, iLen = this.barCollections.length; i < iLen; i++){
                     if(this.barCollections[i].length > 1){
@@ -430,7 +430,7 @@
                 this._data.height = value;
 
                 this._do_init();
-               
+
                 var i = 0, iLen = 0, j = 0, jLen = 0, newarr = [], temp;
                 for(i = 0, iLen = this.barCollections.length; i < iLen; i++){
                     if(this.barCollections[i].length > 1){
@@ -446,7 +446,7 @@
                 this.setData(newarr);
                 return this;
             },
-            
+
             /**
              * @name setData
              * @desc 设置数据对象。
@@ -465,7 +465,7 @@
                 this.tips = [];
                 this.icons = [];
                 this.tipsContainer[0].innerHTML = "";
-                
+
                 for(var i = 0, iLen = arr.length; i < iLen; i++){
                     this._addData(arr[i]);
                 }
@@ -473,7 +473,7 @@
                 $.ui.Chart.prototype.setData.apply(this, [arr]);
                 return this;
             },
-            
+
             /**
              * @name addData
              * @desc 设置数据对象。
@@ -504,7 +504,7 @@
                 this.setData(newarr);
                 return this;
             },
-            
+
             /**
              * @name    clear
              * @desc    清除绘制的数据
@@ -530,7 +530,7 @@
                 return this;
             }
      });
-     
+
      function drawLines(context, pts){
         var x1 = pts[0].x, y1 = pts[0].y, x2, y2;
         for(var i = 0, iLen = pts.length - 1; i < iLen; i++){
@@ -554,14 +554,14 @@
             y1 = y2;
         }
     }
-    
+
     function Bar(obj){
         this.name = obj.name;
         this.data = obj.data;
         this.color = obj.color;
         this.area = [];
     }
-    
+
     Bar.prototype.draw = function(context2d, startx, starty, chartWidth, chartHeight, maxVal, minVal, LINE_CHART_OFFSET){
         context2d.fillStyle = this.color;
         context2d.fillRect(0, 0, 30, 60);

@@ -1,7 +1,7 @@
 /**
  * @file
  * @name LineChart
- * @desc <qrcode align="right" title="Live Demo">../gmu/_examples/chart/linechart/linechart.html</qrcode>
+ * @desc <qrcode align="right" title="Live Demo">./_examples/chart/linechart/linechart.html</qrcode>
  * 折线图
  * @import core/zepto.js, core/zepto.extend.js, core/zepto.ui.js, chart/base/Chart.js
  */
@@ -11,9 +11,9 @@
      * @grammar $.ui.LineChart(el, options) ⇒ instance
      * @grammar $.ui.LineChart(options) ⇒ instance
      * @grammar LineChart(options) ⇒ self
-     * @desc **el** 
+     * @desc **el**
      * css选择器, 或者zepto对象
-     * 
+     *
      * 根元素选择器或者对象
      * **Options**
      * - ''width''              {Number|Percent}: (可选)图表区域的宽度，可以使像素值或者百分比。若不设置，则为父容器宽度。
@@ -30,11 +30,11 @@
      * - ''showTouchLine''      {Boolean} 手指按下时是否展示选择线。
      * - ''enableDrag''         {Boolean} 是否允许拖拽操作。
      * - ''touchTimeout''       {Number}  手指按下多少毫秒后进入拖拽模式。
-     * 
+     *
      * **Demo**
-     * <codepreview href="../gmu/_examples/chart/linechart/linechart_demo.html">
-     * ../gmu/_examples/chart/linechart/linchart_demo.html
-     * ../gmu/_examples/chart/linechart/lineChart.css
+     * <codepreview href="./_examples/chart/linechart/linechart_demo.html">
+     * ./_examples/chart/linechart/linchart_demo.html
+     * ./_examples/chart/linechart/lineChart.css
      * </codepreview>
      */
     $.ui.define("LineChart", {
@@ -50,7 +50,7 @@
         newLines:[],
         icons:[],
         tips:[],
-        
+
         inherit:$.ui.Chart,
 
         _data:{
@@ -357,7 +357,7 @@
         },
 
         /**
-         * @private 
+         * @private
          */
         draw:function(){
             if(this.invalidHash[this.INVALID_TYPE.INIT]){

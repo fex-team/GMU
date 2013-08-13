@@ -2,7 +2,7 @@
  * @file Slider － 内容可动态修改插件
  * @name Slider.dynamic
  * @short Slider.dynamic
- * @desc <qrcode align="right" title="Live Demo">../gmu/_examples/widget/slider/slider_dynamic.html</qrcode>
+ * @desc <qrcode align="right" title="Live Demo">./_examples/widget/slider/slider_dynamic.html</qrcode>
  * 此插件扩充slider， 让内容可以动态修改，在这种模式下，dom个数跟items的个数无关，永远是3个div轮换，对于图片集比较多的图片轮播，采用这种方式。
  * @import widget/slider.js
  */

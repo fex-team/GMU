@@ -1,7 +1,7 @@
 /**
  * @file 弹出框组件
  * @name Dialog
- * @desc <qrcode align="right" title="Live Demo">../gmu/_examples/widget/dialog/dialog.html</qrcode>
+ * @desc <qrcode align="right" title="Live Demo">./_examples/widget/dialog/dialog.html</qrcode>
  * 弹出框组件
  * @import core/zepto.ui.js, core/zepto.highlight.js
  */
@@ -51,8 +51,8 @@
      * </code>
      *
      * **Demo**
-     * <codepreview href="../gmu/_examples/widget/dialog/dialog.html">
-     * ../gmu/_examples/widget/dialog/dialog.html
+     * <codepreview href="./_examples/widget/dialog/dialog.html">
+     * ./_examples/widget/dialog/dialog.html
      * </codepreview>
      */
     $.ui.define('dialog', {

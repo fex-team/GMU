@@ -1,7 +1,7 @@
 /**
  * @file 快速删除组件
  * @name Quickdelete
- * @desc <qrcode align="right" title="Live Demo">../gmu/_examples/widget/suggestion/suggestion_setup.html</qrcode>
+ * @desc <qrcode align="right" title="Live Demo">./_examples/widget/suggestion/suggestion_setup.html</qrcode>
  * 快速删除组件
  * @import core/zepto.ui.js
  */
@@ -22,8 +22,8 @@
      * <input type="text" id="input">
      * </code>
      * **Demo**
-     * <codepreview href="../gmu/_examples/widget/suggestion/suggestion_setup.html">
-     * ../gmu/_examples/widget/suggestion/suggestion_setup.html
+     * <codepreview href="./_examples/widget/suggestion/suggestion_setup.html">
+     * ./_examples/widget/suggestion/suggestion_setup.html
      * </codepreview>
      */
     $.ui.define('quickdelete', {
@@ -48,7 +48,7 @@
             $.os.android && $.os.android && parseFloat($.os.version).toFixed(1) == 2.1 && $deleteElem.css('-webkit-background-size', '20px 20px');
             if ($maskElem.attr('class') != 'ui-input-mask') {
                 // avoid input blur
-                $maskElem = $('<div id="' + maskID + '" class="ui-input-mask"></div>').appendTo($input.parent()).append($input);      
+                $maskElem = $('<div id="' + maskID + '" class="ui-input-mask"></div>').appendTo($input.parent()).append($input);
             }
 
             me.root($maskElem.append(me.data('deleteElem', $deleteElem)).css('height', $input.height()));

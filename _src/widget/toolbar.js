@@ -2,7 +2,7 @@
 /**
  * @file 工具栏组件
  * @name Toolbar
- * @desc <qrcode align="right" title="Live Demo">../gmu/_examples/widget/toolbar/toolbar.html</qrcode>
+ * @desc <qrcode align="right" title="Live Demo">./_examples/widget/toolbar/toolbar.html</qrcode>
  * 工具栏组件
  * @import core/zepto.extend.js, core/zepto.ui.js, core/zepto.fix.js, core/zepto.highlight.js
  */
@@ -21,9 +21,9 @@
      * - ''btns'' {Array}: (可选)右侧要添加的按钮(Dom节点)
      * - ''useFix'' {Boolean}: (可选)是否使用固顶效果(toolbar 不在页面顶端)
      * **Demo**
-     * <codepreview href="../gmu/_examples/widget/toolbar/toolbar.html">
-     * ../gmu/_examples/widget/toolbar/toolbar.html
-     * ../gmu/_examples/widget/toolbar/toolbar_demo.css
+     * <codepreview href="./_examples/widget/toolbar/toolbar.html">
+     * ./_examples/widget/toolbar/toolbar.html
+     * ./_examples/widget/toolbar/toolbar_demo.css
      * </codepreview>
      */
     $.ui.define("toolbar", {
