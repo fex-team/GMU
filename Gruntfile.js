@@ -179,6 +179,14 @@ module.exports = function(grunt) {
             }
         },
 
+        demo: {
+            options: {
+                cwd: './examples/widget/',
+                files: '**/*.html',
+                output: './examples/demos.js'
+            }
+        },
+
         testDownload: {
             options: {
                 url: 'http://localhost/GMU/test.html'

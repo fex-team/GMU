@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>panel使用iscroll</title>
+    <title>使用iscroll的面板组件</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 
@@ -38,6 +38,8 @@
 </head>
 
 <body>
+<div id="height"></div>
+<div id="result"></div>
 <div id="page">
     <div class="cont">
         <section id="cont-panel" class="option">
@@ -164,12 +166,12 @@
             swipeClose: false
         }).on('open', function () {
             $('.panel').iScroll('refresh');
-        })
+        });
         
         function resetHeight() {
             $('.panel').css('height', window.innerHeight).iScroll('refresh');
         }
-        $(window).on('scrollStop ortchange', resetHeight);
+        $(window).on('scrollStop ortchange resize', resetHeight);
 
         $('.panel').panel('toggle');
     }(Zepto));
