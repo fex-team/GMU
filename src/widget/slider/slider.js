@@ -1,9 +1,7 @@
 /**
  * @file 图片轮播组件
- * @name Slider
- * @desc <qrcode align="right" title="Live Demo">../gmu/examples/widget/slider/slider.html</qrcode>
- * 图片轮播组件
  * @import extend/touch.js, extend/event.ortchange.js, core/widget.js
+ * @module GMU
  */
 (function( gmu, $, undefined ) {
     var cssPrefix = $.fx.cssPrefix,
@@ -12,21 +10,67 @@
         // todo 检测3d是否支持。
         translateZ = ' translateZ(0)';
     
+    /**
+     * 图片轮播组件
+     *
+     * @class Slider
+     * @constructor Html部分
+     * ```html
+     * <div id="slider">
+     *   <div>
+     *       <a href="http://www.baidu.com/"><img lazyload="image1.png"></a>
+     *       <p>1,让Coron的太阳把自己晒黑—小天</p>
+     *   </div>
+     *   <div>
+     *       <a href="http://www.baidu.com/"><img lazyload="image2.png"></a>
+     *       <p>2,让Coron的太阳把自己晒黑—小天</p>
+     *   </div>
+     *   <div>
+     *       <a href="http://www.baidu.com/"><img lazyload="image3.png"></a>
+     *       <p>3,让Coron的太阳把自己晒黑—小天</p>
+     *   </div>
+     *   <div>
+     *       <a href="http://www.baidu.com/"><img lazyload="image4.png"></a>
+     *       <p>4,让Coron的太阳把自己晒黑—小天</p>
+     *   </div>
+     * </div>
+     * ```
+     *
+     * javascript部分
+     * ```javascript
+     * $('#slider').slider();
+     * ```
+     * @param {dom | zepto | selector} [el] 用来初始化Slider的元素
+     * @param {Object} [options] 组件配置项。具体参数请查看[Options](#GMU:Slider:options)
+     * @grammar $( el ).slider( options ) => zepto
+     * @grammar new gmu.Slider( el, options ) => instance
+     */
     gmu.define( 'Slider', {
 
-        // default options
         options: {
 
-            // 是否连续滑动
+            /**
+             * @property {Boolean} [loop=false] 是否连续滑动
+             * @namespace options
+             */
             loop: false,
             
-            // 动画执行速度
+            /**
+             * @property {Number} [speed=400] 动画执行速度
+             * @namespace options
+             */
             speed: 400,
 
-            // 初始位置
+            /**
+             * @property {Number} [index=0] 初始位置
+             * @namespace options
+             */
             index: 0,
 
-            // 内部结果选择器定义
+            /**
+             * @property {Object} [selector={container: '.ui-slider-group'}] 内部结构选择器定义
+             * @namespace options
+             */
             selector: {
                 container: '.ui-slider-group'    // 容器的选择器
             }
@@ -227,6 +271,14 @@
             return this.trigger( 'slide', to, from );
         },
 
+        /**
+         * 切换到第几个slide
+         * @method slideTo
+         * @chainable
+         * @param {Number} to 目标slide的序号
+         * @param {Number} [speed] 切换的速度
+         * @return {self} 返回本身
+         */
         slideTo: function( to, speed ) {
             if ( this.index === to || this.index === this._circle( to ) ) {
                 return this;
@@ -245,6 +297,12 @@
             return this._slide( index, diff, dir, width, speed, opts );
         },
 
+        /**
+         * 切换到上一个slide
+         * @method prev
+         * @chainable
+         * @return {self} 返回本身
+         */
         prev: function() {
             
             if ( this._options.loop || this.index > 0 ) {
@@ -254,6 +312,12 @@
             return this;
         },
 
+        /**
+         * 切换到下一个slide
+         * @method next
+         * @chainable
+         * @return {self} 返回本身
+         */
         next: function() {
             
             if ( this._options.loop || this.index + 1 < this.length ) {
@@ -263,15 +327,66 @@
             return this;
         },
 
+        /**
+         * 返回当前显示的第几个slide
+         * @method getIndex
+         * @chainable
+         * @return {self} 返回本身
+         */
         getIndex: function() {
             return this.index;
         },
 
+        /**
+         * 销毁组件
+         * @method destroy
+         */
         destroy: function() {
             this._container.off( this.eventNs );
             $( window ).off( 'ortchange' + this.eventNs );
             return this.$super( 'destroy' );
         }
+
+        /**
+         * @event ready
+         * @param {Event} e gmu.Event对象
+         * @description 当组件初始化完后触发。
+         */
+
+        /**
+         * @event done.dom
+         * @param {Event} e gmu.Event对象
+         * @param {Zepto} $el slider元素
+         * @param {Object} opts 组件初始化时的配置项
+         * @description DOM创建完成后触发
+         */
+        
+        /**
+         * @event width.change
+         * @param {Event} e gmu.Event对象
+         * @description slider容器宽度发生变化时触发
+         */
+        
+        /**
+         * @event slideend
+         * @param {Event} e gmu.Event对象
+         * @param {Number} index 当前slide的序号
+         * @description slide切换完成后触发
+         */
+        
+        /**
+         * @event slide
+         * @param {Event} e gmu.Event对象
+         * @param {Number} to 目标slide的序号
+         * @param {Number} from 当前slide的序号
+         * @description slide切换时触发（如果切换时有动画，此事件触发时，slide不一定已经完成切换）
+         */
+        
+        /**
+         * @event destroy
+         * @param {Event} e gmu.Event对象
+         * @description 组件在销毁的时候触发
+         */
     } );
 
 })( gmu, gmu.$ );

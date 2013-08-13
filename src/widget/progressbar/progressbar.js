@@ -8,7 +8,6 @@
     /**
      * 进度条组件
      *
-     * [![Live Demo](qrcode:http://gmu.baidu.com/demo/widget/progressbar/progressbar.html)](http://gmu.baidu.com/demo/widget/progressbar/progressbar.html "Live Demo")
      * @class Progressbar
      * @constructor Html部分
      * ```html

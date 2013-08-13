@@ -7,7 +7,6 @@
     /**
      * 工具栏组件
      *
-     * [![Live Demo](qrcode:http://gmu.baidu.com/demo/widget/toolbar/toolbar.html)](http://gmu.baidu.com/demo/widget/toolbar/toolbar.html "Live Demo")
      * @class Toolbar
      * @constructor Html部分
      * ```html
@@ -23,7 +22,7 @@
      * ```javascript
      * $('#J_toolbar').toolbar({});
      * ```
-     * @param {dom | zepto | selector} [el] 按钮节点
+     * @param {dom | zepto | selector} [el] 用来初始化工具栏的元素
      * @param {Object} [options] 组件配置项。具体参数请查看[Options](#GMU:Toolbar:options)
      * @grammar $( el ).toolbar( options ) => zepto
      * @grammar new gmu.Toolbar( el, options ) => instance
@@ -188,7 +187,7 @@
          * @chainable
          * @param {String} [position=right] 按钮添加的位置，left或者right
          * @param {Array} btns 要添加的按钮组，每个按钮可以是一个gmu Button实例，或者元素，或者HTML片段
-         * @return {self} 返回本身。
+         * @return {self} 返回本身
          */
         addBtns: function( position, btns ) {
             var me = this,

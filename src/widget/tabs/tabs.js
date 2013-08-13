@@ -15,7 +15,6 @@
     /**
      * 选项卡组件
      *
-     * [![Live Demo](qrcode:http://gmu.baidu.com/demo/widget/tabs/tabs.html)](http://gmu.baidu.com/demo/widget/tabs/tabs.html "Live Demo")
      * @class Tabs
      * @constructor Html部分
      * ```html

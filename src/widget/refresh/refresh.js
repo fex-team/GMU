@@ -10,7 +10,6 @@
     /**
      * 加载更多组件
      *
-     * [![Live Demo](qrcode:http://gmu.baidu.com/demo/widget/refresh/refresh.html)](http://gmu.baidu.com/demo/widget/refresh/refresh.html "Live Demo")
      * @class Refresh
      * @constructor Html部分
      * ```html

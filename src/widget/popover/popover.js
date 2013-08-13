@@ -11,7 +11,6 @@
      *
      * 基础版本只有简单的点击显示，再点击隐藏功能。像用更多的功能请参看[插件介绍](#GMU:Popover:plugins)部分.
      *
-     * [![Live Demo](qrcode:http://gmu.baidu.com/demo/widget/popover/popover.html)](http://gmu.baidu.com/demo/widget/popover/popover.html "Live Demo")
      * @class Popover
      * @constructor Html部分
      * ```html

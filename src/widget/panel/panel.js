@@ -10,7 +10,6 @@
     /**
      * panel组件
      *
-     * [![Live Demo](qrcode:http://gmu.baidu.com/demo/widget/panel/panel.html)](http://gmu.baidu.com/demo/widget/panel/panel.html "Live Demo")
      * @class Panel
      * @constructor Html部分
      * ```html

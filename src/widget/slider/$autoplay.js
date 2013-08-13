@@ -1,15 +1,33 @@
 /**
- * @file 自动播放功能
+ * @file 自动播放插件
  * @import widget/slider/slider.js
  */
 (function( gmu, $ ) {
     $.extend( true, gmu.Slider, {
         options: {
-            autoPlay: true,    // 是否开启自动播放
+            /**
+             * @property {Boolean} [autoPlay=true] 是否开启自动播放
+             * @namespace options
+             * @for Slider
+             * @uses Slider.autoplay
+             */
+            autoPlay: true,
+            /**
+             * @property {Number} [interval=4000] 自动播放的间隔时间（毫秒）
+             * @namespace options
+             * @for Slider
+             * @uses Slider.autoplay
+             */
             interval: 4000
         }
     } );
 
+    /**
+     * 自动播放插件
+     * @class autoplay
+     * @namespace Slider
+     * @pluginfor Slider
+     */
     gmu.Slider.register( 'autoplay', {
         _init: function() {
             var me = this;
@@ -25,9 +43,13 @@
         },
 
         /**
-        * @name resume
-        * @desc 恢复自动播放。
-        */
+         * 恢复自动播放。
+         * @method resume
+         * @chainable
+         * @return {self} 返回本身
+         * @for Slider
+         * @uses Slider.autoplay
+         */
         resume: function() {
             var me = this,
                 opts = me._options;
@@ -42,9 +64,13 @@
         },
 
         /**
-        * @name stop
-        * @desc 停止自动播放
-        */
+         * 停止自动播放
+         * @method stop
+         * @chainable
+         * @return {self} 返回本身
+         * @for Slider
+         * @uses Slider.autoplay
+         */
         stop: function() {
             var me = this;
 
