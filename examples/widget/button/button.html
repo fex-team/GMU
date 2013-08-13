@@ -15,6 +15,7 @@
     <!--组件依赖js begin-->
     <script type="text/javascript" src="../../../dist/zepto.js"></script>
     <script type="text/javascript" src="../../../src/extend/highlight.js"></script>
+    <script type="text/javascript" src="../../../src/extend/parseTpl.js"></script>
     <script type="text/javascript" src="../../../src/core/gmu.js"></script>
     <script type="text/javascript" src="../../../src/core/event.js"></script>
     <script type="text/javascript" src="../../../src/core/widget.js"></script>
@@ -23,47 +24,19 @@
 </head>
 <body>
 <div class="section">
-    <h2>Setup模式创建</h2>
+    <h2>按钮</h2>
     <div>
         <a id="btn1">点击后不可用
-        </a><a class="button" href="http://www.baidu.com">a按钮
-        </a><button class="button">button按钮</button>
+        </a><a class="button" href="http://www.baidu.com" data-abc="abc">a按钮
+        </a><button class="button" data-label="">button按钮</button>
     </div>
-</div>
-
-<div class="section">
-    <h2>Render模式创建</h2>
-    <div id="btsn_create"></div>
 </div>
 <script>
     //setup模式[推荐]
     $('.button').button();
 
-    var setup = $('#btn1').button('this');
-    setup.on( 'click', function() {
-            setup.disable();
-    });
-
-    //render模式
-    var btn1 = new gmu.Button('<a>', {
-        label: '点击后不可用',
-        click: function() {
-            this.disable();
-        },
-        container: '#btsn_create'
-    });
-
-    var btn2 = new gmu.Button('<a>', {
-        label: 'a按钮',
-        attributes: {
-            href: 'http://www.baidu.com'
-        },
-        container: '#btsn_create'
-    });
-
-    var btn3 = new gmu.Button({
-        label: 'button按钮',
-        container: '#btsn_create'
+    $('#btn1').button().on( 'click', function() {
+        $('#btn1').button( 'state', 'disabled' );
     });
 </script>
 </body>
