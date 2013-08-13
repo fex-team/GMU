@@ -1,4 +1,4 @@
-//事件兼容pc，做测试用的
+//事件兼容pc
 (function () {
     var $onFn = $.fn.on,
         $offFn = $.fn.off,
@@ -118,18 +118,6 @@
         off: function(event, selector, callback) {
 
             return $offFn.call(this, transFn(event), selector, callback);
-            // var me = this;
-
-            // if( Object.prototype.toString.call(selector) === '[object Function]' ) {
-            //     callback = selector;
-            //     selector = null;
-            // }
-
-            // callbackStack.forEach(function( item, index ){
-            //     if(item.target == me && item.event == transFn(event) && item.selector == selector && item.callback == callback) {
-            //         return $offFn.call(me, transFn(event), selector, item._callback);
-            //     }
-            // });
         }
     });
 })();
