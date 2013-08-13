@@ -46,7 +46,8 @@ module.exports = function(grunt) {
             options: {
                 cwd: './src/',
                 files: [ 'core/*.js', 'widget/popover/*.js', 'zeptodoc/core.js', 'zeptodoc/ajax.js', 'zeptodoc/*.js',
-                         'extend/*.js', 'widget/toolbar/*.js', 'widget/tabs/*.js', 'widget/panel/*.js', 'widget/progressbar/*.js'],
+                         'extend/*.js', 'widget/toolbar/*.js', 'widget/tabs/*.js', 'widget/panel/*.js', 'widget/progressbar/*.js'
+                         , 'widget/refresh/*.js'],
                 theme: 'gmu',
                 outputDir: './doc'
             }
