@@ -27,6 +27,7 @@
     "grunt-lib-phantomjs": "~0.3.0",
     "smart-cov": "~1.2.2",
     "temporary": "0.0.5",
-    "gmudoc": "https://github.com/liaoxuezhi/gmudoc/tarball/master"
+    "gmudoc": "https://github.com/liaoxuezhi/gmudoc/tarball/master",
+    "grunt-contrib-watch": "~0.4.4"
   }
 }
