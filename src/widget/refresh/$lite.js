@@ -12,7 +12,7 @@
      * @pluginfor Refresh
      */
     /**
-     * @property {Number} [threshold=5] 加载的阀值，默认向上或向下拉动距离超过5px，即可触发拉动操作，该值只能为正值，若该值是10，则需要拉动距离大于15px才可触发加载操作<br />
+     * @property {Number} [threshold=5] 加载的阀值，默认手指在屏幕的一半，并且拉动距离超过10px即可触发加载操作，配置该值后，可以将手指在屏幕位置进行修重情重改，若需要实现连续加载效果，可将该值配置很大，如1000等
      * @namespace options
      * @for Refresh
      * @uses Refresh.lite
