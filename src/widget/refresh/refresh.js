@@ -229,9 +229,6 @@
         }
 
         /**
-         * | statechange | event, elem, state, dir | 组件发生状态变化时会触发 |
-         */
-        /**
          * @event ready
          * @param {Event} e gmu.Event对象
          * @description 当组件初始化完后触发。
@@ -241,7 +238,7 @@
          * @event statechange
          * @param {Event} e gmu.Event对象
          * @param {Zepto} elem 按钮元素
-         * @param {String} state 当前组件的状态
+         * @param {String} state 当前组件的状态('loaded'：默认状态；'loading'：加载中状态；'disabled'：禁用状态，表示无内容加载了；'beforeload'：在手没有松开前满足加载的条件状态。 需要引入插件才有此状态，lite，iscroll，或者iOS5)
          * @param {String} dir 加载的方向（'up' | 'down'）
          * @description 组件发生状态变化时会触发
          */
