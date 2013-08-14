@@ -331,7 +331,7 @@
          * 返回当前显示的第几个slide
          * @method getIndex
          * @chainable
-         * @return {self} 返回本身
+         * @return {Number} 当前的silde序号
          */
         getIndex: function() {
             return this.index;
