@@ -11,8 +11,20 @@
         },
 
         options: {
-            arrow: true,    // 是否显示点
+            /**
+             * @property {Boolean} [arrow=true] 是否显示点
+             * @namespace options
+             * @for Slider
+             * @uses Slider.arrow
+             */
+            arrow: true,
 
+            /**
+             * @property {Object} [select={prev: '.ui-slider-pre',next: '.ui-slider-next'}] 上一张和下一张按钮的选择器
+             * @namespace options
+             * @for Slider
+             * @uses Slider.arrow
+             */
             select: {
                 prev: '.ui-slider-pre',    // 上一张按钮选择器
                 next: '.ui-slider-next'    // 下一张按钮选择器
@@ -20,6 +32,12 @@
         }
     } );
 
+    /**
+     * 图片轮播剪头按钮
+     * @class arrow
+     * @namespace Slider
+     * @pluginfor Slider
+     */
     gmu.Slider.option( 'arrow', true, function() {
         var me = this,
             arr = [ 'prev', 'next' ];

@@ -10,6 +10,12 @@
             '<% if( title ) { %><p><%= title %></p><% } %>' +
             '</div>';
 
+    /**
+     * 图片懒加载插件
+     * @class lazyloadimg
+     * @namespace Slider
+     * @pluginfor Slider
+     */
     gmu.Slider.register( 'lazyloadimg', {
         _init: function() {
             this.on( 'ready slide', this._loadItems );
@@ -30,6 +36,13 @@
             }
         },
 
+        /**
+         * 加载图片
+         * @method loadImage
+         * @param {Number} index 要加载的图片的序号
+         * @for Slider
+         * @uses Slider.lazyloadimg
+         */
         loadImage: function( index ) {
             var item = this._items[ index ],
                 images;

@@ -1,63 +1,35 @@
 /**
  * @file 搜索建议组件
- * @name Suggestion
- * @desc <qrcode align="right" title="Live Demo">../gmu/examples/widget/suggestion/suggestion_setup.html</qrcode>
- * 搜索建议组件
  * @import core/widget.js, extend/touch.js, extend/highlight.js
  */
 (function( $, win ) {
 
-    /**
-     * @name suggestion
-     * @desc   搜索建议组件
-     * @grammar     suggestion() => self
-     * @grammar     gmu.suggestion([el [,options]]) => self
-     * @desc
-     * **Options**
-     * - ''container'' {Selector}:  (必选)父元素，若为render模式，则为必选，或以(el,options)方式传入
-     * - ''source''    {String}:    (必选)请求数据的url，若不自定义sendRequest，则为必选
-     * - ''param''     {String}:    (可选)url附加参数
-     * - --''formID''--  该参数改名为以下的form参数
-     * - ''form''      {String|Dom}:(可选)提交搜索的表单，默认为包含input框的第一个父级form
-     * - --''posAdapt''--  位置自适应，该参数已去掉，若需要位置自适应，需加载插件$posAdapt
-     * - ''listCount'' {Number}:    (可选)展现sug的条数, 默认: 5
-     * - ''isCache''   {Boolean}:        (可选)是否缓存query, 默认: true
-     * - --''isStorage''--  该参数改名为以下的isHistory参数
-     * - ''isHistory''  {Boolean}:  (可选)是否本地存储pick项: true
-     * - --''isSharing''--
-     * - --''shareName''--  isSharing+shareName改为以下的historyShare参数
-     * - ''historyShare'' {Boolean}: (可选)多个sug之间是否共享历史记录，可传入指定的key值，默认： true
-     * - ''autoClose''      {Boolean}: (可选)点击input之外自动关闭，默认：true
-     * - ''usePlus''        {Boolean}: (可选)是否启用+号，默认：true
-     * - --''status''--   该参数已经去掉，若需要点击关闭后不再出现sug，可在外部close事件中调用destroy
-     * - --''useIscroll''--  该参数已经去掉，若需sug内滚，加载$iscroll插件即可
-     * - --''height''--  该参数已经去掉，通过listCount确定高度
-     * - --''width''--  宽度参数已去掉，在样式中设定
-     * - --''minChars''--   该参数已经去掉
-     * - --''maxChars''--   该参数已经去掉
-     * - --''offset''--     该参数已经去掉，可以在样式中设定
-     * - ''**queryKey**''   {String}: (可选)新增参数，发送请求时query的key值，默认：wd
-     * - ''**cbKey**''      {String}: (可选)新增参数，发送请求时callback的name，默认：cb
-     * - ''**compatData**'' {Boolean}: (可选)新增参数，是否兼容1.x版本中的历史数据，默认为false
-     *                                 该参数已作为option拆分出来了
-     * - ''renderList''  {Function}:  (可选)自定义渲染下拉列表，//该参数已作为option拆出//
-     * - --''renderEvent''-- 该参数已经去掉，现在sug list上的事件通过代理完成，若需要自定义事件，
-     *                       可在renderList中处理
-     * - ''sendRequest'' {Function}: (可选)用户自定义请求方式  //该参数已作为option拆出//
-     * - ''select''  {Function}:  (可选)选中一条sug触发，推荐使用事件方式注册
-     * - ''submit''  {Function}:  (可选)提交时触发，推荐使用事件方式注册
-     * - ''open''    {Function}:  (可选)sug框展开时触发，推荐使用事件方式注册
-     * - ''close''   {Function}:  (可选)sug框关闭时触发，推荐使用事件方式注册
-     * **setup方式html规则**
-     * <code type="html">
-     * <input type="text" id="input">
-     * </code>
-     * **Demo**
-     * <codepreview href="../examples/widget/suggestion/suggestion.html">
-     * ../gmu/examples/widget/suggestion/suggestion.html
-     * </codepreview>
+     /**
+     * 搜索建议组件
+     *
+     * @class Suggestion
+     * @constructor Html部分
+     * ```html
+     * <form action="http://www.baidu.com/s" method="get">
+     *     <div class="search">
+     *         <div class="search-input"><input type="text" id="input" name="wd"></div>
+     *         <div class="search-button"><input type="submit" value="百度一下"></div>
+     *     </div>
+     * </form>
+     * ```
+     *
+     * javascript部分
+     * ```javascript
+     * $('#input').suggestion({
+     *      source: "../../data/suggestion.php"
+     *  });
+     * ```
+     * @param {dom | zepto | selector} [el] 用来初始化Suggestion的元素
+     * @param {Object} [options] 组件配置项。具体参数请查看[Options](#GMU:Suggestion:options)
+     * @grammar $( el ).suggestion( options ) => zepto
+     * @grammar new gmu.Suggestion( el, options ) => instance
      */
-
+    
     var guid = 0;
 
     gmu.define( 'Suggestion', {
@@ -65,15 +37,42 @@
         // 默认options
         options: {
 
-            // 多个sug之间是否共享历史记录，可传入指定的key值，相当于2.0.5以前版本中的isSharing + shareName
-            // 若传默认传true，则使用默认key：'SUG-Sharing-History'，若传false，即表示不共享history
-            // 若传string，则为该值+'-SUG-Sharing-History'作为key值
+            /**
+             * @property {Element | Zepto | Selector} container 父元素，若为render模式，则为必选
+             * @namespace options
+             */
+            
+            /**
+             * @property {String} source 请求数据的url，若不自定义sendRequest，则为必选
+             * @namespace options
+             */
+            
+            /**
+             * @property {String} [param=''] url附加参数
+             * @namespace options
+             */
+            
+            /**
+             * @property {String | Element} [form] 提交搜索的表单，默认为包含input框的第一个父级form
+             * @namespace options
+             */
+            
+            /**
+             * @property {Boolean | String} [historyShare=true] 多个sug之间是否共享历史记录，可传入指定的key值。若传默认传true，则使用默认key：'SUG-Sharing-History'，若传false，即表示不共享history；若传string，则为该值+'-SUG-Sharing-History'作为key值
+             * @namespace options
+             */
             historyShare: true,
 
-            // 删除历史记录时是否确认
+            /**
+             * @property {Boolean} [confirmClearHistory=true] 删除历史记录时是否确认
+             * @namespace options
+             */
             confirmClearHistory: true,
 
-            // 点击外边空白区域是否关闭sug
+            /**
+             * @property {Boolean} [autoClose=true] 点击input之外自动关闭
+             * @namespace options
+             */
             autoClose: false
         },
 
@@ -191,10 +190,6 @@
 
                 // 当query不为空，即input或focus时,input有值
                 // 用户自己发送请求或直接本地数据处理，可以在sendrequest中处理
-                // sendrequest中形参：
-                // @query 用户输入查询串
-                // @render 数据请求完成后的渲染回调函数，其参数为query,data
-                // @cacheData 缓存query的回调函数，其参数为query, data
                 me.trigger( 'sendrequest', query, $.proxy( me._render, me ),
                         $.proxy( me._cacheData, me ));
 
@@ -211,10 +206,6 @@
 
         _render: function( query, data ) {
 
-            // renderList渲染sug list事件，其参数如下
-            // @data 渲染的数据，为Array
-            // @query 用户输入的查询串
-            // @fillWrapper 列表渲染完成后的回调函数，参数为listHtml片段
             this.trigger( 'renderlist', data, query, $.proxy( this._fillWrapper, this ) );
         },
 
@@ -277,24 +268,19 @@
         },
 
         /**
-         * @desc 获取input值
-         * @name value
-         * @grammar value() => string
-         * @example $('#input').suggestion('value');
+         * 获取input值
+         * @method value
+         * @return {String} input中的值
          */
         value: function() {
             return this.getEl().val();
         },
 
         /**
-         * @desc 设置|获取|清空历史记录, value:null，清除sug历史记录，value非null为存取
-         * @name history
-         * @grammer history => self|string
-         * @example
-         * $('#input').suggestion('history')   //返回当前localstorage中history值
-         * $('#input').suggestion('history', 'aa')   //为history增加'aa'值
-         * instance.history(null)     //清空当前sug的history
-         * */
+         * 设置|获取|清空历史记录
+         * @method history
+         * @param {String} [value] 不传value表示清除sug历史记录，传value表示存值
+         */
         history: function( value ) {
             var me = this,
                 clearHistory = value !== null || function() {
@@ -307,35 +293,41 @@
         },
 
         /**
-         * @desc 显示sug
-         * @name show
-         * @grammer show() => self
-         * */
+         * 显示sug
+         * @method show
+         */
         show: function() {
 
             if ( !this.isShow ) {
                 this.$wrapper.show();
                 this.isShow = true;
+                return this.trigger( 'show' );
+            }else{
+                return this;
             }
 
-            return this.trigger( 'show' );
         },
 
         /**
-         * @desc 隐藏sug
-         * @name hide
-         * @grammer hide() => self
-         * */
+         * 隐藏sug
+         * @method hide
+         */
         hide: function() {
 
             if ( this.isShow ) {
                 this.$wrapper.hide();
                 this.isShow = false;
+                return this.trigger( 'hide' );
+            }else{
+                return this;
             }
 
-            return this.trigger( 'hide' );
         },
 
+        /**
+         * 销毁组件
+         * @method destroy
+         */
         destroy: function() {
             var me = this,
                 $el = me.getEl(),
@@ -356,5 +348,55 @@
 
             return me;
         }
+
+        /**
+         * @event ready
+         * @param {Event} e gmu.Event对象
+         * @description 当组件初始化完后触发。
+         */
+
+        /**
+         * @event initdom
+         * @param {Event} e gmu.Event对象
+         * @param {Zepto} $el slider元素
+         * @description DOM创建完成后触发
+         */
+        
+        /**
+         * @event show
+         * @param {Event} e gmu.Event对象
+         * @description 显示sug时触发
+         */
+        
+        /**
+         * @event hide
+         * @param {Event} e gmu.Event对象
+         * @param {Number} index 当前slide的序号
+         * @description 隐藏sug时触发
+         */
+        
+        /**
+         * @event sendrequest
+         * @param {Event} e gmu.Event对象
+         * @param {String} query 用户输入查询串
+         * @param {Function} render 数据请求完成后的渲染回调函数，其参数为query,data
+         * @param {Function} cacheData 缓存query的回调函数，其参数为query, data
+         * @description 发送请求时触发
+         */
+        
+        /**
+         * @event renderlist
+         * @param {Event} e gmu.Event对象
+         * @param {Array} data 渲染的数据
+         * @param {String} query 用户输入的查询串
+         * @param {Function} fillWrapper 列表渲染完成后的回调函数，参数为listHtml片段
+         * @description 渲染sug list时触发
+         */
+        
+        /**
+         * @event destroy
+         * @param {Event} e gmu.Event对象
+         * @description 组件在销毁的时候触发
+         */
     } );
 })( gmu.$, window );

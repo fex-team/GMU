@@ -1,52 +1,73 @@
 /**
  * @file panel组件
- * @desc <qrcode align="right" title="Live Demo">../gmu/examples/widget/panel/panel_position.html</qrcode>
- * 面板组件
- * @name Panel
  * @import extend/touch.js, core/widget.js, extend/throttle.js, extend/event.scrollStop.js, extend/event.ortchange.js
+ * @module GMU
  */
 (function( gmu, $, undefined ) {
 
     var cssPrefix = $.fx.cssPrefix,
         transitionEnd = $.fx.transitionEnd;
     /**
-     * @name panel
-     * @grammar $('.panel').panel() ⇒ self
-     * --该组件不支持create模式，只有setup模式--
-     * @desc **Options**
-     * - ''contentWrap'' {Dom/Zepto/selector}: (可选，默认：true)主体内容dom
-     * - ''scrollMode'' {String}: (可选，默认：follow)'follow |'hide' | 'fix'   Panel滑动方式，follow表示跟随页面滑动，hide表示页面滑动时panel消失, fix表示panel固定在页面中
-     * - ''display'' {String}: (可选，默认：push)'overlay' | 'reveal' | 'push' Panel出现模式，overlay表示浮层reveal表示在content下边展示，push表示panel将content推出
-     * - ''position'' {String}: (可选)left' | 'right' 在右边或左边
-     * - ''dismissible'' {Boolean}: (render模式下必填)是否在内容区域点击后，panel消失
-     * - ''swipeClose'' {Boolean}: (可选，默认: 300)在panel上滑动，panel是否关闭
-     * - ''beforeopen'' {Function}: (可选，默认: \'auto\')panel打开前事件，该事件可以被阻止
-     * - ''open'' {Function}: (可选，默认: \'auto\')panel打开后前事件
-     * - ''beforeclose'' {Function}: (可选，默认: \'auto\')panel关闭前事件，该事件可以被阻止
-     * - ''close'' {Function}: (可选，默认: \'auto\')panel关闭后事件
-     * **example**
-     * <code>//<div id="panel">这是panel</div><div id="content">这是panel</div>
-     * $('#panel').panel({contentWrap: '#content'});
-     * </code>
+     * panel组件
      *
-     * **Demo**
-     * <codepreview href="../examples/widget/panel/panel.html">
-     * ../gmu/examples/widget/panel/panel.html
-     * </codepreview>
+     * @class Panel
+     * @constructor Html部分
+     * ```html
+     * <div id="page">
+     *     <div class="cont">panel内容</div>
+     * </div>
+     * ```
+     *
+     * javascript部分
+     * ```javascript
+     * $('.panel').panel({
+     *     contentWrap: $('.cont')
+     * });
+     * ```
+     * @param {dom | zepto | selector} [el] 用来初始化Panel的元素
+     * @param {Object} [options] 组件配置项。具体参数请查看[Options](#GMU:Panel:options)
+     * @grammar $( el ).panel( options ) => zepto
+     * @grammar new gmu.Panel( el, options ) => instance
      */
-
+    
     gmu.define( 'Panel', {
         options: {
-            contentWrap: '',       //若不传，则默认为panel的next节点
-            scrollMode: 'follow',   //'follow |'hide' | 'fix'   Panel滑动方式，follow表示跟随页面滑动，hide表示页面滑动时panel消失, fix表示panel固定在页面中
-            display: 'push',     //'overlay' | 'reveal' | 'push' Panel出现模式，overlay表示浮层reveal表示在content下边展示，push表示panel将content推出
-            position: 'right',    //'left' | 'right' 在右边或左边
+
+            /**
+             * @property {Dom | Zepto | selector} [contentWrap=''] 主体内容dom，若不传，则默认为panel的next节点
+             * @namespace options
+             */
+            contentWrap: '',
+
+            /**
+             * @property {String} [scrollMode='follow'] Panel滑动方式，follow表示跟随页面滑动，hide表示页面滑动时panel消失, fix表示panel固定在页面中
+             * @namespace options
+             */
+            scrollMode: 'follow',
+
+            /**
+             * @property {String} [display='push'] 可选值：('overlay' | 'reveal' | 'push') Panel出现模式，overlay表示浮层reveal表示在content下边展示，push表示panel将content推出
+             * @namespace options
+             */
+            display: 'push',
+
+            /**
+             * @property {String} [position='right'] 可选值：('left' | 'right'） 在右边或左边
+             * @namespace options
+             */
+            position: 'right',
+
+            /**
+             * @property {Boolean} [dismissible=true] (render模式下必填)是否在内容区域点击后，panel消失
+             * @namespace options
+             */
             dismissible: true,
-            swipeClose: true,
-            beforeopen: null,
-            open: null,
-            beforeclose: null,
-            close: null
+
+            /**
+             * @property {Boolean} [swipeClose=true] 在panel上滑动，panel是否关闭
+             * @namespace options
+             */
+            swipeClose: true
         },
 
         _init: function () {
@@ -153,7 +174,7 @@
                 _pos = pos || opts.position;
 
             me.trigger(beforeEvent, [dis, pos]);
-            if (beforeEvent.defaultPrevented) return me;
+            if (beforeEvent.isDefaultPrevented()) return me;
             if (changed) {
                 me._dealState(isOpen, _dis, _pos);    //关闭或显示时，重置状态
                 me.displayFn[_dis](me.isOpen = Number(isOpen), _pos);   //根据模式和打开方向，操作panel
@@ -216,50 +237,54 @@
                     break;
             }
         },
+        
         /**
-         * @name open
-         * @grammar open([display, [position]]) ⇒ self
-         * @desc 打开panel, displan,position不传则为初始化时的方式
-         * @example
-         * $('#panel').panel('open', 'push', 'right');
+         * 打开panel
+         * @method open
+         * @param {String} [display] 可选值：('overlay' | 'reveal' | 'push')，默认为初始化时设置的值，Panel出现模式，overlay表示浮层reveal表示在content下边展示，push表示panel将content推出
+         * @param {String} position 可选值：('left' | 'right'），默认为初始化时设置的值，在右边或左边
+         * @chainable
+         * @return {self} 返回本身。
          */
         open: function (display, position) {
             return this._setShow(true, display, position);
         },
+        
         /**
-         * @name close
-         * @grammar close() ⇒ self
-         * @desc 关闭panel, 只能按上次打开的模式及方向关闭panel
-         * @example
-         * $('#panel').panel('close');
+         * 关闭panel
+         * @method close
+         * @chainable
+         * @return {self} 返回本身。
          */
         close: function () {
             return this._setShow(false);
         },
+        
         /**
-         * @name toggle
-         * @grammar toggle([display, [position]]) ⇒ self
-         * @desc 关闭或打开panel
-         * @example
-         * $('#panel').panel('toggle','overlay', 'left');
+         * 切换panel的打开或关闭状态
+         * @method toggle
+         * @param {String} [display] 可选值：('overlay' | 'reveal' | 'push')，默认为初始化时设置的值，Panel出现模式，overlay表示浮层reveal表示在content下边展示，push表示panel将content推出
+         * @param {String} position 可选值：('left' | 'right'），默认为初始化时设置的值，在右边或左边
+         * @chainable
+         * @return {self} 返回本身。
          */
         toggle: function (display, position) {
             return this[this.isOpen ? 'close' : 'open'](display, position);
         },
+        
         /**
-         * @name state
-         * @grammar state() ⇒ Boolean
-         * @desc 获取当前panel状态，打开为true,关闭为false
-         * @example
-         * $('#panel').panel('state');
+         * 获取当前panel状态，打开为true,关闭为false
+         * @method state
+         * @chainable
+         * @return {self} 返回本身。
          */
         state: function () {
             return !!this.isOpen;
         },
+        
         /**
-         * @desc 销毁组件。
-         * @name destroy
-         * @grammar destroy()  ⇒ instance
+         * 销毁组件
+         * @method destroy
          */
         destroy:function () {
             this.$panelMask && this.$panelMask.off().remove();
@@ -269,18 +294,41 @@
             $(window).off('ortchange', this._eventHandler);
             return this.$super('destroy');
         }
+        
         /**
-         * @name Trigger Events
-         * @theme event
-         * @desc 组件内部触发的事件
-         *
-         * ^ 名称 ^ 处理函数参数 ^ 描述 ^
-         * | init | event | 组件初始化的时候触发 |
-         * | beforeopen | event | panel打开前触发 |
-         * | open | event | panel打开后触发 |
-         * | beforeClose | event | panel关闭前触发，可以通过e.preventDefault()来阻止 |
-         * | close | event | panel关闭后触发 |
-         * | destroy | event | 组件在销毁的时候触发 |
+         * @event ready
+         * @param {Event} e gmu.Event对象
+         * @description 当组件初始化完后触发。
+         */
+        
+        /**
+         * @event beforeopen
+         * @param {Event} e gmu.Event对象
+         * @description panel打开前触发，可以通过e.preventDefault()来阻止
+         */
+        
+        /**
+         * @event open
+         * @param {Event} e gmu.Event对象
+         * @description panel打开后触发
+         */
+        
+        /**
+         * @event beforeclose
+         * @param {Event} e gmu.Event对象
+         * @description panel关闭前触发，可以通过e.preventDefault()来阻止
+         */
+        
+        /**
+         * @event close
+         * @param {Event} e gmu.Event对象
+         * @description panel关闭后触发
+         */
+        
+        /**
+         * @event destroy
+         * @param {Event} e gmu.Event对象
+         * @description 组件在销毁的时候触发
          */
     });
 

@@ -1,12 +1,15 @@
 /**
- * @file 搜索建议 - quickdelete插件
- * @name Suggestion - quickdelete
- * @desc 原来的quickdelete组件，现作为suggestion的插件
- * 以input作为container，原来的size,offset参数均在样式中处理，不单独提供参数
+ * @file quickdelete插件
  * @import widget/suggestion/suggestion.js
  */
 (function( gmu, $ ) {
 
+    /**
+     * quickdelete插件
+     * @class quickdelete
+     * @namespace Suggestion
+     * @pluginfor Suggestion
+     */
     gmu.Suggestion.register( 'quickdelete', {
 
         _init: function() {

@@ -1,38 +1,53 @@
 /**
- * @file 搜索建议 - sendRequest
- * @name Suggestion - sendRequest
- * @desc <qrcode align="right" title="Live Demo">../gmu/examples/widget/suggestion/suggestion_setup.html</qrcode>
- * 搜索建议option: sendRequest，默认sendRequest为jsonp方式取数据，若用户自己用数据填充sug，即该option为Function类型，则该文件可以不用引
+ * @file sendRequest
  * @import widget/suggestion/suggestion.js
  */
 
 (function( $, win ) {
 
-    /*
-    * 默认以jsonp发送请求，当用户在option中配置了sendRequest时
-    * 需要调用用e.preventDefault来阻默认请求数据方法
-    * sendRequest( e, query, callback, cacheData )
-    * @e 事件对象
-    * @query 发送请求的query
-    * @callback 渲染数据的回调函数
-    * @cacheData 缓存query list的回调方法
-    * */
-
     $.extend( gmu.Suggestion.options, {
 
-        // 发送请求返回数据后是否缓存query请求结果
+        /**
+         * @property {Boolean} [isCache=true] 发送请求返回数据后是否缓存query请求结果
+         * @namespace options
+         * @for Suggestion
+         * @uses Suggestion.sendrequest
+         */
         isCache: true,
 
-        // 发送请求时query的key值
+        /**
+         * @property {String} [queryKey='wd'] 发送请求时query的key值
+         * @namespace options
+         * @for Suggestion
+         * @uses Suggestion.sendrequest
+         */
+        
         queryKey: 'wd',
 
-        // 发送请求时callback的name
+        /**
+         * @property {String} [cbKey='cb'] 发送请求时callback的name
+         * @namespace options
+         * @for Suggestion
+         * @uses Suggestion.sendrequest
+         */
         cbKey: 'cb',
 
-        // 自定义发送请求函数，可以覆盖默认发送请求的方法
+        /**
+         * @property {Function} [sendrequest=null] 自定义发送请求函数，可以覆盖默认发送请求的方法
+         * @namespace options
+         * @for Suggestion
+         * @uses Suggestion.sendrequest
+         */
         sendrequest: null
     } );
 
+    /**
+     * sendRequest，默认sendRequest为jsonp方式取数据，若用户自己用数据填充sug，即该option为Function类型，则不需要使用此插件<br />
+     * 默认以jsonp发送请求，当用户在option中配置了sendRequest时，需要调用用e.preventDefault来阻默认请求数据方法
+     * @class sendrequest
+     * @namespace Suggestion
+     * @pluginfor Suggestion
+     */
     gmu.Suggestion.option( 'sendrequest', function() {
 
         // 当sendRequest不是Function类型时，该option操作生效

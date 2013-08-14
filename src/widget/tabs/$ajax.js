@@ -1,25 +1,5 @@
 /**
- * @file Tabs - ajax插件
- * @name Tabs - ajax插件
- * @short Tabs.ajax
- * @desc <qrcode align="right" title="Live Demo">../gmu/examples/widget/tabs/tabs_ajax.html</qrcode>
- * tabs插件, 有了此插件,tabs支持ajax功能
- *
- * 在a上面href设置的是地址，而不是id，则组件认为这个为ajax类型的。
- * 在options上传入ajax对象可以配置[ajax选项](#$.ajax)。如
- * <code>
- * $('#tabs').tabs({ajax: {
- *     dataType: 'json'
- *     //....
- * }});
- * </code>
- *
- * **Demo**
- * <codepreview href="../examples/widget/tabs/tabs_ajax.html">
- * ../gmu/examples/widget/tabs/tabs_ajax.html
- * ../gmu/examples/widget/tabs/tabs_json.html
- * </codepreview>
- *
+ * @file ajax插件
  * @import widget/tabs/tabs.js
  */
 (function ($, undefined) {
@@ -30,6 +10,12 @@
             error: '<p class="ui-load-error">内容加载失败!</p>'
         };
 
+    /**
+     * 在a上面href设置的是地址，而不是id，则组件认为这个为ajax类型的。在options上传入ajax对象可以配置[ajax选项](#$.ajax)
+     * @class ajax
+     * @namespace Tabs
+     * @pluginfor Tabs
+     */
     gmu.Tabs.register( 'ajax', {
         _init:function () {
             var _opts = this._options, items, i, length;
@@ -60,11 +46,13 @@
             to.isAjax && this.load(to.index);
         },
 
-
         /**
-         * @name load
-         * @grammar load(index[, force])  ⇒ instance
-         * @desc 加载内容，指定的tab必须是ajax类型。加载的内容会缓存起来，如果要强行再次加载，第二个参数传入true
+         * 加载内容，指定的tab必须是ajax类型。加载的内容会缓存起来，如果要强行再次加载，第二个参数传入true
+         * @method load
+         * @param {Number} index Tab编号
+         * @param {Boolean} [force=false] 是否强制重新加载
+         * @chainable
+         * @return {self} 返回本身。
          */
         load:function (index, force) {
             var me = this, _opts = me._options, items = _opts.items, item, $panel, prevXHR;
@@ -119,16 +107,37 @@
                 }
             }));
         }
+        
         /**
-         * @name Trigger Events
-         * @theme event
-         * @desc 组件内部触发的事件
-         *
-         * ^ 名称 ^ 处理函数参数 ^ 描述 ^
-         * | beforeLoad | event, xhr, settings | 在请求前触发，可以通过e.preventDefault()来取消此次ajax请求。 |
-         * | beforeRender | event, response, panel, index, xhr | ajax请求进来数据，在render到div上之前触发，对于json数据，可以通过此方来自行写render，然后通过e.preventDefault()来阻止，将response输出在div上。 |
-         * | load | event, panel | 当ajax请求到的内容过来后，平已经Render到div上了后触发 |
-         * | loadError | event, panel | 当ajax请求内容失败时触发，如果此事件被preventDefault了，则不会把自带的错误信息Render到div上 |
+         * @event beforeLoad
+         * @param {Event} e gmu.Event对象
+         * @param {Object} xhr xhr对象
+         * @param {Object} settings ajax请求的参数
+         * @description 在请求前触发，可以通过e.preventDefault()来取消此次ajax请求
+         */
+        
+        /**
+         * @event beforeRender
+         * @param {Event} e gmu.Event对象
+         * @param {Object} response 返回值
+         * @param {Object} panel 对应的Tab内容的容器
+         * @param {Number} index Tab的序号
+         * @param {Object} xhr xhr对象
+         * @description ajax请求进来数据，在render到div上之前触发，对于json数据，可以通过此方来自行写render，然后通过e.preventDefault()来阻止，将response输出在div上
+         */
+        
+        /**
+         * @event load
+         * @param {Event} e gmu.Event对象
+         * @param {Zepto} panel 对应的Tab内容的容器
+         * @description 当ajax请求到的内容过来后，平已经Render到div上了后触发
+         */
+        
+        /**
+         * @event loadError
+         * @param {Event} e gmu.Event对象
+         * @param {Zepto} panel 对应的Tab内容的容器
+         * @description 当ajax请求内容失败时触发，如果此事件被preventDefault了，则不会把自带的错误信息Render到div上
          */
     } );
 })(Zepto);

@@ -1,10 +1,8 @@
 /**
- * @file Tabs - 左右滑动手势插件
- * @name Tabs - 左右滑动手势插件
- * @short Tabs.swipe
- * @desc <qrcode align="right" title="Live Demo">../gmu/examples/widget/tabs/tabs.html</qrcode>
+ * @file 左右滑动手势插件
  * @import widget/tabs/tabs.js
  */
+
 (function ($, undefined) {
     var durationThreshold = 1000, // 时间大于1s就不算。
         horizontalDistanceThreshold = 30, // x方向必须大于30
@@ -57,12 +55,12 @@
                 });
         });
     }
-
+    
     /**
-     * @name tabs
-     * @desc
-     * **在Tabs基础上新增的Options**
-     * @desc tabs插件, 添加 swipe功能，zepto的swipeLeft, swipeRight不太准，所以在这另外实现了一套。
+     * 添加 swipe功能，zepto的swipeLeft, swipeRight不太准，所以在这另外实现了一套。
+     * @class swipe
+     * @namespace Tabs
+     * @pluginfor Tabs
      */
     gmu.Tabs.register( 'swipe', {
         _init:function () {

@@ -1,33 +1,48 @@
-
 /**
  * @file 进度条组件
- * @name Progressbar
- * @desc <qrcode align="right" title="Live Demo">../gmu/examples/widget/progresssbar/progresssbar.html</qrcode>
- * 提供一个可调整百分比的进度条
  * @import extend/touch.js, core/widget.js
+ * @module GMU
  */
 (function( gmu, $, undefined ) {
+    
     /**
-     * @name     $.ui.progressbar
-     * @grammar  $(el).progressbar(options) ⇒ self
-     * @grammar  $.ui.progressbar([el [,options]]) =>instance
-     * @desc **el**
-     * css选择器, 或者zepto对象
-     * **Options**
-     * - ''container'' {selector}: (可选，默认：body) 组件容器
-     * - ''initValue'' {Number}: (可选，默认：0) 初始值（百分比）
-     * - ''horizontal'' {Boolean}: (可选，默认：true) 组件是否为横向(若设为false,则为竖向)
-     * - ''transitionDuration'' {Number}: (可选，默认：300) 按钮滑动时动画效果持续的时间,单位为ms,设为0则无动画
-     * **Demo**
-     * <codepreview href="../examples/widget/progressbar/progressbar.html">
-     * ../gmu/examples/widget/progressbar/progressbar.html
-     * ../gmu/examples/widget/progressbar/progressbar_demopts.css
-     * </codepreview>
+     * 进度条组件
+     *
+     * @class Progressbar
+     * @constructor Html部分
+     * ```html
+     * <div id="progressbar"></div>
+     * ```
+     *
+     * javascript部分
+     * ```javascript
+     * $('#progressbar').progressbar();
+     * ```
+     * @param {dom | zepto | selector} [el] 用来初始化进度条的元素
+     * @param {Object} [options] 组件配置项。具体参数请查看[Options](#GMU:Progressbar:options)
+     * @grammar $( el ).progressbar( options ) => zepto
+     * @grammar new gmu.Progressbar( el, options ) => instance
      */
     gmu.define('Progressbar', {
+
         options: {
+
+            /**
+             * @property {Nubmer} [initValue=0] 初始时进度的百分比，不要百分号
+             * @namespace options
+             */
             initValue:          0,
+
+            /**
+             * @property {Boolean} [horizontal=true] 组件是否为横向(若设为false,则为竖向)
+             * @namespace options
+             */
             horizontal:         true,
+
+            /**
+             * @property {Number} [transitionDuration=300] 按钮滑动时动画效果持续的时间,单位为ms,设为0则无动画
+             * @namespace options
+             */
             transitionDuration: 300,
             _isShow:            true,
             _current:           0,
@@ -184,18 +199,11 @@
         },
 
         /**
-         * @desc 获取/设置progressbar的值
-         * @name value
-         * @grammar value() => value   /  value(value) => self
-         * @example
-         * //setup mode
-         * $('#progressbar').progressbar('value');
-         * $('#progressbar').progressbar('value', 30);
-         *
-         * //render mode
-         * var demo = $.ui.progressbar();
-         * demopts.value();
-         * demopts.value(30);
+         * 获取/设置progressbar的值
+         * @method value
+         * @param {Number} [opts] 要设置的值，不传表示取值
+         * @chainable
+         * @return {self} 返回本身。
          */
         value: function(value) {
             var me = this,
@@ -223,10 +231,12 @@
                 return me;
             }
         },
+
         /**
-         * @desc 显示progressbar
-         * @name show
-         * @grammar show()  ⇒ self
+         * 显示progressbar
+         * @method show
+         * @chainable
+         * @return {self} 返回本身。
          */
         show: function() {
             var me = this;
@@ -240,9 +250,10 @@
         },
 
         /**
-         * @desc 隐藏progressbar
-         * @name hide
-         * @grammar hide()  ⇒ self
+         * 隐藏progressbar
+         * @method hide
+         * @chainable
+         * @return {self} 返回本身。
          */
         hide: function() {
             var me = this;
@@ -254,17 +265,41 @@
 
             return me;
         }
+
         /**
-         * @name Trigger Events
-         * @theme event
-         * @desc 组件内部触发的事件
-         * ^ 名称 ^ 处理函数参数 ^ 描述 ^
-         * | init | event | 组件初始化的时候触发，不管是render模式还是setup模式都会触发 |
-         * | dragStart | event | 拖动进度条开始时触发的事件 |
-         * | dragMove | event | 拖动进度条过程中触发的事件 |
-         * | dragEnd | event | 拖动进度条结束时触发的事件 |
-         * | valueChange | event | 隐藏后触发的事件 |
-         * | destroy | event | 组件在销毁的时候触发 |
+         * @event ready
+         * @param {Event} e gmu.Event对象
+         * @description 当组件初始化完后触发。
+         */
+        
+        /**
+         * @event dragStart
+         * @param {Event} e gmu.Event对象
+         * @description 拖动进度条开始时触发的事件
+         */
+        
+        /**
+         * @event dragMove
+         * @param {Event} e gmu.Event对象
+         * @description 拖动进度条过程中触发的事件
+         */
+        
+        /**
+         * @event dragEnd
+         * @param {Event} e gmu.Event对象
+         * @description 拖动进度条结束时触发的事件
+         */
+        
+        /**
+         * @event valueChange
+         * @param {Event} e gmu.Event对象
+         * @description progressbar的值有变化时触发（拖动progressbar时，值不一定会变化）
+         */
+        
+        /**
+         * @event destroy
+         * @param {Event} e gmu.Event对象
+         * @description 组件在销毁的时候触发
          */
     });
 })( gmu, gmu.$ );

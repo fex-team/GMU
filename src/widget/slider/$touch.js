@@ -20,14 +20,29 @@
     // 提供默认options
     $.extend( gmu.Slider.options, {
 
-        // 是否阻止事件冒泡
+        /**
+         * @property {Boolean} [stopPropagation=false] 是否阻止事件冒泡
+         * @namespace options
+         * @for Slider
+         * @uses Slider.touch
+         */
         stopPropagation: false,
 
-        // 是否阻止滚动
+        /**
+         * @property {Boolean} [disableScroll=false] 是否阻止滚动
+         * @namespace options
+         * @for Slider
+         * @uses Slider.touch
+         */
         disableScroll: false
     } );
 
-
+    /**
+     * 图片轮播手指跟随插件
+     * @class touch
+     * @namespace Slider
+     * @pluginfor Slider
+     */
     gmu.Slider.register( 'touch', {
         _init: function() {
             var me = this,

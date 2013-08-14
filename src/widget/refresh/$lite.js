@@ -1,23 +1,27 @@
 /**
- * @file 加载更多组件 － lite版本
- * @name Refresh.lite
- * @short Refresh.lite
- * @desc <qrcode align="right" title="Live Demo">../gmu/examples/widget/refresh/refresh_lite.html</qrcode>
- * 上拉加载更多，利用原生滚动，不使用iscroll
+ * @file lite插件，上拉加载更多，利用原生滚动，不使用iscroll
  * @import widget/refresh/refresh.js
  */
 
 (function( gmu, $, undefined ) {
+    
     /**
-     * @name refresh.lite
-     * @desc Refresh lite插件，支持拉动加载。
-     * @desc **Options** 在refresh的基础上增加参数
-     * - ''threshold'' {Number}: (可选) 加载的阀值，默认手指在屏幕的一半，并且拉动距离超过10px即可触发加载操作，配置该值后，可以将手指在屏幕位置进行修重情重改，若需要实现连续加载效果，可将该值配置很大，如1000等
-     * - ''seamless''  {Boolean}: (可选) 是否连续加载，解决设置threshold在部分手机上惯性滚动，或滚动较快时不触发touchmove的问题
-     * **Demo**
-     * <codepreview href="../examples/widget/refresh/refresh_lite.html">
-     * ../gmu/examples/widget/refresh/refresh_lite.html
-     * </codepreview>
+     * lite插件，上拉加载更多，利用原生滚动，不使用iscroll
+     * @class lite
+     * @namespace Refresh
+     * @pluginfor Refresh
+     */
+    /**
+     * @property {Number} [threshold=5] 加载的阀值，默认手指在屏幕的一半，并且拉动距离超过10px即可触发加载操作，配置该值后，可以将手指在屏幕位置进行修重情重改，若需要实现连续加载效果，可将该值配置很大，如1000等
+     * @namespace options
+     * @for Refresh
+     * @uses Refresh.lite
+     */
+    /**
+     * @property {Boolean} [seamless=false] 是否连续加载，解决设置threshold在部分手机上惯性滚动，或滚动较快时不触发touchmove的问题
+     * @namespace options
+     * @for Refresh
+     * @uses Refresh.lite
      */
     gmu.Refresh.register( 'lite', {
         _init: function () {
