@@ -4,10 +4,28 @@
  */
 (function( gmu, $, undefined ) {
     $.extend( gmu.Slider.options, {
+        /**
+         * @property {Number} [viewNum=2] ???
+         * @namespace options
+         * @for Slider
+         * @uses Slider.multiview
+         */
         viewNum: 2,
+        /**
+         * @property {Number} [travelSize=2] ???
+         * @namespace options
+         * @for Slider
+         * @uses Slider.multiview
+         */
         travelSize: 2
     } );
 
+    /**
+     * 图片轮播显示点功能
+     * @class multiview
+     * @namespace Slider
+     * @pluginfor Slider
+     */
     gmu.Slider.register( 'multiview', {
         _arrange: function( width, index ) {
             var items = this._items,

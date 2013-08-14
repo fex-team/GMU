@@ -12,15 +12,32 @@
 
         options: {
 
-            // 是否显示点
+            /**
+             * @property {Boolean} [dots=true] 是否显示点
+             * @namespace options
+             * @for Slider
+             * @uses Slider.dots
+             */
             dots: true,
 
+            /**
+             * @property {Object} [selector={dots: '.ui-slider-dots'}] 所有点父级的选择器
+             * @namespace options
+             * @for Slider
+             * @uses Slider.dots
+             */
             selector: {
-                dots: '.ui-slider-dots'    // 所有点父级的选择器
+                dots: '.ui-slider-dots'
             }
         }
     } );
 
+    /**
+     * 图片轮播显示点功能
+     * @class dots
+     * @namespace Slider
+     * @pluginfor Slider
+     */
     gmu.Slider.option( 'dots', true, function() {
         
         var updateDots = function( to, from ) {

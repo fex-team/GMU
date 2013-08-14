@@ -1,17 +1,18 @@
 /**
  * @file 模板解析
- * @name parseTpl
- * @short parseTpl
  * @import zepto.js
+ * @module GMU
  */
 (function( $, undefined ) {
     
     /**
-     * @desc 解析模版tpl, 当data未传入时返回编译结果函数, 当某个template需要多次解析时，
-     * 建议保存编译结果函数，然后调用此函数来得到结果。
+     * 解析模版tpl。当data未传入时返回编译结果函数；当某个template需要多次解析时，建议保存编译结果函数，然后调用此函数来得到结果。
+     * 
+     * @method $.parseTpl
      * @grammar $.parseTpl(str, data)  ⇒ string
      * @grammar $.parseTpl(str)  ⇒ Function
-     * @name $.parseTpl
+     * @param {String} str 模板
+     * @param {Object} data 数据
      * @example var str = "<p><%=name%></p>",
      * obj = {name: 'ajean'};
      * console.log($.parseTpl(str, data)); // => <p>ajean</p>

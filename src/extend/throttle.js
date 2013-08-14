@@ -1,27 +1,25 @@
 /**
- * @file 稀释方法
- * @name support
- * @short support
- * @desc 减少对方法、事件的执行频率，多次调用，在指定的时间内只会执行一次
+ * @file 减少对方法、事件的执行频率，多次调用，在指定的时间内只会执行一次
  * @import zepto.js
+ * @module GMU
  */
 
 (function ($) {
     /**
-     * @desc 减少执行频率, 多次调用，在指定的时间内，只会执行一次。
-     * **options:**
-     * - ***delay***: 延时时间
-     * - ***fn***: 被稀释的方法
-     * - ***debounce_mode***: 是否开启防震动模式, true:start, false:end
-     *
-     * <code type="text">||||||||||||||||||||||||| (空闲) |||||||||||||||||||||||||
-     * X    X    X    X    X    X      X    X    X    X    X    X</code>
-     *
+     * 减少执行频率, 多次调用，在指定的时间内，只会执行一次。
+     * ```
+     * ||||||||||||||||||||||||| (空闲) |||||||||||||||||||||||||
+     * X    X    X    X    X    X      X    X    X    X    X    X
+     * ```
+     * 
+     * @method $.throttle
      * @grammar $.throttle(delay, fn) ⇒ function
-     * @name $.throttle
+     * @param {Number} [delay=250] 延时时间
+     * @param {Function} fn 被稀释的方法
+     * @param {Boolean} [debounce_mode=false] 是否开启防震动模式, true:start, false:end
      * @example var touchmoveHander = function(){
-         *     //....
-         * }
+     *     //....
+     * }
      * //绑定事件
      * $(document).bind('touchmove', $.throttle(250, touchmoveHander));//频繁滚动，每250ms，执行一次touchmoveHandler
      *
