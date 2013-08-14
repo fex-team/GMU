@@ -19,6 +19,7 @@ body {
     position: relative;
     width: 100%;
     height: 100%;
+    overflow-x:hidden;
 }
 h3 {
     background: #2b88cf;

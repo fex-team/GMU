@@ -53,6 +53,16 @@ module.exports = function(grunt) {
             }
         },
 
+        watch: {
+            doc: {
+                files: ['src/**/*.js'],
+                tasks: ['doc'],
+                options: {
+                    debounceDelay: 250
+                }
+            }
+        },
+
         fis: {
             options: {
                 srcPath: '<%= concat_gmu.options.srcPath %>',
@@ -197,6 +207,9 @@ module.exports = function(grunt) {
 
     // 负责代码规范检测
     grunt.loadNpmTasks( 'grunt-jsbint' );
+
+    // 负责监听文件变化
+    grunt.loadNpmTasks( 'grunt-contrib-watch' );
 
     // Default task(s).
     grunt.registerTask( 'default', [ 'jsbint:all', 'update_submodules', 'concat',
