@@ -166,7 +166,22 @@ module.exports = function(grunt) {
             temp: {
                 cwd: 'test/',
                 src: [
-                    'widget/tabs/*.js'
+                    'extend/*.js',
+                    'widget/add2desktop/*.js',
+                    'widget/button/button.js',
+                    'widget/calendar/*.js',
+                    'widget/dialog/*.js',
+                    'widget/dropmenu/*.js',
+                    'widget/gotop/*.js',
+                    'widget/navigator/*.js',
+                    'widget/panel/*.js',
+                    'widget/popover/*.js',
+                    'widget/progressbar/*.js',
+                    //'widget/refresh/*.js',
+                    'widget/slider/*.js',
+                    'widget/suggestion/*.js',
+                    'widget/tabs/*.js',
+                    'widget/toolbar/*.js'
                     ]
             }
         },
