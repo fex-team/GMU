@@ -135,8 +135,8 @@ test("加载成功&事件测试:beforeLoad,load,beforeRender", function(){
                 ta.tap($('#tabs .ui-tabs-nav li').get(2));
                 setTimeout(function () {
                     $('#tabs').tabs('destroy');
-                    start();
                     $('#tabs').remove();
+                    start();
                 }, 500);
             }
         }
@@ -165,8 +165,8 @@ test("第一次加载还未完成，第二次加载开始，则第一次取消�
             ok(true, 'load has triggered');
             setTimeout(function () {
                 $('#tabs').tabs('destroy');
-                start();
                 $('#tabs').remove();
+                start();
             }, 300);
         },
         loadError: function () {
@@ -207,12 +207,13 @@ test("切换到已经加载过的内容，不再次加载", function(){
         	if(count == 2){
         		ok(true, '第三次点击开始');
         	    ta.tap($('#tabs .ui-tabs-nav li').get(1));
+                setTimeout(function () {
+                    $('#tabs').tabs('destroy');
+                    $('#tabs').remove();
+                    start();
+                }, 200);
         	}
-            setTimeout(function () {
-                $('#tabs').tabs('destroy');
-                start();
-                $('#tabs').remove();
-            }, 3200);
+
         },
         loadError: function () {
             ok(true, 'load error triggered');
@@ -224,6 +225,7 @@ test("切换到已经加载过的内容，不再次加载", function(){
 
 test("事件&render后内容高度能自适应", function(){
     stop()
+    expect(4);
     setup('html')
     $('#tabs').tabs({
         ajax: {
@@ -243,7 +245,7 @@ test("事件&render后内容高度能自适应", function(){
                 $('#tabs').tabs('destroy');
                 $('#tabs').remove();
                 start();
-            },500)
+            },300)
         }
     });
     ta.tap($('#tabs .ui-tabs-nav li').get(1));
@@ -259,10 +261,10 @@ test("disablePlugin",function(){
 	setTimeout(function(){
 		equals($(".ui-tabs-content").children()[1].textContent, "", "disable plugin");
 		equals(tabs.load, undefined, "disable plugin");
-        tabs.destroy(); 
-        start();
+        tabs.destroy();
         $('#tabs').remove();
-	}, 300);
+        start();
+    }, 300);
 }) ;
 
 test("destroy",function(){
