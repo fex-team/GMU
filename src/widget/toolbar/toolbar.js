@@ -148,6 +148,7 @@
 
             // 创建左侧按钮组的容器
             var leftBtnContainer = $toolbarWrap.find('.ui-toolbar-left');
+            var rightBtnContainer = $toolbarWrap.find('.ui-toolbar-right');
             if( leftBtnContainer.length === 0 ) {
                 leftBtnContainer = children.length ? $('<div class="ui-toolbar-left">').insertBefore(children[0]) : $('<div class="ui-toolbar-left">').appendTo($toolbarWrap);
                 btnGroups['left'].forEach( function( btn ) {
