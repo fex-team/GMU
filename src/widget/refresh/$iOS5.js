@@ -1,6 +1,6 @@
 /**
  * @file iOS5插件，适用于iOS5及以上
- * @import widget/refresh/refresh.js
+ * @import widget/refresh/refresh.js,extend/throttle.js
  */
 (function( gmu, $, undefined ) {
     
@@ -66,7 +66,7 @@
                 $upElem = opts.$upElem,
                 wrapper = me.$el.get(0),
                 _scrollFn = function () {
-                    clearTimeout(me.opts('topOffsetTimer'));
+                    clearTimeout(opts.topOffsetTimer);
                     if ($upElem && $upElem.length && wrapper.scrollTop <= topOffset && !opts['_upRefreshed']) {
 
                         wrapper.scrollTop = topOffset;
