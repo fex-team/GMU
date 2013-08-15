@@ -824,6 +824,7 @@ test('显示 - topOffset（部分断言被注释）', function () {
 
 test("交互 － 加载过程中不响应滑动动作", function(){
     createDom('down');
+    $('.wrapper li').css('height', '18px'); // 必须设置高度，否则在不同设备上iscroll的高度不一样，跑出的结果也不一样
     expect(1);
     stop();
 
@@ -915,5 +916,3 @@ test("destroy", function(){
         this.finish();
     });
 });
-
-//lili data._actDir怎么得来的 up时，在ios上失效
