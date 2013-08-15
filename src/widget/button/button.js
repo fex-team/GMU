@@ -73,6 +73,12 @@
             return $el;
         },
 
+        _init: function(){
+            var me = this;
+
+            me.$el = me.$el === undefined ? $('<span/>').appendTo( document.body ) : me.$el;
+        },
+
         _create: function() {
             var me = this,
                 opts = me._options,
