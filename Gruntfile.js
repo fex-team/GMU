@@ -37,7 +37,13 @@ module.exports = function(grunt) {
             all: {
                 cwd: '<%= concat_gmu.options.srcPath %>',
 
-                src: [ 'widget/*.js' ],
+                src: [
+                    'widget/**/*.js',
+
+                    // 所有的插件都默认不打包，要加的话在下面配。
+                    '!widget/**/$*.js'
+                ],
+
                 dest: 'dist/gmu.js'
             }
         },
