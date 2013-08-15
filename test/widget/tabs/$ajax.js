@@ -137,7 +137,7 @@ test("加载成功&事件测试:beforeLoad,load,beforeRender", function(){
                     $('#tabs').tabs('destroy');
                     start();
                     $('#tabs').remove();
-                }, 300);
+                }, 500);
             }
         }
     });
@@ -241,9 +241,9 @@ test("事件&render后内容高度能自适应", function(){
             setTimeout(function () {
                 equals($(panel).height(), $('#tabs .ui-tabs-content').height()-1, 'rend后内容高度能自适应了');
                 $('#tabs').tabs('destroy');
-                start();
                 $('#tabs').remove();
-            },300)
+                start();
+            },500)
         }
     });
     ta.tap($('#tabs .ui-tabs-nav li').get(1));
