@@ -43,7 +43,17 @@ function setup1() {
         '<div id="conten3">content3</div>' +
         '</div>');
 };
-
+function setup2() {
+    $("body").append('<div id="setup"><ul>' +
+        '<li><a href="#conten1">Tab1</a></li>' +
+        '<li><a href="#conten2">Tab2</a></li>' +
+        '<li><a href="#conten3">Tab3</a></li>' +
+        '</ul>' +
+        '<div id="conten1">content1</div>' +
+        '<div id="conten2"><input type="checkbox" id="input1" /><label for="input1">选中我后tabs不可切换</label></div>' +
+        '<div id="conten3">content3</div>' +
+        '<div class="ui-viewport ui-tabs-content"></div></div>');
+};
 test("el不传", function(){
 	 stop();
 	 ua.loadcss(["transitions.css", "widget/tabs/tabs.css","widget/tabs/tabs.default.css"], function(){
@@ -80,7 +90,7 @@ test("el(zepto) & container & 默认配置项", function(){
     equals(tabs._options.activate, null,"The default activate is right");
     equals(tabs._options.beforeActivate, null,"The default beforeActivate is right");
     equals(tabs._options.animateComplete, null,"The default animateComplete is right");
-	    
+
     equals(tabs.$el.attr("class"), "ui-tabs", "The el is right");
 	equals(tabs.$el.parent().attr("id"), "container", "The container is right");
 	ok(ua.isShown($('.ui-tabs-nav', tabs.$el)[0]), 'The tabs nav shows');
@@ -98,7 +108,7 @@ test("active", function(){
        active: 2
    })
    equals(tabs._options.active,2,"The default active is right");
-   
+
    ok($('.ui-tabs-nav li', tabs.$el).eq(2).hasClass("ui-state-active"),"The active tab has ui-state-active");
    ok($('.ui-tabs-content .ui-tabs-panel', tabs.$el).eq(2).hasClass("ui-state-active"),"The active tab has ui-state-active");
    tabs.destroy();
@@ -112,7 +122,7 @@ test("transition", function(){
       transition: ''
   })
   equals(tabs._options.transition,'',"The default active is right");
-  
+
   ok(!$('.ui-tabs-content .ui-tabs-panel', tabs.$el).hasClass("slide"),"The active tab has slide");
   tabs.destroy();
 });
@@ -126,7 +136,7 @@ test("setup & 默认配置项", function(){
     equals(tabs._options.activate, null,"The default activate is right");
     equals(tabs._options.beforeActivate, null,"The default beforeActivate is right");
     equals(tabs._options.animateComplete, null,"The default animateComplete is right");
-	    
+
     equals(tabs.$el.attr("id"), "setup", "The el is right");
     equals(tabs.$el.attr("class"), "ui-tabs", "The el is right");
 	equals(tabs.$el.parent()[0], document.body, "The container is right");
@@ -203,6 +213,7 @@ test("事件测试(beforeActivate,activate,animateComplete)&交互测试&接口�
             setTimeout(function () {
                 tabs.destroy();
                 tabs2.destroy();
+                $('#setup').remove();
                 start();
             }, 300)
         },
@@ -243,7 +254,7 @@ test("屏幕旋转  & 接口(refresh)", function(){
                 $(w).trigger('ortchange');
 				setTimeout(function(){
 					equals(w.$(".ui-tabs-content", tabs.$el).height(), w.$(".ui-tabs-panel", tabs.$el).height() + 1, "The height is right");
-					
+					tabs.destroy();
 					me.finish();
 				}, 600);
 			}, 300);
@@ -269,4 +280,21 @@ test("destroy",function(){
         // ok(ol==0,"The tabs is destroy");
         this.finish();
     })
+});
+//以下用例为特殊的边界情况
+test("换向已经active的tab,tab状态不变",function(){
+    expect(2);
+    stop();
+    setup2();
+    var tabs = $('#setup').tabs({
+        active: 2
+    }).tabs('this');
+    tabs.switchTo(2);
+    setTimeout(function () {
+        strictEqual(tabs.$el.find('.ui-tabs-nav li').eq(2).hasClass('ui-state-active'), true, '切换向已经active的tab,tab状态不变');
+        ok(ua.isShown(tabs.$el.find('.ui-tabs-content .ui-tabs-panel')[2]), '非active的tab隐藏');
+        tabs.destroy();
+        $('#setup').remove();
+        start()
+    }, 500);
 });

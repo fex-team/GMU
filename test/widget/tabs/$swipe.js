@@ -216,7 +216,8 @@ test("destroy",function(){
         var el1= w.dt.eventLength();
 
         var tabs =  w.gmu.Tabs({
-             items: getItems()
+            swipe:true,
+            items: getItems()
         });
         ta.touchstart(w.$(".ui-panel")[0], {
             touches: [{
