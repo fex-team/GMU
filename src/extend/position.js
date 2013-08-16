@@ -105,6 +105,8 @@
             return _position.call( this );
         }
 
+        opts = $.extend( {}, opts );
+
         var target = $( opts.of ),
             collision = opts.collision,
             within = collision && getWithinInfo( opts.within ),
@@ -141,6 +143,7 @@
                 $el : $el
             } );
 
+            pos.using = opts.using;
             $el.offset( pos );
         });
     }
