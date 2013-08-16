@@ -23,12 +23,15 @@
  * GMU由百度GMU小组开发，基于开源BSD协议，支持商业和非商业用户的免费使用和任意修改，您可以通过[get started](http://gmu.baidu.com/getstarted)快速了解。
  *
  * ###Quick Start###
+ * + **官网：**http://gmu.baidu.com/
+ * + **API：**http://gmu.baidu.com/doc
+ *
+ * ###历史版本###
+ *
  * ### 2.0.5 ###
  * + **DEMO: ** http://gmu.baidu.com/demo/2.0.5
  * + **API：** http://gmu.baidu.com/doc/2.0.5
  * + **下载：** http://gmu.baidu.com/download/2.0.5
- *
- * ###历史版本###
  *
  * @module GMU
  * @title GMU API 文档
