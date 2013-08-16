@@ -263,65 +263,20 @@ test("y上的移动大于x,什么也不做", function(){
     ok(!$(".ui-panel").eq(0).hasClass('out'), '缺少开始点击的动作,什么也不做')
     ok(!$(".ui-panel").eq(1).hasClass('in'), '缺少开始点击的动作,什么也不做')
 })
-test("模拟事件没有touches", function(){
-    stop()
+test("没有move,则不滑动", function(){
     var tabs = gmu.Tabs({
         container: '#container',
         items: getItems()
     })
-    simulateTouchEvent_('touchstart',$(".ui-panel")[0], {
-        pageX: 0,
-        pageY: 0
+    ta.touchstart($(".ui-panel")[0], {
+        touches: [{
+            clientX: 0,
+            clientY: 0
+        }]
     });
-    simulateTouchEvent_('touchmove',$(".ui-panel")[0], {
-        pageX: -50,
-        pageY: 0
-    });
-    simulateTouchEvent_('touchend',$(".ui-panel")[0]);
-    ok($(".ui-panel").eq(0).hasClass('out'), '向右滑动（滑出）')
-    ok($(".ui-panel").eq(1).hasClass('in'), '向右滑动（滑入）')
 
-    setTimeout(function(){
-        ok(!$(".ui-panel").eq(0).hasClass('out'), '滑动结束')
-        ok(!$(".ui-panel").eq(1).hasClass('in'), '滑动结束')
-        equals(1, tabs._options.active, '向右滑动')
-        ok($(".ui-tabs-nav li", tabs.$el).eq(1).hasClass("ui-state-active"))
-        ok($(".ui-tabs-panel", tabs.$el).eq(1).hasClass("ui-state-active"))
-        start()
-    }, 600)
+    ta.touchend($(".ui-panel")[0]);
+    ok(!$(".ui-panel").eq(0).hasClass('out'), '没有move,则不滑动')
+    ok(!$(".ui-panel").eq(1).hasClass('in'), '没有move,则不滑动')
+
 })
- function simulateTouchEvent_(type, target, options){
-    options = options || {};
-    if(type != "touchend" && type !="touchcancel"){
-        options.targetTouches =  [];
-    }
-    var cancelable = (type != "touchcancel");
-    var targetTouches = ta.createTouchList(options.targetTouches, target);
-    var changedTouches = ta.createTouchList(options.changedTouches, target);
-    if(ta.plat.os.ios && document.createTouchList){
-        var event = document.createEvent('TouchEvent');
-        event.initTouchEvent(type, true, cancelable, window, /*detail*/ 1,
-            /*screenX*/ 0, /*screenY*/ 0, options.pageX, options.pageY, false, false, false, false,
-            null, targetTouches, [], 1.0, 0.0, null);
-    }
-    else if(ta.plat.os.android && (ta.plat.os.version).substr(0, 3) >= 4.0  && document.createTouchList){
-        var event = document.createEvent("TouchEvent");
-        event.initTouchEvent(null, targetTouches, [],
-            type, window, /*screenX*/ 0, /*screenY*/ 0, options.pageX,
-            options.pageY, false, false, false, false);
-    }
-    else{
-        event = document.createEvent('MouseEvents');
-        event.initMouseEvent(type, true, cancelable, window,
-            /*detail*/ 1, /*screenX*/ 0, /*screenY*/ 0, options.pageX, options.pageY,
-            false, false, false, false, /*button*/ 0);
-        event.touches = options.touches;
-        event.targetTouches = targetTouches;
-        event.changedTouches = changedTouches;
-        event.scale = 1.0;
-        event.rotation = 0.0;
-    }
-     ta.fix(event);
-    if('dispatchEvent' in target)
-        target.dispatchEvent(event);
-}
