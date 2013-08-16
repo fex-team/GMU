@@ -1,18 +1,8 @@
-.ui-input-mask{
+.ui-quickdelete{
 	position: relative;
+    display: inline-block;
 }
 
-.ui-input-mask input{
+.ui-quickdelete>*:not(span.ui-quickdelete-btn){
 	outline: none;
 }
-
-.ui-quickdelete-button{
-    /*gmu-image-self*/
-    background: url(delete.png) no-repeat;
-	-webkit-background-size: 100%;
-    -webkit-background-origin: content-box;
-	visibility: hidden;
-	position: absolute;
-	cursor: pointer;
-}
-

@@ -152,7 +152,7 @@ test('自定义配置项el为zepto对象', function(){
 });
 
 
-//只有PC和ios5以上支持fix
+//只有PC和ios5以上支持fix，某些版本的UC上UA中的Android后面不带版本号，导致zepto的$.os.phone判断出错
 if((!$.os.phone && !$.os.tablet)||($.os.ios && parseFloat($.os.version) > 5)){
     test('fix参数', function(){
         stop();
@@ -341,8 +341,7 @@ test('Button实例作为按钮', function(){
             title: '百度首页',
             leftBtns: ['<span class="btn_1">返回</span>'],
             rightBtns: ['<span class="btn_1">百科</span>', new gmu.Button({
-                                                                    label: 'button按钮',
-                                                                    container: '#btsn_create'
+                                                                    label: 'button按钮'
                                                                 })]
         } );
 
@@ -360,7 +359,7 @@ test('Button实例作为按钮', function(){
         ok(toolbar.$el.find(".ui-toolbar-left").children().length === 1 &&
            toolbar.$el.find(".ui-toolbar-right").children().length === 2 , "Toolbar 按钮个数正确");
         ok(toolbar.$el.find(".ui-toolbar-right").children().length === 2 &&
-           toolbar.$el.find(".ui-toolbar-right").children()[1].tagName === 'BUTTON' , "Button实例作为toolbar按钮正确");
+           toolbar.$el.find(".ui-toolbar-right").children()[1].tagName === 'SPAN' , "Button实例作为toolbar按钮正确");
 
         // 检查DOM结构
         var toolbarWrap = $(toolbar.$el.children()[0]);

@@ -1,8 +1,5 @@
 /**
- * @file 搜索建议 - posAdapt
- * @name Suggestion - posAdapt
- * @desc <qrcode align="right" title="Live Demo">../gmu/examples/widget/suggestion/suggestion_setup.html</qrcode>
- * 搜索建议 - 位置自适应插件，主要需求用于当sug放在页面底部时，需将sug翻转到上面来显示
+ * @file 位置自适应插件
  * @import widget/suggestion/suggestion.js, extend/event.ortchange.js
  */
 (function( $, win ) {
@@ -12,6 +9,12 @@
     // 基于list最外层的$content元素进行查找的
     gmu.Suggestion.options.listSelector = 'li';
 
+    /**
+     * 位置自适应插件，主要需求用于当sug放在页面底部时，需将sug翻转到上面来显示
+     * @class posadapt
+     * @namespace Suggestion
+     * @pluginfor Suggestion
+     */
     gmu.Suggestion.register( 'posadapt', {
 
         _init: function() {

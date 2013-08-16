@@ -1,4 +1,4 @@
-.ui-button{
+.ui-btn{
     display: inline-block;
     padding: 0.5em 0.6em;
     margin: 2px;
@@ -9,81 +9,92 @@
     color: #333;
     text-decoration: none;
     font-size: 14px;
+    position: relative;
+}
+
+.ui-btn-group {
+    margin: 2px;
+    position: relative;
+    display: inline-block;
+    font-size: 0;
+    white-space: nowrap;
+    vertical-align: middle;
+}
+.ui-btn-group .ui-btn {
+    margin: 0;
+    position: relative;
+    border-radius: 0;
+    margin-left: -1px;
+}
+
+.ui-btn-group>.ui-btn:first-child {
+    border-bottom-left-radius: 4px;
+    border-top-left-radius: 4px;
+}
+.ui-btn-group>.ui-btn:last-child {
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
 }
 
 @media all and (min-device-width:768px) and (max-device-width: 1024px){
-    .ui-button{
+    .ui-btn{
         font-size: 16px;
     }
 }
-.ui-button.white {
-    background-color: rgba(0, 0, 0, 0.4);
-    border-color: black;
-}
-.ui-button.ui-state-disable {
+.ui-btn.ui-state-disable,
+.ui-btn.ui-state-disabled {
     color:#ababab;
     background-color:#e6e6e6 ;
     border-color: #d2d2d2;
 }
-.ui-button.ui-state-active {
+.ui-btn.ui-state-active {
     color:#fff;
     background-color: #2d7ded;
     border-color:#135cbe;
 }
-.ui-button.ui-state-active.white {
-    color:#fff;
-    background-color: rgba(0, 0, 0, 0.8);
-    border-color:black;
-}
-.ui-button.ui-state-hover{
+.ui-btn.ui-state-hover{
     background-color: #d9d9d9;
     border-color: #B3B3B3;
 }
-.ui-button.ui-state-hover.white{
-    background-color: rgba(0, 0, 0, 0.6);
-    border-color:black;
-}
-.ui-button-text-icon {
-    position: relative;
-}
-.ui-button.white .ui-icon {
-    background-image: url(../../icons-36-white.png);
-}
-.ui-button-text-icon .ui-icon {
+.ui-btn-icon-left .ui-icon,
+.ui-btn-icon-right .ui-icon,
+.ui-btn-icon-bottom .ui-icon,
+.ui-btn-icon-top .ui-icon{
     position: absolute;
 }
-.ui-button-icon-pos-left {
+.ui-btn-icon-left {
     padding-left: 30px;
 }
-.ui-button-icon-pos-left .ui-icon {
+.ui-btn-icon-left .ui-icon {
     left: 5px;
     top: 50%;
     margin-top: -9px;
 }
-.ui-button-icon-pos-right {
+.ui-btn-icon-right {
     padding-right: 30px;
 }
-.ui-button-icon-pos-right .ui-icon {
+.ui-btn-icon-right .ui-icon {
     right: 5px;
     top: 50%;
     margin-top: -9px;
 }
-.ui-button-icon-pos-top {
+.ui-btn-icon-top {
     padding-top: 30px;
 }
-.ui-button-icon-pos-top .ui-icon {
+.ui-btn-icon-top .ui-icon {
     top: 5px;
     left: 50%;
     margin-left: -9px;
 }
-.ui-button-icon-pos-bottom {
+.ui-btn-icon-bottom {
     padding-bottom: 30px;
 }
-.ui-button-icon-pos-bottom .ui-icon {
+.ui-btn-icon-bottom .ui-icon {
     bottom: 5px;
     left: 50%;
     margin-left: -9px;
 }
-.ui-button-icon-only {
+.ui-btn-icon-only,
+.ui-btn-icon-notext {
     padding: 0.38em 0.5em;
 }

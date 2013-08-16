@@ -3,18 +3,21 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
     <meta charset="utf-8">
-    <title>图标位置</title>
+    <title>设置图标位置的按钮</title>
     <!--demo展示所用css，不用关心 begin-->
     <link rel="stylesheet" type="text/css" href="../../../assets/reset.css" />
+    <link rel="stylesheet" type="text/css" href="../../../assets/icons.default.css" />
     <link rel="stylesheet" href="button_demo.css" />
     <!--demo展示所用css end-->
     <!--组件依赖css begin-->
     <link rel="stylesheet" type="text/css" href="../../../assets/widget/button/button.css" />
     <link rel="stylesheet" type="text/css" href="../../../assets/widget/button/button.default.css" />
+    <link rel="stylesheet" type="text/css" href="../../../assets/icons.default.css" />
     <!--组件依赖css end-->
     <!--组件依赖js begin-->
     <script type="text/javascript" src="../../../dist/zepto.js"></script>
     <script type="text/javascript" src="../../../src/extend/highlight.js"></script>
+    <script type="text/javascript" src="../../../src/extend/parseTpl.js"></script>
     <script type="text/javascript" src="../../../src/core/gmu.js"></script>
     <script type="text/javascript" src="../../../src/core/event.js"></script>
     <script type="text/javascript" src="../../../src/core/widget.js"></script>
@@ -23,58 +26,18 @@
 </head>
 <body>
 <div class="section">
-    <h2>Setup模式创建</h2>
+    <h2>Icon Position</h2>
     <div>
         <a class="button" data-icon="plus" data-iconpos="left">plus
         </a><a class="button" data-icon="plus" data-iconpos="top">plus
         </a><a class="button" data-icon="plus" data-iconpos="right">plus
         </a><a class="button" data-icon="plus" data-iconpos="bottom">plus
-        </a><a class="button" data-icon="plus" data-iconpos="bottom"></a><a class="button" data-icon="minus" data-iconpos="bottom"></a>
+        </a><a class="button" data-icon="plus" data-iconpos="notext">plus
+        </a><a class="button" data-icon="minus"></a>
     </div>
-</div>
-
-<div class="section">
-    <h2>Render模式创建</h2>
-    <div id="btsn_create2"></div>
 </div>
 <script>
     $('.button').button();
-
-    gmu.Button('<a>',{
-        label: 'plus',
-        icon: 'plus',
-        iconpos: 'left',
-        container: '#btsn_create2'
-    });
-    gmu.Button('<a>',{
-        label: 'plus',
-        icon: 'plus',
-        iconpos: 'top',
-        container: '#btsn_create2'
-    });
-    gmu.Button('<a>', {
-        label: 'plus',
-        icon: 'plus',
-        iconpos: 'right',
-        container: '#btsn_create2'
-    });
-    gmu.Button('<a>', {
-        label: 'plus',
-        icon: 'plus',
-        iconpos: 'bottom',
-        container: '#btsn_create2'
-    });
-
-    gmu.Button('<a>', {
-        icon: 'plus',
-        container: '#btsn_create2'
-    });
-
-    gmu.Button('<a>', {
-        icon: 'minus',
-        alttext: '缩小',
-        container: '#btsn_create2'
-    });
 </script>
 </body>
 </html>

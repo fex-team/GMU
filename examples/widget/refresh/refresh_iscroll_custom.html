@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>自定义加载(部分样式)</title>
+    <title>自定义加载(iScroll)</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
     <!--demo展示所用css，不用关心 begin-->
@@ -219,7 +219,7 @@
                 statechange: function (e, $elem, state, dir) {
                     if (state == 'loading') {   //只修改loading的状态
                         e.preventDefault();
-                        var refreshInfo = this._data.refreshInfo[dir];
+                        var refreshInfo = this._options.refreshInfo[dir];
                         refreshInfo['$icon'].removeClass().addClass('ui-loading');
                         refreshInfo['$label'].html(dir == 'up' ? '正在刷新中...' : '数据加载中...');
                     }

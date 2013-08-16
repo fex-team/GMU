@@ -1,6 +1,6 @@
 {
   "name": "Gmu",
-  "version": "2.0.4",
+  "version": "2.1.0",
   "description": "A simple ui framework based on Zepto",
   "repository": {
     "type": "git",
@@ -26,6 +26,8 @@
     "glob": "~3.1.21",
     "grunt-lib-phantomjs": "~0.3.0",
     "smart-cov": "~1.2.2",
-    "temporary": "0.0.5"
+    "temporary": "0.0.5",
+    "gmudoc": "https://github.com/liaoxuezhi/gmudoc/tarball/master",
+    "grunt-contrib-watch": "~0.4.4"
   }
 }

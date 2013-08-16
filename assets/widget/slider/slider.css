@@ -11,6 +11,7 @@
     overflow: hidden;
     position: relative;
     white-space:nowrap;/*内容不换行*/
+    -webkit-transform: translateZ(0);
 }
 
 .ui-slider-item {

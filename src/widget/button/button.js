@@ -1,353 +1,207 @@
 /**
- * @file 按钮组件
- * @name Button
- * @desc <qrcode align="right" title="Live Demo">../gmu/examples/widget/button/button.html</qrcode>
- * 按钮组件
+ * @file Button组件。
+ * @module GMU
  * @import core/widget.js, extend/highlight.js
- * @importCSS icons.css
+ * @importCss icons.css
  */
-(function ( gmu, $, undefined ) {
-    var iconRE = /\bui\-icon\-(\w+)\b/ig,
-        iconposRE = /\bui\-button\-icon\-pos\-(\w+)\b/ig;
+(function( gmu, $, undefined ) {
 
     /**
-     * @name gmu.Button
-     * @grammar $.ui.button(el, options) ⇒ instance
-     * @grammar $.ui.button(options) ⇒ instance
-     * @grammar button(options) ⇒ self
-     * @desc **el**
+     * Button组件。支持icon, icon位置设置。
      *
-     * css选择器, 或者zepto对象
+     * [![Live Demo](qrcode:http://gmu.baidu.com/demo/widget/button/button.html)](http://gmu.baidu.com/demo/widget/button/button.html "Live Demo")
      *
-     * **Options**
-     * - ''disabled'' {Boolean}: (可选，默认：false)禁用与否
-     * - ''selected'' {Boolean}: (可选，默认：false)选中与否
-     * - ''label'' {String}: (可选)按钮文字
-     * - ''icon'' {String}: (可选) 设置图标，可以是：
-     *   home | delete | plus | arrow-u | arrow-d | check | gear | grid | star | arrow-r | arrow-l | minus | refresh | forward | back | alert | info | search | custom
-     * - ''alttext'' {String}: (可选)当只设置icon,没有设置label的时候，组件会认为这是个只有icon的按钮，里面不会放任何文字，如果这个值设定了，icon按钮也会有文字内容，但不可见。
-     * - ''iconpos'' {String}: (可选，默认：left) 设置图标位置，可以设置4种：left, top, right, bottom
-     * - ''attributes'' {Object}: (可选) 在render模式下可以用来设置href， title， 等等
-     * - ''container'' {Zepto}: (可选)设置父节点。
-     * - ''events'' 所有[Trigger Events](#button_triggerevents)中提及的事件都可以在此设置Hander, 如init: function(e){}。
+     * @class Button
+     * @constructor
+     * html部分, 可以是以下任意dom实例化button
+     * ```html
+     * <a class="btn">按钮</a>
+     * <span class="btn">按钮</span>
+     * <button class="btn">按钮</button>
+     * <input class="btn" type="button" value="按钮" />
+     * <input class="btn" type="reset" value="按钮" />
+     * <input class="btn" type="button" value="按钮" />
+     * ```
      *
-     * **如果是setup模式，部分参数是直接从DOM上读取**
-     * - ''label'' 读取element中文本类容
-     * - ''icon'' 读取elment的data-icon属性
-     * - ''iconpos'' 读取elment的data-iconpos属性
-     * **比如**
-     * <code>//<a id="btn" data-icon="home">按钮文字</a>
-     * console.log($('#btn').button('data', 'label')); // => 按钮文字
-     * console.log($('#btn').button('data', 'icon')); // => home
-     * </code>
+     * Javascript部分
+     * ```javascript
+     * $( '.btn' ).button();
+     * ```
      *
-     * **Demo**
-     * <codepreview href="../examples/widget/button/button.html">
-     * ../gmu/examples/widget/button/button.html
-     * ../gmu/examples/widget/button/button_demo.css
-     * </codepreview>
+     * 如果希望支持checkbox radio按钮，请查看[input插件](#GMU:Button.input)。
+     * @grammar new gmu.Button( el[, options]) => instance
+     * @grammar $( el ).button([ options ]) => zepto
      */
     gmu.define( 'Button', {
-        
         options: {
 
-            // true | false
-            disabled: false,
+            /**
+             * @property {String} [label] 按钮文字。
+             * @namespace options
+             */
 
-            //true | false
-            selected: false,
+            /**
+             * @property {String} [icon] 图标名称。系统提供以下图标。home, delete, plus, arrow-u, arrow-d, check, gear, grid, star, arrow-r, arrow-l, minus, refresh, forward, back, alert, info, search,
+             * @namespace options
+             */
 
-            label: '',
+            /**
+             * @property {String} [iconpos] 图片位置。支持：left, right, top, bottom, notext.
+             * @namespace options
+             */
+            iconpos: 'left'
 
-            //当只设置icon,没有设置label的时候，组件会认为这是个只有icon的按钮，里面不会放任何文字，如果这个值设定，icon按钮也会有文字内容，但不可见。
-            alttext: '',
+            /**
+             * @property {String} [state]
+             * @description 设置初始状态。如果状态值为`disbaled`，按钮将不可点击。
+             * @namespace options
+             */
 
-            // button | checkbox | radio | input 在无插件的情况下只有button才能用。
-            type: 'button',
-
-            //home | delete | plus | arrow-u | arrow-d | check | gear | grid | star | arrow-r | arrow-l | minus | refresh | forward | back | alert | info | search | custom
-            icon: '',
-
-            //left, top, right, bottom 只有在文字和图片都有的情况下才有用
-            iconpos: '',
-
-            attributes: null,
-
-            container: null,
-
-            mode: ''
+            /**
+             * @property {String} [{$state}Text]
+             * @description 设置对应状态文字，当button进入此状态时，按钮将显示对应的文字。
+             * @namespace options
+             */
         },
 
-        _createDefEL: function(){
-            return $('<button>');
+        template: {
+            icon: '<span class="ui-icon ui-icon-<%= name %>"></span>',
+            text: '<span class="ui-btn-text"><%= text %></span>'
         },
 
-        _prepareBtnEL: function(){
-            return this.$el;
-        },
-
-        _prepareDom : function(mode){
-            var opts = this._options,
-                $el = this.$el,
-                key;
-
-            if(mode=='create'){
-                (opts.label || opts.alttext) && (opts._textSpan = $('<span class="ui-button-text">'+(opts.label || opts.alttext)+'</span>').appendTo(opts._buttonElement));
-                opts.icon && (opts._iconSpan = $('<span class="ui-icon ui-icon-'+opts.icon+'"></span>').appendTo(opts._buttonElement));
-            } else if(mode == 'fullsetup') {
-                opts._textSpan = $('.ui-button-text', opts._buttonElement);
-                key = opts._buttonElement.hasClass('ui-button-icon-only')?'alttext':'label';
-                opts[key] = opts[key] || opts._textSpan.text();
-                opts._iconSpan = $('.ui-icon', opts._buttonElement);
-                opts.icon = opts.icon || opts._iconSpan.attr('class').match(iconRE) && RegExp.$1;
-                opts.iconpos = opts.iconpos || opts._buttonElement.attr('class').match(iconposRE) && RegExp.$1;
-            } else {
-                opts.label = opts.label || opts._buttonElement.text() || $el.val();
-                opts.alttext = opts.alttext || $el.attr('data-alttext');
-                opts.icon = opts.icon || $el.attr('data-icon');
-                opts.iconpos = opts.iconpos || $el.attr('data-iconpos');
-
-                opts._buttonElement.empty();
-                opts.icon && (opts._iconSpan = $('<span class="ui-icon ui-icon-'+opts.icon+'"></span>').appendTo(opts._buttonElement));
-                (opts.label || opts.alttext) && (opts._textSpan = $('<span class="ui-button-text">'+(opts.label || opts.alttext)+'</span>').appendTo(opts._buttonElement));
-            }
+        _getWrap: function( $el ) {
+            return $el;
         },
 
         _init: function(){
-            var me = this,
-                $el,
-                opts = me._options,
-                className;
+            var me = this;
 
-            me.on( 'ready', function(){
-                $el = me.$el;
-                className = me._prepareClassName();
-
-                opts.attributes && $el.attr(opts.attributes);
-                $el.prop('disabled', !!opts.disabled);
-                opts._buttonElement.addClass(className).highlight(opts.disabled?'':'ui-state-hover');
-
-                //绑定事件
-                opts._buttonElement.on('click', $.proxy(me._eventHandler, me));
-                $.each(['click', 'change'], function(){ //绑定在options中的事件， 这里只需要绑定系统事件
-                    opts[this] && me.on(this, opts[this]);
-                    delete opts[this];
-                });
-            } );
+            me.$el = me.$el === undefined ? $('<span/>').appendTo( document.body ) : me.$el;
         },
 
-        _create: function () {
-            var me = this,
-                $el,
-                opts = me._options;
-
-            if( !opts.setup ) {
-                !opts.icon && !opts.label && (opts.label = '按钮');//如果既没有设置icon, 又没有设置label，则设置label为'按钮'
-
-                $el = me.$el || (me.$el = me._createDefEL());
-                opts._buttonElement = me._prepareBtnEL('create');
-                me._prepareDom('create');
-                $el.appendTo(opts._container = $(opts.container||'body'));
-                opts._buttonElement !== $el && opts._buttonElement.insertAfter($el);
-            } else {
-                mode = opts.mode ? 'fullsetup' : 'setup';
-                opts.type = me._detectType();
-                opts._buttonElement = me._prepareBtnEL( mode );
-                me._prepareDom( mode );
-            }
-        },
-
-        _detectType: function(){
-            return 'button';
-        },
-
-        _prepareClassName: function(){
+        _create: function() {
             var me = this,
                 opts = me._options,
-                className = 'ui-button';
+                $wrap = me.$wrap = me._getWrap( me.getEl() ),
+                input = $wrap.is( 'input' ),
+                $label = $wrap.find( '.ui-btn-text' ),
+                $icon = $wrap.find( '.ui-icon' );
 
-            className += opts.label && opts.icon ? ' ui-button-text-icon ui-button-icon-pos-'+(opts.iconpos||'left') :
-                opts.label ? ' ui-button-text-only' : ' ui-button-icon-only';
-            className += opts.disabled?' ui-state-disable':'';
-            className += opts.selected?' ui-state-active':'';
-            return className;
+            // 处理label
+            // 如果是空字符串，则表示dom中写了data-label=""
+            opts.label = opts.label === undefined ? $wrap[ input ? 'val' : 'text' ]() : opts.label;
+            input || opts.label === undefined || !$label.length && ($label = $( me.tpl2html( 'text', {
+                text: opts.label
+            } ) )).appendTo( $wrap.empty() );
+            me.$label = $label.length && $label;
+            opts.resetText = opts.resetText || opts.label;
+
+            // 如果传入了icon而dom中没有，则创建
+            input || opts.icon && !$icon.length && ($icon = $( me.tpl2html( 'icon', {
+                name: opts.icon
+            } ) )).appendTo( $wrap );
+            me.$icon = $icon.length && $icon;
+
+            $wrap.addClass( 'ui-btn ' + (opts.label && opts.icon ?
+                    'ui-btn-icon-' + opts.iconpos : opts.label ?
+                    'ui-btn-text-only' : 'ui-btn-icon-only') );
+
+            opts.state && setTimeout( function(){
+                me.state( opts.state );
+            }, 0 );
         },
 
         /**
-         * 事件管理器
-         * @private
+         * 设置或者获取按钮状态值。
+         *
+         * 如果传入的state为"disabled", 此按钮将变成不可点击状态。
+         *
+         * ```javascript
+         * // 初始化的时候可以给diabled状态设置Text
+         * var btn = $( '#btn' ).button({
+         *     disabledText: '不可点'
+         * });
+         *
+         * // 按钮将变成不可点击状态。同时文字也变成了”不可点“
+         * btn.button( 'state', 'disabled' );
+         *
+         * // 还原按钮状态
+         * // 文字也还原。
+         * btn.button( 'state', 'reset' );
+         *
+         * ```
+         * @method state
+         * @grammar state( value ) => self
+         * @grammar state() => String
+         * @param  {String} [state] 状态值。
+         * @return {String} 当没有传入state值时，此方法行为为getter, 返回当前state值。
+         * @return {self} 当传入了state值时，此方法行为为setter, 返回实例本身，方便链式调用。
          */
-        _eventHandler:function (event) {
-            var opts = this._options;
+        state: function( state ) {
 
-            if(opts.disabled) {
-                event.preventDefault();
-                event.stopPropagation();
-            } 
-
-        },
-
-        /**
-         * 设置按钮状态，传入true，设置成可用，传入false设置成不可用
-         * @param enable
-         * @private
-         */
-        _setState:function (enable) {
-            var opts = this._options,
-                change = opts.disabled != !enable;
-
-            if(change){
-                opts.disabled = !enable;
-                opts._buttonElement[enable?'removeClass':'addClass']('ui-state-disable').highlight(enable?'ui-state-hover':'');;
-                this.trigger('statechange', enable);
+            // getter
+            if ( state === undefined ) {
+                return this._state;
             }
 
-            return this;
-        },
-
-        /**
-         * @desc 设置成可用状态。
-         * @name enable
-         * @grammar enable()  ⇒ instance
-         * @example
-         * //setup mode
-         * $('#btn').button('enable');
-         *
-         * //render mode
-         * var btn = $.ui.button();
-         * btn.enable();
-         */
-        enable:function () {
-            return this._setState(true);
-        },
-
-        /**
-         * @desc 设置成不可用状态。
-         * @name disable
-         * @grammar disable()  ⇒ instance
-         * @example
-         * //setup mode
-         * $('#btn').button('disable');
-         *
-         * //render mode
-         * var btn = $.ui.button();
-         * btn.disable();
-         */
-        disable:function () {
-            return this._setState(false);
-        },
-
-        /**
-         * @desc 切换可用和不可用状态。
-         * @name toggleEnable
-         * @grammar toggleEnable()  ⇒ instance
-         * @example
-         * //setup mode
-         * $('#btn').button('toggleEnable');
-         *
-         * //render mode
-         * var btn = $.ui.button();
-         * btn.toggleEnable();
-         */
-        toggleEnable:function () {
-            var opts = this._options;
-
-            return this._setState(opts.disabled);
-        },
-
-        _setSelected: function(val){
-            var opts = this._options;
-
-            if(opts.selected != val){
-                opts._buttonElement[ (opts.selected = val) ? 'addClass':'removeClass' ]('ui-state-active');
-                this.trigger('change');
-            }
-            return this;
-        },
-
-        /**
-         * @desc 设置成选中状态
-         * @name select
-         * @grammar select()  ⇒ instance
-         * @example
-         * //setup mode
-         * $('#btn').button('select');
-         *
-         * //render mode
-         * var btn = $.ui.button();
-         * btn.select();
-         */
-        select: function(){
-            return this._setSelected(true);
-        },
-
-        /**
-         * @desc 设置成非选中状态
-         * @name unselect
-         * @grammar unselect()  ⇒ instance
-         * @example
-         * //setup mode
-         * $('#btn').button('unselect');
-         *
-         * //render mode
-         * var btn = $.ui.button();
-         * btn.unselect();
-         */
-        unselect: function(){
-            return this._setSelected(false);
-        },
-
-        /**
-         * @desc 切换选中于非选中状态。
-         * @name toggleSelect
-         * @grammar toggleSelect()  ⇒ instance
-         * @example
-         * //setup mode
-         * $('#btn').button('toggleSelect');
-         *
-         * //render mode
-         * var btn = $.ui.button();
-         * btn.toggleSelect();
-         */
-        toggleSelect: function(){
-            return this._setSelected(!this._options.selected);
-        },
-
-        /**
-         * @desc 销毁组件。
-         * @name destroy
-         * @grammar destroy()  ⇒ instance
-         * @example
-         * //setup mode
-         * $('#btn').button('destroy');
-         *
-         * //render mode
-         * var btn = $.ui.button();
-         * btn.destroy();
-         */
-        destroy: function(){
+            // setter
             var me = this,
-                opts = this._options;
+                $wrap = me.$wrap,
+                input = $wrap.is( 'input' ),
+                text = me._options[ state + 'Text' ];
 
-            opts._buttonElement.off('click', me._eventHandler).highlight();
-            
-            if ( !opts.setup ) {
-                opts._buttonElement.remove();
-            }
-            me.$super('destroy');
+            me.$wrap.removeClass( 'ui-state-' + me._state )
+                    .addClass( 'ui-state-' + state );
+
+            text === undefined || (input ? $wrap : me.$label)[ input ?
+                    'val' : 'text' ]( text );
+
+            me._state !== state && me.trigger( 'statechange', state, me._state );
+            me._state = state;
+            return me;
+        },
+
+        /**
+         * 切换按钮选中状态
+         * @method toggle
+         * @grammar toggle() => self
+         * @example
+         * var btn = $( '#btn' );
+         *
+         * btn.on( 'click', function() {
+         *     btn.button( 'toggle' );
+         * } );
+         */
+        toggle: function() {
+            this.state( this._state === 'active' ? 'reset' : 'active' );
+            return this;
         }
 
         /**
-         * @name Trigger Events
-         * @theme event
-         * @desc 组件内部触发的事件
-         *
-         * ^ 名称 ^ 处理函数参数 ^ 描述 ^
-         * | init | event | 组件初始化的时候触发，不管是render模式还是setup模式都会触发 |
-         * | click | event | 当按钮点击时触发，当按钮为disabled状态时，不会触发 |
-         * | statechange | event, state(disabled的值) | 当按钮disabled状态发生变化时触发 |
-         * | change | event | 当按钮类型为''checkbox''或者''radio''时，选中状态发生变化时触发 |
-         * | destroy | event | 组件在销毁的时候触发 |
+         * @event ready
+         * @param {Event} e gmu.Event对象
+         * @description 当组件初始化完后触发。
          */
+
+        /**
+         * @event statechange
+         * @param {Event} e gmu.Event对象
+         * @param {String} state 当前state值
+         * @param {String} preState 前一次state的值
+         * @description 当组件状态变化时触发。
+         */
+
+        /**
+         * @event destroy
+         * @param {Event} e gmu.Event对象
+         * @description 当组件被销毁的时候触发。
+         */
+    } );
+
+    // dom ready
+    $(function() {
+
+        // 按下态。
+        $( document.body ).highlight( 'ui-state-hover', '.ui-btn:not(.ui-state-disabled)' );
     });
 })( gmu, gmu.$ );

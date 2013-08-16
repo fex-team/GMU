@@ -1,29 +1,64 @@
 /**
  * @file 工具栏组件
- * @name Toolbar
- * @desc <qrcode align="right" title="Live Demo">../gmu/examples/widget/toolbar/toolbar.html</qrcode>
- * 工具栏组件
  * @import core/widget.js, extend/fix.js
+ * @module GMU
  */
 (function( gmu, $ ) {
-    
+    /**
+     * 工具栏组件
+     *
+     * @class Toolbar
+     * @constructor Html部分
+     * ```html
+     * <div id="J_toolbar">
+     *      <a href="../">返回</a>
+     *      <h2>工具栏</h2>
+     *     <span class="btn_1"><span>百科</span></span>
+     *     <span class="btn_1">知道</span>
+     * </div>
+     * ```
+     *
+     * javascript部分
+     * ```javascript
+     * $('#J_toolbar').toolbar({});
+     * ```
+     * @param {dom | zepto | selector} [el] 用来初始化工具栏的元素
+     * @param {Object} [options] 组件配置项。具体参数请查看[Options](#GMU:Toolbar:options)
+     * @grammar $( el ).toolbar( options ) => zepto
+     * @grammar new gmu.Toolbar( el, options ) => instance
+     */
     gmu.define( 'Toolbar', {
 
         options: {
 
-            // 容器，默认为document.body
+            /**
+             * @property {Zepto | Selector | Element} [container=document.body] toolbar的最外层元素
+             * @namespace options
+             */
             container: document.body,
 
-            // 标题，默认为‘标题’
+            /**
+             * @property {String} [title='标题'] toolbar的标题
+             * @namespace options
+             */
             title: '标题',
 
-            // 标题左侧的按钮组，支持html、gmu button实例
+            /**
+             * @property {Array} [leftBtns] 标题左侧的按钮组，支持html、gmu button实例
+             * @namespace options
+             */
             leftBtns: [],
 
-            // 标题右侧的按钮组，支持html、gmu button实例
+            /**
+             * @property {Array} [rightBtns] 标题右侧的按钮组，支持html、gmu button实例
+             * @namespace options
+             */
             rightBtns: [],
 
-            // 是否固定位置，默认不固定
+            /**
+             * @property {Boolean} [fix=false] toolbar是否固定位置
+             * @namespace options
+             */
             fix: false
         },
 
@@ -113,6 +148,7 @@
 
             // 创建左侧按钮组的容器
             var leftBtnContainer = $toolbarWrap.find('.ui-toolbar-left');
+            var rightBtnContainer = $toolbarWrap.find('.ui-toolbar-right');
             if( leftBtnContainer.length === 0 ) {
                 leftBtnContainer = children.length ? $('<div class="ui-toolbar-left">').insertBefore(children[0]) : $('<div class="ui-toolbar-left">').appendTo($toolbarWrap);
                 btnGroups['left'].forEach( function( btn ) {
@@ -146,6 +182,14 @@
             $( btn ).appendTo( container ).addClass('ui-toolbar-button');
         },
 
+        /**
+         * 添加按钮组
+         * @method addBtns
+         * @chainable
+         * @param {String} [position=right] 按钮添加的位置，left或者right
+         * @param {Array} btns 要添加的按钮组，每个按钮可以是一个gmu Button实例，或者元素，或者HTML片段
+         * @return {self} 返回本身
+         */
         addBtns: function( position, btns ) {
             var me = this,
                 btnContainer = me.btnContainer[position],
@@ -168,6 +212,18 @@
             return me;
         },
 
+        /**
+         * 显示Toolbar
+         * @method show
+         * @chainable
+         * @return {self} 返回本身。
+         */
+        
+        /**
+         * @event show
+         * @param {Event} e gmu.Event对象
+         * @description Toolbar显示时触发
+         */
         show: function() {
             var me = this;
 
@@ -178,6 +234,18 @@
             return me;
         },
 
+        /**
+         * 隐藏Toolbar
+         * @method hide
+         * @chainable
+         * @return {self} 返回本身。
+         */
+        
+        /**
+         * @event hide
+         * @param {Event} e gmu.Event对象
+         * @description Toolbar隐藏时触发
+         */
         hide: function() {
             var me = this;
 
@@ -188,6 +256,12 @@
             return me;
         },
 
+        /**
+         * 交换Toolbar（显示/隐藏）状态
+         * @method toggle
+         * @chainable
+         * @return {self} 返回本身。
+         */
         toggle: function() {
             var me = this;
 
@@ -197,6 +271,13 @@
             return me;
         },
 
+        /**
+         * 定位Toolbar
+         * @method fix
+         * @param {Object} opts 定位参数，格式与$.fn.fix参数格式相同
+         * @chainable
+         * @return {self} 返回本身。
+         */
         fix: function( opts ) {
             this.$el.fix( opts );
 
@@ -213,5 +294,18 @@
                 $el.css('position', 'static').css('top', 'auto');
             }
         }
+
+
+        /**
+         * @event ready
+         * @param {Event} e gmu.Event对象
+         * @description 当组件初始化完后触发。
+         */
+        
+        /**
+         * @event destroy
+         * @param {Event} e gmu.Event对象
+         * @description 组件在销毁的时候触发
+         */
     } );
 })( gmu, gmu.$ );
