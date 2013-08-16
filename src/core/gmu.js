@@ -25,6 +25,14 @@
  * ###Quick Start###
  * + **官网：**http://gmu.baidu.com/
  * + **API：**http://gmu.baidu.com/doc
+ *
+ * ###历史版本###
+ *
+ * ### 2.0.5 ###
+ * + **DEMO: ** http://gmu.baidu.com/demo/2.0.5
+ * + **API：** http://gmu.baidu.com/doc/2.0.5
+ * + **下载：** http://gmu.baidu.com/download/2.0.5
+ *
  * @module GMU
  * @title GMU API 文档
  */

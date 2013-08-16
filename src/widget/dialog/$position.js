@@ -9,19 +9,6 @@
     /**
      * @name dialog.position
      * @desc 用zepto.position来定位dialog
-     *
-     *
-     *
-     *
-     *
-     *
-     *
-     *
-     *
-     * **Demo**
-     * <codepreview href="../examples/widget/dialog/dialog_position.html">
-     * ../gmu/examples/widget/dialog/dialog_position.html
-     * </codepreview>
      */
     gmu.Dialog.register( 'position', {
 
@@ -45,10 +32,12 @@
             } else $.extend(opts.position, x);
             return this.refresh();
         },
-        
+
         _calculate:function () {
-            var me = this, opts = me._options, position = opts.position,
-                ret = this.origin();
+            var me = this,
+                opts = me._options,
+                position = opts.position,
+                ret = me.origin();
 
             opts._wrap.position($.extend(position, {
                 using: function(position){

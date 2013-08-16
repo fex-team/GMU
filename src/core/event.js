@@ -1,5 +1,5 @@
 /**
- * @fileoverview Event相关
+ * @file Event相关, 给widget提供事件行为。也可以给其他对象提供事件行为。
  * @import core/gmu.js
  * @module GMU
  */
