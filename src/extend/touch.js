@@ -1,4 +1,5 @@
 /**
+ * @file 来自zepto/touch.js, zepto自1.0后，已不默认打包此文件。
  * @import zepto.js
  */
 //     Zepto.js
