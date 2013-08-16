@@ -28,13 +28,14 @@ function getItems() {
     ]
 }
 
+
 test("左右滑动无动画", function(){
     stop()
     var tabs = gmu.Tabs({
-            container: '#container',
-            active: 1,
-            items: getItems(),
-            transition:''
+        container: '#container',
+        active: 1,
+        items: getItems(),
+        transition:''
     })
     equals(1, tabs._options.active);
     ok($(".ui-tabs-nav li", tabs.$el).eq(1).hasClass("ui-state-active"));
@@ -123,7 +124,7 @@ test("左右滑动无动画", function(){
         equals(1, tabs._options.active, 'y方向滑动距离偏大，停留在原tab')
         ok($(".ui-tabs-nav li", tabs.$el).eq(1).hasClass("ui-state-active"));
         ok($(".ui-tabs-panel", tabs.$el).eq(1).hasClass("ui-state-active"));
-
+        tabs.destroy();
         start();
     })
 })
@@ -181,8 +182,8 @@ test("左右滑动有动画", function(){
 	        ok($(".ui-tabs-panel", tabs.$el).eq(0).hasClass("ui-state-active"))
 
             start()
-	        }, 400)
-	    }, 400)
+        }, 1000)
+    }, 600)
 })
 
 test("disablePlugin=true", function(){
@@ -215,7 +216,8 @@ test("destroy",function(){
         var el1= w.dt.eventLength();
 
         var tabs =  w.gmu.Tabs({
-             items: getItems()
+            swipe:true,
+            items: getItems()
         });
         ta.touchstart(w.$(".ui-panel")[0], {
             touches: [{
@@ -240,3 +242,42 @@ test("destroy",function(){
         this.finish();
     })
 }) ;
+//以下用例为非正常情况
+test("y上的移动大于x,什么也不做", function(){
+    var tabs = gmu.Tabs({
+        container: '#container',
+        items: getItems()
+    })
+    ta.touchstart($(".ui-panel")[0], {
+        touches: [{
+            clientX: 0,
+            clientY: 0
+        }]
+    });
+    ta.touchmove($(".ui-panel")[0], {
+        touches:[{
+            clientX: -20,
+            clientY: 50
+        }]
+    });
+    ta.touchend($(".ui-panel")[0]);
+    ok(!$(".ui-panel").eq(0).hasClass('out'), '缺少开始点击的动作,什么也不做')
+    ok(!$(".ui-panel").eq(1).hasClass('in'), '缺少开始点击的动作,什么也不做')
+})
+test("没有move,则不滑动", function(){
+    var tabs = gmu.Tabs({
+        container: '#container',
+        items: getItems()
+    })
+    ta.touchstart($(".ui-panel")[0], {
+        touches: [{
+            clientX: 0,
+            clientY: 0
+        }]
+    });
+
+    ta.touchend($(".ui-panel")[0]);
+    ok(!$(".ui-panel").eq(0).hasClass('out'), '没有move,则不滑动')
+    ok(!$(".ui-panel").eq(1).hasClass('in'), '没有move,则不滑动')
+
+})
