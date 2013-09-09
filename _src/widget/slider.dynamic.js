@@ -50,7 +50,7 @@
                 arr = content.slice(index, index + 3);
                 this._active = active = content[index];
                 rest = 3 - arr.length;
-                rest && (arr = content.slice(index - rest, index).concat(arr));
+                rest && (arr = content.slice(Math.max( 0, index - rest ), index).concat(arr));
 
                 data.index = $.inArray(active, this._pool = arr);
                 this._index = index;
