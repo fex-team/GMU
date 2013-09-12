@@ -1,6 +1,6 @@
 /**
  * @file 工具栏组件
- * @import core/widget.js, extend/fix.js
+ * @import core/widget.js
  * @module GMU
  */
 (function( gmu, $ ) {
@@ -56,10 +56,10 @@
             rightBtns: [],
 
             /**
-             * @property {Boolean} [fix=false] toolbar是否固定位置
+             * @property {Boolean} [fixed=false] toolbar是否固定位置
              * @namespace options
              */
-            fix: false
+            fixed: false
         },
 
         _init: function() {
@@ -75,7 +75,7 @@
             me.on( 'ready', function() {
                 $el = me.$el;
 
-                if( opts.fix ) {
+                if( opts.fixed ) {
                     // TODO 元素id的处理
                     var placeholder = $( '<div class="ui-toolbar-placeholder"></div>' ).height( $el.offset().height ).
                         insertBefore( $el ).append( $el ).append( $el.clone().css({'z-index': 1, position: 'absolute',top: 0}) ),
@@ -269,19 +269,6 @@
                 me.show() : me.hide();
 
             return me;
-        },
-
-        /**
-         * 定位Toolbar
-         * @method fix
-         * @param {Object} opts 定位参数，格式与$.fn.fix参数格式相同
-         * @chainable
-         * @return {self} 返回本身。
-         */
-        fix: function( opts ) {
-            this.$el.fix( opts );
-
-            return this;
         },
 
         _removeDom: function(){
