@@ -1,4 +1,3 @@
-
 /**
  * @file Gotop - 内滚插件
  * @name Gotop － iscroll插件
