@@ -1,5 +1,3 @@
-
-
 /**
  * @file 返回顶部组件
  * @name Gotop
@@ -23,8 +21,6 @@
      * - ''useAnimation'' {Boolean}: (可选, 默认为true), 返回顶部时是否使用动画,在使用iScroll时,返回顶部的动作由iScroll实例执行,此参数无效
      * - ''position'' {Object}: (可选, 默认为{bottom:10, right:10}), 使用fix效果时，要用的位置参数
      * - ''afterScroll'' {function}: (可选,默认：null) 返回顶部后执行的回调函数
-     * - ''iScrollInstance'' {Object}: (可选) 使用iscroll时需要传入iScroll实例，用来判定显示与隐藏
-     * - ''disablePlugin'' {Boolean}: (可选,默认：false) 是否禁用插件，当加载了gotop.iscroll.js插件但又不想用该插件时，可传入这个参数来禁用插件
      * **Demo**
      * <codepreview href="../examples/widget/gotop/gotop.html">
      * ../gmu/examples/widget/gotop/gotop.html
@@ -38,9 +34,7 @@
             useHide:            true,
             useAnimation:       false,
             position:           {bottom: 10, right: 10},
-        	afterScroll:        null,
-            iScrollInstance:    null,
-            disablePlugin:      false
+        	afterScroll:        null
         },
 
         _init: function() {

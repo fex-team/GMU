@@ -1,5 +1,5 @@
 $(function(){
-	var html = '<ul>';
+	var html = '<ul id="J_widgetList">';
 
 	for(var i in widgets){
 		html += '<li><a href="' + i +'"><img src="./assets/img/' + widgets[i]['icon'] + '" alt="' + widgets[i]['name'] + '">' + 
@@ -7,8 +7,14 @@ $(function(){
 	}
 	html += '</ul>';
 
-	$('#S_widgets ul').remove();
-	$('#S_widgets').append(html);
+	$('#scroller1 ul').remove();
+	$('#scroller1').append(html);
+	// $('.pages').height($('#J_widgetList').height());
+
+	setTimeout(function(){
+		new iScroll('S_widgets');
+		$(window).trigger('resize');
+	}, 200);
 });
 
 $(function(){
@@ -54,7 +60,7 @@ $(function(){
 
 	var updateDemoSection = function(widget){
 		var demolist = demos[widget],
-			html = '<ul>';
+			html = '<ul id="J_demoList">';
 
 		demolist.forEach(function(item, index){
 			html += '<li><a href="./widget/' + item.file + '">' + item.title + '</a></li>';
@@ -62,9 +68,11 @@ $(function(){
 
 		html += '</ul>';
 
-		$('#S_demos ul').remove();
-		$('#S_demos').append(html);
-		$('#S_demos h3 span').html(widget + ' Demos');
+		$('#scroller2 ul').remove();
+		$('#scroller2').append(html);
+		$('#scroller2 h3 span').html(widget + ' Demos');
+
+		new iScroll('S_demos');
 	}
 
 	var updatePage = function(){
