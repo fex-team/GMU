@@ -18,13 +18,19 @@
     <script type="text/javascript" src="../../../src/core/widget.js"></script>
     <script type="text/javascript" src="../../../src/widget/add2desktop/add2desktop.js"></script>
     <!--组件依赖js end-->
+
+    <style type="text/css">
+        body {
+            height: 20000px;
+        }
+    </style>
 </head>
-<body style="height: 2000px;">
+<body>
     <a href="javascript:;" id="clear" style="display: inline-block;padding: 30px;">清除LocalStorage</a>
 
 <script>
     //创建组件
-      var demo = gmu.Add2desktop({icon:'icon.png'});
+      var demo = gmu.Add2desktop({icon:'../../../examples/assets/icon.png'});
 
     //清除LocalStorage
     $('#clear').on('click',function(){
