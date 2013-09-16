@@ -1,0 +1,57 @@
+<!doctype html>
+<html>
+<head>
+    <title>可内滚的导航栏（1）</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <!--demo展示所用css，不用关心 begin-->
+    <link rel="stylesheet" type="text/css" href="../../../assets/reset.css" />
+    <!--demo展示所用css end-->
+    <!--组件依赖css begin-->
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/navigator/navigator.css" />
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/navigator/navigator.default.css" /><!--皮肤文件，若不使用该皮肤，可以不加载-->
+    <!--组件依赖css end-->
+
+    <!--组件依赖js begin-->
+    <script type="text/javascript" src="../../../dist/zepto.js"></script>
+    <script type="text/javascript" src="../../../src/extend/touch.js"></script>
+    <script type="text/javascript" src="../../../src/extend/iscroll.js"></script>
+    <script type="text/javascript" src="../../../src/extend/highlight.js"></script>
+    <script type="text/javascript" src="../../../src/extend/parseTpl.js"></script>
+    <script type="text/javascript" src="../../../src/core/gmu.js"></script>
+    <script type="text/javascript" src="../../../src/core/event.js"></script>
+    <script type="text/javascript" src="../../../src/core/widget.js"></script>
+    <script type="text/javascript" src="../../../src/widget/navigator/navigator.js"></script>
+    <script type="text/javascript" src="../../../src/widget/navigator/$scrollable.js"></script>
+    <!--组件依赖js end-->
+</head>
+<body>
+
+<div id="wrap">
+    <h1>Navigator可内滚版本</h1>
+    <div id="nav">
+        <ul>
+            <li><a href="#test1">首页</a></li>
+            <li><a href="#test1">要闻</a></li>
+            <li><a href="javascript:;">国内</a></li>
+            <li><a href="#test2">国际</a></li>
+            <li><a href="#test3">军事</a></li>
+            <li><a href="#test4">社会</a></li>
+            <li><a href="#test5">娱乐</a></li>
+            <li><a href="#test6">女人</a></li>
+            <li><a href="#">体育</a></li>
+            <li><a href="#test7">科技</a></li>
+            <li><a href="#test8">互联网</a></li>
+            <li><a href="#test9">教育</a></li>
+            <li class="ui-state-active"><a href="#">财经</a></li>
+            <li><a href="#test11">房产</a></li>
+            <li><a href="#test12">汽车</a></li>
+        </ul>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $('#nav').navigator();
+</script>
+</body>
+</html>

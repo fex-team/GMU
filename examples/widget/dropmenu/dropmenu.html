@@ -1,0 +1,69 @@
+<!doctype html>
+<html>
+<head>
+    <title>基本的下拉菜单</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <!--demo展示所用css，不用关心 begin-->
+    <link rel="stylesheet" type="text/css" href="../../../assets/reset.css" />
+    <!--demo展示所用css end-->
+    <!--组件依赖css begin-->
+    <link rel="stylesheet" type="text/css" href="../../../assets/icons.default.css" />
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/dropmenu/dropmenu.css" />
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/dropmenu/dropmenu.default.css" /><!--皮肤文件，若不使用该皮肤，可以不加载-->
+    <!--组件依赖css end-->
+    <!--组件依赖js begin-->
+    <script type="text/javascript" src="../../../dist/zepto.js"></script>
+    <script type="text/javascript" src="../../../src/extend/touch.js"></script>
+    <script type="text/javascript" src="../../../src/extend/parseTpl.js"></script>
+    <script type="text/javascript" src="../../../src/core/gmu.js"></script>
+    <script type="text/javascript" src="../../../src/core/event.js"></script>
+    <script type="text/javascript" src="../../../src/core/widget.js"></script>
+    <script type="text/javascript" src="../../../src/extend/highlight.js"></script>
+    <script type="text/javascript" src="../../../src/widget/popover/popover.js"></script>
+    <script type="text/javascript" src="../../../src/widget/dropmenu/dropmenu.js"></script>
+    <!--组件依赖js end-->
+
+    <style type="text/css">
+        .btn {
+            -webkit-user-select:none;
+            display: inline-block;
+        }
+        #wrap {
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="wrap">
+    <h1>基础版本</h1>
+    <a id="btn1" class="btn">Dropmenu</a>
+</div>
+<script type="text/javascript">
+    $('#btn1').dropmenu({
+        content: [
+            
+            'Action',
+
+            'Another Action',
+
+            'Someone else here',
+
+            'divider',
+
+            {
+                text: 'Open Baidu',
+                icon: 'grid',
+                href: 'http://www.baidu.com'
+            },
+        ]
+    }).on('itemclick', function( e, li ) {
+        if( $(li).text() === 'Action' ) {
+            e.preventDefault();
+            alert('item click');
+        }
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>上下加载(iOS5以上适用)</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <!--demo展示所用css，不用关心 begin-->
+    <link rel="stylesheet" type="text/css" href="../../../assets/reset.css" />
+    <style>
+        .ui-refresh{
+            height: 300px;
+        }
+
+        .data-list {
+            width: 100%;
+            text-align: left;
+        }
+
+        .data-list li {
+            color: #333;
+            border-bottom: 1px solid #e7e7e7;
+            background-color: #fafafa;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 10px 10px 10px 90px;
+            display: block;
+            position: relative;
+            -webkit-transform: translateZ(0px);
+        }
+
+        .data-list li.ui-list-hover {
+            background: #ededed;
+        }
+
+        .data-list li a {
+            text-decoration: none;
+        }
+
+        .data-list li dt {
+            font-size: 16px;
+            font-weight: bold;
+            line-height: 16px;
+            padding-top: 10px;
+            color: #333;
+        }
+
+        .data-list li dt:first-child {
+            padding-top: 0;
+        }
+
+        .data-list li dd.content {
+            font-size: 14px;
+            color: #545454;
+            line-height: 16px;
+            margin-top: 8px;
+        }
+
+        .data-list li dd.source {
+            font-size: 12px;
+            color: #969696;
+            margin-top: 8px;
+        }
+
+        .data-list img {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            width: 57px;
+            margin-top: -35px;
+        }
+    </style>
+    <!--demo展示所用css end-->
+
+    <!--组件依赖css begin-->
+    <link rel="stylesheet" type="text/css" href="../../../assets/loading.default.css" />
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/refresh/refresh.default.css" />    <!--皮肤文件，若不使用该皮肤，可以不加载-->
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/refresh/refresh.iOS5.default.css" />    <!--皮肤文件，若不使用该皮肤，可以不加载-->
+    <!--组件依赖css end-->
+    <!--组件依赖js begin-->
+    <script type="text/javascript" src="../../../dist/zepto.js"></script>
+    <script type="text/javascript" src="../../../src/core/gmu.js"></script>
+    <script type="text/javascript" src="../../../src/core/event.js"></script>
+    <script type="text/javascript" src="../../../src/core/widget.js"></script>
+    <script type="text/javascript" src="../../../src/extend/throttle.js"></script>
+    <script type="text/javascript" src="../../../src/widget/refresh/refresh.js"></script>
+    <script type="text/javascript" src="../../../src/widget/refresh/$iOS5.js"></script>   <!--iOS5插件上下滑动插件-->
+    <!--组件依赖js end-->
+</head>
+
+<body>
+<div class="ui-refresh">
+    <div class="ui-refresh-up"></div>    <!--setup方式带有class为ui-refresh-down或ui-refresh-up的元素必须加上，用于放refresh按钮-->
+    <ul class="data-list">
+        <li>
+            <a href="http://www.baidu.com">
+                <img src="../../../examples/assets/refresh/txt.png"/>
+                <dl>
+                    <dt>英国地标“大本钟”用女王名</dt>
+                    <dd class="content">新华网深圳3月23日电（记者 赵瑞西）23日，深圳市南山区西里医院的大楼</dd>
+                    <dd class="source">来源：新浪</dd>
+                </dl>
+            </a>
+        </li>
+        <li>
+            <a href="http://www.baidu.com">
+                <img src="../../../examples/assets/refresh/pdf.png"/>
+                <dl>
+                    <dt>英国地标“大本钟”用女王名</dt>
+                    <dd class="content">新华网深圳3月23日电（记者 赵瑞西）23日，深圳市南山区西里医院的大楼</dd>
+                    <dd class="source">来源：新浪</dd>
+                </dl>
+            </a>
+        </li>
+        <li>
+            <a href="http://www.baidu.com">
+                <img src="../../../examples/assets/refresh/xls.png"/>
+                <dl>
+                    <dt>英国地标“大本钟”用女王名</dt>
+                    <dd class="content">新华网深圳3月23日电（记者 赵瑞西）23日，深圳市南山区西里医院的大楼</dd>
+                    <dd class="source">来源：新浪</dd>
+                </dl>
+            </a>
+        </li>
+        <li>
+            <a href="http://www.baidu.com">
+                <img src="../../../examples/assets/refresh/ufo.png"/>
+                <dl>
+                    <dt>英国地标“大本钟”用女王名</dt>
+                    <dd class="content">新华网深圳3月23日电（记者 赵瑞西）23日，深圳市南山区西里医院的大楼</dd>
+                    <dd class="source">来源：新浪</dd>
+                </dl>
+            </a>
+        </li>
+        <li>
+            <a href="http://www.baidu.com">
+                <img src="../../../examples/assets/refresh/pdf.png"/>
+                <dl>
+                    <dt>英国地标“大本钟”用女王名</dt>
+                    <dd class="content">新华网深圳3月23日电（记者 赵瑞西）23日，深圳市南山区西里医院的大楼</dd>
+                    <dd class="source">来源：新浪</dd>
+                </dl>
+            </a>
+        </li>
+        <li>
+            <a href="http://www.baidu.com">
+                <img src="../../../examples/assets/refresh/xls.png"/>
+                <dl>
+                    <dt>英国地标“大本钟”用女王名</dt>
+                    <dd class="content">新华网深圳3月23日电（记者 赵瑞西）23日，深圳市南山区西里医院的大楼</dd>
+                    <dd class="source">来源：新浪</dd>
+                </dl>
+            </a>
+        </li>
+        <li>
+            <a href="http://www.baidu.com">
+                <img src="../../../examples/assets/refresh/ufo.png"/>
+                <dl>
+                    <dt>英国地标“大本钟”用女王名</dt>
+                    <dd class="content">新华网深圳3月23日电（记者 赵瑞西）23日，深圳市南山区西里医院的大楼</dd>
+                    <dd class="source">来源：新浪</dd>
+                </dl>
+            </a>
+        </li>
+        <li>
+            <a href="http://www.baidu.com">
+                <img src="../../../examples/assets/refresh/pdf.png"/>
+                <dl>
+                    <dt>英国地标“大本钟”用女王名</dt>
+                    <dd class="content">新华网深圳3月23日电（记者 赵瑞西）23日，深圳市南山区西里医院的大楼</dd>
+                    <dd class="source">来源：新浪</dd>
+                </dl>
+            </a>
+        </li>
+        <li>
+            <a href="http://www.baidu.com">
+                <img src="../../../examples/assets/refresh/xls.png"/>
+                <dl>
+                    <dt>英国地标“大本钟”用女王名</dt>
+                    <dd class="content">新华网深圳3月23日电（记者 赵瑞西）23日，深圳市南山区西里医院的大楼</dd>
+                    <dd class="source">来源：新浪</dd>
+                </dl>
+            </a>
+        </li>
+        <li>
+            <a href="http://www.baidu.com">
+                <img src="../../../examples/assets/refresh/ufo.png"/>
+                <dl>
+                    <dt>英国地标“大本钟”用女王名</dt>
+                    <dd class="content">新华网深圳3月23日电（记者 赵瑞西）23日，深圳市南山区西里医院的大楼</dd>
+                    <dd class="source">来源：新浪</dd>
+                </dl>
+            </a>
+        </li>
+    </ul>
+    <div class="ui-refresh-down"></div>      <!--setup方式带有class为ui-refresh-down或ui-refresh-up的元素必须加上，用于放refresh按钮-->
+</div>
+
+<script type="text/javascript">
+    $(function () {
+            $('.ui-refresh').css('height', window.innerHeight - ($('header').height() || 42)).refresh({
+                load: function (dir, type) {
+                    var me = this;
+                    $.getJSON('../../data/refresh.php', function (data) {
+                        var $list = $('.data-list'),
+                                html = (function (data) {      //数据渲染
+                                    var liArr = [];
+                                    $.each(data, function () {
+                                        liArr.push(this.html);
+                                    });
+                                    return liArr.join('');
+                                })(data);
+
+                        $list[dir == 'up' ? 'prepend' : 'append'](html);
+                        me.afterDataLoading(dir);    //数据加载完成后改变状态,dir可传可不传，不传则为当前加载的refresh按钮
+                    });
+                }
+            });
+    })
+</script>
+
+</body>
+</html>

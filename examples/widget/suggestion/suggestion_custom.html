@@ -1,0 +1,131 @@
+<!doctype html>
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0">
+	<meta charset="utf-8">
+	<title>suggestion自定义渲染列表</title>
+    <!--demo展示所用css，不用关心 begin-->
+    <link rel="stylesheet" type="text/css" href="../../../assets/reset.css" />
+    <link rel="stylesheet" type="text/css" href="../../../examples/assets/suggestion_demo.css" />
+    <!--demo展示所用css end-->
+
+    <!--组件依赖css begin-->
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/suggestion/suggestion.css" />
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/suggestion/suggestion.default.css" />    <!--皮肤文件，若不使用该皮肤，可以不加载-->
+    <!--组件依赖css end-->
+
+    <style>
+        .sug-item{
+            padding: 5px 10px;
+            background: #eaeaea;
+            color: #4183c4;
+        }
+    </style>
+
+    <!--组件依赖js begin-->
+    <script type="text/javascript" src="../../../dist/zepto.js"></script>
+
+    <!--gmu extend文件-->
+    <script type="text/javascript" src="../../../src/extend/touch.js"></script>      <!--新版zepto合并版中不包括touch.js-->
+    <script type="text/javascript" src="../../../src/extend/highlight.js"></script>
+
+    <!--gmu base文件-->
+    <script type="text/javascript" src="../../../src/core/gmu.js"></script>
+    <script type="text/javascript" src="../../../src/core/event.js"></script>
+    <script type="text/javascript" src="../../../src/core/widget.js"></script>
+
+    <script type="text/javascript" src="../../../src/widget/suggestion/suggestion.js"></script>
+    <!--组件依赖js end-->
+</head>
+<body>
+<form action="http://www.baidu.com/s" method="get">
+    <div class="search">
+        <div class="search-input"><input type="text" id="input" name="wd" placeholder="请输入您要查询的美国洲名"></div>
+        <div class="search-button"><input type="submit" value="百度一下"></div>
+    </div>
+</form>
+
+<script type="text/javascript">
+    (function () {
+        var states = [
+            'Alabama',
+            'Alaska',
+            'Arizona',
+            'Arkansas',
+            'California',
+            'Colorado',
+            'Connecticut',
+            'Delaware',
+            'Florida',
+            'Georgia',
+            'Hawaii',
+            'Idaho',
+            'Illinois',
+            'Indiana',
+            'Iowa',
+            'Kansas',
+            'Kentucky',
+            'Louisiana',
+            'Maine',
+            'Maryland',
+            'Massachusetts',
+            'Michigan',
+            'Minnesota',
+            'Mississippi',
+            'Missouri',
+            'Montana',
+            'Nebraska',
+            'Nevada',
+            'New Hampshire',
+            'New Jersey',
+            'New Mexico',
+            'New York',
+            'North Dakota',
+            'North Carolina',
+            'Ohio',
+            'Oklahoma',
+            'Oregon',
+            'Pennsylvania',
+            'Rhode Island',
+            'South Carolina',
+            'South Dakota',
+            'Tennessee',
+            'Texas',
+            'Utah',
+            'Vermont',
+            'Virginia',
+            'Washington',
+            'West Virginia',
+            'Wisconsin',
+            'Wyoming'
+        ];
+
+        $('#input').suggestion({
+
+            sendrequest: function (e, query, render, cacheData) {
+                var listArr = [];
+
+                $.each(states, function (i, item) {
+                    ~item.indexOf( query ) && listArr.push( item );
+                });
+
+                // 渲染数据列表，render(query, data), query为用户输入的query， data为Array类型，为渲染的数据数组
+                render( query, listArr );
+
+                // 缓存请求数据，cacheData(query, data), query为用户输入的query， data为Array类型，为渲染的数据数组
+                cacheData( query, listArr );
+            },
+
+            renderlist: function (e, data, query, callback) {
+
+                // renderList的回调函数callback(listHtml), listHtml为sug列表内容
+                callback.call( this, data.map(function (item) {
+                    return '<div class="sug-item">' + item + '</div>';
+                }).join( ' ' ) );
+            }
+        });
+
+    })();
+</script>
+</body>
+</html>

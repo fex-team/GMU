@@ -1,0 +1,86 @@
+<!doctype html>
+<html>
+<head>
+    <title>支持定位的Popover</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <!--demo展示所用css，不用关心 begin-->
+    <link rel="stylesheet" type="text/css" href="../../../assets/reset.css" />
+    <!--demo展示所用css end-->
+    <!--组件依赖css begin-->
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/popover/popover.css" />
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/popover/popover.default.css" /><!--皮肤文件，若不使用该皮肤，可以不加载-->
+    <!--组件依赖css end-->
+    <!--组件依赖js begin-->
+    <script type="text/javascript" src="../../../dist/zepto.js"></script>
+    <script type="text/javascript" src="../../../src/extend/touch.js"></script>
+    <script type="text/javascript" src="../../../src/extend/offset.js"></script>
+    <script type="text/javascript" src="../../../src/extend/parseTpl.js"></script>
+    <script type="text/javascript" src="../../../src/core/gmu.js"></script>
+    <script type="text/javascript" src="../../../src/core/event.js"></script>
+    <script type="text/javascript" src="../../../src/core/widget.js"></script>
+    <script type="text/javascript" src="../../../src/widget/popover/popover.js"></script>
+    <script type="text/javascript" src="../../../src/widget/popover/placement.js"></script>
+    <script type="text/javascript" src="../../../src/widget/popover/arrow.js"></script>
+    <script type="text/javascript" src="../../../src/widget/popover/dismissible.js"></script>
+    <!--组件依赖js end-->
+
+    <style type="text/css">
+        #wrap {
+            padding: 5px;
+        }
+        .btn {
+            -webkit-user-select:none;
+            display: inline-block;
+        }
+
+        ul.list {
+            margin: 4em 1em 1em;
+        }
+
+        ul.list>li {
+            position: relative;
+            display: inline-block;
+            padding: 0.5em 1em;
+        }
+
+        .ui-popover {
+            white-space:nowrap;/*内容不换行*/
+        }
+    </style>
+</head>
+<body>
+
+<div id="wrap">
+    <h1>可上下左右定位版本</h1>
+    <ul class="list">
+        <li><a id="btn1" class="btn">Popover top</a></li>
+        <li><a id="btn2" class="btn">Popover right</a></li>
+        <li><a id="btn3" class="btn">Popover bottom</a></li>
+        <li><a id="btn4" class="btn">Popover left</a></li>
+    </ul>
+</div>
+
+<script type="text/javascript">
+    $('#btn1').popover({
+        content: 'Hello world!',
+        placement: 'top'
+    });
+
+    $('#btn2').popover({
+        content: 'Hello world!',
+        placement: 'right'
+    });
+
+    $('#btn3').popover({
+        content: 'Hello world!',
+        placement: 'bottom'
+    });
+
+    $('#btn4').popover({
+        content: 'Hello world!',
+        placement: 'left'
+    });
+</script>
+</body>
+</html>

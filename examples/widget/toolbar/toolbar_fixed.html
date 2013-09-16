@@ -1,0 +1,65 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <title>滚动时固定在顶部的toolbar</title>
+    <!--demo展示所用css，不用关心 begin-->
+    <link rel="stylesheet" type="text/css" href="../../../assets/reset.css" />
+    <!--demo展示所用css end-->
+    <!--组件依赖css begin-->
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/toolbar/toolbar.css" />
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/toolbar/toolbar.default.css" /> <!--皮肤文件，若不使用该皮肤，可以不加载-->
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/button/button.css" />
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/button/button.default.css" />
+    <!--组件依赖css end-->
+
+    <!--组件依赖js begin-->
+    <script type="text/javascript" src="../../../dist/zepto.js"></script>
+    <script type="text/javascript" src="../../../src/core/gmu.js"></script>
+    <script type="text/javascript" src="../../../src/core/event.js"></script>
+    <script type="text/javascript" src="../../../src/core/widget.js"></script>
+    <script type="text/javascript" src="../../../src/widget/toolbar/toolbar.js"></script>
+
+    <script type="text/javascript" src="../../../src/extend/highlight.js"></script>
+    <script type="text/javascript"  id="test" src="../../../src/widget/button/button.js"></script>
+    <!--组件依赖js end-->
+    <style type="text/css">
+        p {
+            line-height: 2em;
+        }
+    </style>
+</head>
+<body>
+
+<p>toolbar 不在顶部的时候，可以传入useFix参数来固顶，此选项会创建一份DOM副本。(可以根据机型来判断是否使用该参数,建议不要在不支持fixed的机型上使用）</p>
+<div id="J_toolbar1">
+    <a href="../">返回</a>
+    <h2>工具栏</h2>
+    <span class="btn_1"><span>百科</span></span>
+    <span class="btn_1">知道</span>
+</div>
+<script>
+        // 全setup方式调用
+        $('#J_toolbar1').toolbar({
+            fix: true
+        });
+</script>
+
+<p>
+教师能力要有四个标准：教学内容、激情、励志、幽默。<br />这四个标准完美地贴合了学生的心理，让他们在课堂上既收获知识，又收获生命的力量。<br />
+要引人敬意，就要研究一个非常专业的领域，在那个领域中，你是最顶尖的，至少是中国前十名，这样无论任何时候你都有话说，有事情可做。<br />我俞敏洪原来想成为中国研究英语的前100名，但后来发现根本不可能。所以我就背单词，用一年的时间背诵了一本英文词典，成为中国单词专家。<br />
+新东方最缺的是能够统筹全国的人才。<br />商学院培养的人才有时候是专才，能把人力资源、市场或者是行政、后勤某一个领域搞好，但在全国性战略筹划、布局能力上不太够。<br />我希望能够培养出这样的人才：一上来就站在制高点上，他们不是管一件事，而是管全国的统筹，一方面要“专”，另一方面要“全面”。
+</p>
+<p>
+教师能力要有四个标准：教学内容、激情、励志、幽默。<br />这四个标准完美地贴合了学生的心理，让他们在课堂上既收获知识，又收获生命的力量。<br />
+要引人敬意，就要研究一个非常专业的领域，在那个领域中，你是最顶尖的，至少是中国前十名，这样无论任何时候你都有话说，有事情可做。<br />我俞敏洪原来想成为中国研究英语的前100名，但后来发现根本不可能。所以我就背单词，用一年的时间背诵了一本英文词典，成为中国单词专家。<br />
+新东方最缺的是能够统筹全国的人才。<br />商学院培养的人才有时候是专才，能把人力资源、市场或者是行政、后勤某一个领域搞好，但在全国性战略筹划、布局能力上不太够。<br />我希望能够培养出这样的人才：一上来就站在制高点上，他们不是管一件事，而是管全国的统筹，一方面要“专”，另一方面要“全面”。
+</p>
+<p>
+教师能力要有四个标准：教学内容、激情、励志、幽默。<br />这四个标准完美地贴合了学生的心理，让他们在课堂上既收获知识，又收获生命的力量。<br />
+要引人敬意，就要研究一个非常专业的领域，在那个领域中，你是最顶尖的，至少是中国前十名，这样无论任何时候你都有话说，有事情可做。<br />我俞敏洪原来想成为中国研究英语的前100名，但后来发现根本不可能。所以我就背单词，用一年的时间背诵了一本英文词典，成为中国单词专家。<br />
+新东方最缺的是能够统筹全国的人才。<br />商学院培养的人才有时候是专才，能把人力资源、市场或者是行政、后勤某一个领域搞好，但在全国性战略筹划、布局能力上不太够。<br />我希望能够培养出这样的人才：一上来就站在制高点上，他们不是管一件事，而是管全国的统筹，一方面要“专”，另一方面要“全面”。
+</p>
+</body>
+</html>

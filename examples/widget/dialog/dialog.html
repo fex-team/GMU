@@ -1,0 +1,173 @@
+<!doctype html>
+<html>
+<head>
+    <title>普通对话框</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <!--demo展示所用css，不用关心 begin-->
+    <link rel="stylesheet" type="text/css" href="../../../assets/reset.css" />
+    <!--demo展示所用css end-->
+
+    <!--组件依赖css begin-->
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/dialog/dialog.css" />
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/dialog/dialog.default.css" /> <!--皮肤文件，若不使用该皮肤，可以不加载-->
+    <!--组件依赖css end-->
+
+    <!--demo展示所用css，不用关心 begin-->
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/button/button.css" />
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/button/button.default.css" />
+    <link rel="stylesheet" type="text/css" href="../../../examples/assets/dialog_demo.css"/>
+    <!--demo展示所用css end-->
+
+
+    <!--组件依赖js begin-->
+    <script type="text/javascript" src="../../../dist/zepto.js"></script>
+    <script type="text/javascript" src="../../../src/extend/highlight.js"></script>
+    <script type="text/javascript" src="../../../src/extend/parseTpl.js"></script>
+    <script type="text/javascript" src="../../../src/core/gmu.js"></script>
+    <script type="text/javascript" src="../../../src/core/event.js"></script>
+    <script type="text/javascript" src="../../../src/core/widget.js"></script>
+    <script type="text/javascript" src="../../../src/widget/dialog/dialog.js"></script>
+    <script type="text/javascript" src="../../../src/widget/dialog/$position.js"></script>
+    <!--组件依赖js end-->
+
+</head>
+<body>
+<div id="top"></div>
+<div class="article">
+    <div class="info">
+        <h1>初一语文阅读题的方式</h1>
+
+        <p>贡献者:kimmykong&nbsp;&nbsp;大小: 678k&nbsp;&nbsp;下载:578</p>
+    </div>
+    <div class="text">
+        <h3>一.记叙文阅读规则</h3>
+
+        <p>1.景物描写的作用：渲染气氛，烘托人物心情，推动情节发展，表现人物的品质，存托中心意思</p>
+
+        <p>2.运用描写方式的作用:表现人物性格，反映作品主题</p>
+
+        <p>3.运用比如拟人等修辞的作用：运用了......的修辞，生动形象地写出了...</p>
+
+        <p>4.运用排比的作用：增强语言启示，生动形象地写出了...</p>
+
+        <p>5.反问句的作用：加强语气，引起下文，承上启下</p>
+
+        <p>6.设问句的作用：引起读者的注意和思考，引出下文，承上启下</p>
+
+        <p>7.题目的作用：概括内容；揭示主题；及时线索</p>
+
+        <p>8.景物描写的作用：渲染气氛，烘托人物心情，推动情节发展，表现人物的品质，存托中心意思</p>
+
+        <p>9.景物描写的作用：渲染气氛，烘托人物心情，推动情节发展，表现人物的品质，存托中心意思</p>
+    </div>
+
+    <div class="btns">
+        <a id="btn1" class="ui-btn ui-btn-text-only" style="-webkit-tap-highlight-color: rgba(255, 255, 255, 0);"><span class="ui-btn-text">登录</span></a>
+        <a id="btn2" class="ui-btn ui-btn-text-only" style="-webkit-tap-highlight-color: rgba(255, 255, 255, 0);"><span class="ui-btn-text">评分</span></a>
+        <a id="btn3" class="ui-btn ui-btn-text-only" style="-webkit-tap-highlight-color: rgba(255, 255, 255, 0);"><span class="ui-btn-text">分享</span></a>
+        <a id="btn4" class="ui-btn ui-btn-text-only" style="-webkit-tap-highlight-color: rgba(255, 255, 255, 0);"><span class="ui-btn-text">夜间</span></a>
+    </div>
+
+    <div id="dialog1" title="登陆提示">
+        <p>请使用百度账号登录后, 获得更多个性化特色功能</p>
+    </div>
+    <div id="dialog2" title="登录">
+        <p>账号：<input type="text"></p><p>密码：<input type="text"></p>
+    </div>
+    <div id="dialog3" title="文档评分" class="vote-dialog">
+        <p class="vote"></p>
+        <p>星级从1到5，获得越多星星，表示等级越高</p>
+    </div>
+</div>
+<script>
+    //setup模式
+    $('#dialog1').dialog({
+        autoOpen: false,
+        closeBtn: false,
+        buttons: {
+            '取消': function(){
+                this.close();
+            },
+            '确定': function(){
+                this.close();
+                $('#dialog2').dialog('open');
+            }
+        }
+    }).dialog('this')._options['_wrap'].addClass('login-dialog');
+
+    $('#dialog2').dialog({
+        autoOpen: false,
+        closeBtn: false,
+        buttons: {
+            '取消': function(){
+                this.close();
+            }
+        }
+    }).dialog('this')._options['_wrap'].addClass('login-dialog');
+
+    $('#dialog3').dialog({
+        autoOpen: false,
+        closeBtn: true,
+        scrollMove: false,
+        buttons: {
+            '取消': function(){
+                this.close();
+            },
+            '确定': function(){
+                this.close();
+            }
+        }
+    });
+
+    //render模式
+    var dialog4 = gmu.Dialog({
+        width: 288,
+        autoOpen: false,
+        closeBtn: false,
+        buttons: {
+            '取消': function(){
+                this.close();
+            }
+        },
+        content: '<ul class="share-list"><li class="renren">人人网</li><li class="sina">新浪微博</li><li class="sms">短信息</li><li class="email">用电子邮件发送信息</li></ul>'
+    });
+    dialog4._options['_wrap'].addClass('share-dialog');
+
+    var dialog5 = gmu.Dialog({
+        autoOpen: false,
+        closeBtn: false,
+        buttons: {
+            '取消': function(){
+                this.close();
+            },
+            '确定': function(){
+                this.close();
+            }
+        },
+        title: '登录提示',
+        content: '<p>请使用百度账号登录后, 获得更多个性化特色功能</p><p>特色功能1：个性化首页</p>' +
+                '<p>特色功能2：各产品线自动关联，无需再次登录，一站式服务</p><p>特色功能3：记录您当前的活动状态</p>' +
+                '<p>特色功能4：个性化提醒</p>'
+    });
+    dialog4._options['_wrap'].addClass('login-dialog login-dialog-dark');
+
+
+    $('#btn1').click(function(){
+        $('#dialog1').dialog('open'); 
+    });
+
+    $('#btn2').click(function(){
+        $('#dialog3').dialog('open', 20, 20);
+    });
+    
+    $('#btn3').click(function(){
+        dialog4.open();
+    });
+    
+    $('#btn4').click(function(){
+        dialog5.open();
+    });
+</script>
+</body>
+</html>

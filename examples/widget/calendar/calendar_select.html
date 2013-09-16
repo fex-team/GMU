@@ -1,0 +1,188 @@
+<!doctype html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <meta charset="utf-8">
+    <title>两个相互联动的日历控件</title>
+    <!--demo展示所用css，不用关心 begin-->
+    <link rel="stylesheet" type="text/css" href="../../../assets/reset.css" />
+    <!--demo展示所用css end-->
+    <!--组件依赖css begin-->
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/calendar/calendar.css" />
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/calendar/calendar.default.css" />
+    <!--组件依赖css end-->
+
+    <!--demo展示所用css，不用关心 begin-->
+    <style>
+
+        .section {
+            margin: 10px;
+            background: #fff;
+            border: 1px solid #e1e1e1;
+            font-size: 14px;
+        }
+        #datepicker_wrap {
+            overflow: hidden;
+            height: 0;
+            -webkit-transition: height 200ms ease-in-out;
+            background: #e1e1e1;
+            -webkit-box-sizing:border-box;
+            box-sizing:border-box;
+        }
+        #datepicker_wrap>div {
+            display: none;
+            padding: 5px 5px 25px 5px;
+        }
+
+        .filter {
+            padding: 6px;
+            border-bottom: 1px solid #e1e1e1;
+        }
+        .filter:after {
+            content: '\0020';
+            clear: both;
+            display: block;
+            height: 0;
+            font-size: 0;
+            line-height: 0;
+        }
+
+        .filter a {
+            border: 1px solid #e1e1e1;
+            float: left;
+            background-image:-webkit-gradient(linear,0% 0%, 0% 100%, from(#FFFFFF), to(#D8D8D8));
+            text-decoration: none;
+            color: #000;
+            padding: 5px 26px 5px 5px;
+            margin: 0 5px 0 0;
+            position: relative;
+        }
+
+        .filter a .ui-icon-down {
+            position: absolute;
+            top: 50%;
+            right: 5px;
+            background-image: url("../../../assets/icons-36-black.png");
+            -webkit-background-size: 776px 18px;
+            background-size: 776px 18px;
+            width:18px;
+            height: 18px;
+            margin-top: -9px;
+            background-position: 	-216px 50%;
+        }
+        .filter a.ui-state-active, .filter a.ui-state-hover {
+            background: #fff;
+        }
+        .filter a.ui-state-active .ui-icon-down, .filter a.ui-state-hover .ui-icon-down {
+            background-position: 	-180px 50%;
+        }
+
+        .filter a.search {
+            float: right;
+            padding: 5px;
+            margin: 0;
+        }
+        .result {
+            padding: 15px;
+            text-align: center;
+        }
+    </style>
+    <!--demo展示所用css end-->
+
+    <!--组件依赖js begin-->
+    <script type="text/javascript" src="../../../dist/zepto.js"></script>
+    <script type="text/javascript" src="../../../src/extend/touch.js"></script><!--新版zepto合并版中不包括touch.js-->
+    <script type="text/javascript" src="../../../src/extend/highlight.js"></script>
+    <script type="text/javascript" src="../../../src/core/gmu.js"></script>
+    <script type="text/javascript" src="../../../src/core/event.js"></script>
+    <script type="text/javascript" src="../../../src/core/widget.js"></script>
+    <script type="text/javascript" src="../../../src/widget/calendar/calendar.js"></script>
+    <!--组件依赖js end-->
+</head>
+<body>
+
+<div class="section">
+   <div class="filter clearfix">
+       <a id="datestart" href="javascript:void(0)"><span class="ui-icon-down"></span></a>
+       <a id="dateend" href="javascript:void(0)"><span class="ui-icon-down"></span></a>
+   </div>
+   <div id="datepicker_wrap">
+       <div id="dp_start">
+           <p>入住时间：</p>
+           <div id="datepicker_start"></div>
+       </div>
+       <div id="dp_end">
+           <p>离开时间：</p>
+           <div id="datepicker_end"></div>
+       </div>
+   </div>
+   <div class="result">
+       <p>开始时间只能选择当月的，且不能选择比结束时间后的日期</p>
+       <p>结束时间只能选择开始时间之后的日期。</p>
+   </div>
+</div>
+
+<script type="text/javascript">
+    (function($, undefined){
+        $(function(){//dom ready
+            var open = null, today = new Date();
+
+            //设置开始时间为今天
+            $('#datestart').html($.calendar.formatDate(today) + '<span class="ui-icon-down"></span>');
+
+            //设置结束事件为两天之后
+            $('#dateend').html($.calendar.formatDate(new Date(today.getFullYear(), today.getMonth(), today.getDate()+2)) +
+                '<span class="ui-icon-down"></span>');
+
+            $('#datepicker_start').calendar({//初始化开始时间的datepicker
+                date:$('#datestart').text(),//设置初始日期为文本内容
+                minDate: new Date(today.getFullYear(), today.getMonth(), 1),//设置最小日期为当月第一天，既上一月的不能选
+                maxDate: $('#dateend').text(),//设置最大日期为结束日期，结束日期以后的天不能选
+                select: function(e, date, dateStr){//当选中某个日期时。
+                    $('#datepicker_end').calendar('minDate', date).calendar('refresh');//将结束时间的datepick的最小日期设成所选日期
+
+                    //收起datepicker
+                    open = null;
+                    $('#datepicker_wrap').height(0).children().hide();
+
+                    //把所选日期赋值给文本
+                    $('#datestart').html(dateStr+'<span class="ui-icon-down"></span>').removeClass('ui-state-active');
+                }
+            });
+            $('#datepicker_end').calendar({//初始化结束时间的datepicker
+                date:$('#dateend').text(),//设置初始日期为文本内容
+                minDate: $('#datestart').text(),//设置最小日期为开始日期，开始日期以前的天不能选
+                select: function(e, date, dateStr){//当选中某个日期时。
+                    $('#datepicker_start').calendar('maxDate', date).calendar('refresh');//将开始时间的datepicker的最达日期设成所选日期
+
+                    //收起datepicker
+                    open = null;
+                    $('#datepicker_wrap').height(0).children().hide();
+
+                    //把所选日期赋值给文本
+                    $('#dateend').html(dateStr+'<span class="ui-icon-down"></span>').removeClass('ui-state-active');
+                }
+            });
+
+            $('#datestart, #dateend').click(function(e){//展开或收起日期
+
+                $('#datestart, #dateend').removeClass('ui-state-active');
+                var type = $(this).addClass('ui-state-active').is('#datestart')?'start':'end';
+                if(open && open!= type){
+                    $('#dp_'+open).hide();
+                    open = type;
+                    $('#dp_'+open).show();
+                }else if(open){
+                    $('#date'+open).removeClass('ui-state-active');
+                    open = null;
+                    $('#datepicker_wrap').height(0);
+                } else {
+                    open = type;
+                    $('#datepicker_wrap').height($('#dp_start, #dp_end').hide().filter('#dp_'+open).show().height());
+                }
+            }).highlight('ui-state-hover');
+        });
+    })(Zepto);
+</script>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <meta charset="utf-8">
+    <title>普通按钮</title>
+    <!--demo展示所用css，不用关心 begin-->
+    <link rel="stylesheet" type="text/css" href="../../../assets/reset.css" />
+    <!--demo展示所用css end-->
+    <!--组件依赖css begin-->
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/button/button.css" />
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/button/button.default.css" />
+    <!--组件依赖css end-->
+    <!--组件依赖js begin-->
+    <script type="text/javascript" src="../../../dist/zepto.js"></script>
+    <script type="text/javascript" src="../../../src/extend/highlight.js"></script>
+    <script type="text/javascript" src="../../../src/extend/parseTpl.js"></script>
+    <script type="text/javascript" src="../../../src/core/gmu.js"></script>
+    <script type="text/javascript" src="../../../src/core/event.js"></script>
+    <script type="text/javascript" src="../../../src/core/widget.js"></script>
+    <script type="text/javascript" src="../../../src/widget/button/button.js"></script>
+    <!--组件依赖js end-->
+
+    <style type="text/css">
+        .section {
+            padding:0 3px;
+        }
+        .section h2 {
+            font-size: 16px;
+            font-weight: bold;
+            padding: 5px 5px;
+            color: #5b5b5b;
+        }
+    </style>
+</head>
+<body>
+<div class="section">
+    <h2>按钮</h2>
+    <div>
+        <a id="btn1">点击后不可用
+        </a><a class="button" href="http://www.baidu.com" data-abc="abc">a按钮
+        </a><button class="button">button按钮</button>
+    </div>
+</div>
+<script>
+    //setup模式[推荐]
+    $('.button').button();
+
+    $('#btn1').button().on( 'click', function() {
+        $('#btn1').button( 'state', 'disabled' );
+    });
+</script>
+</body>
+</html>
