@@ -17,7 +17,7 @@
 
 ## 文件组织
 每个组件放在以组件名命名的文件夹内：
-* 组件核心功能以组件名命名比如Panel.js
+* 组件核心功能以组件名命名比如panel.js
 * 组件必选参数多选值拆分文件以“参数名.值”命名，比如display.push.js
 * 插件已“$插件名”命名，比如$drag.js
 
@@ -25,25 +25,25 @@
 
     .
     ├── widget
-        └── Panel Panel组件文件夹
-            ├── Panel.js Panel核心功能文件
+        └── panel Panel组件文件夹
+            ├── panel.js Panel核心功能文件
             ├── display.push.js display参数push选项实现文件
             ├── display.overlay.js display参数overlay选项实现文件
             ├── $drag.js drag插件
-        └── Suggestion Suggestion组件文件夹
-            ├── Suggestion.js Suggestion核心功能文件
+        └── suggestion Suggestion组件文件夹
+            ├── suggestion.js Suggestion核心功能文件
             ├── $iscroll.js iscroll插件
 
 
 
 ## 样式
-gmu组件的classname使用gmu作为命名空间，组件根元素使用“gmu-组件名”命名，比如Dialog最外层容器的classname为‘gmu-dialog'，DOM片段的classname使用“gmu-组件名-片段名”的方式命名，比如Dialog的title命名应该为'gmu-dialog-title'
+gmu组件的classname使用gmu作为命名空间（为保证向下兼容，暂时仍使用ui作为命名空间），组件根元素使用“gmu-组件名”命名，比如Dialog最外层容器的classname为‘gmu-dialog'，DOM片段的classname使用“gmu-组件名-片段名”的方式命名，比如Dialog的title命名应该为'gmu-dialog-title'
 
 ## 定义一个新组件
 ```javascript
 gmu.define('Panel', {
     // 默认参数
-    defaultOptions: {
+    options: {
         key: value,
         key: value,
         key: value,
@@ -66,7 +66,7 @@ gmu.define('Panel', {
 
 定义一个新组件使用gmu.define方法:
 * 第一个参数为组件名，首字母大写；
-* 第二个参数为一个对象字面量，其中包含defaultOptions(组件默认参数)、template(组件模板)、tpl2html(模板转换成html片段的方法)、_init(默认构造函数)以及组件的其他方法或者属性；
+* 第二个参数为一个对象字面量，其中包含options(组件默认参数)、template(组件模板)、tpl2html(模板转换成html片段的方法)、_init(默认构造函数)以及组件的其他方法或者属性；
 * 第三个参数为可选参数，表示组件从哪个组件继承。
 
 ## 组件模板
@@ -188,4 +188,4 @@ gmu.Panel.register('drag', {
 * _init为组件的初始化方法，原则上不建议在_init中进行构造DOM结构的操作
 * 各个组件的zIndex取值，暂时不做统一处理
 * 针对特定浏览器的hack，需要添加注释
-* 浏览器原生事件需要加'.组件名'作为命名空间，自定义事件不需要命名空间
+* 浏览器原生事件需要加'.组件名'作为命名空间（事件名+this.eventNs即可），自定义事件不需要命名空间
