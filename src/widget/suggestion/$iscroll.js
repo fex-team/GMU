@@ -1,12 +1,15 @@
 /**
- * @file 搜索建议 - iscroll
- * @name Suggestion - iscroll
- * @desc <qrcode align="right" title="Live Demo">../gmu/examples/widget/suggestion/suggestion_setup.html</qrcode>
- * 搜索建议 - iscroll插件，当sug列表需要人滚时需要加载该插件
+ * @file iScroll插件，sug列表使用iScroll展示
  * @import widget/suggestion/suggestion.js, extend/iscroll.js
  */
 (function( gmu, $ ) {
 
+    /**
+     * iScroll插件，sug列表使用iScroll展示
+     * @class iscroll
+     * @namespace Suggestion
+     * @pluginfor Suggestion
+     */
     gmu.Suggestion.register( 'iscroll', {
 
         _init: function() {

@@ -6,6 +6,6 @@
     z-index: 10;
 }
 
-.ui-popover.in {
+.ui-popover.ui-in {
     display: block;
 }

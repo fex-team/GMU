@@ -395,7 +395,7 @@ test("继承后的方法调用", function(){
 });
 
 test('tpl2html', function(){
-    expect(3);
+    expect(4);
     
     var instance;
 
@@ -405,7 +405,7 @@ test('tpl2html', function(){
 
     instance = new gmu.TestWidget(document.body);
 
-    equal( instance.tpl2html(), 'a is <%= a %>', '当不传入data时template原文返回' );
+    equal( typeof instance.tpl2html(), 'function', '当tpl里面用到了模板，没有传入data时返回，编译结果' );
     equal( instance.tpl2html({a: 3}), 'a is 3', 'ok');
     instance.destroy();
 
@@ -415,6 +415,14 @@ test('tpl2html', function(){
         }
     });
     equal( instance.tpl2html('c', {c: 4}), 'c is 4', 'ok' );
+    instance.destroy();
+
+    instance = new gmu.TestWidget(document.body, {
+        template: {
+            d: 'd is simple string.'
+        }
+    });
+    equal( instance.tpl2html('d'), 'd is simple string.', '当不传入data, 或者tpl中不带模板变量时，返回原始字符串' );
     instance.destroy();
 });
 
@@ -694,4 +702,13 @@ test( 'noConflict', function() {
 
     delete $.fn.widgetA;
     delete gmu.widgetA;
+});
+
+test( '尝试实例化Base', function() {
+    expect(1);
+    try {
+        gmu.Base();
+    } catch( ex ) {
+        equal( ex.message, 'Base类不能直接实例化' );
+    }
 });

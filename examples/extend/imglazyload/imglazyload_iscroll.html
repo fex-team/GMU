@@ -1,0 +1,142 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>在iScroll中使用图片懒加载</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    <!--demo展示所用css，不用关心 begin-->
+    <link rel="stylesheet" type="text/css" href="../../../assets/reset.css" />
+    <style>
+        .ui-imglazyload{
+            border: 1px solid #ccc;
+            width: 100px;
+            height: 100px;
+        }
+        .lazyload-wrapper{
+            background: #cccccc;
+        }
+        .lazyload p{
+            line-height: 18px;
+            text-indent: 20px;
+            font-size: 12px;
+        }
+        .lazyload img{
+            text-align: center;
+            border: 1px solid #ccc;
+        }
+        .ui-imglazyload.loading {
+            background: red;
+        }
+    </style>
+    <!--demo展示所用css end-->
+    <!--组件依赖js begin-->
+    <script type="text/javascript" src="../../../dist/zepto.js"></script>
+    <script type="text/javascript" src="../../../src/extend/throttle.js"></script>
+    <script type="text/javascript" src="../../../src/extend/event.scrollStop.js"></script>
+    <script type="text/javascript" src="../../../src/extend/event.ortchange.js"></script>
+    <script type="text/javascript" src="../../../src/extend/iscroll.js"></script>
+    <script type="text/javascript" src="../../../src/extend/matchMedia.js"></script>
+    <script type="text/javascript" src="../../../src/extend/imglazyload.js"></script>
+    <!--组件依赖js end-->
+</head>
+
+<body>
+<div class="lazyload-wrapper">
+    <div class="lazyload-scroller">
+        <p>
+            爱因斯坦（1879－1955），美籍德国犹太人。他创立了代表现代科学的相对论，并为核能开发奠定了理论基础，
+            在现代科学技术和他的深刻影响及广泛应用方面开创了现代科学新纪元，被公认为自伽利略、牛顿以来最伟大的
+            科学家、思想家。1921年诺贝尔物理学奖获得者。现代物理学的开创者和奠基人，相对论——“质能关系”的提出
+            者，“决定论量子力学诠释”的捍卫者（振动的粒子）——不掷骰子的上帝。1999年12月26日，爱因斯坦被美国
+            《时代周刊》评选为“世纪伟人”。
+        </p>
+        <div class="ui-imglazyload" data-url='images/1.jpg'></div>
+        <p>阿尔伯特·爱因斯坦（[英][ˈ&aelig;lbət ˈaɪnˌstaɪn] [美][ˈ&aelig;lbɚt ˈaɪnˌstaɪn]），世界十大杰出
+            物理学家之一，现代物理学的开创者、集大成者和奠基人，同时也是一位著名的思想家和哲学家。爱因斯坦1900年毕
+            业于苏黎世联邦理工学院，入瑞士国籍。1905年获苏黎世大学哲学博士学位。曾在伯尔尼专利局任职，在苏黎世工业
+            大学、布拉格德意志担任大学教授。1913年返德国，任柏林威廉皇帝物理研究所所长和柏林洪堡大学教授，并当选为
+            普鲁士科学院院士。1933年爱因斯坦在英国期间，被格拉斯哥大学授予荣誉法学博士学位（LL.D)。因受纳粹政权
+            迫害，迁居美国，任普林斯顿高级研究所教授。从事理论物理研究，1940年入美国国籍。</p>
+        <div class="ui-imglazyload" data-url='images/2.jpg'></div>
+        <div class="ui-imglazyload" data-url='images/3.jpg'></div>
+        <p>爱因斯坦的狭义相对论成功地揭示了能量与质量之间的关系，坚守着“上帝不掷骰子”的量子论诠释（微粒子振动与
+            平动的矢量和）的决定论阵地，解决了长期存在的恒星能源来源的难题。近年来发现越来越多的高能物理现象，
+            狭义相对论已成为解释这种现象的一种最基本的理论工具。其广义相对论也解决了一个天文学上多年的不解之谜
+            ——水星近日点的进动（这是牛顿引力理论无法解释的），并推断出后来被验证了的光线弯曲现象，还成为后来许
+            多天文概念的理论基础。</p>
+        <div class="ui-imglazyload" data-url='images/4.jpg'></div>
+        <div class="ui-imglazyload" data-url='images/5.jpg'></div>
+        <div class="ui-imglazyload" data-url='images/6.jpg'></div>
+        <p>9月 爱因斯坦参与发起反战团体“新祖国同盟”，在这个组织被宣布为非法、成员大批遭受逮捕和迫害而转入地下
+            的情况下，爱因斯坦仍坚决参加这个组织的秘密活动。10月 德国的科学界和文化界在军国主义分子的操纵和煽
+            动下，发表了“文明世界的宣言”，为德国发动的侵略战争辩护，鼓吹德国高于一切，全世界都应该接受“真正德国
+            精神”。在“宣言”上签名的有九十三人，都是当时德国有声望的科学家、艺术家和牧师等。就连能斯脱、伦琴、奥斯
+            特瓦尔德、普朗克等都在上面签了字。当征求爱因斯坦签名时，他断然拒绝了，而同时他却毅然在反战的《告欧
+            洲人书》上签上自己的名字。这一举动震惊了全世界。</p>
+        <div class="ui-imglazyload" data-url='images/7.jpg'></div>
+        <div class="ui-imglazyload" data-url='images/8.jpg'></div>
+        <p>9月 爱因斯坦参与发起反战团体“新祖国同盟”，在这个组织被宣布为非法、成员大批遭受逮捕和迫害而转入地下
+            的情况下，爱因斯坦仍坚决参加这个组织的秘密活动。10月 德国的科学界和文化界在军国主义分子的操纵和煽
+            动下，发表了“文明世界的宣言”，为德国发动的侵略战争辩护，鼓吹德国高于一切，全世界都应该接受“真正德国
+            精神”。在“宣言”上签名的有九十三人，都是当时德国有声望的科学家、艺术家和牧师等。就连能斯脱、伦琴、奥斯
+            特瓦尔德、普朗克等都在上面签了字。当征求爱因斯坦签名时，他断然拒绝了，而同时他却毅然在反战的《告欧
+            洲人书》上签上自己的名字。这一举动震惊了全世界。</p>
+        <div class="ui-imglazyload" data-url='images/9.jpg'></div>
+        <p>9月 爱因斯坦参与发起反战团体“新祖国同盟”，在这个组织被宣布为非法、成员大批遭受逮捕和迫害而转入地下
+            的情况下，爱因斯坦仍坚决参加这个组织的秘密活动。10月 德国的科学界和文化界在军国主义分子的操纵和煽
+            动下，发表了“文明世界的宣言”，为德国发动的侵略战争辩护，鼓吹德国高于一切，全世界都应该接受“真正德国
+            精神”。在“宣言”上签名的有九十三人，都是当时德国有声望的科学家、艺术家和牧师等。就连能斯脱、伦琴、奥斯
+            特瓦尔德、普朗克等都在上面签了字。当征求爱因斯坦签名时，他断然拒绝了，而同时他却毅然在反战的《告欧
+            洲人书》上签上自己的名字。这一举动震惊了全世界。</p>
+        <div class="ui-imglazyload" data-url='images/10.jpg'></div>
+        <div class="ui-imglazyload" data-url='images/11.jpg'></div>
+        <p>9月 爱因斯坦参与发起反战团体“新祖国同盟”，在这个组织被宣布为非法、成员大批遭受逮捕和迫害而转入地下
+            的情况下，爱因斯坦仍坚决参加这个组织的秘密活动。10月 德国的科学界和文化界在军国主义分子的操纵和煽
+            动下，发表了“文明世界的宣言”，为德国发动的侵略战争辩护，鼓吹德国高于一切，全世界都应该接受“真正德国
+            精神”。在“宣言”上签名的有九十三人，都是当时德国有声望的科学家、艺术家和牧师等。就连能斯脱、伦琴、奥斯
+            特瓦尔德、普朗克等都在上面签了字。当征求爱因斯坦签名时，他断然拒绝了，而同时他却毅然在反战的《告欧
+            洲人书》上签上自己的名字。这一举动震惊了全世界。</p>
+        <div class="ui-imglazyload" data-url='images/12.jpg'></div>
+        <p>9月 爱因斯坦参与发起反战团体“新祖国同盟”，在这个组织被宣布为非法、成员大批遭受逮捕和迫害而转入地下
+            的情况下，爱因斯坦仍坚决参加这个组织的秘密活动。10月 德国的科学界和文化界在军国主义分子的操纵和煽
+            动下，发表了“文明世界的宣言”，为德国发动的侵略战争辩护，鼓吹德国高于一切，全世界都应该接受“真正德国
+            精神”。在“宣言”上签名的有九十三人，都是当时德国有声望的科学家、艺术家和牧师等。就连能斯脱、伦琴、奥斯
+            特瓦尔德、普朗克等都在上面签了字。当征求爱因斯坦签名时，他断然拒绝了，而同时他却毅然在反战的《告欧
+            洲人书》上签上自己的名字。这一举动震惊了全世界。</p>
+        <div class="ui-imglazyload" data-url='images/13.jpg'></div>
+        <div class="ui-imglazyload" data-url='images/14.jpg'></div>
+        <div class="ui-imglazyload" data-url='images/15.jpg'></div>
+        <p>9月 爱因斯坦参与发起反战团体“新祖国同盟”，在这个组织被宣布为非法、成员大批遭受逮捕和迫害而转入地下
+            的情况下，爱因斯坦仍坚决参加这个组织的秘密活动。10月 德国的科学界和文化界在军国主义分子的操纵和煽
+            动下，发表了“文明世界的宣言”，为德国发动的侵略战争辩护，鼓吹德国高于一切，全世界都应该接受“真正德国
+            精神”。在“宣言”上签名的有九十三人，都是当时德国有声望的科学家、艺术家和牧师等。就连能斯脱、伦琴、奥斯
+            特瓦尔德、普朗克等都在上面签了字。当征求爱因斯坦签名时，他断然拒绝了，而同时他却毅然在反战的《告欧
+            洲人书》上签上自己的名字。这一举动震惊了全世界。</p>
+        <div class="ui-imglazyload" data-url='images/16.jpg'></div>
+        <div class="ui-imglazyload" data-url='images/17.jpg'></div>
+        <p>9月 爱因斯坦参与发起反战团体“新祖国同盟”，在这个组织被宣布为非法、成员大批遭受逮捕和迫害而转入地下
+            的情况下，爱因斯坦仍坚决参加这个组织的秘密活动。10月 德国的科学界和文化界在军国主义分子的操纵和煽
+            动下，发表了“文明世界的宣言”，为德国发动的侵略战争辩护，鼓吹德国高于一切，全世界都应该接受“真正德国
+            精神”。在“宣言”上签名的有九十三人，都是当时德国有声望的科学家、艺术家和牧师等。就连能斯脱、伦琴、奥斯
+            特瓦尔德、普朗克等都在上面签了字。当征求爱因斯坦签名时，他断然拒绝了，而同时他却毅然在反战的《告欧
+            洲人书》上签上自己的名字。这一举动震惊了全世界。
+        </p>
+    </div>
+</div>
+<script>
+    var $wrapper = $('.lazyload-wrapper');
+    $wrapper.css('height', window.innerHeight - ($('header').height() || 42)).iScroll({
+        onScrollEnd: function () {
+            $.fn.imglazyload.detect();
+        }
+    });
+    $('.ui-imglazyload').imglazyload({
+        container: $('.lazyload-wrapper'),
+        innerScroll: true
+    }).on('loadcomplete', function () {
+        $wrapper.iScroll('refresh');
+        });
+
+</script>
+</body>
+</html>

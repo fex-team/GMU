@@ -78,10 +78,12 @@
     <!--组件依赖css end-->
     <!--组件依赖js begin-->
     <script type="text/javascript" src="../../../dist/zepto.js"></script>
-    <script type="text/javascript" src="../../../src/core/extend.js"></script>
-    <script type="text/javascript" src="../../../src/core/ui.js"></script>
-    <script type="text/javascript" src="../../../src/widget/refresh.js"></script>
-    <script type="text/javascript" src="../../../src/widget/refresh.iOS5.js"></script>   <!--iOS5插件上下滑动插件-->
+    <script type="text/javascript" src="../../../src/core/gmu.js"></script>
+    <script type="text/javascript" src="../../../src/core/event.js"></script>
+    <script type="text/javascript" src="../../../src/core/widget.js"></script>
+    <script type="text/javascript" src="../../../src/extend/throttle.js"></script>
+    <script type="text/javascript" src="../../../src/widget/refresh/refresh.js"></script>
+    <script type="text/javascript" src="../../../src/widget/refresh/$iOS5.js"></script>   <!--iOS5插件上下滑动插件-->
     <!--组件依赖js end-->
 </head>
 
@@ -91,7 +93,7 @@
     <ul class="data-list">
         <li>
             <a href="http://www.baidu.com">
-                <img src="images/txt.png"/>
+                <img src="../../../examples/assets/refresh/txt.png"/>
                 <dl>
                     <dt>英国地标“大本钟”用女王名</dt>
                     <dd class="content">新华网深圳3月23日电（记者 赵瑞西）23日，深圳市南山区西里医院的大楼</dd>
@@ -101,7 +103,7 @@
         </li>
         <li>
             <a href="http://www.baidu.com">
-                <img src="images/pdf.png"/>
+                <img src="../../../examples/assets/refresh/pdf.png"/>
                 <dl>
                     <dt>英国地标“大本钟”用女王名</dt>
                     <dd class="content">新华网深圳3月23日电（记者 赵瑞西）23日，深圳市南山区西里医院的大楼</dd>
@@ -111,7 +113,7 @@
         </li>
         <li>
             <a href="http://www.baidu.com">
-                <img src="images/xls.png"/>
+                <img src="../../../examples/assets/refresh/xls.png"/>
                 <dl>
                     <dt>英国地标“大本钟”用女王名</dt>
                     <dd class="content">新华网深圳3月23日电（记者 赵瑞西）23日，深圳市南山区西里医院的大楼</dd>
@@ -121,7 +123,7 @@
         </li>
         <li>
             <a href="http://www.baidu.com">
-                <img src="images/ufo.png"/>
+                <img src="../../../examples/assets/refresh/ufo.png"/>
                 <dl>
                     <dt>英国地标“大本钟”用女王名</dt>
                     <dd class="content">新华网深圳3月23日电（记者 赵瑞西）23日，深圳市南山区西里医院的大楼</dd>
@@ -131,7 +133,7 @@
         </li>
         <li>
             <a href="http://www.baidu.com">
-                <img src="images/pdf.png"/>
+                <img src="../../../examples/assets/refresh/pdf.png"/>
                 <dl>
                     <dt>英国地标“大本钟”用女王名</dt>
                     <dd class="content">新华网深圳3月23日电（记者 赵瑞西）23日，深圳市南山区西里医院的大楼</dd>
@@ -141,7 +143,7 @@
         </li>
         <li>
             <a href="http://www.baidu.com">
-                <img src="images/xls.png"/>
+                <img src="../../../examples/assets/refresh/xls.png"/>
                 <dl>
                     <dt>英国地标“大本钟”用女王名</dt>
                     <dd class="content">新华网深圳3月23日电（记者 赵瑞西）23日，深圳市南山区西里医院的大楼</dd>
@@ -151,7 +153,7 @@
         </li>
         <li>
             <a href="http://www.baidu.com">
-                <img src="images/ufo.png"/>
+                <img src="../../../examples/assets/refresh/ufo.png"/>
                 <dl>
                     <dt>英国地标“大本钟”用女王名</dt>
                     <dd class="content">新华网深圳3月23日电（记者 赵瑞西）23日，深圳市南山区西里医院的大楼</dd>
@@ -161,7 +163,7 @@
         </li>
         <li>
             <a href="http://www.baidu.com">
-                <img src="images/pdf.png"/>
+                <img src="../../../examples/assets/refresh/pdf.png"/>
                 <dl>
                     <dt>英国地标“大本钟”用女王名</dt>
                     <dd class="content">新华网深圳3月23日电（记者 赵瑞西）23日，深圳市南山区西里医院的大楼</dd>
@@ -171,7 +173,7 @@
         </li>
         <li>
             <a href="http://www.baidu.com">
-                <img src="images/xls.png"/>
+                <img src="../../../examples/assets/refresh/xls.png"/>
                 <dl>
                     <dt>英国地标“大本钟”用女王名</dt>
                     <dd class="content">新华网深圳3月23日电（记者 赵瑞西）23日，深圳市南山区西里医院的大楼</dd>
@@ -181,7 +183,7 @@
         </li>
         <li>
             <a href="http://www.baidu.com">
-                <img src="images/ufo.png"/>
+                <img src="../../../examples/assets/refresh/ufo.png"/>
                 <dl>
                     <dt>英国地标“大本钟”用女王名</dt>
                     <dd class="content">新华网深圳3月23日电（记者 赵瑞西）23日，深圳市南山区西里医院的大楼</dd>
@@ -195,9 +197,8 @@
 
 <script type="text/javascript">
     $(function () {
-        $(document).on('headready', function () {//公共头部加载完成后
             $('.ui-refresh').css('height', window.innerHeight - ($('header').height() || 42)).refresh({
-                ready: function (dir, type) {
+                load: function (dir, type) {
                     var me = this;
                     $.getJSON('../../data/refresh.php', function (data) {
                         var $list = $('.data-list'),
@@ -214,20 +215,8 @@
                     });
                 }
             });
-
-        });
-
-
-
     })
 </script>
-
-<!--demo公用头部展示所用js，可以不用加载 begin-->
-<script id="bootstrap" src="../../example.js" type="text/javascript"
-        data-page="点击加载|refresh.html,上拉加载(lite版)|refresh_lite.html,上下加载(iscroll)|refresh_iscroll.html
-        ,上下加载(iOS5以上适用)|refresh_iOS5.html,自定义加载(全部样式)|refresh_lite_custom.html,自定义加载(部分样式)|refresh_iscroll_custom.html
-        ,加载结束隐藏|refresh_endhide.html,加载结束设置|refresh_iOS5_endstatus.html"></script>
-<!--demo公用头部展示所用js end-->
 
 </body>
 </html>

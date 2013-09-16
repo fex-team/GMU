@@ -3,7 +3,7 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0">
     <meta charset="utf-8">
-    <title>选项卡－历史纪录</title>
+    <title>支持前进后退的选项卡</title>
     <!--demo展示所用css，不用关心 begin-->
     <link rel="stylesheet" type="text/css" href="../../../assets/reset.css" />
     <style>
@@ -26,13 +26,14 @@
     <!--组件依赖css end-->
     <!--组件依赖js begin-->
     <script type="text/javascript" src="../../../dist/zepto.js"></script>
-    <script type="text/javascript" src="../../../src/core/touch.js"></script>      <!--新版zepto合并版中不包括touch.js-->
-    <script type="text/javascript" src="../../../src/core/extend.js"></script>
-    <script type="text/javascript" src="../../../src/core/ui.js"></script>
-    <script type="text/javascript" src="../../../src/core/highlight.js"></script>
-    <script type="text/javascript" src="../../../src/widget/tabs.js"></script>
-    <script type="text/javascript" src="../../../src/widget/tabs.swipe.js"></script>
-    <script type="text/javascript" src="../../../src/widget/tabs.ajax.js"></script>
+    <script type="text/javascript" src="../../../src/extend/touch.js"></script>
+    <script type="text/javascript" src="../../../src/extend/highlight.js"></script>
+    <script type="text/javascript" src="../../../src/core/gmu.js"></script>
+    <script type="text/javascript" src="../../../src/core/event.js"></script>
+    <script type="text/javascript" src="../../../src/core/widget.js"></script>
+    <script type="text/javascript" src="../../../src/widget/tabs/tabs.js"></script>
+    <script type="text/javascript" src="../../../src/widget/tabs/$swipe.js"></script>
+    <script type="text/javascript" src="../../../src/widget/tabs/$ajax.js"></script>
     <!--组件依赖js end-->
 </head>
 <body>
@@ -59,7 +60,7 @@
         activate: function(e, to){
             var index = to.index+1;
             if(flag)return ;
-            $.later(function(){//马上就改变hash的话在android里面会影响动画执行。原因不明
+            setTimeout(function(){//马上就改变hash的话在android里面会影响动画执行。原因不明
                 if (typeof(window.history.pushState) == 'function') {
                     history.pushState(null, 'tab '+index, '#tabs'+index);
                 } else {
@@ -70,18 +71,12 @@
     });
     $(window).on('hashchange popstate', function(event){
         var index = /^#tabs(\d+)$/.test(location.hash) && parseInt(RegExp.$1)-1 || 0;
-        $.later(function(){//android下hash一变不能马上开始动画，否则会有影响！原因不明
+        setTimeout(function(){//android下hash一变不能马上开始动画，否则会有影响！原因不明
             flag = true;//标记一下，手动切换过去不用载入history纪录
             $('#tabs1').tabs('switchTo', index);
             flag = false;
         }, $.os.android?400:0);
     });
-</script>
-<script id="bootstrap" src="../../example.js"
-        type="text/javascript"
-        data-theme="default"
-        data-use="widget/tabs.swipe.js,widget/tabs.ajax.js"
-        data-page="选项卡|tabs.html,选项卡render模式|tabs_render.html,选项卡-ajax|tabs_ajax.html,选项卡-json|tabs_json.html,选项卡嵌套|tabs_tabs.html,不缓存内容选项卡|tabs_nocache.html,选项卡－历史纪录|tabs_history.html">
 </script>
 </body>
 </html>

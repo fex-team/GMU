@@ -1,4 +1,5 @@
 /**
+ * @file 来自zepto/touch.js, zepto自1.0后，已不默认打包此文件。
  * @import zepto.js
  */
 //     Zepto.js
@@ -115,4 +116,4 @@
   ;['swipe', 'swipeLeft', 'swipeRight', 'swipeUp', 'swipeDown', 'doubleTap', 'tap', 'singleTap', 'longTap'].forEach(function(m){
     $.fn[m] = function(callback){ return this.bind(m, callback) }
   })
-})(Zepto)
+})(Zepto);

@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 <head>
-    <title>Popover Basic</title>
+    <title>基本的Popover</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
     <!--demo展示所用css，不用关心 begin-->
@@ -19,23 +19,16 @@
     <script type="text/javascript" src="../../../src/core/event.js"></script>
     <script type="text/javascript" src="../../../src/core/widget.js"></script>
     <script type="text/javascript" src="../../../src/widget/popover/popover.js"></script>
-    <script type="text/javascript" src="../../../src/widget/popover/dismissible.js"></script>
     <!--组件依赖js end-->
 
     <style type="text/css">
+        #wrap {
+            padding: 5px;
+            position: relative;
+        }
         .btn {
             -webkit-user-select:none;
             display: inline-block;
-        }
-
-        ul.list {
-            margin: 4em 1em 1em;
-        }
-
-        ul.list>li {
-            position: relative;
-            display: inline-block;
-            padding: 0.5em 1em;
         }
 
         .ui-popover {
@@ -43,52 +36,24 @@
             opacity: 0;
             display: block;
             -webkit-transition: opacity 200ms ease-in-out;
-            top: 40px;
         }
 
-        .ui-popover:before {
-            position: absolute;
-            left: 20px;
-            top: -7px;
-            display: inline-block;
-            border-style: solid;
-            border-color: transparent transparent rgba(0, 0, 0, 0.2) transparent;
-            border-width: 0 7px 7px 7px;
-            content: '';
-        }
-
-        .ui-popover:after {
-            position: absolute;
-            top: -6px;
-            left: 21px;
-            display: inline-block;
-            border-style: solid;
-            border-color: transparent transparent #fff transparent;
-            border-width: 0 6px 6px 6px;
-            content: '';
-        }
-
-        .ui-popover.in {
+        .ui-popover.ui-in {
             opacity: 1;
         }
     </style>
 </head>
 <body>
 
-<h1>基础版本</h1>
-<ul class="list">
-    <li><a id="btn1" class="btn">Popover</a></li>
-</ul>
+<div id="wrap">
+    <h1>基础版本</h1>
+    <a id="btn1" class="btn">Popover</a>
+</div>
 
 <script type="text/javascript">
     $('#btn1').popover({
         content: 'Hello world!'
     });
 </script>
-
-<!--demo公用头部展示所用js，可以不用加载 begin-->
-<!--script id="bootstrap" src="../../example.js" type="text/javascript"
-        data-page="图片轮播|slider.html,无缝滑动|slider_loop.html,显示多张图片|slider_multiview.html,动态加载图片|slider_dynamic.html"></script-->
-<!--demo公用头部展示所用js end-->
 </body>
 </html>

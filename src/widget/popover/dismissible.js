@@ -5,8 +5,21 @@
 (function( gmu, $ ) {
     var Popover = gmu.Popover;
 
+    /**
+     * @property {Boolean} [dismissible=true] 是否点击其他区域，关闭自己.
+     * @namespace options
+     * @uses Popover.dismissible
+     * @for Popover
+     */
     Popover.options.dismissible = true;
 
+    /**
+     * 用来实现自动关闭功能，在弹出层打开的条件下，点击其他位置，将自动关闭此弹出层。
+     * 此功能包括多个实例间的互斥功能。
+     * @class dismissible
+     * @namespace Popover
+     * @pluginfor Popover
+     */
     Popover.option( 'dismissible', true, function() {
         var me = this,
             $doc = $( document ),

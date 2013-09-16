@@ -1,6 +1,6 @@
 module('zepto.position',{
     setup:function(){
-        $('body').append('<div id="container" style="position:relative;"></div>');
+        $('body').append('<div id="container" style="position:absolute; top: -99999px;"></div>');
         //创建dom
         $('<div id="positionOf"></div>')
             .css({
@@ -37,16 +37,16 @@ test('offset setter', function(){
     p.offset( offset1 );
     offset2 = p.offset();
 
-    equal( offset1.top, offset2.top );
-    equal( offset1.left, offset2.left );
+    approximateEqual( offset1.top, offset2.top );
+    approximateEqual( offset1.left, offset2.left );
 
     p.offset( function(){
         return offset1;
     } );
     offset2 = p.offset();
 
-    equal( offset1.top, offset2.top );
-    equal( offset1.left, offset2.left );
+    approximateEqual( offset1.top, offset2.top );
+    approximateEqual( offset1.left, offset2.left );
 });
 
 test('position my', function(){
@@ -64,8 +64,8 @@ test('position my', function(){
     offset1 = p.offset();
     offset2 = o.offset();
 
-    equals(offset1.top, offset2.top, 'ok');
-    equals(offset1.left, offset2.left, 'ok');
+    approximateEqual(offset1.top, offset2.top);
+    approximateEqual(offset1.left, offset2.left);
 
 
     p.position({
@@ -77,8 +77,8 @@ test('position my', function(){
     offset1 = p.offset();
     offset2 = o.offset();
 
-    equals(offset1.top, offset2.top, 'ok');
-    equals(offset1.left, offset2.left - offset1.width/2, 'ok');
+    approximateEqual(offset1.top, offset2.top);
+    approximateEqual(offset1.left, offset2.left - offset1.width/2);
 
     p.position({
         of: o,
@@ -89,8 +89,8 @@ test('position my', function(){
     offset1 = p.offset();
     offset2 = o.offset();
 
-    equals(offset1.top, offset2.top, 'ok');
-    equals(offset1.left, offset2.left - offset1.width, 'ok');
+    approximateEqual(offset1.top, offset2.top);
+    approximateEqual(offset1.left, offset2.left - offset1.width);
 
     p.position({
         of: o,
@@ -101,8 +101,8 @@ test('position my', function(){
     offset1 = p.offset();
     offset2 = o.offset();
 
-    equals(offset1.top, offset2.top - offset1.height/2, 'ok');
-    equals(offset1.left, offset2.left, 'ok');
+    approximateEqual(offset1.top, offset2.top - offset1.height/2);
+    approximateEqual(offset1.left, offset2.left);
 
 
     p.position({
@@ -114,8 +114,8 @@ test('position my', function(){
     offset1 = p.offset();
     offset2 = o.offset();
 
-    equals(offset1.top, offset2.top - offset1.height, 'ok');
-    equals(offset1.left, offset2.left, 'ok');
+    approximateEqual(offset1.top, offset2.top - offset1.height);
+    approximateEqual(offset1.left, offset2.left);
 
 
     start();
@@ -132,8 +132,8 @@ test('position short', function(){
     offset1 = p.offset();
     offset2 = o.offset();
 
-    equals(offset1.top, offset2.top + offset2.height/2 - offset1.height/2, 'ok');
-    equals(offset1.left, offset2.left + offset2.width/2 - offset1.width/2, 'ok');
+    approximateEqual(offset1.top, offset2.top + offset2.height/2 - offset1.height/2);
+    approximateEqual(offset1.left, offset2.left + offset2.width/2 - offset1.width/2);
 
     p.position({
         of: o,
@@ -143,8 +143,8 @@ test('position short', function(){
     offset1 = p.offset();
     offset2 = o.offset();
 
-    equals(offset1.top, offset2.top + offset2.height/2 - offset1.height/2, 'ok');
-    equals(offset1.left, offset2.left + offset2.width/2, 'ok');
+    approximateEqual(offset1.top, offset2.top + offset2.height/2 - offset1.height/2);
+    approximateEqual(offset1.left, offset2.left + offset2.width/2);
 
     p.position({
         of: o,
@@ -154,8 +154,8 @@ test('position short', function(){
     offset1 = p.offset();
     offset2 = o.offset();
 
-    equals(offset1.top, offset2.top + offset2.height/2 - offset1.height/2, 'ok');
-    equals(offset1.left, offset2.left + offset2.width/2 - offset1.width, 'ok');
+    approximateEqual(offset1.top, offset2.top + offset2.height/2 - offset1.height/2);
+    approximateEqual(offset1.left, offset2.left + offset2.width/2 - offset1.width);
 
     p.position({
         of: o,
@@ -165,8 +165,8 @@ test('position short', function(){
     offset1 = p.offset();
     offset2 = o.offset();
 
-    equals(offset1.top, offset2.top + offset2.height/2, 'ok');
-    equals(offset1.left, offset2.left + offset2.width/2 - offset1.width/2, 'ok');
+    approximateEqual(offset1.top, offset2.top + offset2.height/2);
+    approximateEqual(offset1.left, offset2.left + offset2.width/2 - offset1.width/2);
 
     p.position({
         of: o,
@@ -176,8 +176,8 @@ test('position short', function(){
     offset1 = p.offset();
     offset2 = o.offset();
 
-    equals(offset1.top, offset2.top + offset2.height/2 - offset1.height, 'ok');
-    equals(offset1.left, offset2.left + offset2.width/2 - offset1.width/2, 'ok');
+    approximateEqual(offset1.top, offset2.top + offset2.height/2 - offset1.height);
+    approximateEqual(offset1.left, offset2.left + offset2.width/2 - offset1.width/2);
 });
 
 test('position at', function(){
@@ -194,8 +194,8 @@ test('position at', function(){
     offset1 = p.offset();
     offset2 = o.offset();
 
-    equals(offset1.top, offset2.top, 'ok');
-    equals(offset1.left, offset2.left, 'ok');
+    approximateEqual(offset1.top, offset2.top);
+    approximateEqual(offset1.left, offset2.left);
 
 
     p.position({
@@ -207,8 +207,8 @@ test('position at', function(){
     offset1 = p.offset();
     offset2 = o.offset();
 
-    equals(offset1.top, offset2.top, 'ok');
-    equals(offset1.left, offset2.left + offset2.width/2, 'ok');
+    approximateEqual(offset1.top, offset2.top);
+    approximateEqual(offset1.left, offset2.left + offset2.width/2);
 
     p.position({
         of: o,
@@ -219,8 +219,8 @@ test('position at', function(){
     offset1 = p.offset();
     offset2 = o.offset();
 
-    equals(offset1.top, offset2.top, 'ok');
-    equals(offset1.left, offset2.left + offset2.width, 'ok');
+    approximateEqual(offset1.top, offset2.top);
+    approximateEqual(offset1.left, offset2.left + offset2.width);
 
     p.position({
         of: o,
@@ -231,8 +231,8 @@ test('position at', function(){
     offset1 = p.offset();
     offset2 = o.offset();
 
-    equals(offset1.top, offset2.top + offset2.height/2, 'ok');
-    equals(offset1.left, offset2.left, 'ok');
+    approximateEqual(offset1.top, offset2.top + offset2.height/2);
+    approximateEqual(offset1.left, offset2.left);
 
 
     p.position({
@@ -244,8 +244,8 @@ test('position at', function(){
     offset1 = p.offset();
     offset2 = o.offset();
 
-    equals(offset1.top, offset2.top + offset2.height, 'ok');
-    equals(offset1.left, offset2.left, 'ok');
+    approximateEqual(offset1.top, offset2.top + offset2.height);
+    approximateEqual(offset1.left, offset2.left);
 
 
     start();
@@ -271,8 +271,8 @@ test('position of=window', function(){
 
     offset1 = p.offset();
 
-    equals(offset1.top, offset2.top, 'ok');
-    equals(offset1.left, offset2.left, 'ok');
+    approximateEqual(offset1.top, offset2.top);
+    approximateEqual(offset1.left, offset2.left);
 
 
     p.position({
@@ -283,8 +283,8 @@ test('position of=window', function(){
 
     offset1 = p.offset();
 
-    equals(offset1.top, offset2.top, 'ok');
-    equals(offset1.left, offset2.left + Math.round(offset2.width/2), 'ok');
+    approximateEqual(offset1.top, offset2.top);
+    approximateEqual(offset1.left, offset2.left + Math.round(offset2.width/2));
 
     p.position({
     	of: window,
@@ -294,8 +294,8 @@ test('position of=window', function(){
 
     offset1 = p.offset();
 
-    equals(offset1.top, offset2.top, 'ok');
-    equals(offset1.left, offset2.left + offset2.width, 'ok');
+    approximateEqual(offset1.top, offset2.top);
+    approximateEqual(offset1.left, offset2.left + offset2.width);
 
     p.position({
     	of: window,
@@ -305,8 +305,8 @@ test('position of=window', function(){
 
     offset1 = p.offset();
 
-    equals(offset1.top, offset2.top + Math.round(offset2.height/2), 'ok');
-    equals(offset1.left, offset2.left, 'ok');
+    approximateEqual(offset1.top, offset2.top + Math.round(offset2.height/2));
+    approximateEqual(offset1.left, offset2.left);
 
 
     p.position({
@@ -317,8 +317,8 @@ test('position of=window', function(){
 
     offset1 = p.offset();
 
-    equals(offset1.top, offset2.top + offset2.height, 'ok');
-    equals(offset1.left, offset2.left, 'ok');
+    approximateEqual(offset1.top, offset2.top + offset2.height);
+    approximateEqual(offset1.left, offset2.left);
 
 
     start();
@@ -342,8 +342,8 @@ test('position of=e', function(){
 
         offset1 = p.offset();
 
-        equals(offset1.top, offset2.top, 'ok');
-        equals(offset1.left, offset2.left, 'ok');
+        approximateEqual(offset1.top, offset2.top);
+        approximateEqual(offset1.left, offset2.left);
 
 
         p.position({
@@ -354,8 +354,8 @@ test('position of=e', function(){
 
         offset1 = p.offset();
 
-        equals(offset1.top, offset2.top, 'ok');
-        equals(offset1.left, offset2.left, 'ok');
+        approximateEqual(offset1.top, offset2.top);
+        approximateEqual(offset1.left, offset2.left);
 
         p.position({
             of: e,
@@ -365,8 +365,8 @@ test('position of=e', function(){
 
         offset1 = p.offset();
 
-        equals(offset1.top, offset2.top, 'ok');
-        equals(offset1.left, offset2.left, 'ok');
+        approximateEqual(offset1.top, offset2.top);
+        approximateEqual(offset1.left, offset2.left);
 
         p.position({
             of: e,
@@ -376,8 +376,8 @@ test('position of=e', function(){
 
         offset1 = p.offset();
 
-        equals(offset1.top, offset2.top, 'ok');
-        equals(offset1.left, offset2.left, 'ok');
+        approximateEqual(offset1.top, offset2.top);
+        approximateEqual(offset1.left, offset2.left);
 
 
         p.position({
@@ -388,8 +388,8 @@ test('position of=e', function(){
 
         offset1 = p.offset();
 
-        equals(offset1.top, offset2.top, 'ok');
-        equals(offset1.left, offset2.left, 'ok');
+        approximateEqual(offset1.top, offset2.top);
+        approximateEqual(offset1.left, offset2.left);
 
         start();
     });
@@ -419,8 +419,8 @@ test('position custom collision & within', function(){
         }
     });
     offset = p.offset();
-    equals(offset.top, 50, '修改后的position top为50 ');
-    equals(offset.left, 50, '修改后的position left为50 ');
+    approximateEqual(offset.top, 50, '修改后的position top为50 ');
+    approximateEqual(offset.left, 50, '修改后的position left为50 ');
     start();
 });
 
@@ -435,7 +435,7 @@ test('position custom within=window', function(){
         at: 'left top',
         within: window,
         collision: function(position, opts){
-           equals(opts.within.$el[0], window, 'The within is window');
+           equal(opts.within.$el[0], window, 'The within is window');
         }
     });
 
@@ -464,8 +464,8 @@ test('position 位置offset参数', function(){
     offset1 = p.offset();
     offset2 = o.offset();
 
-    equals(offset1.top, offset2.top + 10, 'ok');
-    equals(offset1.left, offset2.left + 20, 'ok');
+    approximateEqual(offset1.top, offset2.top + 10);
+    approximateEqual(offset1.left, offset2.left + 20);
 
 
     p.position({
@@ -477,7 +477,7 @@ test('position 位置offset参数', function(){
     offset1 = p.offset();
     offset2 = o.offset();
 
-    approximateEqual(offset1.top, offset2.top +0.1*offset2.height, 0.5,  'ok');
-    approximateEqual(offset1.left, offset2.left + 0.2*offset2.width, 0.5, 'ok');
+    approximateEqual(offset1.top, offset2.top +0.1*offset2.height);
+    approximateEqual(offset1.left, offset2.left + 0.2*offset2.width);
     start();
 });

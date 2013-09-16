@@ -1,9 +1,9 @@
 /**
- *  @file 基于Zepto的位置设置获取组件
- *  @name Position
- *  @desc 定位插件
- *  @import zepto.js, extend/offset.js
+ * @file 基于Zepto的位置设置获取组件
+ * @import zepto.js, extend/offset.js
+ * @module GMU
  */
+
 (function ($, undefined) {
     var _position = $.fn.position,
         round = Math.round,
@@ -83,23 +83,29 @@
     }
 
     /**
-     * @name position
+     * 获取元素相对于相对父级元素（父级最近为position为relative｜abosolute｜fixed的元素）的坐标位置。
+     * @method $.fn.position
      * @grammar position()  ⇒ array
      * @grammar position(opts)  ⇒ self
-     * @desc 获取元素相对于相对父级元素（父级最近为position为relative｜abosolute｜fixed的元素）的坐标位置。
-     *
-     * 如果传入了opts，则把所选元素设置成制定位置。参数格式如下。
-     * - ''my'' //默认为'center'// 设置中心点。可以为'left top', 'center bottom', 'right center'...
-     *   同时还可以设置偏移量。如 'left+5 center-20%'。
-     * - ''at'' //默认为'center'// 设置定位到目标元素的什么位置。参数格式同my参数一致。
-     * - ''of'' //默认为null// 设置目标元素
-     * - ''collision'' //默认为null// 碰撞检测回调方法。传入function.
-     * - ''within'' //默认为window，碰撞检测对象。
+     * @param {String} [my=center] 设置中心点。可以为'left top', 'center bottom', 'right center'...同时还可以设置偏移量；如 'left+5 center-20%'
+     * @param {String} [at=center] 设置定位到目标元素的什么位置。参数格式同my参数一致
+     * @param {Object} [of=null] 设置目标元素
+     * @param {Function} [collision=null] 碰撞检测回调方法
+     * @param {Object} [within=window] 碰撞检测对象
+     * @example
+     * var position = $('#target').position();
+     * $('#target').position({
+     *                          my: 'center',
+     *                          at: 'center',
+     *                          of: document.body
+     *                      });
      */
     $.fn.position = function ( opts ) {
         if ( !opts || !opts.of ) {
             return _position.call( this );
         }
+
+        opts = $.extend( {}, opts );
 
         var target = $( opts.of ),
             collision = opts.collision,
@@ -137,6 +143,7 @@
                 $el : $el
             } );
 
+            pos.using = opts.using;
             $el.offset( pos );
         });
     }

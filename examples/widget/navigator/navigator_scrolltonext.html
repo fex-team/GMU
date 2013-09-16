@@ -1,0 +1,156 @@
+<!doctype html>
+<html>
+<head>
+    <title>可内滚的导航栏（2）</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <!--demo展示所用css，不用关心 begin-->
+    <link rel="stylesheet" type="text/css" href="../../../assets/reset.css" />
+    <!--demo展示所用css end-->
+    <!--组件依赖css begin-->
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/navigator/navigator.css" />
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/navigator/navigator.default.css" /><!--皮肤文件，若不使用该皮肤，可以不加载-->
+    <!--组件依赖css end-->
+
+    <!--组件依赖js begin-->
+    <script type="text/javascript" src="../../../dist/zepto.js"></script>
+    <script type="text/javascript" src="../../../src/extend/touch.js"></script>
+    <script type="text/javascript" src="../../../src/extend/iscroll.js"></script>
+    <script type="text/javascript" src="../../../src/extend/highlight.js"></script>
+    <script type="text/javascript" src="../../../src/extend/parseTpl.js"></script>
+    <script type="text/javascript" src="../../../src/core/gmu.js"></script>
+    <script type="text/javascript" src="../../../src/core/event.js"></script>
+    <script type="text/javascript" src="../../../src/core/widget.js"></script>
+    <script type="text/javascript" src="../../../src/widget/navigator/navigator.js"></script>
+    <script type="text/javascript" src="../../../src/widget/navigator/scrolltonext.js"></script>
+    <script type="text/javascript" src="../../../src/widget/navigator/$scrollable.js"></script>
+    <!--组件依赖js end-->
+
+    <style type="text/css">
+        #nav2 {
+            background: transparent;
+            border-width: 0;
+            display: -webkit-box;
+            -webkit-box-flex: 1;
+        }
+        #nav2 li a {
+            color: #333;
+        }
+
+        #nav2 li.ui-state-active,
+        #nav2 li.ui-state-hover {
+            background: transparent;
+        }
+        #nav2 li.ui-state-active a,
+        #nav2 li.ui-state-hover a{
+            color: #e81459;
+        }
+
+        #nav2 .ui-scroller {
+            position: relative;
+        }
+        #nav2 .bar {
+            position: absolute;
+            height: 2px;
+            bottom: 0;
+            overflow: hidden;
+            -webkit-box-sizing:border-box;
+            padding: 0 10px;
+            -webkit-transition: left 200ms ease-out;
+        }
+        #nav2 .bar:after {
+            content: '';
+            display: block;
+            height: 2px;
+            background-color: #e81459;
+        }
+        #nav2_wrap {
+            display: -webkit-box;
+        }
+        #arrow {
+            width: 30px;
+            -webkit-box-flex: 0;
+            -webkit-box-align: center;
+            -webkit-box-pack: center;
+            display: -webkit-box;
+        }
+    </style>
+</head>
+<body>
+
+<div id="wrap">
+    <h1>Navigator可内滚版本 且同时会把下一个按钮滚动到可见, 尝试下点击边缘的按钮</h1>
+    <div id="nav">
+        <ul>
+            <li><a href="#test1">首页</a></li>
+            <li><a href="#test1">要闻</a></li>
+            <li><a href="javascript:;">国内</a></li>
+            <li><a href="#test2">国际</a></li>
+            <li><a href="#test3">军事</a></li>
+            <li><a href="#test4">社会</a></li>
+            <li><a href="#test5">娱乐</a></li>
+            <li><a href="#test6">女人</a></li>
+            <li><a href="#">体育</a></li>
+            <li><a href="#test7">科技</a></li>
+            <li><a href="#test8">互联网</a></li>
+            <li><a href="#test9">教育</a></li>
+            <li class="ui-state-active"><a href="#">财经</a></li>
+            <li><a href="#test11">房产</a></li>
+            <li><a href="#test12">汽车</a></li>
+        </ul>
+    </div>
+
+    <h2>其他风格</h2>
+
+    <div id="nav2_wrap">
+        <div id="nav2">
+            <ul>
+                <li><a href="#test1">首页</a></li>
+                <li><a href="#test1">要闻</a></li>
+                <li><a href="javascript:;">国内</a></li>
+                <li><a href="#test2">国际</a></li>
+                <li><a href="#test3">军事</a></li>
+                <li><a href="#test4">社会</a></li>
+                <li><a href="#test5">娱乐</a></li>
+                <li><a href="#test6">女人</a></li>
+                <li><a href="#">体育</a></li>
+                <li><a href="#test7">科技</a></li>
+                <li><a href="#test8">互联网</a></li>
+                <li><a href="#test9">教育</a></li>
+                <li><a href="#">财经</a></li>
+                <li><a href="#test11">房产</a></li>
+                <li><a href="#test12">汽车</a></li>
+            </ul>
+            <span class="bar"></span>
+        </div>
+        <a id="arrow"><span>&gt;</span></a>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $('#nav').navigator();
+
+    (function () {
+        var bar = $('#nav2 span.bar'),
+            left = $('#nav2 ul').offset().left;
+        $('#nav2').navigator({
+            select: function( e, index, li ){
+                bar.css({
+                    left: li.offsetLeft - left,
+                    width: li.childNodes[0].offsetWidth
+                });
+            },
+            ready: function() {
+                bar.appendTo($('#nav2').find('.ui-scroller'));
+            }
+        });
+
+        $('#arrow').on('click', function(){
+            $('#nav2').iScroll( 'scrollTo', 100, 0, 400, true );
+        });
+
+
+    })();
+</script>
+</body>
+</html>

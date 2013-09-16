@@ -3,7 +3,7 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
     <meta charset="utf-8">
-    <title>add2desktop demo</title>
+    <title>render方式创建add2desktop</title>
     <!--demo展示所用css，不用关心 begin-->
     <link rel="stylesheet" type="text/css" href="../../../assets/reset.css" />
     <!--demo展示所用css end-->
@@ -12,18 +12,25 @@
     <!--组件依赖css end-->
     <!--组件依赖js begin-->
     <script type="text/javascript" src="../../../dist/zepto.js"></script>
-    <script type="text/javascript" src="../../../src/core/extend.js"></script>
-    <script type="text/javascript" src="../../../src/core/ui.js"></script>
-    <script type="text/javascript" src="../../../src/core/fix.js"></script>
-    <script type="text/javascript" src="../../../src/widget/add2desktop.js"></script>
+    <script type="text/javascript" src="../../../src/extend/fix.js"></script>
+    <script type="text/javascript" src="../../../src/core/gmu.js"></script>
+    <script type="text/javascript" src="../../../src/core/event.js"></script>
+    <script type="text/javascript" src="../../../src/core/widget.js"></script>
+    <script type="text/javascript" src="../../../src/widget/add2desktop/add2desktop.js"></script>
     <!--组件依赖js end-->
+
+    <style type="text/css">
+        body {
+            height: 20000px;
+        }
+    </style>
 </head>
-<body style="height: 2000px;">
+<body>
     <a href="javascript:;" id="clear" style="display: inline-block;padding: 30px;">清除LocalStorage</a>
 
 <script>
     //创建组件
-      var demo = $.ui.add2desktop({icon:'icon.png'});
+      var demo = gmu.Add2desktop({icon:'../../../examples/assets/icon.png'});
 
     //清除LocalStorage
     $('#clear').on('click',function(){
@@ -31,8 +38,5 @@
         alert('已清除');
     });
 </script>
-<!--demo公用头部展示所用js，可以不用加载 begin-->
-<script id="bootstrap" src="../../example.js" type="text/javascript" data-theme="default" data-use="widget/add2desktop.js" data-page="render方式创建|add2desktop.html,setup方式创建|add2desktop_icon.html"></script>
-<!--demo公用头部展示所用js end-->
 </body>
 </html>

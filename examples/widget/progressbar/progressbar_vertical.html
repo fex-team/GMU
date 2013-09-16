@@ -1,23 +1,42 @@
 <!doctype html>
 <html>
 <head>
-    <title>progressbar demo - 竖向</title>
+    <title>竖向的进度条</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
     <!--demo展示所用css，不用关心 begin-->
     <link rel="stylesheet" type="text/css" href="../../../assets/reset.css" />
-    <link rel="stylesheet" type="text/css" href="progressbar_demo.css"/>
     <!--demo展示所用css end-->
     <!--组件依赖css begin-->
     <link rel="stylesheet" type="text/css" href="../../../assets/widget/progressbar/progressbar.css" />
     <!--组件依赖css end-->
     <!--组件依赖js begin-->
     <script type="text/javascript" src="../../../dist/zepto.js"></script>
-    <script type="text/javascript" src="../../../src/core/touch.js"></script>     <!--新版zepto合并版中不包括touch.js-->
-    <script type="text/javascript" src="../../../src/core/extend.js"></script>
-    <script type="text/javascript" src="../../../src/core/ui.js"></script>
-    <script type="text/javascript" src="../../../src/widget/progressbar.js"></script>
+    <script type="text/javascript" src="../../../src/extend/touch.js"></script>
+    <script type="text/javascript" src="../../../src/core/gmu.js"></script>
+    <script type="text/javascript" src="../../../src/core/event.js"></script>
+    <script type="text/javascript" src="../../../src/core/widget.js"></script>
+    <script type="text/javascript" src="../../../src/widget/progressbar/progressbar.js"></script>
+
     <!--组件依赖js end-->
+    <style type="text/css">
+        body {
+            background: #686868;
+        }
+        #progressbar {
+            width:250px;
+            margin:30px 50px;
+        }
+
+        #progressbar-2 {
+            height: 200px;
+            margin: 40px;
+        }
+
+        input {
+            margin-left:30px;
+        }
+    </style>
 </head>
 <body>
 <div id="progressbar-2"></div>
@@ -36,8 +55,5 @@
         $('#progressbar-2').progressbar('value', $('#cur_val-2').val());
     });
 </script>
-<!--demo公用头部展示所用js，可以不用加载 begin-->
-<script id="bootstrap" src="../../example.js" type="text/javascript" data-page="横向模式|progressbar.html,竖向模式|progressbar_vertical.html"></script>
-<!--demo公用头部展示所用js end-->
 </body>
 </html>

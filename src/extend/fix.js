@@ -1,12 +1,12 @@
 /**
  * @file 实现了通用fix方法。
  * @name Fix
- * @import zepto.js
+ * @import zepto.js, extend/event.scrollStop.js, extend/event.ortchange.js
  */
 
 /**
  * @name fix
- * @grammar fix(options)   ⇒ self
+ * @grammar fix(options) => self
  * @desc 固顶fix方法，对不支持position:fixed的设备上将元素position设为absolute，
  * 在每次scrollstop时根据opts参数设置当前显示的位置，类似fix效果。
  *
@@ -37,10 +37,10 @@
                         if(buff[0].getBoundingClientRect().top !== top) {
                             me.css('position', 'absolute');
                             doFixed();
-                            $(document).on('scrollStop', doFixed);
+                            $(window).on('scrollStop', doFixed);
                             $(window).on('ortchange', doFixed);
                         }
-                        $(document).off('scrollStop', checkFixed);
+                        $(window).off('scrollStop', checkFixed);
                         buff.remove();
                     }
                 },
@@ -51,7 +51,9 @@
                     });
                     opts.width == '100%' && me.css('width', document.body.offsetWidth);
                 };
-            $(document).on('scrollStop', checkFixed);
+
+            $(window).on('scrollStop', checkFixed);
+
             return me;
         }
     });

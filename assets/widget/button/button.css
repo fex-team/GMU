@@ -1,19 +1,16 @@
-.ui-helper-hidden {
-    position: absolute !important;
-    clip: rect(1px 1px 1px 1px);
-    left: -10000px;
-}
-.ui-button{
+.ui-btn{
     cursor:pointer;
     -webkit-user-select: none;
     -webkit-box-sizing:border-box;
-    box-sizing:border-box;
     -webkit-appearance:none;
 }
-.ui-button.ui-state-disable {
+.ui-btn.ui-state-disable,
+.ui-btn.ui-state-disabled {
     cursor: default;
+    pointer-events: none;/*此属性能屏蔽click事件*/
 }
-.ui-button-icon-only .ui-button-text {
-    position: absolute !important;
-    clip: rect(1px 1px 1px 1px);
+.ui-btn-icon-only .ui-btn-text,
+.ui-btn-icon-notext .ui-btn-text,
+.ui-hidden {
+    display: none;
 }

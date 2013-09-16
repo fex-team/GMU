@@ -1,37 +1,51 @@
 /**
- * @file 搜索建议 - renderList
- * @name Suggestion - renderList
- * @desc <qrcode align="right" title="Live Demo">../gmu/examples/widget/suggestion/suggestion_setup.html</qrcode>
- * 搜索建议option: renderList，提供默认列表渲染，若需要自己渲染sug列表，即renderList为Function类型，则该文件可以不用引
+ * @file renderList
  * @import widget/suggestion/suggestion.js, extend/highlight.js
  */
 (function( $ ) {
 
-    /*
-     * 默认以jsonp发送请求，当用户在option中配置了renderList时
-     * 需要调用用e.preventDefault来阻默认请求数据方法
-     * sendRequest( e, sugs, query , callback )
-     * @e 事件对象
-     * @sugs sug list数据item
-     * @query 发送请求的query
-     * @callback 列表渲染完成后的回调函数
-     * */
-
     $.extend( gmu.Suggestion.options, {
 
-        // 是否在localstorage中存储用户查询记录，相当于2.0.5以前版本中的isStorage
+        /**
+         * @property {Boolean} [isHistory=true] 是否在localstorage中存储用户查询记录，相当于2.0.5以前版本中的isStorage
+         * @namespace options
+         * @for Suggestion
+         * @uses Suggestion.renderlist
+         */
         isHistory: true,
 
-        // 是否使用+来使sug item进入input框
+        /**
+         * @property {Boolean} [usePlus=false] 是否使用+来使sug item进入input框
+         * @namespace options
+         * @for Suggestion
+         * @uses Suggestion.renderlist
+         */
         usePlus: false,
 
-        // sug列表条数
+        /**
+         * @property {Number} [listCount=5] sug列表条数
+         * @namespace options
+         * @for Suggestion
+         * @uses Suggestion.renderlist
+         */
         listCount: 5,
 
-        // 自定义渲染列表函数，可以覆盖默认渲染列表的方法
+        /**
+         * @property {Function} [renderlist=null] 自定义渲染列表函数，可以覆盖默认渲染列表的方法
+         * @namespace options
+         * @for Suggestion
+         * @uses Suggestion.renderlist
+         */
         renderlist: null
     } );
 
+    /**
+     * renderList，提供默认列表渲染，若需要自己渲染sug列表，即renderList为Function类型，则不需要使用此插件<br />
+     * 默认以jsonp发送请求，当用户在option中配置了renderList时，需要调用用e.preventDefault来阻默认请求数据方法
+     * @class renderlist
+     * @namespace Suggestion
+     * @pluginfor Suggestion
+     */
     gmu.Suggestion.option( 'renderlist', function() {
 
         // 当renderList不是Function类型时，该option操作生效

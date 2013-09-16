@@ -1,0 +1,132 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <title>基本的历史记录组件</title>
+    <!--demo展示所用css，不用关心 begin-->
+    <link rel="stylesheet" type="text/css" href="../../../assets/reset.css" />
+    <!--demo展示所用css end-->
+    <!--组件依赖css begin-->
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/historylist/historylist.css" />
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/historylist/historylist.default.css" />
+    <!--皮肤文件，若不使用该皮肤，可以不加载-->
+    <!--组件依赖css end-->
+
+    <!--组件依赖js begin-->
+    <script type="text/javascript" src="../../../dist/zepto.js"></script>
+    <script type="text/javascript" src="../../../src/extend/parseTpl.js"></script>
+    <script type="text/javascript" src="../../../src/extend/touch.js"></script>
+    <script type="text/javascript" src="../../../src/core/gmu.js"></script>
+    <script type="text/javascript" src="../../../src/core/event.js"></script>
+    <script type="text/javascript" src="../../../src/core/widget.js"></script>
+    <script type="text/javascript" src="../../../src/widget/historylist/historylist.js"></script>
+    <!--组件依赖js end-->
+
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/dialog/dialog.css" />
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/dialog/dialog.default.css" />
+    <script type="text/javascript" src="../../../src/extend/highlight.js"></script>
+    <script type="text/javascript" src="../../../src/widget/dialog/dialog.js"></script>
+</head>
+<body>
+
+<style type="text/css">
+    #J_framework {
+        /*width: 320px;*/
+        /*height: 500px;*/
+        border: 1px solid #E1E1E1;
+        background-color: #FCFCFC;
+        padding: 8px;
+    }
+    .input-text {
+        float: left;
+        height: 35px;
+        width: 100%;
+        border: 1px solid #E1E1E1;
+    }
+    .input-button {
+        height: 37px;
+        width: 50px;
+        background-color: #FCFCFC;
+        border: 1px solid #E1E1E1;
+        border-width: 1px 1px 1px 1px;
+        margin-left: -50px;
+    }
+
+    #J_historyWrap {
+        margin-top: 8px;
+        box-shadow: 2px 2px 2px #F3F3F3;
+    }
+    #J_historyWrap b {
+        font-weight: bold;
+    }
+</style>
+<p>test</p>
+<p>test</p>
+<p>test</p>
+<p>test</p>
+<p>test</p>
+<p>test</p>
+<p>test</p>
+<p>test</p>
+<p>test</p>
+<p>test</p>
+<p>test</p>
+<div id="J_framework">
+    <p><input type="text" class="input-text" id="J_input" /><input type="button" value="取消" class="input-button" /></p>
+    <div id="J_historyWrap"></div>
+</div>
+<p>test</p>
+<p>test</p>
+<p>test</p>
+<p>test</p>
+<p>test</p>
+<p>test</p>
+<p>test</p>
+<p>test</p>
+<script type="text/javascript">
+    
+    // 初始化(初始化后默认显示)
+    var instance = new gmu.Historylist({
+        container: $('#J_historyWrap'), // 页面上需要有一个已经存在的容器来存放组件
+        items: [
+                {'value': 'global', 'context': '<b>global</b> adj. 全球的；综合的'},
+                'google',
+                {'value': 'visual', 'context': '<b>visual</b> adj. 视觉的'},
+                'alibaba',
+                'taobao'
+               ],   // 历史记录的列表
+        itemTouch: function(e, data) {  // 某条记录被点击后的响应事件
+            console.log( 'item touched: ' + data.item );   // data.item是某条记录的内容
+            $('#J_input').val(data.item);
+        },
+        itemDelete: function(e, data) { // 某条记录被删除后的响应事件
+            console.log( 'item delete:' + data.item );   // data.item是某条记录的内容
+        },
+        clear: function() {  // 用户确认清空搜索历史后的响应事件
+            // 在这里删除localstorage里面存的历史数据
+            console.log( 'clear triggered' );
+        }
+    });
+
+    // // 添加记录
+    // instance.addItems( ['item1', 'item2', 'item3'] );
+
+    // // 添加一条记录
+    // instance.addItem( 'item' );
+
+    // // 显示
+    // instance.show();
+
+    // // 隐藏
+    // instance.hide();
+
+    // // 销毁
+    // instance.destroy();
+
+    $('#J_input').on('input', function(){
+        console.log($(this).val());
+    })
+</script>
+</body>
+</html>

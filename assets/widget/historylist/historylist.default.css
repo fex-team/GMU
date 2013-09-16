@@ -1,0 +1,27 @@
+.ui-historylist {
+    padding-top: 1px;
+}
+.ui-historylist-itemwrap {
+    border: 1px solid #E1E1E1;
+    border-width: 1px 1px 0 1px;
+    background-color: #FFF;
+    margin-top: -1px;
+}
+.ui-historylist-item {
+    padding-left: 50px;
+    border-bottom: 1px solid #E1E1E1;
+    background: url('./icon.png') no-repeat 15px 11px;
+    background-size: 18px 18px;
+}
+.ui-historylist-clear {
+    border: 1px solid #E1E1E1;
+    background-color: #FFF;
+    margin-top: -1px;
+}
+.ui-historylist-itemwrap {
+    -webkit-transition-duration: 300ms;
+    -webkit-transition-property: -webkit-transform;
+}
+.ui-historylist-itemmoving {
+    -webkit-transition-duration: 0;
+}

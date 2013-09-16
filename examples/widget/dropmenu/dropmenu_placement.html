@@ -1,0 +1,105 @@
+<!doctype html>
+<html>
+<head>
+    <title>下拉菜单定位展示</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <!--demo展示所用css，不用关心 begin-->
+    <link rel="stylesheet" type="text/css" href="../../../assets/reset.css" />
+    <!--demo展示所用css end-->
+    <!--组件依赖css begin-->
+    <link rel="stylesheet" type="text/css" href="../../../assets/icons.default.css" />
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/dropmenu/dropmenu.css" />
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/dropmenu/dropmenu.default.css" /><!--皮肤文件，若不使用该皮肤，可以不加载-->
+    <!--组件依赖css end-->
+    <!--组件依赖js begin-->
+    <script type="text/javascript" src="../../../dist/zepto.js"></script>
+    <script type="text/javascript" src="../../../src/extend/touch.js"></script>
+    <script type="text/javascript" src="../../../src/extend/offset.js"></script>
+    <script type="text/javascript" src="../../../src/extend/parseTpl.js"></script>
+    <script type="text/javascript" src="../../../src/core/gmu.js"></script>
+    <script type="text/javascript" src="../../../src/core/event.js"></script>
+    <script type="text/javascript" src="../../../src/core/widget.js"></script>
+    <script type="text/javascript" src="../../../src/extend/highlight.js"></script>
+    <script type="text/javascript" src="../../../src/widget/popover/popover.js"></script>
+    <script type="text/javascript" src="../../../src/widget/popover/arrow.js"></script>
+    <script type="text/javascript" src="../../../src/widget/popover/dismissible.js"></script>
+    <script type="text/javascript" src="../../../src/widget/dropmenu/dropmenu.js"></script>
+    <script type="text/javascript" src="../../../src/widget/dropmenu/placement.js"></script>
+    <!--组件依赖js end-->
+
+    <style type="text/css">
+        .btn {
+            -webkit-user-select:none;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            padding: 3px 10px;
+            margin: 5px;
+        }
+        #wrap {
+            padding: 5px;
+        }
+        div.divider {
+            height: 180px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="wrap">
+    <h1>支持以下六种方式定位</h1>
+    <a id="btn1" class="btn">bottom left</a>
+    <a id="btn2" class="btn">bottom center</a>
+    <a id="btn3" class="btn">bottom right</a>
+    <div class="divider"></div>
+    <a id="btn4" class="btn">top left</a>
+    <a id="btn5" class="btn">top center</a>
+    <a id="btn6" class="btn">top right</a>
+</div>
+<script type="text/javascript">
+    var content = [
+        'Action',
+        'Another Action',
+        'Someone else here',
+        'divider',
+        {
+            text: 'item 1',
+            icon: 'grid'
+        },
+        'item 2'
+    ];
+
+    $('#btn1').dropmenu({
+        content: content,
+        placement: 'bottom',
+        align: 'left'
+    });
+    $('#btn2').dropmenu({
+        content: content,
+        placement: 'bottom',
+        align: 'center'
+    });
+    $('#btn3').dropmenu({
+        content: content,
+        placement: 'bottom',
+        align: 'right'
+    });
+    $('#btn4').dropmenu({
+        content: content,
+        placement: 'top',
+        align: 'left'
+    });
+    $('#btn5').dropmenu({
+        content: content,
+        placement: 'top',
+        align: 'center'
+    });
+    $('#btn6').dropmenu({
+        content: content,
+        placement: 'top',
+        align: 'right'
+    });
+</script>
+</body>
+</html>

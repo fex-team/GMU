@@ -1,16 +1,24 @@
 /**
- * @file Slider － 内容可动态修改插件
- * @name Slider.dynamic
- * @short Slider.dynamic
- * @desc <qrcode align="right" title="Live Demo">
- * ../gmu/_examples/widget/slider/slider_dynamic.html</qrcode>
+ * @file 内容可动态修改插件
  * 此插件扩充slider， 让内容可以动态修改，在这种模式下，dom个数跟items的个数无关，
  * 永远是3个div轮换，对于图片集比较多的图片轮播，采用这种方式。
  * @import widget/slider/slider.js
  */
 (function( gmu, $ ) {
+    /**
+     * @property {Number} [edgeThrottle=true0] ???
+     * @namespace options
+     * @for Slider
+     * @uses Slider.dynamic
+     */
     gmu.Slider.options.edgeThrottle = 0;
 
+    /**
+     * 内容可动态修改插件，此插件扩充slider， 让内容可以动态修改，在这种模式下，dom个数跟items的个数无关，永远是3个div轮换，对于图片集比较多的图片轮播，采用这种方式。
+     * @class dynamic
+     * @namespace Slider
+     * @pluginfor Slider
+     */
     gmu.Slider.register( 'dynamic', {
         _init: function() {
             var me = this;
@@ -115,7 +123,7 @@
 
             // 到达边缘
             if ( !ignoreEdge && (index === opts.edgeThrottle || index ===
-                    length - opts.edgeThrottle - 1) ) {
+                    content.length - opts.edgeThrottle - 1) ) {
                 me.trigger( 'edge', index === opts.edgeThrottle, me._active );
             }
 
@@ -137,48 +145,36 @@
         },
 
         /**
-         * @desc 获取当前显示的元素索引
-         * @name getIndex
-         * @grammar getIndex() => number
-         *  @example
-         * //setup mode
-         * $('#slider').slider('getIndex');
-         *
-         * //render mode
-         * var demo = $.ui.slider();
-         * demo.getIndex();
+         * 获取当前显示的元素索引
+         * @method getIndex
+         * @chainable
+         * @return {Number} 当前显示的元素索引
+         * @for Slider
+         * @uses Slider.autoplay
          */
         getIndex: function() {
             return $.inArray( this._active, this._content );
         },
 
         /**
-         * @desc 获取当前显示的元素数据对象
-         * @name active
-         * @grammar active() => Object
-         *  @example
-         * //setup mode
-         * $('#slider').slider('active');
-         *
-         * //render mode
-         * var demo = $.ui.slider();
-         * demo.active();
+         * 获取当前显示的元素数据对象
+         * @method active
+         * @chainable
+         * @return {Number} 当前显示的元素索引
+         * @for Slider
+         * @uses Slider.autoplay
          */
         active: function() {
             return this._active;
         },
 
-        /**
-         * @desc 获取内容或者更新内容，直接换掉content中数据，然后重新渲染新设置的内容。在需要延时扩充图片集的情况下使用。
-         * @name content
-         * @grammar content( content ) => self
-         * @example
-         * //setup mode
-         * $('#slider').slider('content', [item1, item2, item3]);
-         *
-         * //render mode
-         * var demo = $.ui.slider();
-         * demo.content([item1, item2, item3]);
+         /**
+         * 获取内容或者更新内容，直接换掉content中数据，然后重新渲染新设置的内容。在需要延时扩充图片集的情况下使用。
+         * @method content
+         * @chainable
+         * @return {Number} 当前显示的元素索引
+         * @for Slider
+         * @uses Slider.autoplay
          */
         content: function( content ) {
 

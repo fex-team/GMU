@@ -1,5 +1,5 @@
 <?php
-header('Content-Type: application/json');
+// header('Content-Type: application/json');
 $file = isset($_REQUEST['file'])?$_REQUEST['file']:'sample.html';
 $debug = isset($_REQUEST['debug'])?intval($_REQUEST['debug']):false;
 sleep(2);

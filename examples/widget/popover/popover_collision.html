@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 <head>
-    <title>Popover 自动调整位置</title>
+    <title>自动调整位置的Popover</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
     <!--demo展示所用css，不用关心 begin-->
@@ -63,10 +63,10 @@
     });
 
     // make btn dragable
-    $('#btn1').on('touchstart', function( e ){
+    $('#btn1').on('touchstart mousedown', function( e ){
         
         // 不处理多指
-        if( e.touches.length > 1 ) {
+        if( e.touches && e.touches.length > 1 ) {
             return;
         }
 
@@ -82,7 +82,7 @@
 
             moveHandler = function( e ) {
                 // 不处理多指
-                if( e.touches.length > 1 ) {
+                if( e.touches && e.touches.length > 1 ) {
                     return;
                 }
 
@@ -99,9 +99,9 @@
                 });
             };
 
-        $doc.on( 'touchmove', moveHandler ).on( 'touchend touchcancel', function( e ) {
-            $doc.off( 'touchmove', moveHandler );
-            $doc.off( 'touchend touchcancel', arguments.callee );
+        $doc.on( 'touchmove mousemove', moveHandler ).on( 'touchend touchcancel mouseup', function( e ) {
+            $doc.off( 'touchmove mousemove', moveHandler );
+            $doc.off( 'touchend touchcancel mouseup', arguments.callee );
 
             // prevent click
             moved && e.preventDefault();
@@ -109,10 +109,5 @@
     });
 
 </script>
-
-<!--demo公用头部展示所用js，可以不用加载 begin-->
-<!--script id="bootstrap" src="../../example.js" type="text/javascript"
-        data-page="图片轮播|slider.html,无缝滑动|slider_loop.html,显示多张图片|slider_multiview.html,动态加载图片|slider_dynamic.html"></script-->
-<!--demo公用头部展示所用js end-->
 </body>
 </html>

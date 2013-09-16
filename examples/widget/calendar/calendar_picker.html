@@ -23,12 +23,15 @@
 
     <!--组件依赖js begin-->
     <script type="text/javascript" src="../../../dist/zepto.js"></script>
-    <script type="text/javascript" src="../../../src/core/touch.js"></script>      <!--新版zepto合并版中不包括touch.js-->
-    <script type="text/javascript" src="../../../src/core/extend.js"></script>
-    <script type="text/javascript" src="../../../src/core/highlight.js"></script>
-    <script type="text/javascript" src="../../../src/core/ui.js"></script>
-    <script type="text/javascript" src="../../../src/widget/calendar.js"></script>
-    <script type="text/javascript" src="../../../src/widget/calendar.picker.js"></script>
+    <script type="text/javascript" src="../../../src/extend/touch.js"></script><!--新版zepto合并版中不包括touch.js-->
+    <script type="text/javascript" src="../../../src/extend/highlight.js"></script>
+    <script type="text/javascript" src="../../../src/extend/event.ortchange.js"></script>
+    <script type="text/javascript" src="../../../src/extend/matchMedia.js"></script>
+    <script type="text/javascript" src="../../../src/core/gmu.js"></script>
+    <script type="text/javascript" src="../../../src/core/event.js"></script>
+    <script type="text/javascript" src="../../../src/core/widget.js"></script>
+    <script type="text/javascript" src="../../../src/widget/calendar/calendar.js"></script>
+    <script type="text/javascript" src="../../../src/widget/calendar/$picker.js"></script>
     <!--组件依赖js end-->
 </head>
 <body>
@@ -46,8 +49,5 @@
         });
     })(Zepto);
 </script>
-<!--demo公用头部展示所用js，可以不用加载 begin-->
-<script id="bootstrap" src="../../example.js" type="text/javascript" data-page="日历控件|calendar.html,可修改年月|calendar_monthyearchangeable.html,日历控件-Range|calendar_range.html,日历控件-picker|calendar_picker.html,日历控件-select|calendar_select.html"></script>
-<!--demo公用头部展示所用js end-->
 </body>
 </html>

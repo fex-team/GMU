@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>同一panel多种模式打开</title>
+    <title>同一面板多种方式打开</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
     <!--demo展示所用css，不用关心 begin-->
     <link rel="stylesheet" type="text/css" href="../../../assets/reset.css" />
-    <link rel="stylesheet" type="text/css" href="panel_demo.css" />
+    <link rel="stylesheet" type="text/css" href="../../../examples/assets/panel_demo.css" />
     <!--demo展示所用css end-->
 
     <!--组件依赖css begin-->
@@ -15,10 +15,16 @@
     <!--组件依赖css end-->
     <!--组件依赖js begin-->
     <script type="text/javascript" src="../../../dist/zepto.js"></script>
-    <script type="text/javascript" src="../../../src/core/touch.js"></script>
-    <script type="text/javascript" src="../../../src/core/extend.js"></script>
-    <script type="text/javascript" src="../../../src/core/ui.js"></script>
-    <script type="text/javascript" src="../../../src/widget/panel.js"></script>
+    <script type="text/javascript" src="../../../src/extend/touch.js"></script>
+    <script type="text/javascript" src="../../../src/extend/throttle.js"></script>
+    <script type="text/javascript" src="../../../src/extend/event.scrollStop.js"></script>
+    <script type="text/javascript" src="../../../src/extend/event.ortchange.js"></script>
+    <script type="text/javascript" src="../../../src/extend/matchMedia.js"></script>
+    <script type="text/javascript" src="../../../src/core/gmu.js"></script>
+    <script type="text/javascript" src="../../../src/core/event.js"></script>
+    <script type="text/javascript" src="../../../src/core/widget.js"></script>
+    <script type="text/javascript" src="../../../src/widget/panel/panel.js"></script>
+
     <!--组件依赖js end-->
 </head>
 
@@ -133,11 +139,6 @@
         });
     }(Zepto));
 </script>
-
-<!--demo公用头部展示所用js，可以不用加载 begin-->
-<script id="bootstrap" src="../../example.js" type="text/javascript"
-        data-page="panel组件|panel.html, panel多种打开模式|panel_position.html, panel页面滚动关闭|panel_hide.html, panel是iscroll|panel_iscroll.html"></script>
-<!--demo公用头部展示所用js end-->
 
 </body>
 </html>

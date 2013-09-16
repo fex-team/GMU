@@ -80,7 +80,7 @@ test('加载sug样式', function() {
 
 test('sug及quickdelete是否正确创建', function () {
     var sug = gmu.Suggestion({
-            container: "#sugg-input",
+            el: "#sugg-input",
             sendrequest: sendrequest,
             renderlist: renderlist
         });
@@ -102,7 +102,7 @@ test('quickdelete功能是否正常', function () {
     stop();
 
     var sug = gmu.Suggestion({
-        container: "#sugg-input",
+        el: "#sugg-input",
         sendrequest: sendrequest,
         renderlist: renderlist
     }),
