@@ -1,0 +1,103 @@
+<!doctype html>
+<html>
+<head>
+    <title>内容固定的导航栏</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <!--demo展示所用css，不用关心 begin-->
+    <link rel="stylesheet" type="text/css" href="../../../assets/reset.css" />
+    <!--demo展示所用css end-->
+    <!--组件依赖css begin-->
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/navigator/navigator.css" />
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/navigator/navigator.default.css" /><!--皮肤文件，若不使用该皮肤，可以不加载-->
+    <!--组件依赖css end-->
+
+    <!--组件依赖js begin-->
+    <script type="text/javascript" src="../../../dist/zepto.js"></script>
+    <script type="text/javascript" src="../../../src/extend/touch.js"></script>
+    <script type="text/javascript" src="../../../src/extend/iscroll.js"></script>
+    <script type="text/javascript" src="../../../src/extend/highlight.js"></script>
+    <script type="text/javascript" src="../../../src/extend/parseTpl.js"></script>
+    <script type="text/javascript" src="../../../src/core/gmu.js"></script>
+    <script type="text/javascript" src="../../../src/core/event.js"></script>
+    <script type="text/javascript" src="../../../src/core/widget.js"></script>
+    <script type="text/javascript" src="../../../src/widget/navigator/navigator.js"></script>
+    <script type="text/javascript" src="../../../src/widget/navigator/$scrollable.js"></script>
+    <script type="text/javascript" src="../../../src/widget/navigator/scrolltonext.js"></script>
+    <!--组件依赖js end-->
+
+    <style type="text/css">
+        .left-fixed {
+            display: -webkit-box;
+        }
+        .left-fixed>div {
+            display: -webkit-box;
+            -webkit-box-flex: 1;
+        }
+        .left-fixed>div.left {
+            width: 80px;
+            -webkit-box-flex: 0;
+            border-top: 1px solid #2468c9;
+            border-bottom: 1px solid #0145a5;
+            background: #2773dc;
+            line-height: 34px;
+        }
+        .left-fixed>div.left a {
+            color: #fff;
+            display: block;
+            width: 100%;
+            text-align: center;
+            height: 100%;
+        }
+        .left-fixed>div.left a.ui-state-active {
+            background: #0c4da8;
+        }
+    </style>
+</head>
+<body>
+
+<div id="wrap">
+    <h1>Navigator Fix Feature</h1>
+    <p>Fix feature已经不在navigator自带此功能，需要外部自己去实现</p>
+    <div class="left-fixed">
+        <div class="left"><a>Fix left</a></div>
+        <div id="nav">
+            <ul>
+                <li><a href="#test1">首页</a></li>
+                <li><a href="#test1">要闻</a></li>
+                <li><a href="javascript:;">国内</a></li>
+                <li><a href="#test2">国际</a></li>
+                <li><a href="#test3">军事</a></li>
+                <li><a href="#test4">社会</a></li>
+                <li><a href="#test5">娱乐</a></li>
+                <li><a href="#test6">女人</a></li>
+                <li><a href="#">体育</a></li>
+                <li><a href="#test7">科技</a></li>
+                <li><a href="#test8">互联网</a></li>
+                <li><a href="#test9">教育</a></li>
+                <li class="ui-state-active"><a href="#">财经</a></li>
+                <li><a href="#test11">房产</a></li>
+                <li><a href="#test12">汽车</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    (function(){
+        var leftBtn = $('.left-fixed .left a'),
+            nav = $('#nav');
+
+        nav.navigator().on('select', function(){
+            leftBtn.removeClass('ui-state-active');
+        });
+
+        leftBtn.click(function(){
+            nav.navigator('unselect');
+            $(this).addClass('ui-state-active');
+        });
+    })();
+    
+</script>
+</body>
+</html>

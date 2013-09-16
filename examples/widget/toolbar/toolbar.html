@@ -1,0 +1,180 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <title>普通的toolbar</title>
+    <!--demo展示所用css，不用关心 begin-->
+    <link rel="stylesheet" type="text/css" href="../../../assets/reset.css" />
+    <!--demo展示所用css end-->
+    <!--组件依赖css begin-->
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/toolbar/toolbar.css" />
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/toolbar/toolbar.default.css" /> <!--皮肤文件，若不使用该皮肤，可以不加载-->
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/button/button.css" />
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/button/button.default.css" />
+    <!--组件依赖css end-->
+
+    <!--组件依赖js begin-->
+    <script type="text/javascript" src="../../../dist/zepto.js"></script>
+    <script type="text/javascript" src="../../../src/extend/parseTpl.js"></script>
+    <script type="text/javascript" src="../../../src/core/gmu.js"></script>
+    <script type="text/javascript" src="../../../src/core/event.js"></script>
+    <script type="text/javascript" src="../../../src/core/widget.js"></script>
+    <script type="text/javascript" src="../../../src/widget/toolbar/toolbar.js"></script>
+
+    <script type="text/javascript" src="../../../src/extend/highlight.js"></script>
+    <script type="text/javascript"  id="test" src="../../../src/widget/button/button.js"></script>
+    <!--组件依赖js end-->
+</head>
+<body>
+
+<style type="text/css">
+    .ui-toolbar-backbtn {
+        display: block;
+        position: relative;
+        float: left;
+        cursor: pointer;
+        -webkit-box-sizing:border-box;
+        box-sizing:border-box;
+        -webkit-user-select: none;
+        user-select: none;
+        border: solid #d9d9d9;
+        border-width: 1px 1px 1px 0;
+        background: #f7f7f7;
+        line-height: 30px;
+        height: 30px;
+        margin: 5px 0 0 20px;
+        padding: 0 8px 0 6px;
+    }
+
+    .ui-toolbar-backbtn:before, .ui-toolbar-backbtn:after {
+        content: '\0020';
+        border-width:15px 8px 15px 0;
+        border-style:solid;
+        position: absolute;
+        left: -8px;
+        top: -1px;
+        width:0;
+        height:0;
+        display: block;
+    }
+
+    .ui-toolbar-backbtn:before {
+        border-color:transparent #d9d9d9 transparent transparent;
+    }
+
+    .ui-toolbar-backbtn:after {
+        border-color:transparent #f7f7f7 transparent transparent;
+        left: -7px;
+    }
+
+    .ui-toolbar .ui-toolbar-backbtn.ui-state-hover {
+        background-color: #d9d9d9;
+        border-color: #b3b3b3;
+    }
+    .ui-toolbar .ui-toolbar-backbtn.ui-state-hover:after {
+        border-color: transparent #d9d9d9 transparent transparent;
+    }
+    .ui-toolbar .ui-toolbar-backbtn.ui-state-hover:before {
+        border-color: transparent #b3b3b3 transparent transparent;
+    }
+
+    p {
+        margin-top: 20px;
+    }
+</style>
+
+<p>setup方式创建：</p>
+<div id="J_toolbar1">
+    <a href="../">返回</a>
+    <h2>工具栏</h2>
+    <span class="btn_1">知道</span>
+</div>
+<script>
+        $('#J_toolbar1').toolbar({});
+</script>
+
+
+<p>setup方式创建：</p>
+<div id="J_toolbar2">
+    <div class="ui-toolbar-left">
+        <a href="../" class="ui-toolbar-backbtn">返回</a>
+    </div>
+    <h3>工具栏</h3>
+    <div class="ui-toolbar-right">
+        <span class="btn_1 ui-toolbar-button">百科</span>
+    </div>
+</div>
+<script>
+        // 半setup方式调用
+        $('#J_toolbar2').toolbar({
+            leftBtns: ['<span class="btn_1">百度</span>'],
+            rightBtns: ['<span class="btn_1">文库</span>']
+        });
+</script>
+
+<p>render方式创建：</p>
+<script>
+        // render方式调用
+        var instance3 = new gmu.Toolbar({
+            // container: document.body,
+            title: '标题',
+            leftBtns: ['<span class="btn_1">百科</span>'],
+            rightBtns: ['<span class="btn_1">百科</span>', '<span class="btn_1">百科</span>']
+        });
+</script>
+
+<p>render方式创建：传入一个空的div元素</p>
+<div id="J_toolbar4"></div>
+<script>
+        // 半render方式调用
+        var instance4 = new gmu.Toolbar('#J_toolbar4', {
+            container: document.body,
+            title: '标题',
+            leftBtns: ['<span class="btn_1">百科</span>'],
+            rightBtns: [new gmu.Button({
+                                        label: 'button'
+                                    }), '<span class="btn_1">百科</span>']
+        });
+
+        instance4.addBtns('left', ['<span class="btn_1">新闻</span>', new gmu.Button({
+                                                                        label: 'button'
+                                                                    })]);
+</script>
+
+<p>render方式创建：传入的el元素不存在</p>
+<script>
+        // 给的元素不存在，render方式调用
+        var instance5 = new gmu.Toolbar('#J_toolbar5', {
+            container: document.body,
+            title: '标题',
+            leftBtns: ['<span class="btn_1">百科</span>'],
+            rightBtns: [new gmu.Button({
+                                        label: 'button'
+                                    }), '<span class="btn_1">百科</span>']
+        });
+
+        instance5.addBtns('left', ['<span class="btn_1">新闻</span>', new gmu.Button({
+                                                                        label: 'button'
+                                                                    })]);
+</script>
+
+<p>render方式创建：传入的el为HTML片段</p>
+<script>
+        // 传入的el为HTML片段，render方式调用
+        var instance6 = new gmu.Toolbar('<div class="my-toolbar"></div>', {
+            container: document.body,
+            title: '标题',
+            leftBtns: ['<span class="btn_1">百科</span>'],
+            rightBtns: [new gmu.Button({
+                                        label: 'button',
+                                        container: '#btsn_create'
+                                    }), '<span class="btn_1">百科</span>']
+        });
+
+        instance6.addBtns('left', ['<span class="btn_1">新闻</span>', new gmu.Button({
+                                                                        label: 'button'
+                                                                    })]);
+</script>
+</body>
+</html>

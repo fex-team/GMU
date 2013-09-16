@@ -1,0 +1,81 @@
+<!doctype html>
+<html>
+<head>
+    <title>可视区域显示多张图片的图片轮播</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <!--demo展示所用css，不用关心 begin-->
+    <link rel="stylesheet" type="text/css" href="../../../assets/reset.css" />
+    <!--demo展示所用css end-->
+    <!--组件依赖css begin-->
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/slider/slider.css" />
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/slider/slider.default.css" /> <!--皮肤文件，若不使用该皮肤，可以不加载-->
+    <!--组件依赖css end-->
+    <!--组件依赖js begin-->
+    <script type="text/javascript" src="../../../dist/zepto.js"></script>
+    <script type="text/javascript" src="../../../src/extend/touch.js"></script>
+    <script type="text/javascript" src="../../../src/extend/matchMedia.js"></script>
+    <script type="text/javascript" src="../../../src/extend/event.ortchange.js"></script>
+    <script type="text/javascript" src="../../../src/extend/parseTpl.js"></script>
+    <script type="text/javascript" src="../../../src/core/gmu.js"></script>
+    <script type="text/javascript" src="../../../src/core/event.js"></script>
+    <script type="text/javascript" src="../../../src/core/widget.js"></script>
+    <script type="text/javascript" src="../../../src/widget/slider/slider.js"></script>
+    <script type="text/javascript" src="../../../src/widget/slider/arrow.js"></script>
+    <script type="text/javascript" src="../../../src/widget/slider/$touch.js"></script>
+    <script type="text/javascript" src="../../../src/widget/slider/$multiview.js"></script>
+    <!--组件依赖js end-->
+</head>
+<body>
+
+<div id="slider" style="height: 140px;"></div>
+<script>
+    //创建slider组件
+    var slider = new $.ui.Slider('#slider', {
+        autoPlay:false,
+        viewNum:3,
+        travelSize: 3,
+        content:[
+            {
+                href: "http://www.baidu.com",
+                pic: "../../../examples/assets/slider/pic1.jpg",
+                title:'白昼冷光'
+            }, {
+                href: "http://www.baidu.com",
+                pic: "../../../examples/assets/slider/pic2.jpg",
+                title: "听风者"
+            }, {
+                href: "http://www.baidu.com",
+                pic: "../../../examples/assets/slider/pic3.jpg",
+                title: "暮光之城2"
+            }, {
+                href: "http://www.baidu.com",
+                pic: "../../../examples/assets/slider/pic4.jpg",
+                title: "搞定岳父大人"
+            },
+            {
+                href: "http://www.baidu.com",
+                pic: "../../../examples/assets/slider/pic5.jpg",
+                title: "三个火枪手"
+            }, {
+                href: "http://www.baidu.com",
+                pic: "../../../examples/assets/slider/pic6.jpg",
+                title: "人在囧途"
+            }, {
+                href: "http://www.baidu.com",
+                pic: "../../../examples/assets/slider/pic7.jpg",
+                title: "第一次"
+            }, {
+                href: "http://www.baidu.com",
+                pic: "../../../examples/assets/slider/pic8.jpg",
+                title: "婚前试爱"
+            }, {
+                href: "http://www.baidu.com",
+                pic: "../../../examples/assets/slider/pic9.jpg",
+                title: "青春期"
+            }
+        ]
+    });
+</script>
+</body>
+</html>

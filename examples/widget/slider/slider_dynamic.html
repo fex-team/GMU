@@ -1,0 +1,96 @@
+<!doctype html>
+<html>
+<head>
+    <title>动态加载图片的图片轮播</title>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <!--demo展示所用css，不用关心 begin-->
+    <link rel="stylesheet" type="text/css" href="../../../assets/reset.css"/>
+    <!--demo展示所用css end-->
+    <!--组件依赖css begin-->
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/slider/slider.css"/>
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/slider/slider.default.css"/>
+    <!--皮肤文件，若不使用该皮肤，可以不加载-->
+    <!--组件依赖css end-->
+    <!--组件依赖js begin-->
+    <script type="text/javascript" src="../../../dist/zepto.js"></script>
+    <script type="text/javascript" src="../../../src/extend/touch.js"></script>
+    <script type="text/javascript" src="../../../src/extend/matchMedia.js"></script>
+    <script type="text/javascript" src="../../../src/extend/event.ortchange.js"></script>
+    <script type="text/javascript" src="../../../src/extend/parseTpl.js"></script>
+    <script type="text/javascript" src="../../../src/core/gmu.js"></script>
+    <script type="text/javascript" src="../../../src/core/event.js"></script>
+    <script type="text/javascript" src="../../../src/core/widget.js"></script>
+    <script type="text/javascript" src="../../../src/widget/slider/slider.js"></script>
+    <script type="text/javascript" src="../../../src/widget/slider/arrow.js"></script>
+    <script type="text/javascript" src="../../../src/widget/slider/$touch.js"></script>
+    <script type="text/javascript" src="../../../src/widget/slider/$dynamic.js"></script>
+    <!--组件依赖js end-->
+</head>
+<body>
+
+<div id="slider" style="height: 140px;"></div>
+<script>
+    var slider, group, preGroup, uid=0;
+
+
+    function getNextGroup(prev, active) {
+        uid ++;
+        
+        // 模拟生成Group信息。
+        var num = Math.max(Math.min(9, Math.round(Math.random() * 9)), 3),
+                i = 0,
+                group = [],
+                titles = [
+                    '白昼冷光',
+                    '听风者',
+                    '暮光之城2',
+                    '搞定岳父大人',
+                    '三个火枪手',
+                    '人在囧途',
+                    '第一次',
+                    '婚前试爱',
+                    '青春期'
+                ];
+
+        for (; i < num; i++) {
+            group.push({
+                href: "http://www.baidu.com",
+                pic: "../../../examples/assets/slider/pic" + (i + 1) + ".jpg",
+                title: titles[i],
+                info: (i + 1) + '/' + num,
+                group: '图集'+uid
+            });
+        }
+
+        return group;
+    }
+
+    //当前group
+    group = getNextGroup();
+
+    //上一个group
+    preGroup = getNextGroup();
+
+    slider = new $.ui.Slider( '#slider', {
+        index: preGroup.length,//当前group中的第一个
+        content: preGroup.concat(group),//把两个合起来，以方便切换到前一个group
+        slide: function(e, index, active){
+            //显示当前item的信息
+            $('h2.ui-toolbar-title').text(active.group + ' : ' + active.info);
+        }
+    });
+
+    slider.on('edge', function (e, prev, active) {
+        //单到达边缘时，你可以选择扩大图片池子。
+        var content = this.content(),
+            group = getNextGroup(prev, active);
+
+        this.content(prev ? group.concat(content) : content.concat(group));
+    });
+
+    //FYI：如果item里面的结构不合意，可以转入一个itemRender为key的Fn给构造器.
+</script>
+</body>
+</html>

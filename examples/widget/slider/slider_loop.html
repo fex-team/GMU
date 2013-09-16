@@ -1,0 +1,53 @@
+<!doctype html>
+<html>
+<head>
+    <title>无缝滑动的图片轮播</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <!--demo展示所用css，不用关心 begin-->
+    <link rel="stylesheet" type="text/css" href="../../../assets/reset.css" />
+    <!--demo展示所用css end-->
+    <!--组件依赖css begin-->
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/slider/slider.css" />
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/slider/slider.default.css" /> <!--皮肤文件，若不使用该皮肤，可以不加载-->
+    <!--组件依赖css end-->
+    <!--组件依赖js begin-->
+    <script type="text/javascript" src="../../../dist/zepto.js"></script>
+    <script type="text/javascript" src="../../../src/extend/touch.js"></script>
+    <script type="text/javascript" src="../../../src/extend/matchMedia.js"></script>
+    <script type="text/javascript" src="../../../src/extend/event.ortchange.js"></script>
+    <script type="text/javascript" src="../../../src/extend/parseTpl.js"></script>
+    <script type="text/javascript" src="../../../src/core/gmu.js"></script>
+    <script type="text/javascript" src="../../../src/core/event.js"></script>
+    <script type="text/javascript" src="../../../src/core/widget.js"></script>
+    <script type="text/javascript" src="../../../src/widget/slider/slider.js"></script>
+    <script type="text/javascript" src="../../../src/widget/slider/arrow.js"></script>
+    <script type="text/javascript" src="../../../src/widget/slider/dots.js"></script>
+    <script type="text/javascript" src="../../../src/widget/slider/$touch.js"></script>
+    <!--组件依赖js end-->
+</head>
+<body>
+<div id="slider">
+    <div>
+        <a href="http://www.baidu.com/"><img src="../../../examples/assets/slider/image1.png"></a>
+        <p>1,让Coron的太阳把自己晒黑—小天</p>
+    </div>
+    <div>
+        <a href="http://www.baidu.com/"><img src="../../../examples/assets/slider/image2.png"></a>
+        <p>2,让Coron的太阳把自己晒黑—小天</p>
+    </div>
+    <div>
+        <a href="http://www.baidu.com/"><img src="../../../examples/assets/slider/image3.png"></a>
+        <p>3,让Coron的太阳把自己晒黑—小天</p>
+    </div>
+    <div>
+        <a href="http://www.baidu.com/"><img src="../../../examples/assets/slider/image4.png"></a>
+        <p>4,让Coron的太阳把自己晒黑—小天</p>
+    </div>
+</div>
+<script>
+    //创建slider组件
+    $('#slider').slider({loop:true});
+</script>
+</body>
+</html>

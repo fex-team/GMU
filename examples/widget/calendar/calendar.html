@@ -1,0 +1,51 @@
+<!doctype html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <meta charset="utf-8">
+    <title>日历控件</title>
+    <!--demo展示所用css，不用关心 begin-->
+    <link rel="stylesheet" type="text/css" href="../../../assets/reset.css" />
+    <!--demo展示所用css end-->
+    <!--组件依赖css begin-->
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/calendar/calendar.css" />
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/calendar/calendar.default.css" />
+    <!--组件依赖css end-->
+
+    <!--demo展示所用css，不用关心 begin-->
+    <style>
+        .section {
+            padding: 1em;
+            background: #e1e1e1;
+        }
+    </style>
+    <!--demo展示所用css end-->
+
+    <!--组件依赖js begin-->
+    <script type="text/javascript" src="../../../dist/zepto.js"></script>
+    <script type="text/javascript" src="../../../src/extend/touch.js"></script><!--新版zepto合并版中不包括touch.js-->
+    <script type="text/javascript" src="../../../src/extend/highlight.js"></script>
+    <script type="text/javascript" src="../../../src/core/gmu.js"></script>
+    <script type="text/javascript" src="../../../src/core/event.js"></script>
+    <script type="text/javascript" src="../../../src/core/widget.js"></script>
+    <script type="text/javascript" src="../../../src/widget/calendar/calendar.js"></script>
+    <!--组件依赖js end-->
+</head>
+<body>
+
+<div class="section">
+    <div id="calendar"></div>
+</div>
+
+<script type="text/javascript">
+    (function($){
+
+        $(function(){
+            $('#calendar').calendar({
+                swipeable: true
+            });
+        });
+    })(Zepto);
+</script>
+</body>
+</html>

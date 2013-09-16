@@ -1,0 +1,113 @@
+<!doctype html>
+<html>
+<head>
+    <title>自动调整位置的Popover</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <!--demo展示所用css，不用关心 begin-->
+    <link rel="stylesheet" type="text/css" href="../../../assets/reset.css" />
+    <!--demo展示所用css end-->
+    <!--组件依赖css begin-->
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/popover/popover.css" />
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/popover/popover.default.css" /><!--皮肤文件，若不使用该皮肤，可以不加载-->
+    <!--组件依赖css end-->
+    <!--组件依赖js begin-->
+    <script type="text/javascript" src="../../../dist/zepto.js"></script>
+    <script type="text/javascript" src="../../../src/extend/touch.js"></script>
+    <script type="text/javascript" src="../../../src/extend/parseTpl.js"></script>
+    <script type="text/javascript" src="../../../src/core/gmu.js"></script>
+    <script type="text/javascript" src="../../../src/core/event.js"></script>
+    <script type="text/javascript" src="../../../src/core/widget.js"></script>
+    <script type="text/javascript" src="../../../src/widget/popover/popover.js"></script>
+    <script type="text/javascript" src="../../../src/widget/popover/placement.js"></script>
+    <script type="text/javascript" src="../../../src/widget/popover/arrow.js"></script>
+    <script type="text/javascript" src="../../../src/widget/popover/collision.js"></script>
+    <script type="text/javascript" src="../../../src/widget/popover/dismissible.js"></script>
+    <!--组件依赖js end-->
+
+    <style type="text/css">
+        .btn {
+            -webkit-user-select:none;
+            display: inline-block;
+            background: blue;
+            position: absolute;
+            top: 0;
+            left: 0;
+            white-space:nowrap;/*内容不换行*/
+            -webkit-box-sizing: border-box;
+        }
+        .container {
+            position: relative;
+            border: 1px solid red;
+            width: 100%;
+            height: 400px;
+            -webkit-box-sizing: border-box;
+        }
+        .ui-popover {
+            white-space:nowrap;/*内容不换行*/
+        }
+    </style>
+</head>
+<body>
+
+<h1>自动调整位置, 优化Popover的位置</h1>
+
+<div class="container">
+    <a id="btn1" class="btn">Popover 1</a>
+</div>
+
+<script type="text/javascript">
+    $('#btn1').popover({
+        content: 'Hello world!',
+        within: '.container'
+    });
+
+    // make btn dragable
+    $('#btn1').on('touchstart mousedown', function( e ){
+        
+        // 不处理多指
+        if( e.touches && e.touches.length > 1 ) {
+            return;
+        }
+
+        var pointer = e.touches ? e.touches[0] : e,
+            start = {
+                x: pointer.pageX,
+                y: pointer.pageY
+            },
+            $me = $(this),
+            pos = $me.position(),
+            $doc = $( document ),
+            moved = false,
+
+            moveHandler = function( e ) {
+                // 不处理多指
+                if( e.touches && e.touches.length > 1 ) {
+                    return;
+                }
+
+                var pointer = e.touches ? e.touches[0] : e,
+                    delta = {
+                        x: pointer.pageX - start.x,
+                        y: pointer.pageY - start.y
+                    };
+
+                moved = true;
+                $me.css({
+                    top: pos.top + delta.y,
+                    left: pos.left + delta.x
+                });
+            };
+
+        $doc.on( 'touchmove mousemove', moveHandler ).on( 'touchend touchcancel mouseup', function( e ) {
+            $doc.off( 'touchmove mousemove', moveHandler );
+            $doc.off( 'touchend touchcancel mouseup', arguments.callee );
+
+            // prevent click
+            moved && e.preventDefault();
+        });
+    });
+
+</script>
+</body>
+</html>

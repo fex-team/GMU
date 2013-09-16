@@ -1,0 +1,20 @@
+language: node_js
+
+node_js:
+  - 0.8
+
+before_script:
+    - sudo apt-get update
+    - sudo apt-get install apache2
+    - sudo apt-get install php5
+    - sudo service apache2 restart
+    - cd ../
+    - sudo mv GMU /var/www/
+    - cd /var/www/GMU
+    - npm install -g grunt-cli
+    - grunt update_submodules concat
+
+
+script:
+    - grunt test
+    - grunt download

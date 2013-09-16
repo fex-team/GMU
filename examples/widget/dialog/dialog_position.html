@@ -1,0 +1,204 @@
+<!doctype html>
+<html>
+<head>
+    <title>定位对话框</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <!--demo展示所用css，不用关心 begin-->
+    <link rel="stylesheet" type="text/css" href="../../../assets/reset.css" />
+    <!--demo展示所用css end-->
+    <!--组件依赖css begin-->
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/dialog/dialog.css" />
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/dialog/dialog.default.css" />
+    <!--组件依赖css end-->
+
+    <!--demo展示所用css，不用关心 begin-->
+    <link rel="stylesheet" type="text/css" href="../../../examples/assets/dialog_demo.css"/>
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/button/button.css" />
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/button/button.default.css" />
+    <!--demo展示所用css end-->
+
+    <style>
+        #container {
+            position: relative;
+            background: rgba(255, 0, 0, 0.4);
+            height: 300px;
+        }
+        div.item {
+            margin: 1em 0;
+            padding: 0 5px;
+        }
+        .ofbox {
+            display:-webkit-box;
+            display:box;
+        }
+        .ofbox>div {
+            text-align: center;
+            -webkit-box-flex:1;
+            box-flex:1;
+            line-height: 30px;
+        }
+        .pobox {
+            display:-webkit-box;
+            display:box;
+        }
+        .pobox>div {
+            text-align: center;
+            -webkit-box-flex:1;
+            box-flex:1;
+        }
+        p {
+            color: #333;
+        }
+        .chooser {
+            display: inline-block;
+        }
+        .chooser ul, .chooser li {
+            list-style: none;
+        }
+        .chooser ul {
+            width: 100%;
+            overflow: hidden;
+        }
+        .chooser ul li {
+            float: left;
+            background: #ccc;
+            width: 25px;
+            height: 25px;
+            overflow: hidden;
+            cursor: pointer;
+            border: 1px solid #fff;
+            border-radius: 3px;
+        }
+        .chooser ul li.active {
+            background: blue;
+        }
+    </style>
+
+    <!--组件依赖js begin-->
+    <script type="text/javascript" src="../../../dist/zepto.js"></script>
+    <script type="text/javascript" src="../../../src/extend/highlight.js"></script>
+    <script type="text/javascript" src="../../../src/extend/parseTpl.js"></script>
+    <script type="text/javascript" src="../../../src/extend/offset.js"></script>
+    <script type="text/javascript" src="../../../src/extend/position.js"></script>
+    <script type="text/javascript" src="../../../src/core/gmu.js"></script>
+    <script type="text/javascript" src="../../../src/core/event.js"></script>
+    <script type="text/javascript" src="../../../src/core/widget.js"></script>
+    <script type="text/javascript" src="../../../src/widget/dialog/dialog.js"></script>
+    <script type="text/javascript" src="../../../src/widget/dialog/$position.js"></script>
+    <!--组件依赖js end-->
+</head>
+<body>
+<div id="top"></div>
+<div class="article">
+    <div class="text" id="container">
+        #container 容器
+    </div>
+    <div id="dialog2" title="标题">
+        内容
+    </div>
+    <div id="footer">
+        <h3>设置</h3>
+        <div>
+            <div class="item">
+                <h4>Of</h4>
+                <div class="ofbox">
+                    <div><input id="select1" type="radio" name="of" checked="checked" value="1" /><label for="select1">＃container</label></div>
+                    <div><input id="select2" type="radio" name="of" value="2" /><label for="select2">window</label></div>
+                </div>
+                <p>相对于什么元素定位</p>
+            </div>
+            <div class="item">
+                <div class="pobox">
+                    <div>
+                        <h4>At</h4>
+                        <div id="at" class="chooser">
+                            <ul>
+                                <li class="active">&nbsp;</li>
+                                <li>&nbsp;</li>
+                                <li>&nbsp;</li>
+                            </ul>
+                            <ul>
+                                <li>&nbsp;</li>
+                                <li>&nbsp;</li>
+                                <li>&nbsp;</li>
+                            </ul>
+                            <ul>
+                                <li>&nbsp;</li>
+                                <li>&nbsp;</li>
+                                <li>&nbsp;</li>
+                            </ul>
+                        </div>
+                        <p>
+                            对话框的位置
+                        </p>
+                    </div>
+                    <div>
+                        <h4>My</h4>
+                        <div id="my" class="chooser">
+                            <ul>
+                                <li class="active">&nbsp;</li>
+                                <li>&nbsp;</li>
+                                <li>&nbsp;</li>
+                            </ul>
+                            <ul>
+                                <li>&nbsp;</li>
+                                <li>&nbsp;</li>
+                                <li>&nbsp;</li>
+                            </ul>
+                            <ul>
+                                <li>&nbsp;</li>
+                                <li>&nbsp;</li>
+                                <li>&nbsp;</li>
+                            </ul>
+                        </div>
+                        <p>
+                            对话框中心点的位置
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+        var maping = [
+            'left top', 'center top', 'right top',
+            'left center', 'center center', 'right center',
+            'left bottom', 'center bottom', 'right bottom'
+        ];
+        $( "#dialog2" ).dialog({
+            mask: false,
+            scrollMove: false
+        });
+
+        function position(){
+            var my = $('#my li.active'),
+                at = $('#at li.active'),
+                myIndex = my.parent().index()*3+my.index(),
+                atIndex = at.parent().index()*3 + at.index();
+
+            $( "#dialog2" ).dialog('position', {
+                of: $('#select1').prop('checked')?'#container':window,
+                my: maping[myIndex],
+                at: maping[atIndex]
+            }).dialog('open');
+        }
+
+        $('.chooser').each(function(){
+            var lis = $('li', this);
+            lis.on('click', function(){
+                lis.removeClass('active');
+                $(this).addClass('active');
+                position();
+            });
+        });
+
+        position();
+        $('#select1, #select2').on('change', function(){
+            position();
+        });
+</script>
+</body>
+</html>

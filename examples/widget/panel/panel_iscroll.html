@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>使用iscroll的面板组件</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+
+    <!--demo展示所用css，不用关心 begin-->
+    <link rel="stylesheet" type="text/css" href="../../../assets/reset.css" />
+    <link rel="stylesheet" type="text/css" href="../../../examples/assets/panel_demo.css" />
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/button/button.css" />
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/button/button.default.css" />
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/dropmenu/dropmenu.css" />
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/dropmenu/dropmenu.default.css" />
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/toolbar/toolbar.css" />
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/toolbar/toolbar.default.css" />
+    <!--demo展示所用css，不用关心 end-->
+
+    <!--组件依赖css begin-->
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/panel/panel.css" />
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/panel/panel.default.css" />    <!--皮肤文件，若不使用该皮肤，可以不加载-->
+    <!--组件依赖css end-->
+    <!--组件依赖js begin-->
+    <script type="text/javascript" src="../../../dist/zepto.js"></script>
+    <script type="text/javascript" src="../../../src/extend/touch.js"></script>
+    <script type="text/javascript" src="../../../src/extend/throttle.js"></script>
+    <script type="text/javascript" src="../../../src/extend/iscroll.js"></script>
+    <script type="text/javascript" src="../../../src/extend/event.scrollStop.js"></script>
+    <script type="text/javascript" src="../../../src/extend/event.ortchange.js"></script>
+    <script type="text/javascript" src="../../../src/extend/matchMedia.js"></script>
+    <script type="text/javascript" src="../../../src/core/gmu.js"></script>
+    <script type="text/javascript" src="../../../src/core/event.js"></script>
+    <script type="text/javascript" src="../../../src/core/widget.js"></script>
+    <script type="text/javascript" src="../../../src/widget/panel/panel.js"></script>
+
+    <!--组件依赖js end-->
+
+</head>
+
+<body>
+<div id="height"></div>
+<div id="result"></div>
+<div id="page">
+    <div class="cont">
+        <section id="cont-panel" class="option">
+            <h2>panel组件</h2>
+            <p class="panel-des">panel是GMU_2.0.5推出的新组件，可以从左边或右边呼出新内容，是一款适合于移动端交互的组件，它具有以下参数：</p>
+            <ul class="panel-opt">
+                <li>
+                    <span class="opt-name">contentWrap:</span> {Dom/Zepto/selector} 主体内容dom选择器或dom元素
+                </li>
+                <li>
+                    <span class="opt-name">scrollMode:</span> {String} 'follow |'disappear' | 'fixed'   Panel滑动方式，follow表示跟随页面滑动，disappear表示页面滑动时panel消失
+                </li>
+                <li>
+                    <span class="opt-name">animate:</span> {Boolean} True | false	Panel出现时是否有动画
+                </li>
+                <li>
+                    <span class="opt-name">display:</span> {String} overlay' | 'reveal' | 'push' Panel出现模式，overlay表示浮层reveal表示在content下边展示，push表示panel将content推出
+                </li>
+                <li>
+                    <span class="opt-name">position:</span> {String} 'left' | 'right' 在右边或左边
+                </li>
+                <li>
+                    <span class="opt-name">dismissible:</span> {Boolean}  True | false	是否在内容区域点击后，panel消失
+                </li>
+                <li>
+                    <span class="opt-name">swipeClose:</span> {Boolean}   True | false	在panel上滑动，panel是否关闭
+                </li>
+                <li>
+                    <span class="opt-name">offset:</span> {Object}  相对于contentWrap的offset
+                </li>
+            </ul>
+        </section>
+        <section id="cont-gmu" class="gmu">
+            <h2>GMU介绍</h2>
+            <dl class="gmu-feture">
+                <dt>简单易用</dt>
+                <dd>jQuery UI 使用风格，链式调用你只需要在页面上书写简单的html， 就可以生成丰富易用的UI组件，原来webapp的开发可以变得如此简单！</dd>
+                <dt>轻量级</dt>
+                <dd>基于zepto的mobile UI组件库，GMU组件在轻量级的zepto上开发，组件根据功能再划分颗粒化的插件，css将骨架与皮肤拆解，你终于可以最小化按需加载啦！</dd>
+                <dt>文档丰富，自定义下载</dt>
+                <dd>丰富的文档，支持自定义下载，GMU API文档中详细描述各组件参数、事件、方法，每个组件的demo丰富易用。你可以从git上下载代码，也可以按需自定义下载</dd>
+                <dt>专业稳定</dt>
+                <dd>专业QA团队，多平台支持，百度专业QA团队持续跟进，上千自动化测试用例支持。开设论坛、QQ群等，支持iOS4+ / android2.1+, 支持默认/UC/QQ/Chrome等浏览器</dd>
+                <dt>丰富实用UI组件</dt>
+                <dd>基于移动端交互的丰富易用UI组件，GMU组件包括suggestion, dialog, navigator, tabs, toolbar等14个通用组件，支持iOS4+， android2.1+，让你的移动开发不再是难题</dd>
+                <dt>开源免费</dt>
+                <dd>完全开源免费开源基于BSD协议，支持商业和非商业用户的免费使用和任意修改。</dd>
+            </dl>
+        </section>
+    </div>
+    <div class="panel wrapper">
+        <div class="panel-scroller">
+            <h2>panel组件</h2>
+            <p class="panel-des">panel是GMU_2.0.5推出的新组件，可以从左边或右边呼出新内容，是一款适合于移动端交互的组件，它具有以下参数：</p>
+            <ul class="panel-dir">
+                <li><a href="#cont-panel">1. panel组件参数介绍</a></li>
+                <li><a href="#panel-demo">2. panel演示</a></li>
+                <li><a href="#cont-gmu">3. GMU介绍</a></li>
+            </ul>
+            <h2>panel跟随页面滚动三种模式</h2>
+            <ul class="panel-dir">
+                <li>1. 跟随页面滚动</li>
+                <li>2. 页面滚动时panel关闭</li>
+                <li>3. panel固定显示</li>
+            </ul>
+            <h2>panel参数</h2>
+            <ul class="panel-opt">
+                <li>contentWrap</li>
+                <li>scrollMode</li>
+                <li>animate</li>
+                <li>display</li>
+                <li>position</li>
+                <li>dismissible</li>
+                <li>swipeClose</li>
+                <li>offset</li>
+            </ul>
+            <ul class="panel-opt">
+                <li>contentWrap</li>
+                <li>scrollMode</li>
+                <li>animate</li>
+                <li>display</li>
+                <li>position</li>
+                <li>dismissible</li>
+                <li>swipeClose</li>
+                <li>offset</li>
+            </ul>
+            <ul class="panel-opt">
+                <li>contentWrap</li>
+                <li>scrollMode</li>
+                <li>animate</li>
+                <li>display</li>
+                <li>position</li>
+                <li>dismissible</li>
+                <li>swipeClose</li>
+                <li>offset</li>
+            </ul>
+            <ul class="panel-opt">
+                <li>contentWrap</li>
+                <li>scrollMode</li>
+                <li>animate</li>
+                <li>display</li>
+                <li>position</li>
+                <li>dismissible</li>
+                <li>swipeClose</li>
+                <li>offset</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function ($) {
+
+        //初始化panel，panel是iscroll
+        $('.panel').css({
+            'height': window.innerHeight,
+            'padding-top': 0,
+            'padding-bottom': 0
+        }).iScroll()
+            .panel({
+            contentWrap: $('.cont'),
+            scrollMode: 'fix',
+            display: 'overlay',
+            swipeClose: false
+        }).on('open', function () {
+            $('.panel').iScroll('refresh');
+        });
+        
+        function resetHeight() {
+            $('.panel').css('height', window.innerHeight).iScroll('refresh');
+        }
+        $(window).on('scrollStop ortchange resize', resetHeight);
+
+        $('.panel').panel('toggle');
+    }(Zepto));
+</script>
+</body>
+</html>

@@ -1,23 +1,22 @@
-.ui-input-mask{
+.ui-suggestion-mask{
 	position: relative;
 	z-index: 100;
+    display: -webkit-box;
 }
 
+.ui-suggestion-mask input{
+    -webkit-box-flex: 1;
+    display: block;
+}
 .ui-suggestion{
 	position: absolute;
 	display: none;
 	z-index: 100;
+    width: 100%;
+    -webkit-box-sizing: border-box;
 }
 
 .ui-suggestion ul li{
-	position: relative;
-}
-
-.ui-suggestion .ui-suggestion-result{
-	display: block;
-}
-
-.ui-suggestion .ui-suggestion-content{
 	position: relative;
 }
 
@@ -25,11 +24,11 @@
 	display: inline-block;
 }
 
-.ui-suggestion-button span:first-child{
+.ui-suggestion-button span.ui-suggestion-clear{
 	float: left;
 }
 
-.ui-suggestion-button span:last-child{
+.ui-suggestion-button span.ui-suggestion-close{
  	float: right;
 }
 

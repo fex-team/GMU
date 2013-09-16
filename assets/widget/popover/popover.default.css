@@ -1,0 +1,96 @@
+.ui-popover {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 6px;
+    border: 1px solid rgba(0,0,0,0.2);
+}
+
+.ui-popover .ui-arrow, .ui-popover .ui-arrow:after {
+    position: absolute;
+    display: block;
+    width: 0;
+    height: 0;
+    border: 11px solid transparent;
+}
+.ui-popover .ui-arrow:after {
+    border-width: 10px;
+    content: '';
+}
+
+/* 剪头的默认位置 */
+.ui-popover.ui-pos-default {
+    margin-top: 10px;
+}
+.ui-popover.ui-pos-default .ui-arrow {
+    left: 30px;
+    margin-left: -11px;
+    top: -11px;
+    border-top-width: 0;
+    border-bottom-color: rgba(0, 0, 0, 0.2);
+}
+.ui-popover.ui-pos-default .ui-arrow:after {
+    border-top-width: 0;
+    border-bottom-color: white;
+    margin-left: -10px;
+    top: 1px;
+}
+
+/* 剪头 下方 */
+.ui-popover.ui-pos-bottom .ui-arrow {
+    left: 50%;
+    margin-left: -11px;
+    top: -11px;
+    border-top-width: 0;
+    border-bottom-color: rgba(0, 0, 0, 0.2);
+}
+.ui-popover.ui-pos-bottom .ui-arrow:after {
+    border-top-width: 0;
+    border-bottom-color: white;
+    margin-left: -10px;
+    top: 1px;
+}
+
+/* 剪头 上方 */
+.ui-popover.ui-pos-top .ui-arrow {
+    left: 50%;
+    margin-left: -11px;
+    bottom: -11px;
+    border-bottom-width: 0;
+    border-top-color: rgba(0, 0, 0, 0.2);
+}
+.ui-popover.ui-pos-top .ui-arrow:after {
+    border-bottom-width: 0;
+    border-top-color: white;
+    margin-left: -10px;
+    bottom: 1px;
+}
+
+/* 剪头 左侧 */
+.ui-popover.ui-pos-left .ui-arrow {
+    top: 50%;
+    margin-top: -11px;
+    right: -11px;
+    border-right-width: 0;
+    border-left-color: rgba(0, 0, 0, 0.2);
+}
+.ui-popover.ui-pos-left .ui-arrow:after {
+    border-right-width: 0;
+    border-left-color: white;
+    bottom: -10px;
+    right: 1px;
+}
+
+/* 剪头 右侧 */
+.ui-popover.ui-pos-right .ui-arrow {
+    top: 50%;
+    margin-top: -11px;
+    left: -11px;
+    border-left-width: 0;
+    border-right-color: rgba(0, 0, 0, 0.2);
+}
+.ui-popover.ui-pos-right .ui-arrow:after {
+    border-left-width: 0;
+    border-right-color: white;
+    bottom: -10px;
+    left: 1px;
+}

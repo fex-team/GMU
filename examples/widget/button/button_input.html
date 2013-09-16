@@ -1,0 +1,77 @@
+<!doctype html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <meta charset="utf-8">
+    <title>表单按钮</title>
+    <!--demo展示所用css，不用关心 begin-->
+    <link rel="stylesheet" type="text/css" href="../../../assets/reset.css" />
+    <!--demo展示所用css end-->
+    <!--组件依赖css begin-->
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/button/button.css" />
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/button/button.default.css" />
+    <link rel="stylesheet" type="text/css" href="../../../assets/icons.default.css" />
+    <!--组件依赖css end-->
+    <!--组件依赖js begin-->
+    <script type="text/javascript" src="../../../dist/zepto.js"></script>
+    <script type="text/javascript" src="../../../src/extend/highlight.js"></script>
+    <script type="text/javascript" src="../../../src/extend/parseTpl.js"></script>
+    <script type="text/javascript" src="../../../src/core/gmu.js"></script>
+    <script type="text/javascript" src="../../../src/core/event.js"></script>
+    <script type="text/javascript" src="../../../src/core/widget.js"></script>
+    <script type="text/javascript" src="../../../src/widget/button/button.js"></script>
+    <script type="text/javascript" src="../../../src/widget/button/$input.js"></script>
+    <!--组件依赖js end-->
+    <style type="text/css">
+        .section {
+            padding:0 3px;
+        }
+        .section h2 {
+            font-size: 16px;
+            font-weight: bold;
+            padding: 5px 5px;
+            color: #5b5b5b;
+        }
+    </style>
+</head>
+<body>
+<div class="section">
+    <h2>表单按钮 可以通过input来初始化按钮</h2>
+    <div>
+        <div class="ui-btn-group">
+            <label for="button1">复选按钮1</label>
+            <input id="button1" class="button" type="checkbox" />
+            <label for="button2">复选按钮2</label>
+            <input id="button2" class="button" type="checkbox" />
+            <input id="button3" class="button" type="checkbox" />
+            <label for="button3">复选按钮3</label>
+        </div>
+
+        <div class="ui-btn-group">
+            <label for="button4">单选1</label>
+            <input id="button4" class="button" type="radio" name="radio" />
+            <input id="button5" class="button" checked="checked" type="radio" name="radio" />
+            <label for="button5">单选2</label>
+            <input id="button6" class="button" checked="checked" type="radio" name="radio" />
+            <label for="button6">单选3</label>
+        </div>
+
+    </div>
+    <div>
+        <div class="ui-btn-group">
+            <input type="radio" class="button" data-icon="radio" data-label="Radio" name="radio1" />
+            <input id="button7" type="radio" class="button" data-icon="radio" name="radio1" />
+            <label for="button7">Radio</label>
+        </div>
+        <div class="ui-btn-group">
+            <input type="checkbox" class="button" data-icon="checkbox" data-label="Checkbox" name="checkbox1" />
+            <input id="button8" type="checkbox" class="button" data-icon="checkbox" />
+            <label for="button8">Checkbox</label>
+        </div>
+    </div>
+</div>
+<script>
+    $('.button').button();
+</script>
+</body>
+</html>

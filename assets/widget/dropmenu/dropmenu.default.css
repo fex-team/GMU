@@ -1,147 +1,189 @@
 .ui-dropmenu {
-    border: 1px solid #d9d9d9;
-    border-radius: 2px;
-    -webkit-box-shadow:  0 2px 4px rgba(0, 0, 0, 0.15);
-    min-width: 75px;
-    min-height: 35px;
     background-color: #fff;
-}
-.ui-dropmenu .ui-dropmenu-items li {
-    border-bottom: 1px solid #d9d9d9;
-}
-.ui-dropmenu .ui-dropmenu-items li:last-child {
-    border-bottom: 0 none;
+    padding: 5px 0;
+    border-radius: 6px;
+    border: 1px solid rgba(0,0,0,0.2);
+    -webkit-box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+    min-width: 160px;
 }
 
-.ui-dropmenu .ui-dropmenu-items a {
+.ui-dropmenu-items>li {
+    line-height: 20px;
+    display: list-item;
+}
+
+.ui-dropmenu-items>li>a {
     display: block;
-    padding: 0.5em 1em;
-    text-align: left;
-    position: relative;
-    color: #5b5b5b;
+    padding: 3px 20px;
+    clear: both;
+    font-weight: normal;
+    line-height: 20px;
+    color: #333;
+    white-space: nowrap;
     text-decoration: none;
-    cursor: pointer;
-    font-size: 14px;
 }
 
-.ui-dropmenu .ui-dropmenu-items .ui-icontext a {
-    padding-left: 2em;
+.ui-dropmenu-items>li.ui-state-hover>a, .ui-dropmenu-items>li.ui-state-active>a {
+    color: #fff;
+    text-decoration: none;
+    background-color: #0081c2;
+    background-image: -webkit-linear-gradient(top,#08c,#0077b3);
+    background-repeat: repeat-x;
 }
 
-.ui-dropmenu .ui-dropmenu-items .ui-icontext .ui-icon {
+.ui-dropmenu-items .divider {
+    height: 1px;
+    margin: 9px 1px;
+    overflow: hidden;
+    background-color: #e5e5e5;
+    border-bottom: 1px solid #fff;
+}
+
+.ui-dropmenu-items>li .ui-icon {
+    position: relative;
+    vertical-align: top;
+    left: -5px;
+    top: 1px;
+}
+
+.ui-dropmenu-items>li.ui-state-active .ui-icon, .ui-dropmenu-items>li.ui-state-hover .ui-icon {
+    background-image: url("../../icons-36-white.png");
+}
+
+/* ---------------------------------------
+ * 剪头位置
+ * ---------------------------------------*/
+
+.ui-dropmenu .ui-arrow, .ui-dropmenu .ui-arrow:after {
     position: absolute;
+    display: block;
+    width: 0;
+    height: 0;
+    border: 11px solid transparent;
+}
+.ui-dropmenu .ui-arrow:after {
+    border-width: 10px;
+    content: '';
+}
+
+/* 剪头的默认位置 */
+.ui-dropmenu.ui-pos-default {
+    margin-top: 10px;
+}
+.ui-dropmenu.ui-pos-default .ui-arrow {
+    left: 30px;
+    margin-left: -11px;
+    top: -11px;
+    border-top-width: 0;
+    border-bottom-color: rgba(0, 0, 0, 0.2);
+}
+.ui-dropmenu.ui-pos-default .ui-arrow:after {
+    border-top-width: 0;
+    border-bottom-color: white;
+    margin-left: -10px;
+    top: 1px;
+}
+
+.ui-dropmenu.ui-pos-bottom-left .ui-arrow, 
+.ui-dropmenu.ui-pos-bottom-center .ui-arrow,
+.ui-dropmenu.ui-pos-bottom-right .ui-arrow {
+    top: -11px;
+    margin-left: -11px;
+    border-top-width: 0;
+    border-bottom-color: rgba(0, 0, 0, 0.2);
+}
+
+.ui-dropmenu.ui-pos-bottom-left .ui-arrow:after,
+.ui-dropmenu.ui-pos-bottom-center .ui-arrow:after,
+.ui-dropmenu.ui-pos-bottom-right .ui-arrow:after {
+    border-top-width: 0;
+    border-bottom-color: white;
+    margin-left: -10px;
+    top: 1px;
+}
+
+.ui-dropmenu.ui-pos-bottom-left .ui-arrow {
+    left: 20%;
+}
+.ui-dropmenu.ui-pos-bottom-center .ui-arrow {
+    left: 50%;
+}
+.ui-dropmenu.ui-pos-bottom-right .ui-arrow {
+    left: 80%;
+}
+
+.ui-dropmenu.ui-pos-top-left .ui-arrow, 
+.ui-dropmenu.ui-pos-top-center .ui-arrow,
+.ui-dropmenu.ui-pos-top-right .ui-arrow {
+    bottom: -11px;
+    margin-left: -11px;
+    border-bottom-width: 0;
+    border-top-color: rgba(0, 0, 0, 0.2);
+}
+
+.ui-dropmenu.ui-pos-top-left .ui-arrow:after,
+.ui-dropmenu.ui-pos-top-center .ui-arrow:after,
+.ui-dropmenu.ui-pos-top-right .ui-arrow:after {
+    border-bottom-width: 0;
+    border-top-color: white;
+    margin-left: -10px;
+    bottom: 1px;
+}
+
+.ui-dropmenu.ui-pos-top-left .ui-arrow {
+    left: 20%;
+}
+.ui-dropmenu.ui-pos-top-center .ui-arrow {
+    left: 50%;
+}
+.ui-dropmenu.ui-pos-top-right .ui-arrow {
+    left: 80%;
+}
+
+/* ---------------------------------------
+ * 垂直排列
+ * ---------------------------------------*/
+
+ .ui-dropmenu.ui-horizontal {
+    min-width: 50px;
+ }
+ .ui-dropmenu.ui-horizontal .ui-dropmenu-items {
+     padding: 0 10px;
+ }
+ .ui-dropmenu.ui-horizontal .ui-dropmenu-items>li {
+     display: inline-block;
+ }
+ .ui-dropmenu.ui-horizontal .ui-dropmenu-items>li.divider {
+    width: 2px;
+    margin: 0 5px;
+    height: auto;
+    padding: 0;
+    position: relative;
+    overflow: visible;
+ }
+ .ui-dropmenu.ui-horizontal .ui-dropmenu-items>li.divider:after {
+    content: '';
+    display: block;
+    position: absolute;
+    width: 1px;
+    height: 30px;
+    top: -15px;
+    background-color: #e5e5e5;
+    border-right: 1px solid #fff;
+ }
+
+ .ui-dropmenu.ui-horizontal .ui-dropmenu-items>li>a {
+     width: 30px;
+     height: 30px;
+     padding:0;
+     text-indent: -9999px;
+     overflow: hidden;
+     position: relative;
+ }
+ .ui-dropmenu.ui-horizontal .ui-dropmenu-items>li .ui-icon {
+    position: absolute;
+    left: 50%;
     top: 50%;
     margin-top: -9px;
-    left: 5px;
-}
-.ui-dropmenu .ui-dropmenu-items a.ui-state-hover {
-    background-color: #e2e2e2;
-}
-
-/*用来输出剪头*/
-.ui-dropmenu .ui-dropmenu-arrow, .ui-dropmenu .ui-dropmenu-arrow:after {
-    display:block;
-    border-width:0 7px 8px 7px;
-    border-color:transparent transparent #d9d9d9 transparent;
-    border-style:solid;
-    position:absolute;
-    width:0;
-    height:0;
-    left: 50%;
-    top: -8px;
-    margin-left: -7px;
-}
-.ui-dropmenu .ui-dropmenu-arrow:after {
-    content: '\0020';
-    border-width:0 5px 6px 5px;
-    border-color:transparent transparent #fff transparent;
-    position: relative;
-    left: -5px;
-    top: 2px;
-    margin-left: 0;
-}
-
-/**垂直的dropmenu*/
-.ui-dropmenu.ui-horizontal {
-    min-width: 0;
-    min-height: 0;
-}
-.ui-dropmenu.ui-horizontal .ui-dropmenu-items {
-    padding: 2px 3px 1px;
-    line-height: 0;
-    display: inline-block;
-}
-/*清除浮动*/
-.ui-dropmenu.ui-horizontal .ui-dropmenu-items:after {
-    content: '\0020';
-    display: block;
-    height: 0;
-    clear: both;
-}
-.ui-dropmenu.ui-horizontal .ui-dropmenu-items li{
-    border: 0 none;
-    position: relative;
-    padding: 3px 4px 3px;
-    display: inline-block;
-}
-.ui-dropmenu.ui-horizontal .ui-dropmenu-items .ui-icon {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    margin: -9px 0 0 -9px;
-}
-.ui-dropmenu.ui-horizontal .ui-dropmenu-items li a {
-    border-radius: 3px;
-    width: 1.7em;
-    height: 1.7em;
-    padding: 0;
-    display: block;
-}
-.ui-dropmenu.ui-horizontal .ui-dropmenu-items li:after {
-    content: '\0020';
-    width:1px;
-    height: 20px;
-    background-color: #d9d9d9;
-    position: absolute;
-    right: 0;
-    top: 50%;
-    margin-top: -10px;
-}
-/*分割线*/
-.ui-dropmenu.ui-horizontal .ui-dropmenu-items li:last-child {
-    padding: 3px;
-}
-.ui-dropmenu.ui-horizontal .ui-dropmenu-items li:last-child:after {
-    display: none;
-}
-
-.ui-dropmenu-pos-up {
-    -webkit-box-shadow:0 -2px 4px rgba(0, 0, 0, 0.15);
-}
-
-.ui-dropmenu-pos-up .ui-dropmenu-arrow, .ui-dropmenu-pos-up .ui-dropmenu-arrow:after {
-    border-width:8px 7px 0 7px;
-    border-color:#d9d9d9 transparent transparent transparent;
-    top:auto;
-    bottom: -8px;
-}
-.ui-dropmenu-pos-up .ui-dropmenu-arrow:after {
-    border-width:6px 5px 0 5px;
-    border-color:#fff transparent transparent transparent;
-    top:-8px;
-}
-.ui-dropmenu.has-iScroll .ui-dropmenu-arrow {
-    -webkit-transform: translateZ(0px);/**解决箭头不消失问题*/
-}
-
-@media all and (min-device-width: 768px) and (max-device-width:1024px){
-    .ui-dropmenu .ui-dropmenu-items a{
-        font-size: 16px;
-    }
-    .ui-dropmenu.ui-horizontal .ui-dropmenu-items li{
-        padding: 6px 4px 6px;
-    }
-    .ui-dropmenu.ui-horizontal .ui-dropmenu-items li:last-child {
-        padding: 6px 4px;
-    }
-}
+    margin-left: -9px;
+ }
