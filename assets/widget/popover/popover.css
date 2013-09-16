@@ -1,4 +1,4 @@
-.ui-dropmenu {
+.ui-popover {
     position: absolute;
     display: none;
     -webkit-user-select: none;
@@ -6,11 +6,6 @@
     z-index: 10;
 }
 
-.ui-dropmenu.ui-in {
+.ui-popover.ui-in {
     display: block;
-}
-
-.ui-dropmenu-items, .ui-dropmenu-items>li {
-    list-style: none;
-    white-space:nowrap;/*内容不换行*/
 }

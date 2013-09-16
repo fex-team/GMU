@@ -1,0 +1,17 @@
+
+.ui-input-mask input{
+    outline: none;
+}
+
+.ui-suggestion-quickdel{
+    background: url(del.png) no-repeat;
+    -webkit-background-size: 100%;
+    -webkit-background-origin: content-box;
+    visibility: hidden;
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    display: -webkit-box;
+    padding: 10px;
+}
+

@@ -1,0 +1,120 @@
+#page{
+    width: 100%;
+    -webkit-box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
+}
+.cont{
+    background: #ffffff;
+}
+.cont section{
+    padding: 20px;
+}
+/*demo部分*/
+.demo h4{
+    font-size: 14px;
+    height: 32px;
+    line-height: 32px;
+    margin-bottom: 5px;
+}
+.demo button, .panel button{
+    height: 32px;
+    color: white;
+    font-size: 14px;
+    border:1px solid #cccccc;
+    -webkit-border-radius: 5px;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#0f97bb), to(#0c607f));
+    text-align: center;
+    cursor: pointer;
+    padding: 0 15px;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+.demo button:hover{
+    background: -webkit-gradient(linear, left top, left bottom, from(#0c607f), to(#0f97bb));
+}
+.iscroll{
+    float: right;
+}
+
+/*option展示部分*/
+.option h2, .gmu h2, .panel h2{
+    font-weight: bold;
+    font-size: 16px;
+    height: 28px;
+    line-height: 28px;
+    font-family: '微软雅黑';
+}
+.option .panel-des{
+    font-size: 14px;
+    margin-bottom: 10px;
+    line-height: 22px;
+}
+.option .panel-opt, .gmu .gmu-feture{
+    background: #f6feff;
+    border:1px solid #cccccc;
+    -webkit-box-shadow: 2px 2px 2px #cccccc;
+    -webkit-border-radius: 3px;
+    padding:10px;
+}
+.option .panel-opt li{
+    font-size: 14px;
+    padding:10px 0;
+}
+.option .panel-opt .opt-name{
+    font-weight: bold;
+}
+
+/*gmu展示部分*/
+.gmu{
+    clear: both;
+}
+.gmu .gmu-feture{
+    background: #fefaf3;
+}
+.gmu .gmu-feture dt{
+    height: 28px;
+    text-align: left;
+    font-weight: bold;
+    font-family: '微软雅黑';
+    font-size: 16px;
+}
+.gmu .gmu-feture dd{
+    font-size: 14px;
+    line-height: 24px;
+    margin-bottom: 10px;
+}
+
+.panel{}
+.panel button{
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#e8956c), to(#e25814));
+}
+.panel button:hover{
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#e25814), to(#e8956c));
+}
+.panel h2{
+    color: #9dd6fe;
+}
+.panel .panel-des{
+    color: #ffffff;
+    font-size: 14px;
+    line-height: 22px;
+}
+.panel .panel-dir li{
+    padding:10px;
+}
+.panel .panel-dir a{
+    text-decoration: none;
+    color: #ffffff;
+    font-size: 14px;
+}
+.panel .panel-dir a:hover{
+    text-decoration: underline;
+    color: #fc5401;
+}
+.panel .panel-swipe, .panel .panel-opt{
+    font-size: 14px;
+    padding: 15px;
+}
+.wrapper{
+    opacity: 0.9;
+}
