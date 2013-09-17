@@ -54,6 +54,11 @@ var widgets = {
         "description": '下拉菜单',
         "icon": 'dropmenu.png'
     },
+    'popover': {
+        "name": 'Popover',
+        "description": '提示层',
+        "icon": 'dropmenu.png'
+    },
     'gotop': {
         "name": 'Gotop',
         "description": '返回顶部',
