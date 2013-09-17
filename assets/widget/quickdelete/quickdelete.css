@@ -1,8 +1,0 @@
-.ui-quickdelete{
-	position: relative;
-    display: inline-block;
-}
-
-.ui-quickdelete>*:not(span.ui-quickdelete-btn){
-	outline: none;
-}
