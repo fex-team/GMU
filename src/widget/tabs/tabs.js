@@ -68,7 +68,7 @@
                 '<% } %></ul>',
             content:'<div class="ui-viewport ui-tabs-content">' +
                 '<% var item; for(var i=0, length=items.length; i<length; i++) { item=items[i]; %>'+
-                    '<div<% if(item.id){ %> id="<%=item.id%>"<% } %> class="ui-panel ui-tabs-panel <%=transition%><% if(i==active){ %> ui-state-active<% } %>"><%=item.content%></div>'+
+                    '<div<% if(item.id){ %> id="<%=item.id%>"<% } %> class="ui-tabs-panel <%=transition%><% if(i==active){ %> ui-state-active<% } %>"><%=item.content%></div>'+
                 '<% } %></div>'
         },
 
@@ -109,7 +109,7 @@
                             var $a = me._findElement('a', this), href = $a?$a.attr('href'):$(this).attr('data-url'), id, $content;
                             id = idRE.test(href)? RegExp.$1: 'tabs_'+uid();
                             ($content = me._findElement('#'+id) || $('<div id="'+id+'"></div>'))
-                                .addClass('ui-panel ui-tabs-panel'+(_opts.transition?' '+_opts.transition:''))
+                                .addClass('ui-tabs-panel'+(_opts.transition?' '+_opts.transition:''))
                                 .appendTo(_opts._content);
                             items.push({
                                 id: id,
