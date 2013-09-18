@@ -17,7 +17,7 @@
             container: document.body,
 
             // 是否支持删除，默认支持
-            delete: true,
+            deleteSupport: true,
 
             items: []
         },
@@ -56,7 +56,7 @@
             me.$wrap = $( me.tpl2html( 'wrap' ) ).appendTo( opts.container );
 
             me.$clear = $( me.tpl2html( 'clear' ) ).appendTo( opts.container );
-            !me._options.delete && me.$clear.hide();
+            !me._options.deleteSupport && me.$clear.hide();
 
             me.addItems( opts.items );
 
@@ -120,7 +120,7 @@
             } );
 
             me.$wrap.on( 'tap' + me.eventNs, function(ev) {
-                if( me._options.delete ) {
+                if( me._options.deleteSupport ) {
                     return;
                 }
 
@@ -141,7 +141,7 @@
 
             me.$wrap.on( 'touchstart' + me.eventNs, function(ev) {
 
-                if( !me._options.delete ) {
+                if( !me._options.deleteSupport ) {
                     return;
                 }
                 touch = ev.touches[0];
@@ -383,7 +383,7 @@
         disableDelete: function() {
             var me = this;
 
-            me._options.delete = false;
+            me._options.deleteSupport = false;
             me.$clear.hide();
 
             return me;
@@ -392,7 +392,7 @@
         enableDelete: function() {
             var me = this;
 
-            me._options.delete = true;
+            me._options.deleteSupport = true;
             me.$clear.show();
 
             return me;
