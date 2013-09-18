@@ -88,7 +88,7 @@ test("el(zepto) & container & 默认配置项", function(){
     equals($('.ui-tabs-nav li', tabs.$el).length, 4, 'The tabs nav number is right');
     equals($('.ui-tabs-content .ui-tabs-panel', tabs.$el).length, 4, 'The tabs pannel number is right');
     equals($('.ui-tabs-nav li', tabs.$el)[0].className,"ui-state-active","The active tab has ui-state-active");
-    equals($('.ui-tabs-content .ui-tabs-panel', tabs.$el)[0].className, "ui-panel ui-tabs-panel slide ui-state-active","The active tab has ui-state-active");
+    equals($('.ui-tabs-content .ui-tabs-panel', tabs.$el)[0].className, "ui-tabs-panel slide ui-state-active","The active tab has ui-state-active");
     tabs.destroy();
 });
 
@@ -135,7 +135,7 @@ test("setup & 默认配置项", function(){
     equals($('.ui-tabs-nav li', tabs.$el).length, 3, 'The tabs nav number is right');
     equals($('.ui-tabs-content .ui-tabs-panel', tabs.$el).length, 3, 'The tabs pannel number is right');
     equals($('.ui-tabs-nav li', tabs.$el)[1].className,"ui-state-active","The active tab has ui-state-active");
-    equals($('.ui-tabs-content .ui-tabs-panel', tabs.$el)[1].className, "ui-state-active ui-panel ui-tabs-panel slide","The active tab has ui-state-active");
+    equals($('.ui-tabs-content .ui-tabs-panel', tabs.$el)[1].className, "ui-state-active ui-tabs-panel slide","The active tab has ui-state-active");
     tabs.destroy();
     $('#setup').remove();
 });
