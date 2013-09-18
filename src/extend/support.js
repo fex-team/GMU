@@ -25,6 +25,8 @@
 
     }
 
+    var br = $.browser;
+
     $.support = $.extend($.support || {}, {
         orientation: !(br.uc || (parseFloat($.os.version)<5 && (br.qq || br.chrome))) && !($.os.android && parseFloat($.os.version) > 3) && "orientation" in window && "onorientationchange" in window,
         touch: "ontouchend" in document,
