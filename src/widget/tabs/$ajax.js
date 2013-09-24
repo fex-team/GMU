@@ -51,7 +51,8 @@
          * @method load
          * @param {Number} index Tab编号
          * @param {Boolean} [force=false] 是否强制重新加载
-         * @chainable
+         * @for Tabs
+         * @uses Tabs.ajax
          * @return {self} 返回本身。
          */
         load:function (index, force) {
@@ -114,6 +115,8 @@
          * @param {Object} xhr xhr对象
          * @param {Object} settings ajax请求的参数
          * @description 在请求前触发，可以通过e.preventDefault()来取消此次ajax请求
+         * @for Tabs
+         * @uses Tabs.ajax
          */
         
         /**
@@ -124,6 +127,8 @@
          * @param {Number} index Tab的序号
          * @param {Object} xhr xhr对象
          * @description ajax请求进来数据，在render到div上之前触发，对于json数据，可以通过此方来自行写render，然后通过e.preventDefault()来阻止，将response输出在div上
+         * @for Tabs
+         * @uses Tabs.ajax
          */
         
         /**
@@ -131,6 +136,8 @@
          * @param {Event} e gmu.Event对象
          * @param {Zepto} panel 对应的Tab内容的容器
          * @description 当ajax请求到的内容过来后，平已经Render到div上了后触发
+         * @for Tabs
+         * @uses Tabs.ajax
          */
         
         /**
@@ -138,6 +145,8 @@
          * @param {Event} e gmu.Event对象
          * @param {Zepto} panel 对应的Tab内容的容器
          * @description 当ajax请求内容失败时触发，如果此事件被preventDefault了，则不会把自带的错误信息Render到div上
+         * @for Tabs
+         * @uses Tabs.ajax
          */
     } );
 })(Zepto);

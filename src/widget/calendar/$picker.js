@@ -1,16 +1,9 @@
 /**
- * @file Calendar － Picker插件
- * @name Calendar － Picker插件
- * @short Calendar.picker
- * @import widget/calendar/calendar.js, extend/highlight.js, extend/event.ortchange.js
+ * @file Calendar Picker插件
  * @desc 默认的Calendar组件，只是在指定容器上生成日历功能，与表单元素的交互功能在此插件中体现.
- *
  * selector将会被认为是可赋值对象，当确认按钮点击后，所选的日期会赋值给selector。
- *
- * **Demo**
- * <codepreview href="../examples/widget/calendar/calendar_picker.html">
- * ../gmu/examples/widget/calendar/calendar_picker.html
- * </codepreview>
+ * @module GMU
+ * @import widget/calendar/calendar.js, extend/event.ortchange.js
  */
 (function( gmu, $ ) {
     function SlideUp(div, cb) {
@@ -35,7 +28,11 @@
             obj = {
 
                 /**
-                 * 当屏幕旋转的时候时候需要外部调用
+                 * 刷新日历显示，当屏幕旋转的时候时候需要外部调用
+                 * @method refresh
+                 * @param {Function} [callback] 刷新之后的回调函数
+                 * @for Calendar
+                 * @uses Calendar.picker
                  */
                 refresh: function( callback ){
                     root.css({
@@ -50,9 +47,15 @@
                         callback && callback.call(obj);
                     });
 
-                    return obj;
                 },
 
+                /**
+                 * 关闭日历
+                 * @method close
+                 * @param {Function} [callback] 关闭日历之后的回调函数
+                 * @for Calendar
+                 * @uses Calendar.picker
+                 */
                 close: function( callback ){
                     var count = SlideUp.count = SlideUp.count - 1;
 
@@ -109,6 +112,16 @@
         return obj;
     }
 
+    /**
+     * Calendar Picker插件
+     *
+     * 默认的Calendar组件，只是在指定容器上生成日历功能，与表单元素的交互功能在此插件中体现.
+     * selector将会被认为是可赋值对象，当确认按钮点击后，所选的日期会赋值给selector。
+     *
+     * @class picker
+     * @namespace Calendar
+     * @pluginfor Calendar
+     */
     gmu.Calendar.register( 'picker', {
 
         _create: function () {

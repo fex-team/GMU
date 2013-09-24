@@ -5,6 +5,12 @@
 (function( gmu, $, undefined ) {
     gmu.Navigator.options.isScrollToNext = true;
 
+    /**
+     * 当滚动到边缘的时候，自动把下一个滚出来
+     * @class isScrollToNext
+     * @namespace Navigator
+     * @pluginfor Navigator
+     */
     gmu.Navigator.option( 'isScrollToNext', true, function() {
         var me = this,
             prevIndex;

@@ -185,7 +185,6 @@
         /**
          * 添加按钮组
          * @method addBtns
-         * @chainable
          * @param {String} [position=right] 按钮添加的位置，left或者right
          * @param {Array} btns 要添加的按钮组，每个按钮可以是一个gmu Button实例，或者元素，或者HTML片段
          * @return {self} 返回本身
@@ -215,7 +214,6 @@
         /**
          * 显示Toolbar
          * @method show
-         * @chainable
          * @return {self} 返回本身。
          */
         
@@ -237,7 +235,6 @@
         /**
          * 隐藏Toolbar
          * @method hide
-         * @chainable
          * @return {self} 返回本身。
          */
         
@@ -259,7 +256,6 @@
         /**
          * 交换Toolbar（显示/隐藏）状态
          * @method toggle
-         * @chainable
          * @return {self} 返回本身。
          */
         toggle: function() {
