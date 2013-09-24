@@ -29,6 +29,11 @@ var widgets = {
         "description": '搜索建议',
         "icon": 'suggestion.png'
     },
+    'historylist': {
+        "name": 'Historylist',
+        "description": '历史记录',
+        "icon": 'suggestion.png'
+    },
     'tabs': {
         "name": 'Tabs',
         "description": '选项卡',

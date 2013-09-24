@@ -1,9 +1,7 @@
 /**
  * @file 弹出框组件
- * @name Dialog
- * @desc <qrcode align="right" title="Live Demo">../gmu/examples/widget/dialog/dialog.html</qrcode>
- * 弹出框组件
  * @import core/widget.js, extend/highlight.js, extend/parseTpl.js, extend/event.ortchange.js
+ * @module GMU
  */
 (function( gmu, $, undefined ) {
     var tpl = {
@@ -25,56 +23,101 @@
     };
 
     /**
-     * @name gmu.Dialog
-     * @grammar gmu.Dialog(options) => instance
-     * @grammar dialog(options) => self
-     * @desc **Options**
-     * - ''autoOpen'' {Boolean}: (可选，默认：true)初始化后是否自动弹出
-     * - ''closeBtn'' {Boolean}: (可选，默认：true)是否显示关闭按钮
-     * - ''mask'' {Boolean}: (可选，默认：true)是否有遮罩层
-     * - ''scrollMove'' {Boolean}: (可选，默认：true)是否禁用掉scroll，在弹出的时候
-     * - ''title'' {String}: (可选)弹出框标题
-     * - ''content'' {String|Selector}: (render模式下必填)弹出框内容
-     * - ''width'' {String|Number}: (可选，默认: 300)弹出框宽度
-     * - ''height'' {String|Number}: (可选，默认: \'auto\')弹出框高度
-     * - ''buttons'' {Object}: (可选) 用来设置弹出框底部按钮，传入的格式为{key1: fn1, key2, fn2}，key将作为按钮的文字，fn将作为按钮点击后的Handler
-     * - ''events'' 所有[Trigger Events](#dialog_triggerevents)中提及的事件都可以在此设置Hander, 如init: function(e){}。
+     * 弹出框组件
      *
-     * **如果是setup模式，部分参数是直接从DOM上读取**
-     * - ''title'' 从element的title属性中读取
-     * - ''content'' 直接为element。
+     * @class Dialog
+     * @constructor Html部分
+     * ```html
+     * <div id="dialog1" title="登陆提示">
+     *     <p>请使用百度账号登录后, 获得更多个性化特色功能</p>
+     * </div>
+     * ```
      *
-     * **比如**
-     * <code>//<div id="dialog" title="弹出框标题"></div>
-     * console.log($('#dialog').dialog('data', 'title')); // => 弹出框标题
-     * console.log($('#dialog').dialog('data', 'content')); // => #dialog(Zepto对象)
-     * </code>
-     *
-     * **Demo**
-     * <codepreview href="../examples/widget/dialog/dialog.html">
-     * ../gmu/examples/widget/dialog/dialog.html
-     * </codepreview>
+     * javascript部分
+     * ```javascript
+     *  $('#dialog1').dialog({
+     *      autoOpen: false,
+     *      closeBtn: false,
+     *      buttons: {
+     *          '取消': function(){
+     *              this.close();
+     *          },
+     *          '确定': function(){
+     *              this.close();
+     *              $('#dialog2').dialog('open');
+     *          }
+     *      }
+     *  });
+     * ```
+     * @param {dom | zepto | selector} [el] 用来初始化对话框的元素
+     * @param {Object} [options] 组件配置项。具体参数请查看[Options](#GMU:Dialog:options)
+     * @grammar $( el ).dialog( options ) => zepto
+     * @grammar new gmu.Dialog( el, options ) => instance
      */
     gmu.define( 'Dialog', {
         options: {
+            /**
+             * @property {Boolean} [autoOpen=true] 初始化后是否自动弹出
+             * @namespace options
+             */
             autoOpen: true,
+            /**
+             * @property {Array} [buttons=null] 弹出框上的按钮
+             * @namespace options
+             */
             buttons: null,
+            /**
+             * @property {Boolean} [closeBtn=true] 是否显示关闭按钮
+             * @namespace options
+             */
             closeBtn: true,
+            /**
+             * @property {Boolean} [mask=true] 是否有遮罩层
+             * @namespace options
+             */
             mask: true,
+            /**
+             * @property {Number} [width=300] 弹出框宽度
+             * @namespace options
+             */
             width: 300,
+            /**
+             * @property {Number|String} [height='auto'] 弹出框高度
+             * @namespace options
+             */
             height: 'auto',
+            /**
+             * @property {String} [title=null] 弹出框标题
+             * @namespace options
+             */
             title: null,
+            /**
+             * @property {String} [content=null] 弹出框内容
+             * @namespace options
+             */
             content: null,
-            scrollMove: true,//是否禁用掉scroll，在弹出的时候
+            /**
+             * @property {Boolean} [scrollMove=true] 是否禁用掉scroll，在弹出的时候
+             * @namespace options
+             */
+            scrollMove: true,
+            /**
+             * @property {Element} [container=null] 弹出框容器
+             * @namespace options
+             */
             container: null,
+            /**
+             * @property {Function} [maskClick=null] 在遮罩上点击时触发的事件
+             * @namespace options
+             */
             maskClick: null,
             position: null //需要dialog.position插件才能用
         },
 
         /**
-         * @name getWrap
-         * @grammar getWrap() ⇒ Zepto instance
-         * @desc 获取最外层的节点。
+         * 获取最外层的节点
+         * @method getWrap
+         * @return {Element} 最外层的节点
          */
         getWrap: function(){
             return this._options._wrap;
@@ -176,9 +219,9 @@
         },
 
         /**
-         * @name refresh
-         * @grammar refresh() ⇒ instance
-         * @desc 用来更新弹出框位置和mask大小。如父容器大小发生变化时，可能弹出框位置不对，可以外部调用refresh来修正。
+         * 用来更新弹出框位置和mask大小。如父容器大小发生变化时，可能弹出框位置不对，可以外部调用refresh来修正。
+         * @method refresh
+         * @return {self} 返回本身
          */
         refresh: function(){
             var me = this, opts = me._options, ret, action;
@@ -206,10 +249,11 @@
         },
 
         /**
-         * @name open
-         * @grammar open() ⇒ instance
-         * @grammar open(x, y) ⇒ instance
-         * @desc 弹出弹出框，如果设置了位置，内部会数值转给[position](widget/dialog.js#position)来处理。
+         * 弹出弹出框，如果设置了位置，内部会数值转给[position](widget/dialog.js#position)来处理。
+         * @method open
+         * @param {String|Number} [x] X轴位置
+         * @param {String|Number} [y] Y轴位置
+         * @return {self} 返回本身
          */
         open: function(x, y){
             var opts = this._options;
@@ -225,9 +269,9 @@
         },
 
         /**
-         * @name close
-         * @grammar close() ⇒ instance
-         * @desc 关闭弹出框
+         * 关闭弹出框
+         * @method close
+         * @return {self} 返回本身
          */
         close: function(){
             var eventData, opts = this._options;
@@ -245,10 +289,10 @@
         },
 
         /**
-         * @name title
-         * @grammar title([value]) ⇒ value
-         * @desc 设置或者获取弹出框标题。value接受带html标签字符串
-         * @example $('#dialog').dialog('title', '标题<span>xxx</span>');
+         * 设置或者获取弹出框标题。value接受带html标签字符串
+         * @method title
+         * @param {String} [value] 弹出框标题
+         * @return {self} 返回本身
          */
         title: function(value) {
             var opts = this._options, setter = value !== undefined;
@@ -261,13 +305,10 @@
         },
 
         /**
-         * @name content
-         * @grammar content([value]) ⇒ value
-         * @desc 设置或者获取弹出框内容。value接受带html标签字符串和zepto对象。
-         * @example
-         * $('#dialog').dialog('content', '内容');
-         * $('#dialog').dialog('content', '<div>内容</div>');
-         * $('#dialog').dialog('content', $('#content'));
+         * 设置或者获取弹出框内容。value接受带html标签字符串和zepto对象。
+         * @method content
+         * @param {String|Element} [val] 弹出框内容
+         * @return {self} 返回本身
          */
         content: function(val) {
             var opts = this._options, setter = val!==undefined;
@@ -278,7 +319,6 @@
         /**
          * @desc 销毁组件。
          * @name destroy
-         * @grammar destroy()  ⇒ instance
          */
         destroy: function(){
             var opts = this._options, _eventHander = this._eventHandler;
@@ -291,16 +331,33 @@
         }
 
         /**
-         * @name Trigger Events
-         * @theme event
-         * @desc 组件内部触发的事件
-         *
-         * ^ 名称 ^ 处理函数参数 ^ 描述 ^
-         * | ready | event | 组件初始化的时候触发，不管是render模式还是setup模式都会触发 |
-         * | open | event | 当弹出框弹出后触发 |
-         * | beforeClose | event | 在弹出框关闭之前触发，可以通过e.preventDefault()来阻止 |
-         * | close | event | 在弹出框关闭之后触发 |
-         * | destroy | event | 组件在销毁的时候触发 |
+         * @event ready
+         * @param {Event} e gmu.Event对象
+         * @description 当组件初始化完后触发。
+         */
+
+        /**
+         * @event open
+         * @param {Event} e gmu.Event对象
+         * @description 当弹出框弹出后触发
+         */
+
+        /**
+         * @event beforeClose
+         * @param {Event} e gmu.Event对象
+         * @description 在弹出框关闭之前触发，可以通过e.preventDefault()来阻止
+         */
+
+        /**
+         * @event close
+         * @param {Event} e gmu.Event对象
+         * @description 在弹出框关闭之后触发
+         */
+        
+        /**
+         * @event destroy
+         * @param {Event} e gmu.Event对象
+         * @description 组件在销毁的时候触发
          */
     });
 })( gmu, gmu.$ );
