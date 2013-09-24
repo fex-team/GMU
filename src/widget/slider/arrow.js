@@ -20,7 +20,7 @@
             arrow: true,
 
             /**
-             * @property {Object} [select={prev: '.ui-slider-pre',next: '.ui-slider-next'}] 上一张和下一张按钮的选择器
+             * @property {Object} [select={prev:'.ui-slider-pre',next:'.ui-slider-next'}] 上一张和下一张按钮的选择器
              * @namespace options
              * @for Slider
              * @uses Slider.arrow

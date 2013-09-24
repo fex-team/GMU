@@ -1,16 +1,41 @@
 /**
- * @file Navigator，导航栏组件
+ * @file 导航栏组件
  * @import core/widget.js, extend/highlight.js
+ * @module GMU
  */
 (function( gmu, $, undefined ) {
     
+    /**
+     * 导航栏组件
+     *
+     * @class Navigator
+     * @constructor Html部分
+     * ```html
+     * 
+     * ```
+     *
+     * javascript部分
+     * ```javascript
+     * 
+     * ```
+     * @param {dom | zepto | selector} [el] 用来初始化导航栏的元素
+     * @param {Object} [options] 组件配置项。具体参数请查看[Options](#GMU:Navigator:options)
+     * @grammar $( el ).navigator( options ) => zepto
+     * @grammar new gmu.Navigator( el, options ) => instance
+     */
     gmu.define( 'Navigator', {
         options: {
 
-            // 菜单数组
+            /**
+             * @property {Array} [content=null] 菜单数组
+             * @namespace options
+             */
             content: null,
 
-            // 交互事件名。
+            /**
+             * @property {String} [event='click'] 交互事件名
+             * @namespace options
+             */
             event: 'click'
         },
 
@@ -91,7 +116,7 @@
                 list = me.$list.children(),
                 evt = gmu.Event( 'beforeselect', e ),
                 cur;
-
+                
             me.trigger( evt, list.get( to ) );
             
             if ( evt.isDefaultPrevented() ) {
@@ -107,21 +132,56 @@
         },
 
         /**
-         * @name switchTo
-         * @desc 
+         * 切换到导航栏的某一项
+         * @param {Number} to 序号
+         * @method switchTo
          */
         switchTo: function( to ) {
             return this._switchTo( ~~to );
         },
 
-        // 取消选择
+        /**
+         * 取消选择
+         * @method unselect
+         */
         unselect: function() {
             this.index = -1;
             this.$list.children().removeClass( 'ui-state-active' );
         },
 
+        /**
+         * 获取当前选中的序号
+         * @method getIndex
+         */
         getIndex: function() {
             return this.index;
         }
+
+        /**
+         * @event ready
+         * @param {Event} e gmu.Event对象
+         * @description 当组件初始化完后触发。
+         */
+
+        /**
+         * @event beforeselect
+         * @param {Event} e gmu.Event对象
+         * @param {Element} 目标元素
+         * @description 当选择的序号发生切换前触发
+         */
+        
+        /**
+         * @event select
+         * @param {Event} e gmu.Event对象
+         * @param {Event} 当前选择的序号
+         * @param {Element} 上一次选择的元素
+         * @description 当选择的序号发生切换后触发
+         */
+        
+        /**
+         * @event destroy
+         * @param {Event} e gmu.Event对象
+         * @description 组件在销毁的时候触发
+         */
     } );
 })( gmu, gmu.$ );

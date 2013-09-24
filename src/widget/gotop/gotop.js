@@ -1,39 +1,59 @@
 /**
  * @file 返回顶部组件
- * @name Gotop
- * @desc <qrcode align="right" title="Live Demo">../gmu/examples/widget/gotop/gotop.html</qrcode>
- * 提供一个快速回到页面顶部的按钮
  * @import core/widget.js, extend/fix.js, extend/throttle.js, extend/event.scrollStop.js, extend/event.ortchange.js
+ * @module GMU
  */
-
 (function( gmu, $, undefined ) {
 
     /**
-     * @name     $.ui.Gotop
-     * @grammar  $(el).gotop(options) => self
-     * @grammar  $.ui.Gotop([el [,options]]) => instance
-     * @desc **el**
-     * css选择器, 或者zepto对象
-     * **Options**
-     * - ''container'' {selector}: (可选,默认：body) 组件容器
-     * - ''useFix'' {Boolean}: (可选, 默认为true), 是否使用固顶效果
-     * - ''useHide'' {Boolean}: (可选, 默认为true), 是否在touchmove的时候隐藏gotop图标
-     * - ''useAnimation'' {Boolean}: (可选, 默认为true), 返回顶部时是否使用动画,在使用iScroll时,返回顶部的动作由iScroll实例执行,此参数无效
-     * - ''position'' {Object}: (可选, 默认为{bottom:10, right:10}), 使用fix效果时，要用的位置参数
-     * - ''afterScroll'' {function}: (可选,默认：null) 返回顶部后执行的回调函数
-     * **Demo**
-     * <codepreview href="../examples/widget/gotop/gotop.html">
-     * ../gmu/examples/widget/gotop/gotop.html
-     * ../gmu/examples/widget/gotop/gotop_demo.css
-     * </codepreview>
+     * 返回顶部组件
+     *
+     * @class Gotop
+     * @constructor Html部分
+     * ```html
+     * <div id="gotop"></div>
+     * ```
+     *
+     * javascript部分
+     * ```javascript
+     * $('#gotop').gotop();
+     * ```
+     * @param {dom | zepto | selector} [el] 用来初始化组件的元素
+     * @param {Object} [options] 组件配置项。具体参数请查看[Options](#GMU:Gotop:options)
+     * @grammar $( el ).gotop( options ) => zepto
+     * @grammar new gmu.Gotop( el, options ) => instance
      */
     gmu.define( 'Gotop', {
         options: {
+            /**
+             * @property {selector} [container=document.body] 组件容器
+             * @namespace options
+             */
             container:          '',
+            /**
+             * @property {Boolean} [useFix=true] 是否使用固顶效果
+             * @namespace options
+             */
             useFix:             true,
+            /**
+             * @property {Boolean} [useHide=true] 是否在touchmove的时候隐藏gotop图标
+             * @namespace options
+             */
             useHide:            true,
+            /**
+             * @property {Boolean} [useAnimation=false] 返回顶部时是否使用动画,在使用iScroll时,返回顶部的动作由iScroll实例执行,此参数无效
+             * @namespace options
+             */
             useAnimation:       false,
+            /**
+             * @property {Object} [position={bottom:10,right:10}] 使用fix效果时，要用的位置参数
+             * @namespace options
+             */
             position:           {bottom: 10, right: 10},
+            /**
+             * @property {Function} [afterScroll=null] 返回顶部后执行的回调函数
+             * @namespace options
+             */
         	afterScroll:        null
         },
 
@@ -147,18 +167,10 @@
 		},
 
         /**
-         * @desc 显示gotop
-         * @name show
-         * @grammar show() => self
-         *  @example
-         * //setup mode
-         * $('#gotop').gotop('show');
-         *
-         * //render mode
-         * var demo = $.ui.gotop();
-         * demo.show();
+         * 显示gotop
+         * @method show
+         * @return {self} 返回本身
          */
-
         show: function() {
             this._options.root.style.display = 'block';
 
@@ -166,30 +178,33 @@
         },
 
         /**
-         * @desc 隐藏gotop
-         * @name hide
-         * @grammar hide() => self
-         * @example
-         * //setup mode
-         * $('#gotop').gotop('hide');
-         *
-         * //render mode
-         * var demo = $.ui.gotop();
-         * demo.hide();
+         * 隐藏gotop
+         * @method hide
+         * @chainable
+         * @return {self} 返回本身
          */
         hide: function() {
             this._options.root.style.display = 'none';
             
             return this;
         }
+
         /**
-         * @name Trigger Events
-         * @theme event
-         * @desc 组件内部触发的事件
-         * ^ 名称 ^ 处理函数参数 ^ 描述 ^
-         * | init | event | 组件初始化的时候触发，不管是render模式还是setup模式都会触发 |
-         * | afterScroll | event | 返回顶部后触发的事件 |
-         * | destroy | event | 组件在销毁的时候触发 |
+         * @event ready
+         * @param {Event} e gmu.Event对象
+         * @description 当组件初始化完后触发
+         */
+
+        /**
+         * @event afterScroll
+         * @param {Event} e gmu.Event对象
+         * @description 返回顶部后触发的事件
+         */
+        
+        /**
+         * @event destroy
+         * @param {Event} e gmu.Event对象
+         * @description 组件在销毁的时候触发
          */
     });
 })( gmu, gmu.$ );
