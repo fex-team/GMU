@@ -21,7 +21,7 @@
             dots: true,
 
             /**
-             * @property {Object} [selector={dots: '.ui-slider-dots'}] 所有点父级的选择器
+             * @property {Object} [selector={dots:'.ui-slider-dots'}] 所有点父级的选择器
              * @namespace options
              * @for Slider
              * @uses Slider.dots
