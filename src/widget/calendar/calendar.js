@@ -1,9 +1,7 @@
 /**
  * @file 日历组件
- * @name Calendar
- * @desc <qrcode align="right" title="Live Demo">../gmu/examples/widget/calendar/calendar.html</qrcode>
- * 日历组件, 可以用来给一容器生成日历。
  * @import extend/touch.js, core/widget.js, extend/highlight.js
+ * @module GMU
  */
 (function( gmu, $, undefined ) {
     var monthNames = ["01月", "02月", "03月", "04月", "05月", "06月",
@@ -38,32 +36,61 @@
         prototype;
 
     /**
-     * @name gmu.Calendar
-     * @grammar gmu.Calendar(options) => instance
-     * @grammar calendar(options) => self
-     * @desc **Options**
-     * - ''date'' {Date|String}: (可选，默认：today) 初始化日期
-     * - ''firstDay'' {Number}: (可选，默认：1)  设置新的一周从星期几开始，星期天用0表示, 星期一用1表示, 以此类推.
-     * - ''minDate'' {Date|String}: (可选，默认：null)  设置可以选择的最小日期
-     * - ''maxDate'' {Date|String}: (可选，默认：null)  设置可以选择的最大日期
-     * - ''swipeable'' {Boolean}: (可选，默认：false)  设置是否可以通过左右滑动手势来切换日历
-     * - ''monthChangeable'' {Boolean}: (可选，默认：false)  设置是否让月份可选择
-     * - ''yearChangeable'' {Boolean}: (可选，默认：false)  设置是否让年份可选择
-     * - ''events'' 所有[Trigger Events](#calendar_triggerevents)中提及的事件都可以在此设置Hander, 如init: function(e){}。
+     * 日历组件
      *
-     * **Demo**
-     * <codepreview href="../examples/widget/calendar/calendar.html">
-     * ../gmu/examples/widget/calendar/calendar.html
-     * </codepreview>
+     * @class Calendar
+     * @constructor Html部分
+     * ```html
+     * <div id="calendar"></div>
+     * ```
+     *
+     * javascript部分
+     * ```javascript
+     * $('#calendar').calendar({
+     *    swipeable: true
+     * });
+     * ```
+     * @param {dom | zepto | selector} [el] 用来初始化日历的元素
+     * @param {Object} [options] 组件配置项。具体参数请查看[Options](#GMU:Calendar:options)
+     * @grammar $( el ).calendar( options ) => zepto
+     * @grammar new gmu.Calendar( el, options ) => instance
      */
     gmu.define( 'Calendar', {
         options: {
-            date: null, //默认日期
-            firstDay: 1, //星期天用0表示, 星期一用1表示, 以此类推.
-            maxDate: null, //可以选择的日期范围
+            /**
+             * @property {Date|String} [date=null] 初始化日期，默认今天
+             * @namespace options
+             */
+            date: null,
+            /**
+             * @property {Number} [firstDay=1] 设置新的一周从星期几开始，星期天用0表示, 星期一用1表示, 以此类推.
+             * @namespace options
+             */
+            firstDay: 1,
+            /**
+             * @property {Date|String} [maxDate=null] 设置可以选择的最大日期
+             * @namespace options
+             */
+            maxDate: null,
+            /**
+             * @property {Date|String} [minDate=null] 设置可以选择的最小日期
+             * @namespace options
+             */
             minDate: null,
+            /**
+             * @property {Boolean} [swipeable=false] 设置是否可以通过左右滑动手势来切换日历
+             * @namespace options
+             */
             swipeable: false,
+            /**
+             * @property {Boolean} [monthChangeable=false] 设置是否让月份可选择
+             * @namespace options
+             */
             monthChangeable: false,
+            /**
+             * @property {Boolean} [yearChangeable=false] 设置是否让年份可选择
+             * @namespace options
+             */
             yearChangeable: false
         },
 
@@ -188,21 +215,21 @@
         },
 
         /**
-         * 切换到今天所在月份。
-         * @name switchToToday
-         * @grammar switchToToday() ⇒ instance
-         * @returns {*}
+         * 切换到今天所在月份
+         * @method switchToToday
          */
         switchToToday: function() {
             var today = new Date();
             return this.switchMonthTo(today.getMonth(), today.getFullYear());
         },
 
+
         /**
-         * @name switchMonthTo
-         * @grammar switchMonthTo(month, year) ⇒ instance
-         * @grammar switchMonthTo(str) ⇒ instance
-         * @desc 使组件显示某月，当第一参数为str可以+1M, +4M, -5Y, +1Y等等。+1M表示在显示的月的基础上显示下一个月，+4m表示下4个月，-5Y表示5年前
+         * 切换月份
+         * @method switchMonthTo
+         * @param {String|Number} month 目标月份，值可以为+1M, +4M, -5Y, +1Y等等。+1M表示在显示的月的基础上显示下一个月，+4m表示下4个月，-5Y表示5年前
+         * @param {String|Number} year 目标年份
+         * @return {self} 返回本身
          */
         switchMonthTo: function(month, year) {
             var opts = this._options,
@@ -242,9 +269,9 @@
         },
 
         /**
-         * @name refresh
-         * @grammar refresh() ⇒ instance
-         * @desc 当修改option后需要调用此方法。
+         * 刷新日历，当修改option后需要调用此方法
+         * @method refresh
+         * @return {self} 返回本身
          */
         refresh: function() {
             var opts = this._options,
@@ -266,9 +293,8 @@
         },
 
         /**
-         * @desc 销毁组件。
-         * @name destroy
-         * @grammar destroy()  => instance
+         * 销毁组件
+         * @method destroy
          */
         destroy: function() {
             var el = this._container || this.$el,
@@ -419,27 +445,31 @@
     //补充注释
 
     /**
-     * @name maxDate
-     * @grammar maxDate([value]) ⇒ instance
-     * @desc 设置或获取maxDate，如果想要Option生效需要调用[Refresh](#calendar_refresh)方法。
+     * 设置或获取maxDate，如果想要Option生效需要调用[Refresh](#calendar_refresh)方法
+     * @method maxDate
+     * @param {String|Date} value 最大日期的值
+     * @return {self} 返回本身
      */
 
     /**
-     * @name minDate
-     * @grammar minDate([value]) ⇒ instance
-     * @desc 设置或获取minDate，如果想要Option生效需要调用[Refresh](#calendar_refresh)方法。
+     * 设置或获取minDate，如果想要Option生效需要调用[Refresh](#calendar_refresh)方法
+     * @method minDate
+     * @param {String|Date} value 最小日期的值
+     * @return {self} 返回本身
      */
 
     /**
-     * @name date
-     * @grammar date([value]) ⇒ instance
-     * @desc 设置或获取当前date，如果想要Option生效需要调用[Refresh](#calendar_refresh)方法。
+     * 设置或获取当前日期，如果想要Option生效需要调用[Refresh](#calendar_refresh)方法
+     * @method date
+     * @param {String|Date} value 当前日期
+     * @return {self} 返回本身
      */
 
     /**
-     * @name date
-     * @grammar date([value]) ⇒ instance
-     * @desc 设置或获取当前选中的日期，如果想要Option生效需要调用[Refresh](#calendar_refresh)方法。
+     * 设置或获取当前选中的日期，如果想要Option生效需要调用[Refresh](#calendar_refresh)方法
+     * @method selectedDate
+     * @param {String|Date} value 当前日期
+     * @return {self} 返回本身
      */
 
 
@@ -468,14 +498,32 @@
     }
 
     /**
-     * @name Trigger Events
-     * @theme event
-     * @desc 组件内部触发的事件
-     *
-     * ^ 名称 ^ 处理函数参数 ^ 描述 ^
-     * | init | event | 组件初始化的时候触发，不管是render模式还是setup模式都会触发 |
-     * | select | event, date, dateStr, ui | 选中日期的时候触发 |
-     * | monthchange | event, month, year, ui | 当当前现实月份发生变化时触发 |
-     * | destroy | event | 组件在销毁的时候触发 |
+     * @event ready
+     * @param {Event} e gmu.Event对象
+     * @description 当组件初始化完后触发。
+     */
+
+    /**
+     * @event select
+     * @param {Event} e gmu.Event对象
+     * @param {Date} date 当前选中的日期
+     * @param {String} dateStr 当前选中日期的格式化字符串
+     * @param {Instance} instance 当前日历的实例
+     * @description 选中日期的时候触发
+     */
+    
+    /**
+     * @event monthchange
+     * @param {Event} e gmu.Event对象
+     * @param {Date} month 当前月份
+     * @param {String} year 当前年份
+     * @param {Instance} instance 当前日历的实例
+     * @description 前现实月份发生变化时触发
+     */
+    
+    /**
+     * @event destroy
+     * @param {Event} e gmu.Event对象
+     * @description 组件在销毁的时候触发
      */
 })( gmu, gmu.$ );

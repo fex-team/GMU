@@ -1,24 +1,73 @@
 /**
  * @file 历史记录组件
- * @name Historylist
- * @desc <qrcode align="right" title="Live Demo">../gmu/examples/widget/historylist/historylist.html</qrcode>
- * 历史记录组件
  * @import core/widget.js, extend/touch.js, widget/dialog.js
+ * @module GMU
  */
 
  // TODO 列表区域支持iScroll
 (function( gmu, $ ) {
     
+    /**
+     * 历史记录组件
+     *
+     * @class Historylist
+     * @constructor Html部分
+     * ```html
+     * <div>
+     *     <p><input type="text" class="input-text" id="J_input" /><input type="button" value="取消" class="input-button" /></p>
+     *     <div id="J_historyWrap"></div>
+     * </div>
+     * ```
+     *
+     * javascript部分
+     * ```javascript
+     * var instance = new gmu.Historylist({
+     *     container: $('#J_historyWrap'), // 页面上需要有一个已经存在的容器来存放组件
+     *     items: [
+     *             {'value': 'global', 'context': '<b>global</b> adj. 全球的；综合的'},
+     *             'google',
+     *             {'value': 'visual', 'context': '<b>visual</b> adj. 视觉的'},
+     *             'alibaba',
+     *             'taobao'
+     *            ],   // 历史记录的列表
+     *     itemTouch: function(e, data) {  // 某条记录被点击后的响应事件
+     *         console.log( 'item touched: ' + data.item );   // data.item是某条记录的内容
+     *         $('#J_input').val(data.item);
+     *     },
+     *     itemDelete: function(e, data) { // 某条记录被删除后的响应事件
+     *         console.log( 'item delete:' + data.item );   // data.item是某条记录的内容
+     *     },
+     *     clear: function() {  // 用户确认清空搜索历史后的响应事件
+     *         // 在这里删除localstorage里面存的历史数据
+     *         console.log( 'clear triggered' );
+     *     }
+     * });
+     * ```
+     * @param {dom | zepto | selector} [el] 用来初始化组件的元素
+     * @param {Object} [options] 组件配置项。具体参数请查看[Options](#GMU:Historylist:options)
+     * @grammar $( el ).historylist( options ) => zepto
+     * @grammar new gmu.Historylist( el, options ) => instance
+     */
     gmu.define( 'Historylist', {
 
         options: {
 
-            // 容器，默认为 document.body ，这个时候 body 还没渲染完，所以在 init 里面要重新赋值
+            /**
+             * @property {Zepto | Selector | Element} [container=document.body] 容器，默认为 document.body 
+             * @namespace options
+             */
             container: document.body,
 
-            // 是否支持删除，默认支持
+            /**
+             * @property {Boolean} [deleteSupport=true] 是否支持滑动删除记录，默认支持
+             * @namespace options
+             */
             deleteSupport: true,
 
+            /**
+             * @property {Array} [items=Array()] 历史记录的数据
+             * @namespace options
+             */
             items: []
         },
 
@@ -32,6 +81,7 @@
             var me = this,
                 opts = me._options;
 
+            // js不一定放在页面尾部，所以在init中要重新赋值
             me.$el = opts.container = opts.container || document.body;
 
             me.items = [];
@@ -237,6 +287,11 @@
             } );
         },
 
+        /**
+         * 显示Historylist
+         * @method show
+         * @return {self} 返回本身。
+         */
         show: function() {
             var me = this;
 
@@ -256,6 +311,11 @@
             return me;
         },
 
+        /**
+         * 隐藏Historylist
+         * @method hide
+         * @return {self} 返回本身。
+         */
         hide: function() {
             var me = this;
 
@@ -291,6 +351,12 @@
             }
         },
 
+        /**
+         * 添加一条历史记录
+         * @method addBtns
+         * @param {String|Object} item 历史记录，可以是字符串，也可以是标准格式的对象（包含context和value）
+         * @return {self} 返回本身
+         */
         addItem: function( item ) {
             var me = this,
                 item = me._getFormatItem( item );
@@ -314,6 +380,12 @@
             return me;
         },
 
+        /**
+         * 添加多条历史记录
+         * @method addBtns
+         * @param {Array} item 历史记录
+         * @return {self} 返回本身
+         */
         addItems: function( items ) {
             var me = this;
 
@@ -324,8 +396,11 @@
             return me;
         },
 
-        /*
+        /**
          * 更新数据，重新渲染列表
+         * @method update
+         * @param {Array} item 新的历史记录
+         * @return {self} 返回本身
          */
         update: function( items ) {
             var me = this;
@@ -368,6 +443,11 @@
 
         },
 
+        /**
+         * 清空历史记录
+         * @method clear
+         * @return {self} 返回本身
+         */
         clear: function() {
             var me = this;
 
@@ -380,6 +460,11 @@
             return me;
         },
 
+        /**
+         * 禁用删除功能
+         * @method disableDelete
+         * @return {self} 返回本身
+         */
         disableDelete: function() {
             var me = this;
 
@@ -389,6 +474,11 @@
             return me;
         },
 
+        /**
+         * 启用删除功能
+         * @method enableDelete
+         * @return {self} 返回本身
+         */
         enableDelete: function() {
             var me = this;
 
@@ -398,6 +488,10 @@
             return me;
         },
 
+        /**
+         * 销毁组件
+         * @method destroy
+         */
         destroy: function() {
             var me = this;
 
@@ -409,6 +503,38 @@
 
             return me.$super( 'destroy' );
         }
+
+        /**
+         * @event ready
+         * @param {Event} e gmu.Event对象
+         * @description 当组件初始化完后触发。
+         */
+
+        /**
+         * @event itemTouch
+         * @param {Event} e gmu.Event对象
+         * @param {String} item 被点击的记录的value
+         * @description 点击某条历史记录时触发
+         */
+
+        /**
+         * @event itemDelete
+         * @param {Event} e gmu.Event对象
+         * @param {String} item 被删除的记录的value
+         * @description 删除某条历史记录时触发
+         */
+
+        /**
+         * @event clear
+         * @param {Event} e gmu.Event对象
+         * @description 清除历史记录时触发
+         */
+
+        /**
+         * @event destroy
+         * @param {Event} e gmu.Event对象
+         * @description 组件在销毁的时候触发
+         */
     } );
 })( gmu, gmu.$ );
 

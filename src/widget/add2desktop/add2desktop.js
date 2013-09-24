@@ -1,44 +1,64 @@
-
 /**
- * @file 生成桌面图标组件
- * @name Add2desktop
- * @desc <qrcode align="right" title="Live Demo">../gmu/examples/widget/add2desktop/add2desktop.html</qrcode>
- * 在iOS中将页面添加为桌面图标(不支持Android系统)
+ * @file 在iOS中将页面添加为桌面图标(不支持Android系统)
  * @import core/widget.js, extend/fix.js
+ * @module GMU
  */
 (function( gmu, $, undefined ) {
     /**
-     * @name     gmu.Add2desktop
+     * 在iOS中将页面添加为桌面图标(不支持Android系统)
+     * @class Add2desktop
+     * @constructor Html部分
+     *
+     * javascript部分
+     * ```javascript
+     * gmu.Add2desktop({icon:'../../../examples/assets/icon.png'});
+     * ```
+     * @param {dom | zepto | selector} [el] 用来初始化工具栏的元素
+     * @param {Object} [options] 组件配置项。具体参数请查看[Options](#GMU:Toolbar:options)
      * @grammar  gmu.Add2desktop([el [,options]]) =>instance
-     * @grammar  $(el).add2desktop(options) => self
-     * @desc **el**
-     * css选择器, 或者zepto对象
-     * **Options**
-     * - ''icon'' {String}: (必选) 产品线ICON'S URL
-     * - ''container'' {selector}: (可选，默认：body) 组件容器
-     * - ''key'' {String}: (可选，默认：_gmu_adddesktop_key) LocalStorage的key值
-     * - ''useFix'' {Boolean}: (可选，默认：true) 是否使用fix固顶效果
-     * - ''position'' {Object}: (可选，默认：{bottom:12, left: 50%}) 固顶时使用的位置参数
-     * - ''beforeshow'' {Function}: (可选) 显示前触发的事件，调用e.preventDefault()可以阻止显示
-     * - ''afterhide'' {Function}: (可选) 隐藏后触发的事件，可以在这里写LocalStorage的值
-     * **Demo**
-     * <codepreview href="../examples/widget/add2desktop/add2desktop.html">
-     * ../gmu/examples/widget/add2desktop/add2desktop.html
-     * </codepreview>
+     * @grammar  $(el).add2desktop(options) => zepto
      */
     gmu.define('Add2desktop', {
         options: {
+            /**
+             * @property {String} icon 产品线ICON的URL
+             * @namespace options
+             */
             icon: '',
+            /**
+             * @property {selector} [container=document.body] 组件容器
+             * @namespace options
+             */
             container:  '',
+            /**
+             * @property {String} [key='_gmu_adddesktop_key'] LocalStorage的key值
+             * @namespace options
+             */
             key:'_gmu_adddesktop_key',
+            /**
+             * @property {Boolean} [useFix=true] 是否使用fix固顶效果
+             * @namespace options
+             */
             useFix: true,
+            /**
+             * @property {Object} [position={bottom:12,left:50%}] 固顶时使用的位置参数
+             * @namespace options
+             */
             position: {
                 bottom: 12,
                 left: '50%'
             },
+            /**
+             * @property {Function} [beforeshow=fn}] 显示前触发的事件，调用e.preventDefault()可以阻止显示
+             * @namespace options
+             */
             beforeshow : function(e){
                 this.key() && e.preventDefault()
             },
+            /**
+             * @property {Function} [afterhide=fn}] 隐藏后触发的事件，可以在这里写LocalStorage的值
+             * @namespace options
+             */
             afterhide : function(){
                 this.key(1)
             },
@@ -78,16 +98,10 @@
         },
 
         /**
-         * @desc 存储/获取LocalStorage的键值
-         * @name key
-         * @grammar key()  => value
-         * @example
-         * //setup mode
-         * $('#add2desktop').add2desktop('key','1'); //设置键值为1
-         *
-         * //render mode
-         * var demo = gmu.Add2desktop();
-         * demo.key();  //获取键值
+         * 存储/获取LocalStorage的键值
+         * @method key
+         * @param {String} [value] LocalStorage的键值，不传表示取值
+         * @return {self} LocalStorage的值
          */
         key : function(value){
             var ls = window.localStorage;
@@ -95,9 +109,15 @@
         },
 
         /**
-         * @desc 显示add2desktop
-         * @name show
-         * @grammar show()  => self
+         * 显示add2desktop
+         * @method show
+         * @return {self} 返回本身。
+         */
+
+        /**
+         * @event beforeshow
+         * @param {Event} e gmu.Event对象
+         * @description add2desktop显示前触发
          */
         show: function() {
             var me = this;
@@ -115,9 +135,15 @@
         },
 
         /**
-         * @desc 隐藏add2desktop
-         * @name hide
-         * @grammar hide()  => self
+         * 隐藏add2desktop
+         * @method hide
+         * @return {self} 返回本身。
+         */
+
+        /**
+         * @event afterhide
+         * @param {Event} e gmu.Event对象
+         * @description add2desktop显示后触发
          */
         hide: function() {
             var me = this;
@@ -130,15 +156,17 @@
 
             return me;
         }
+        
         /**
-         * @name Trigger Events
-         * @theme event
-         * @desc 组件内部触发的事件
-         * ^ 名称 ^ 处理函数参数 ^ 描述 ^
-         * | ready | event | 组件初始化的时候触发，不管是render模式还是setup模式都会触发 |
-         * | beforeshow | event | 显示前触发的事件 |
-         * | afterhide | event | 隐藏后触发的事件 |
-         * | destroy | event | 组件在销毁的时候触发 |
+         * @event ready
+         * @param {Event} e gmu.Event对象
+         * @description 当组件初始化完后触发。
+         */
+        
+        /**
+         * @event destroy
+         * @param {Event} e gmu.Event对象
+         * @description 组件在销毁的时候触发
          */
     });
 

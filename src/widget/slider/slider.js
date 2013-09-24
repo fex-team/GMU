@@ -68,7 +68,7 @@
             index: 0,
 
             /**
-             * @property {Object} [selector={container: '.ui-slider-group'}] 内部结构选择器定义
+             * @property {Object} [selector={container:'.ui-slider-group'}] 内部结构选择器定义
              * @namespace options
              */
             selector: {

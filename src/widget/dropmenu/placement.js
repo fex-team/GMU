@@ -1,16 +1,44 @@
 /**
- * @file 简单版定位
+ * @file Dropmenu 简单版定位
+ * @module GMU
  * @import widget/dropmenu/dropmenu.js, extend/offset.js
  */
 (function( gmu, $ ) {
 
     // 设置默认Options
     $.extend( gmu.Dropmenu.options, {
-        placement: 'bottom',    // 默认让其在下方显示
-        align: 'center',    // 默认居中对齐
+        /**
+         * @property {String} [placement='bottom'] 默认让其在下方显示
+         * @namespace options
+         * @for Dropmenu
+         * @uses Dropmenu.placement
+         */
+        placement: 'bottom',
+
+        /**
+         * @property {String} [align='center'] 默认居中对齐
+         * @namespace options
+         * @for Dropmenu
+         * @uses Dropmenu.placement
+         */
+        align: 'center',
+
+        /**
+         * @property {Object} [offset=null] 偏移量
+         * @namespace options
+         * @for Dropmenu
+         * @uses Dropmenu.placement
+         */
         offset: null
     } );
 
+    /**
+     * Dropmenu 简单版定位
+     *
+     * @class placement
+     * @namespace Dropmenu
+     * @pluginfor Dropmenu
+     */
     gmu.Dropmenu.option( 'placement', function( val ) {
         return ~[ 'top', 'bottom' ].indexOf( val );
     }, function() {
