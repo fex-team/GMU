@@ -43,6 +43,7 @@
         height: 35px;
         width: 100%;
         border: 1px solid #E1E1E1;
+        -webkit-appearance: none;
     }
     .input-button {
         height: 37px;
@@ -51,6 +52,9 @@
         border: 1px solid #E1E1E1;
         border-width: 1px 1px 1px 1px;
         margin-left: -50px;
+        border-radius: 0;
+        padding: 0;
+        -webkit-appearance: none;
     }
 
     #J_historyWrap {
@@ -85,47 +89,51 @@
 <p>test</p>
 <p>test</p>
 <script type="text/javascript">
-    
-    // 初始化(初始化后默认显示)
-    var instance = new gmu.Historylist({
-        container: $('#J_historyWrap'), // 页面上需要有一个已经存在的容器来存放组件
-        items: [
-                {'value': 'global', 'context': '<b>global</b> adj. 全球的；综合的'},
-                'google',
-                {'value': 'visual', 'context': '<b>visual</b> adj. 视觉的'},
-                'alibaba',
-                'taobao'
-               ],   // 历史记录的列表
-        itemTouch: function(e, data) {  // 某条记录被点击后的响应事件
-            console.log( 'item touched: ' + data.item );   // data.item是某条记录的内容
-            $('#J_input').val(data.item);
-        },
-        itemDelete: function(e, data) { // 某条记录被删除后的响应事件
-            console.log( 'item delete:' + data.item );   // data.item是某条记录的内容
-        },
-        clear: function() {  // 用户确认清空搜索历史后的响应事件
-            // 在这里删除localstorage里面存的历史数据
-            console.log( 'clear triggered' );
+    var instance;
+    $('#J_input').on('focus', function(){
+        if(instance){
+            instance.show();
+            return;
         }
-    });
+        // 初始化(初始化后默认显示)
+        instance = new gmu.Historylist({
+            container: $('#J_historyWrap'), // 页面上需要有一个已经存在的容器来存放组件
+            items: [
+                    {'value': 'global', 'context': '<b>global</b> adj. 全球的；综合的'},
+                    'google',
+                    {'value': 'visual', 'context': '<b>visual</b> adj. 视觉的'},
+                    'alibaba',
+                    'taobao'
+                   ],   // 历史记录的列表
+            itemTouch: function(e, data) {  // 某条记录被点击后的响应事件
+                console.log( 'item touched: ' + data.item );   // data.item是某条记录的内容
+                $('#J_input').val(data.item);
+            },
+            itemDelete: function(e, data) { // 某条记录被删除后的响应事件
+                console.log( 'item delete:' + data.item );   // data.item是某条记录的内容
+            },
+            clear: function() {  // 用户确认清空搜索历史后的响应事件
+                // 在这里删除localstorage里面存的历史数据
+                console.log( 'clear triggered' );
+            }
+        });
 
-    // // 添加记录
-    // instance.addItems( ['item1', 'item2', 'item3'] );
+        // 添加记录
+        // instance.addItems( ['item1', 'item2', 'item3'] );
 
-    // // 添加一条记录
-    // instance.addItem( 'item' );
+        // 添加一条记录
+        // instance.addItem( 'item' );
 
-    // // 显示
-    // instance.show();
+        // 显示
+        // instance.show();
 
-    // // 隐藏
-    // instance.hide();
+        // 隐藏
+        // instance.hide();
 
-    // // 销毁
-    // instance.destroy();
-
-    $('#J_input').on('input', function(){
-        console.log($(this).val());
+        // 销毁
+        // instance.destroy();
+    }).on('blur', function(){
+        instance.hide();
     })
 </script>
 </body>
