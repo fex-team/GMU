@@ -52,5 +52,5 @@
 }
 .ui-scroller .ui-navigator-list li {
     display: inline-block;
-    float: left;
+    /*float: left;*/
 }
