@@ -87,6 +87,10 @@
                 $el,
                 version = ($.os.version && $.os.version.substr(0, 3) > 4.1 ? 'new' :'old');
 
+            if($.os.version && $.os.version.substr(0, 3) >= 7.0) {
+                version = 'iOS7';
+            }
+
             if( me._options.setup ) {
                 var src = me.$el.children('img').attr('src');
                 src && (me._options['icon'] = src);

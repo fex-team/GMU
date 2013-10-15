@@ -190,7 +190,7 @@ module.exports = function(grunt) {
             options: {
                 cwd: './examples/widget/',
                 files: '**/*.html',
-                output: './examples/demos.js'
+                output: './examples/assets/demos.js'
             }
         },
 
