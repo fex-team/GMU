@@ -31,7 +31,9 @@
                 count = counts[ ort ],
                 $el = me.$el;
             
+            //TODO 横竖屏切换时，不能自动调整宽度
             me.$list.children().width( $el.width() / count );
+            me.$list.width($el.width() / count * me.$list.children().length);
         }
     } );
 })( gmu, gmu.$ );
