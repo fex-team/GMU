@@ -40,6 +40,15 @@
     font-weight: bold;
 }
 
+.ui-add2desktop-icon-iOS7 {
+    margin:0 2px;
+    display: inline-block;
+    height: 24px;
+    width:18px;
+    background: url(ui-add2desktop-iOS7.png) no-repeat;
+    -webkit-background-size:18px 24px;
+}
+
 .ui-add2desktop-icon-new {
     margin:0 2px;
     display: inline-block;
