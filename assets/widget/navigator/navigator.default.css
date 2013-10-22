@@ -24,7 +24,7 @@
     display: block;
     width: 100%;
     -webkit-box-sizing:border-box;
-    padding: 0 15px;
+    /*padding: 0 15px;*/
 }
 .ui-navigator-list li.ui-state-hover,
 .ui-navigator-list li.ui-state-active {
@@ -38,6 +38,7 @@
 }
 .ui-scroller .ui-navigator-list {
     display: table;
+    table-layout: fixed;/*宽度可控*/
     white-space:nowrap;/*内容不换行*/
     width: auto;
 }

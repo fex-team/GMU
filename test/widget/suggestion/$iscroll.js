@@ -71,7 +71,7 @@ test('加载sug样式', function() {
     ua.loadcss(["reset.css", "widget/suggestion/suggestion.css",
         "widget/suggestion/suggestion.default.css",
         "../test/widget/css/suggestion/suggestion.test.css",
-        "widget/suggestion/$iscroll.css"
+        "widget/suggestion/suggestion.iscroll.css"
     ], function() {
         ok( 1, 'suggestion css 正确加载' );
         start();

@@ -46,12 +46,12 @@
                 // iframe 默认是300x150的
 
                 var dom = w.$('<div><ul>' +
-                '<li><a>item1</a></li>' +
-                '<li><a>item2</a></li>' +
-                '<li><a>item3</a></li>' +
-                '<li><a>item4</a></li>' +
-                '<li><a>item5</a></li>' +
-                '<li><a>item6</a></li>' +
+                '<li><a>i1</a></li>' +
+                '<li><a>i2</a></li>' +
+                '<li><a>i3</a></li>' +
+                '<li><a>i4</a></li>' +
+                '<li><a>i5</a></li>' +
+                '<li><a>i6</a></li>' +
                 '</ul></div>').appendTo('body');
 
                 var ins = dom.navigator('this');
@@ -60,12 +60,14 @@
 
                 approximateEqual( dom.find('li').width(), 300/6 );
 
-                $(f).css("height", 300).css("width", 150);
-                w.$("body").css("height", 300).css("width", 150);
 
                 setTimeout(function(){
-                    approximateEqual( dom.find('li').width(), 150/4 );
-                    me.finish();
+                    $(f).css("height", 300).css("width", 150);
+                    w.$("body").css("height", 300).css("width", 150);
+                    setTimeout(function(){
+                        approximateEqual( dom.find('li').width(), 150/4 );
+                        me.finish();
+                    }, 300);
                 }, 200);
             }, w);
         });
@@ -84,12 +86,12 @@
                 // iframe 默认是300x150的
 
                 var dom = w.$('<div><ul>' +
-                '<li><a>item1</a></li>' +
-                '<li><a>item2</a></li>' +
-                '<li><a>item3</a></li>' +
-                '<li><a>item4</a></li>' +
-                '<li><a>item5</a></li>' +
-                '<li><a>item6</a></li>' +
+                '<li><a>i1</a></li>' +
+                '<li><a>i2</a></li>' +
+                '<li><a>i3</a></li>' +
+                '<li><a>i4</a></li>' +
+                '<li><a>i5</a></li>' +
+                '<li><a>i6</a></li>' +
                 '</ul></div>').appendTo('body');
 
                 var ins = dom.navigator({
@@ -102,12 +104,14 @@
 
                 approximateEqual( dom.find('li').width(), 300/7 );
 
-                $(f).css("height", 300).css("width", 150);
-                w.$("body").css("height", 300).css("width", 150);
 
                 setTimeout(function(){
-                    approximateEqual( dom.find('li').width(), 150/5 );
-                    me.finish();
+                    $(f).css("height", 300).css("width", 150);
+                    w.$("body").css("height", 300).css("width", 150);
+                    setTimeout(function(){
+                        approximateEqual( dom.find('li').width(), 150/5 );
+                        me.finish();
+                    }, 300);
                 }, 200);
             }, w);
         });
