@@ -63,6 +63,10 @@
                 _opts = me._options,
                 _eventHandler;
 
+            if($.os.version && $.os.version.substr(0, 3) >= 7.0) {
+                _opts.position.bottom = 40;
+            }
+
             me.on( 'ready', function(){
                 $el = me.$el;
                 _eventHandler = $.proxy(me._eventHandler, me);
