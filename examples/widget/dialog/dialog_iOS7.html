@@ -1,0 +1,96 @@
+<!doctype html>
+<html>
+<head>
+    <title>iOS7风格的对话框</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <!--demo展示所用css，不用关心 begin-->
+    <link rel="stylesheet" type="text/css" href="../../../assets/reset.css" />
+    <!--demo展示所用css end-->
+
+    <!--组件依赖css begin-->
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/dialog/dialog.css" />
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/dialog/dialog.iOS7.css" /> <!--皮肤文件，若不使用该皮肤，可以不加载-->
+    <!--组件依赖css end-->
+
+    <!--demo展示所用css，不用关心 begin-->
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/button/button.css" />
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/button/button.default.css" />
+    <link rel="stylesheet" type="text/css" href="../../../examples/assets/dialog_demo.css"/>
+    <!--demo展示所用css end-->
+
+
+    <!--组件依赖js begin-->
+    <script type="text/javascript" src="../../../dist/zepto.js"></script>
+    <script type="text/javascript" src="../../../src/extend/highlight.js"></script>
+    <script type="text/javascript" src="../../../src/extend/parseTpl.js"></script>
+    <script type="text/javascript" src="../../../src/core/gmu.js"></script>
+    <script type="text/javascript" src="../../../src/core/event.js"></script>
+    <script type="text/javascript" src="../../../src/core/widget.js"></script>
+    <script type="text/javascript" src="../../../src/widget/dialog/dialog.js"></script>
+    <script type="text/javascript" src="../../../src/widget/dialog/$position.js"></script>
+    <!--组件依赖js end-->
+
+</head>
+<body>
+<div id="top"></div>
+<div class="article">
+    <div class="info">
+        <h1>初一语文阅读题的方式</h1>
+
+        <p>贡献者:kimmykong&nbsp;&nbsp;大小: 678k&nbsp;&nbsp;下载:578</p>
+    </div>
+    <div class="text">
+        <h3>一.记叙文阅读规则</h3>
+
+        <p>1.景物描写的作用：渲染气氛，烘托人物心情，推动情节发展，表现人物的品质，存托中心意思</p>
+
+        <p>2.运用描写方式的作用:表现人物性格，反映作品主题</p>
+
+        <p>3.运用比如拟人等修辞的作用：运用了......的修辞，生动形象地写出了...</p>
+
+        <p>4.运用排比的作用：增强语言启示，生动形象地写出了...</p>
+
+        <p>5.反问句的作用：加强语气，引起下文，承上启下</p>
+
+        <p>6.设问句的作用：引起读者的注意和思考，引出下文，承上启下</p>
+
+        <p>7.题目的作用：概括内容；揭示主题；及时线索</p>
+
+        <p>8.景物描写的作用：渲染气氛，烘托人物心情，推动情节发展，表现人物的品质，存托中心意思</p>
+
+        <p>9.景物描写的作用：渲染气氛，烘托人物心情，推动情节发展，表现人物的品质，存托中心意思</p>
+    </div>
+
+    <div class="btns">
+        <a id="btn1" class="ui-btn ui-btn-text-only" style="-webkit-tap-highlight-color: rgba(255, 255, 255, 0);"><span class="ui-btn-text">登录</span></a>
+    </div>
+
+    <div id="dialog1" title="登陆提示">
+        <p>请使用百度账号登录后, 获得更多个性化特色功能</p>
+    </div>
+</div>
+<script>
+    //setup模式
+    $('#dialog1').dialog({
+        autoOpen: false,
+        closeBtn: false,
+        buttons: {
+            '取消': function(){
+                this.close();
+            },
+            '确定': function(){
+                this.close();
+            }
+        }
+    });
+
+
+
+    $('#btn1').click(function(){
+        $('#dialog1').dialog('open'); 
+    });
+
+</script>
+</body>
+</html>

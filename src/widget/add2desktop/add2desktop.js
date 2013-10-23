@@ -87,6 +87,10 @@
                 $el,
                 version = ($.os.version && $.os.version.substr(0, 3) > 4.1 ? 'new' :'old');
 
+            if($.os.version && $.os.version.substr(0, 3) >= 7.0) {
+                version = 'iOS7';
+            }
+
             if( me._options.setup ) {
                 var src = me.$el.children('img').attr('src');
                 src && (me._options['icon'] = src);
@@ -94,7 +98,7 @@
             $el = me.$el || (me.$el = $('<div></div>'));
             $el.addClass('ui-add2desktop').appendTo(me._options['container'] || (me.$el.parent().length ? '' : document.body)),
 
-            $el.html('<img src="' + me._options['icon'] + '"/><p>先点击<span class="ui-add2desktop-icon-' + version +'"></span>，<br />再"添加至主屏幕"</p><span class="ui-add2desktop-close"><b></b></span><div class="ui-add2desktop-arrow"><b></b></div>');
+            $el.html('<img src="' + me._options['icon'] + '"/><p>先点击<span class="ui-add2desktop-icon-' + version +'"></span>，<br />再"添加到主屏幕"</p><span class="ui-add2desktop-close"><b></b></span><div class="ui-add2desktop-arrow"><b></b></div>');
         },
 
         /**

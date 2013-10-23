@@ -5,7 +5,7 @@ module.exports = function( grunt ) {
         var opts = this.options({
                 cwd: './examples/widget/',
                 files: '**/*.html',
-                output: './examples/demos.js'
+                output: './examples/assets/demos.js'
             }),
             output = {};
 

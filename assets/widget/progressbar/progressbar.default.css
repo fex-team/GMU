@@ -1,0 +1,56 @@
+
+.ui-progressbar-bg {
+    background: #5e5e5e;
+}
+.ui-progressbar-filled {
+    background: #2a94d9;
+}
+.ui-progressbar-button {
+    height: 30px;
+    width:30px;
+    border-radius: 15px;
+}
+.ui-progressbar-button div {
+    height: 18px;
+    width: 18px;
+    background: #efefef;
+    border-radius: 9px;
+    margin: 6px;
+    box-shadow:0 0 8px rgba(255, 255, 255, 0.4);
+}
+.ui-progressbar-button div b {
+    position: relative;
+    display: block;
+    width:8px;
+    height: 8px;
+    left:5px;
+    top:5px;
+    border-radius: 4px;
+    background: #64aef7;
+}
+.ui-progressbar-button-pressed div b{
+    background: #036bd1;
+}
+
+/* 横向样式 */
+.ui-progressbar-h .ui-progressbar-bg {
+    border: 1px solid #111;
+    border-bottom: 1px solid #3d3d3d;
+}
+.ui-progressbar-h .ui-progressbar-button {
+    top: -12px;
+    margin-left: -15px;
+}
+
+/* 竖向样式 */
+
+.ui-progressbar-v .ui-progressbar-bg {
+    border: 1px solid #111;
+    margin-top: -1px;
+    border-left: 1px solid #3d3d3d;
+}
+
+.ui-progressbar-v .ui-progressbar-button {
+    margin-top: -15px;
+    margin-left: -13px;
+}

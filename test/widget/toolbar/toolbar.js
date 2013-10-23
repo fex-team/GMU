@@ -17,7 +17,7 @@ test('默认配置项', function(){
         equals(toolbar._options.title, "标题", "toolbar标题默认配置为'标题'");
         equals(toolbar._options.container, document.body, "toolbar默认配置容器为body");
         ok(toolbar._options.leftBtns.length === 0 && toolbar._options.rightBtns.length === 0, "Toolbar 默认配置没有按钮");
-        equals(toolbar._options.fix, false, "toolbar默认配置位置不固定");
+        equals(toolbar._options.fixed, false, "toolbar默认配置位置不固定");
 
         equals(toolbar.$el.css("display"), "block", "toolbar显示正常");
         equals(toolbar.$el.attr("class"), "ui-toolbar", "class检查正常");
@@ -53,7 +53,7 @@ test('自定义配置项', function(){
     equals(toolbar._options.title, "百度首页", "toolbar标题自定义为'百度首页'");
     ok(toolbar._options.container[0].id === $('#J_container')[0].id, "toolbar自定义容器为J_container");
     ok(toolbar._options.leftBtns.length === 1 && toolbar._options.rightBtns.length === 2, "Toolbar 自定义按钮个数正确");
-    equals(toolbar._options.fix, false, "toolbar自定义位置不固定");
+    equals(toolbar._options.fixed, false, "toolbar自定义位置不固定");
 
     equals(toolbar.$el.css("display"), "block", "toolbar显示正常");
     equals(toolbar.$el.attr("class"), "ui-toolbar", "class检查正常");
@@ -91,7 +91,7 @@ test('自定义配置项el为selector', function(){
     equals(toolbar._options.title, "百度首页", "toolbar标题自定义为'百度首页'");
     ok(toolbar._options.container[0].id === $('#J_container')[0].id, "toolbar自定义容器为J_container");
     ok(toolbar._options.leftBtns.length === 1 && toolbar._options.rightBtns.length === 2, "Toolbar 自定义按钮个数正确");
-    equals(toolbar._options.fix, false, "toolbar自定义位置不固定");
+    equals(toolbar._options.fixed, false, "toolbar自定义位置不固定");
 
     equals(toolbar.$el.css("display"), "block", "toolbar显示正常");
     equals(toolbar.$el.attr("class"), "ui-toolbar", "class检查正常");
@@ -128,7 +128,7 @@ test('自定义配置项el为zepto对象', function(){
     equals(toolbar._options.title, "百度首页", "toolbar标题自定义为'百度首页'");
     ok(toolbar._options.container[0].id === $('#J_container')[0].id, "toolbar自定义容器为J_container");
     ok(toolbar._options.leftBtns.length === 1 && toolbar._options.rightBtns.length === 2, "Toolbar 自定义按钮个数正确");
-    equals(toolbar._options.fix, false, "toolbar自定义位置不固定");
+    equals(toolbar._options.fixed, false, "toolbar自定义位置不固定");
 
     equals(toolbar.$el.css("display"), "block", "toolbar显示正常");
     equals(toolbar.$el.attr("class"), "ui-toolbar", "class检查正常");
@@ -160,7 +160,7 @@ if((!$.os.phone && !$.os.tablet)||($.os.ios && parseFloat($.os.version) > 5)){
         $('<div id="J_container"><p>占位</p></div>').insertBefore($($(document.body).children()[0]));
         toolbar = gmu.Toolbar({
             container: '#J_container',
-            fix: true});
+            fixed: true});
         var tmp = $('<div style="height:5000px;"></div>').appendTo(document.body);
 
         var currentOffsetTop = ~~toolbar.$el.offset().top;
@@ -189,7 +189,7 @@ test('setup模式1', function(){
     equals(toolbar._options.title, "标题", "toolbar标题默认配置为'标题'");
     ok(toolbar._options.container === document.body, "toolbar默认配置容器为body");
     ok(toolbar._options.leftBtns.length === 0 && toolbar._options.rightBtns.length === 0, "Toolbar 默认按钮个数为0");
-    equals(toolbar._options.fix, false, "toolbar自定义位置不固定");
+    equals(toolbar._options.fixed, false, "toolbar自定义位置不固定");
 
     equals(toolbar.$el.css("display"), "block", "toolbar显示正常");
     equals(toolbar.$el.attr("class"), "ui-toolbar", "class检查正常");
@@ -228,7 +228,7 @@ test('zeptolize方式初始化1', function(){
     equals(toolbar._options.title, "标题", "toolbar标题默认配置为'标题'");
     ok(toolbar._options.container === document.body, "toolbar默认配置容器为body");
     ok(toolbar._options.leftBtns.length === 0 && toolbar._options.rightBtns.length === 0, "Toolbar 默认按钮个数为0");
-    equals(toolbar._options.fix, false, "toolbar自定义位置不固定");
+    equals(toolbar._options.fixed, false, "toolbar自定义位置不固定");
 
     equals(toolbar.$el.css("display"), "block", "toolbar显示正常");
     equals(toolbar.$el.attr("class"), "ui-toolbar", "class检查正常");
@@ -267,7 +267,7 @@ test('setup模式2', function(){
     equals(toolbar._options.title, "标题", "toolbar标题默认配置为'标题'");
     ok(toolbar._options.container === document.body, "toolbar默认配置容器为body");
     ok(toolbar._options.leftBtns.length === 0 && toolbar._options.rightBtns.length === 0, "Toolbar 默认按钮个数为0");
-    equals(toolbar._options.fix, false, "toolbar自定义位置不固定");
+    equals(toolbar._options.fixed, false, "toolbar自定义位置不固定");
 
     equals(toolbar.$el.css("display"), "block", "toolbar显示正常");
     equals(toolbar.$el.attr("class"), "ui-toolbar", "class检查正常");
@@ -308,7 +308,7 @@ test('zeptolize方式初始化2', function(){
     equals(toolbar._options.title, "标题", "toolbar标题默认配置为'标题'");
     ok(toolbar._options.container === document.body, "toolbar默认配置容器为body");
     ok(toolbar._options.leftBtns.length === 0 && toolbar._options.rightBtns.length === 0, "Toolbar 默认按钮个数为0");
-    equals(toolbar._options.fix, false, "toolbar自定义位置不固定");
+    equals(toolbar._options.fixed, false, "toolbar自定义位置不固定");
 
     equals(toolbar.$el.css("display"), "block", "toolbar显示正常");
     equals(toolbar.$el.attr("class"), "ui-toolbar", "class检查正常");
@@ -348,7 +348,7 @@ test('Button实例作为按钮', function(){
         equals(toolbar._options.title, "百度首页", "toolbar标题自定义为'百度首页'");
         ok(toolbar._options.container === document.body, "toolbar自定义容器为J_container");
         ok(toolbar._options.leftBtns.length === 1 && toolbar._options.rightBtns.length === 2, "Toolbar 自定义按钮个数正确");
-        equals(toolbar._options.fix, false, "toolbar自定义位置不固定");
+        equals(toolbar._options.fixed, false, "toolbar自定义位置不固定");
 
         equals(toolbar.$el.css("display"), "block", "toolbar显示正常");
         equals(toolbar.$el.attr("class"), "ui-toolbar", "class检查正常");
@@ -473,7 +473,7 @@ test('destroy', function(){
         '<span class="btn_1">百科</span>' +
         '<span class="btn_1">知道</span></div>').appendTo(document.body);
 
-    $('#J_toolbar').toolbar({fix: true});
+    $('#J_toolbar').toolbar({fixed: true});
     var toolbar = $('#J_toolbar').toolbar('this');
     ok($('.ui-toolbar').length === 2, 'fix状态，toolbar被复制出一份');
     toolbar.destroy();
@@ -482,26 +482,4 @@ test('destroy', function(){
     equals($('.ui-toolbar').css('top'), 'auto', 'destroy后，toolbar top改成auto');
 
     $('#J_toolbar').remove();
-});
-
-
-test('fix方法', function(){
-    expect(1);
-
-    stop();
-    setTimeout(function(){
-        var tmp = $('<div style="height:5000px;"></div>').appendTo(document.body);
-        var toolbar = gmu.Toolbar();
-        toolbar.fix({top: 20});
-        window.scrollTo(0, 200);
-        setTimeout(function(){
-            // scrollTo不同的数值后，window.pageYOffset会有1~2px的误差，上面有个地方也是这个情况，所以这里用约等于判断
-            approximateEqual( toolbar.$el.offset().top, 220, '页面滚动后，toolbar位置正常(不稳定，可忽略)');
-            toolbar.destroy();
-            tmp.remove();
-            start();
-        }, 1000);
-    }, 100);
-    
-
 });
