@@ -8,8 +8,7 @@
                     position:'absolute',
                     width: 300,
                     height: 300,
-                    background: '#fff',
-                    top: -99999
+                    background: '#fff'
                 })
                 .appendTo(document.body);
         },
@@ -57,6 +56,10 @@
                 pageY:0
             }]
         });
+        ua.mousedown(el, {
+                clientX: scrollWidth + 100,
+                clientY:0
+        });
 
         setTimeout(function(){
             ta.touchmove(el, {
@@ -65,10 +68,14 @@
                     pageY:0
                 }]
             });
+            ua.mousemove(el, {
+                    clientX: 0,
+                    clientY:0
+            });
 
             setTimeout(function(){
-
                 ta.touchend(el);
+                ua.mouseup(el);
 
                 ins.$el.iScroll('this').options.onScrollEnd = function() {
                     // 表明可滚动了，且正好滚到底了。
@@ -109,13 +116,16 @@
 
         var scrollWidth = el.offsetWidth - dom.width();
 
-
-
         ta.touchstart(el, {
             touches:[{
                 pageX: scrollWidth + 100,
                 pageY:0
             }]
+        });
+
+        ua.mousedown(el, {
+                clientX: scrollWidth + 100,
+                clientY:0
         });
 
         setTimeout(function(){
@@ -125,10 +135,14 @@
                     pageY:0
                 }]
             });
+            ua.mousemove(el, {
+                    clientX: 0,
+                    clientY:0
+            });
 
             setTimeout(function(){
-
                 ta.touchend(el);
+                ua.mouseup(el);
 
 
 

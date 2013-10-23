@@ -192,17 +192,7 @@ module.exports = function(grunt) {
                 files: '**/*.html',
                 output: './examples/assets/demos.js'
             }
-        },
-
-        testDownload: {
-            options: {
-                url: 'http://localhost/GMU/test.html'
-            },
-            GMU: {
-
-            }
         }
-
     });
 
     // 加载build目录下的所有task

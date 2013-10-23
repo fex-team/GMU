@@ -24,7 +24,7 @@
     display: block;
     width: 100%;
     -webkit-box-sizing:border-box;
-    /*padding: 0 15px;*/
+    padding: 0 15px;
 }
 .ui-navigator-list li.ui-state-hover,
 .ui-navigator-list li.ui-state-active {

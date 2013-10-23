@@ -54,8 +54,11 @@
                 '<li><a>i6</a></li>' +
                 '</ul></div>').appendTo('body');
 
+
                 var ins = dom.navigator('this');
 
+                // 把a的内边距去掉，否则width不能设置成功
+                w.$('.ui-navigator-list li a').css('padding', '0');
 
 
                 approximateEqual( dom.find('li').width(), 300/6 );
@@ -100,6 +103,8 @@
                         landscape: 7
                     }
                 }).navigator('this');
+
+                w.$('.ui-navigator-list li a').css('padding', '0');
 
 
                 approximateEqual( dom.find('li').width(), 300/7 );
