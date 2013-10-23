@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <meta charset="utf-8">
+    <title>iOS7风格的日历控件</title>
+    <!--demo展示所用css，不用关心 begin-->
+    <link rel="stylesheet" type="text/css" href="../../../assets/reset.css" />
+    <!--demo展示所用css end-->
+    <!--组件依赖css begin-->
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/calendar/calendar.css" />
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/calendar/calendar.iOS7.css" />
+    <!--组件依赖css end-->
+
+    <!--demo展示所用css，不用关心 begin-->
+    <style>
+        .section {
+            padding: 1em;
+            background: #e1e1e1;
+        }
+    </style>
+    <!--demo展示所用css end-->
+
+    <!--组件依赖js begin-->
+    <script type="text/javascript" src="../../../dist/zepto.js"></script>
+    <script type="text/javascript" src="../../../src/extend/touch.js"></script><!--新版zepto合并版中不包括touch.js-->
+    <script type="text/javascript" src="../../../src/extend/highlight.js"></script>
+    <script type="text/javascript" src="../../../src/extend/event.ortchange.js"></script>
+    <script type="text/javascript" src="../../../src/extend/matchMedia.js"></script>
+    <script type="text/javascript" src="../../../src/core/gmu.js"></script>
+    <script type="text/javascript" src="../../../src/core/event.js"></script>
+    <script type="text/javascript" src="../../../src/core/widget.js"></script>
+    <script type="text/javascript" src="../../../src/widget/calendar/calendar.js"></script>
+    <script type="text/javascript" src="../../../src/widget/calendar/$picker.js"></script>
+    <!--组件依赖js end-->
+</head>
+<body>
+
+<div class="section">
+    <input type="text" readonly="readonly" id="input" />
+</div>
+
+<script type="text/javascript">
+    (function($){
+        $(function(){
+            $('#input').on('focus', function(){
+                $(this).calendar('show');
+            });
+        });
+
+    })(Zepto);
+</script>
+</body>
+</html>

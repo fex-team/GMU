@@ -17,4 +17,3 @@ before_script:
 
 script:
     - grunt test
-    - grunt download

@@ -11,7 +11,7 @@ module('webapp.progressbar', {
 test("smart setup", function() {
     expect(8);
     stop();
-    ua.loadcss(["widget/progressbar/progressbar.css"], function() {
+    ua.loadcss(["widget/progressbar/progressbar.css", "widget/progressbar/progressbar.default.css"], function() {
         var progressbar = $('#progressbar').progressbar('this');
 
         equals(progressbar._options.initValue, 0, "The _data is right");

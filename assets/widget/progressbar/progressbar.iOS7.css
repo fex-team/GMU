@@ -1,0 +1,29 @@
+
+.ui-progressbar-bg {
+    background: #000;
+}
+.ui-progressbar-filled {
+    background: #0079FF;
+}
+.ui-progressbar-button {
+    height: 20px;
+    width:20px;
+    background-color: #FFF;
+    border-radius: 10px;
+    -webkit-box-shadow: 0 0 5px #999,
+                        0 3px 3px #D5D5D5;
+}
+
+/* 横向样式 */
+
+.ui-progressbar-h .ui-progressbar-button {
+    top:-8px;
+    margin-left: -10px;
+}
+
+/* 竖向样式 */
+
+.ui-progressbar-v .ui-progressbar-button {
+    margin-top: -10px;
+    margin-left: -8px;
+}
