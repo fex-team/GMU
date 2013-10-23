@@ -79,7 +79,7 @@
 
                 ins.$el.iScroll('this').options.onScrollEnd = function() {
                     // 表明可滚动了，且正好滚到底了。
-                    approximateEqual( dom.find('ul li').first().offset().left, dom.offset().left - scrollWidth);
+                    ok( -3 < Math.abs(dom.find('ul li').first().offset().left) - Math.abs(dom.offset().left - scrollWidth) < 3, '移动距离正常');
 
                     dom.navigator('destroy').remove();
                     start();
