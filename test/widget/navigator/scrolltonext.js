@@ -8,8 +8,7 @@
                     position:'absolute',
                     width: 300,
                     height: 300,
-                    background: '#fff',
-                    top: -99999
+                    background: '#fff'
                 })
                 .appendTo(document.body);
         },

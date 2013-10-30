@@ -1,0 +1,95 @@
+<!doctype html>
+<html>
+<head>
+    <title>iOS7风格的进度条</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <!--demo展示所用css，不用关心 begin-->
+    <link rel="stylesheet" type="text/css" href="../../../assets/reset.css" />
+    <!--demo展示所用css end-->
+    <!--组件依赖css begin-->
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/progressbar/progressbar.css" />
+    <link rel="stylesheet" type="text/css" href="../../../assets/widget/progressbar/progressbar.iOS7.css" />
+    <!--组件依赖css end-->
+    <!--组件依赖js begin-->
+    <script type="text/javascript" src="../../../dist/zepto.js"></script>
+    <script type="text/javascript" src="../../../src/extend/touch.js"></script>
+    <script type="text/javascript" src="../../../src/core/gmu.js"></script>
+    <script type="text/javascript" src="../../../src/core/event.js"></script>
+    <script type="text/javascript" src="../../../src/core/widget.js"></script>
+    <script type="text/javascript" src="../../../src/widget/progressbar/progressbar.js"></script>
+
+    <!--组件依赖js end-->
+
+    <style type="text/css">
+        
+        body {
+            padding: 10px;
+            background-color: #F9F9F9;
+        }
+        #progressbar-1 {
+            width:250px;
+            margin:30px 10px;
+        }
+
+        #progressbar-2 {
+            height: 200px;
+            margin: 40px;
+        }
+
+        input {
+            line-height: 30px;
+            color: #0079FF;
+            border: 1px solid #E1E1E1;
+            border-radius: 5px;
+            padding: 0 3px;
+        }
+
+        #set_val-1,
+        #set_val-2 {
+            background-color: #0079FF;
+            border: none;
+            color: #FFF;
+            width: 100px;
+            height: 30px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h3>横向的滚动条</h3>
+    <div id="progressbar-1"></div>
+    <input id="cur_val-1"/>
+    <button id="set_val-1">Set</button>
+
+    <br /><br />
+    <h3>竖向的滚动条</h3>
+    <div id="progressbar-2"></div>
+    <input id="cur_val-2"/>
+    <button id="set_val-2">Set</button>
+
+    <script>
+        //创建横向组件
+        $('#progressbar-1').progressbar({
+            valueChange: function() {
+                $('#cur_val-1').val(this.value());
+            }
+        });
+        $('#set_val-1').click(function() {
+            $('#progressbar-1').progressbar('value', $('#cur_val-1').val());
+        });
+
+
+        //创建竖向组件
+        $('#progressbar-2').progressbar({
+            horizontal: false,
+            valueChange: function() {
+                $('#cur_val-2').val(this.value());
+            }
+        });
+        $('#set_val-2').click(function() {
+            $('#progressbar-2').progressbar('value', $('#cur_val-2').val());
+        });
+    </script>
+</body>
+</html>

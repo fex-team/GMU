@@ -190,19 +190,9 @@ module.exports = function(grunt) {
             options: {
                 cwd: './examples/widget/',
                 files: '**/*.html',
-                output: './examples/demos.js'
-            }
-        },
-
-        testDownload: {
-            options: {
-                url: 'http://localhost/GMU/test.html'
-            },
-            GMU: {
-
+                output: './examples/assets/demos.js'
             }
         }
-
     });
 
     // 加载build目录下的所有task

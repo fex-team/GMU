@@ -37,9 +37,9 @@
     display: inline-block;/*重要，靠他让宽度由子节点撑开*/
 }
 .ui-scroller .ui-navigator-list {
-    display: block;
+    display: table;
+    table-layout: fixed;/*宽度可控*/
     white-space:nowrap;/*内容不换行*/
-    display: inline-block;
     width: auto;
 }
 .ui-scroller .ui-navigator-list:after {

@@ -116,6 +116,7 @@
 </div>
 <script>
     $('.ui-imglazyload').imglazyload().on('error', function (e) {
+        alert('图片' + e.target.getAttribute('data-url') + '不存在');
         e.preventDefault();       //error image will not be loaded
     });
 </script>
