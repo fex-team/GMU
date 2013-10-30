@@ -5,14 +5,14 @@
 (function( gmu, $, undefined ) {
     $.extend( gmu.Slider.options, {
         /**
-         * @property {Number} [viewNum=2] ???
+         * @property {Number} [viewNum=2] 当slider为multiview模式时，用来指定一页显示多少个图片。
          * @namespace options
          * @for Slider
          * @uses Slider.multiview
          */
         viewNum: 2,
         /**
-         * @property {Number} [travelSize=2] ???
+         * @property {Number} [travelSize=2] 用来指定当操作上下导航时，一次滑动多少个张图片，如果这个值与viewNum值一致，就是一次滑动一屏的效果。
          * @namespace options
          * @for Slider
          * @uses Slider.multiview
@@ -40,12 +40,12 @@
 
             for ( len = items.length; i < len; i++ ) {
                 item = items[ i ];
-                
+
                 item.style.cssText += 'width:' + perWidth + 'px;' +
                         'left:' + (i * -perWidth) + 'px;';
                 item.setAttribute( 'data-index', i );
 
-                i % viewNum === factor && this._move( i, 
+                i % viewNum === factor && this._move( i,
                         i < index ? -width : i > index ? width : 0,
                         0, Math.min( viewNum, len - i ) );
             }
@@ -83,7 +83,7 @@
             opts.loop || (dir = Math.abs( from - to ) / (from - to));
 
             diff %= len;    // 处理diff大于len的情况
-            
+
             // 相反的距离比viewNum小，不能完成流畅的滚动。
             if ( len - diff < viewNum ) {
                 diff = len - diff;
@@ -91,7 +91,7 @@
             }
 
             offset = Math.max( 0, viewNum - diff );
-            
+
             // 调整初始位置，如果已经在位置上不会重复处理
             // touchend中执行过来的，不会执行以下代码
             if ( !mode ) {
@@ -112,7 +112,7 @@
             var opts = this._options,
                 travelSize = opts.travelSize;
 
-            if ( opts.loop || (this.index > 0, travelSize = 
+            if ( opts.loop || (this.index > 0, travelSize =
                     Math.min( this.index, travelSize )) ) {
 
                 this.slideTo( this.index - travelSize );
@@ -129,7 +129,7 @@
             if ( opts.loop || (this.index + viewNum < this.length &&
                     (travelSize = Math.min( this.length - 1 - this.index,
                     travelSize ))) ) {
-                
+
                 this.slideTo( this.index + travelSize );
             }
 

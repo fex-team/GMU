@@ -37,7 +37,7 @@
         },
 
         /**
-         * 加载图片
+         * 加载指定item中的图片
          * @method loadImage
          * @param {Number} index 要加载的图片的序号
          * @for Slider

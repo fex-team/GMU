@@ -6,7 +6,7 @@
  */
 (function( gmu, $ ) {
     /**
-     * @property {Number} [edgeThrottle=true0] ???
+     * @property {Number} [edgeThrottle=0] 默认当slider滚动到第一张或者到最后一张时，会触发edge事件。但如果这个值为1时，当slider滚动倒数第二张时就会触发edge事件。以此类推。
      * @namespace options
      * @for Slider
      * @uses Slider.dynamic
@@ -91,7 +91,7 @@
 
         // 调整位置，如果能移动的话，将当前的总是移动到中间。
         _adjustPos: function( force, ignoreEdge ) {
-            
+
             if ( !force && !this._flag ) {
                 return;
             }
@@ -132,7 +132,7 @@
         },
 
         _renderItems: function( content, index, group ) {
-            var arr = content.slice( index, index + (index > 0 ? 2 : 3) ), 
+            var arr = content.slice( index, index + (index > 0 ? 2 : 3) ),
                 rest = 3 - arr.length;
 
             // 避免外部直接修改，影响内部代码
