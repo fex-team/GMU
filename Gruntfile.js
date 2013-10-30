@@ -222,4 +222,7 @@ module.exports = function(grunt) {
 
     grunt.registerTask( 'test', [ 'update_submodules', 'concat', 'concat_gmu',
             'smart_cov', 'fet:temp' ]);
+
+    grunt.registerTask( 'dist', [ 'update_submodules', 'concat', 'concat_gmu',
+            'uglify' ]);
 };
