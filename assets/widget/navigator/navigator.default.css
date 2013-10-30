@@ -51,5 +51,6 @@
     overflow: hidden;
 }
 .ui-scroller .ui-navigator-list li {
-    display: table-cell;
+    display: inline-block;
+    /*float: left;*/
 }
