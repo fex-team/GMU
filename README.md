@@ -23,6 +23,9 @@ GMU由百度GMU小组开发，基于开源BSD协议，支持商业和非商业�
 ####1. 如何跑Demo####
 如果想要本地跑demo需要做以下几步操作。由于gmu没有直接存房zepto的代码，而是引用了zepto自己的仓库。所以需要通过git命令
 去zepto官方仓库取代码，然合并成zepto.js。不过这个过程已经写好了脚本，只要按以下步骤操作，脚本能把这个工作做好。
+
+打开命令行工具。
+
 1. `git clone https://github.com/gmuteam/GMU.git` 把gmu代码checkout到当前目录下的GMU目录里面
 2. `cd GMU` 进入GMU目录
 3. `npm install` 安装node依赖。
