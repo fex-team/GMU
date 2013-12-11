@@ -29,10 +29,6 @@
 
                 /**
                  * 刷新日历显示，当屏幕旋转的时候时候需要外部调用
-                 * @method refresh
-                 * @param {Function} [callback] 刷新之后的回调函数
-                 * @for Calendar
-                 * @uses Calendar.picker
                  */
                 refresh: function( callback ){
                     root.css({
@@ -51,10 +47,6 @@
 
                 /**
                  * 关闭日历
-                 * @method close
-                 * @param {Function} [callback] 关闭日历之后的回调函数
-                 * @for Calendar
-                 * @uses Calendar.picker
                  */
                 close: function( callback ){
                     var count = SlideUp.count = SlideUp.count - 1;
@@ -164,9 +156,12 @@
         },
 
         /**
-         * @name show
+         * 显示组件
+         * @method show
          * @grammar show() ⇒ instance
-         * @desc 显示组件
+         * @param {Function} [callback] 刷新之后的回调函数
+         * @for Calendar
+         * @uses Calendar.picker
          */
         show: function(){
             var me = this,
@@ -196,9 +191,12 @@
         },
 
         /**
-         * @name hide
+         * 隐藏组件
+         * @method hide
          * @grammar hide() ⇒ instance
-         * @desc 隐藏组件
+         * @param {Function} [callback] 刷新之后的回调函数
+         * @for Calendar
+         * @uses Calendar.picker
          */
         hide: function(){
             var me = this,
@@ -225,18 +223,44 @@
             this._frame = null;
 
             return this;
-        },
+        }
 
         /**
-         * @name Trigger Events
-         * @theme event
-         * @desc 组件内部触发的事件
-         *
-         * ^ 名称 ^ 处理函数参数 ^ 描述 ^
-         * | show | event, ui | 当组件显示后触发 |
-         * | hide | event, ui | 当组件隐藏后触发 |
-         * | beforehide | event, ui | 组件隐藏之前触发，可以通过e.preventDefault()来阻止 |
-         * | commit | event, date, dateStr, ui | 但确认选择某个日期的时候触发 |
+         * @event show
+         * @param {Event} e gmu.Event对象
+         * @param {Calendar} ui widget实例
+         * @description 当组件显示后触发
+         * @for Calendar
+         * @uses Calendar.picker
+         */
+
+        /**
+         * @event hide
+         * @param {Event} e gmu.Event对象
+         * @param {Calendar} ui widget实例
+         * @description 当组件隐藏后触发
+         * @for Calendar
+         * @uses Calendar.picker
+         */
+
+        /**
+         * @event beforehide
+         * @param {Event} e gmu.Event对象
+         * @param {Calendar} ui widget实例
+         * @description 组件隐藏之前触发，可以通过e.preventDefault()来阻止
+         * @for Calendar
+         * @uses Calendar.picker
+         */
+
+        /**
+         * @event commit
+         * @param {Event} e gmu.Event对象
+         * @param {Date} date 选中的日期
+         * @param {String} dateStr 选中的日期字符格式
+         * @param {Calendar} ui widget实例
+         * @description 但确认选择某个日期的时候触发
+         * @for Calendar
+         * @uses Calendar.picker
          */
     } );
 
