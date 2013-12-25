@@ -19,22 +19,20 @@
      * - ***addListener*** 添加MediaQueryList对象监听器，接收回调函数，回调参数为MediaQueryList对象<br />
      * - ***removeListener*** 移除MediaQueryList对象监听器<br />
      *
-     * 
+     *
      * @method $.matchMedia
      * @grammar $.matchMedia(query)  ⇒ MediaQueryList
      * @param {String} query 查询的css query，类似\'screen and (orientation: portrait)\'
      * @return {Object} MediaQueryList
-     * @example 
+     * @example
      * $.matchMedia('screen and (orientation: portrait)').addListener(fn);
      */
-    
-
     $.matchMedia = (function() {
         var mediaId = 0,
             cls = 'gmu-media-detect',
             transitionEnd = $.fx.transitionEnd,
             cssPrefix = $.fx.cssPrefix,
-            $style = $('<style></style>').append('.' + cls + '{' + cssPrefix + 'transition: width 0.001ms; width: 0; position: absolute; top: -10000px;}\n').appendTo('head');
+            $style = $('<style></style>').append('.' + cls + '{' + cssPrefix + 'transition: width 0.001ms; width: 0; position: absolute; clip: rect(1px, 1px, 1px, 1px);}\n').appendTo('head');
 
         return function (query) {
             var id = cls + mediaId++,
@@ -43,9 +41,11 @@
                 ret;
 
             $style.append('@media ' + query + ' { #' + id + ' { width: 1px; } }\n') ;   //原生matchMedia也需要添加对应的@media才能生效
-            if ('matchMedia' in window) {
-                return window.matchMedia(query);
-            }
+
+            // 统一用模拟的，时机更好。
+            // if ('matchMedia' in window) {
+            //     return window.matchMedia(query);
+            // }
 
             $mediaElem = $('<div class="' + cls + '" id="' + id + '"></div>')
                 .appendTo('body')

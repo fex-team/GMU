@@ -1,6 +1,6 @@
 /**
  * @file 选项卡组件
- * @import extend/touch.js, core/widget.js, extend/highlight.js
+ * @import extend/touch.js, core/widget.js, extend/highlight.js, extend/event.ortchange.js
  * @importCSS transitions.css, loading.css
  * @module GMU
  */
@@ -80,7 +80,7 @@
                 $el.addClass('ui-tabs');
                 _opts._nav.on('tap', eventHandler).children().highlight('ui-state-hover');
             } );
-            
+
             $(window).on('ortchange', eventHandler);
         },
 
@@ -258,7 +258,7 @@
          * @param {Event} e gmu.Event对象
          * @description 当组件初始化完后触发。
          */
-        
+
         /**
          * @event beforeActivate
          * @param {Event} e gmu.Event对象
@@ -266,7 +266,7 @@
          * @param {Object} from 包含如下属性：div(内容div), index(位置), title(标题), content(内容), href(链接)
          * @description 内容切换之前触发，可以通过e.preventDefault()来阻止
          */
-        
+
         /**
          * @event activate
          * @param {Event} e gmu.Event对象
@@ -274,7 +274,7 @@
          * @param {Object} from 包含如下属性：div(内容div), index(位置), title(标题), content(内容), href(链接)
          * @description 内容切换之后触发
          */
-        
+
         /**
          * @event animateComplete
          * @param {Event} e gmu.Event对象
@@ -282,7 +282,7 @@
          * @param {Object} from 包含如下属性：div(内容div), index(位置), title(标题), content(内容), href(链接)
          * @description 动画完成后执行，如果没有设置动画，此时间不会触发
          */
-        
+
         /**
          * @event destroy
          * @param {Event} e gmu.Event对象
