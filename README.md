@@ -50,6 +50,6 @@ gmu所有的代码要求通过[此内定代码规范](https://github.com/gmuteam
 当然，我们更欢迎您的fork，为GMU添砖加瓦。
 
 ###联系我们###
-+ QQ：127405799
++ QQ：127405799 (已满) 339271891 （群2）
 + Email：gmu@baidu.com
 
