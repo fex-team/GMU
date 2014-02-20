@@ -239,7 +239,7 @@
                     /input|textarea|select/i.test(document.activeElement.tagName)){
 
                     document.body.scrollLeft = 0;
-                    $.later(action, 200);//do it later in 200ms.
+                    setTimeout(action, 200);//do it later in 200ms.
 
                 } else {
                     action();//do it now
@@ -353,7 +353,7 @@
          * @param {Event} e gmu.Event对象
          * @description 在弹出框关闭之后触发
          */
-        
+
         /**
          * @event destroy
          * @param {Event} e gmu.Event对象
