@@ -1,7 +1,7 @@
 module.exports = function( grunt ) {
     var path = require( 'path' ),
         file = grunt.file;
-    
+
     function concatComponents( opts, f, theme, models ) {
 
         if (typeof theme !== 'string') {
@@ -74,7 +74,7 @@ module.exports = function( grunt ) {
                 obj.structor && arr.push(readText(cssPrefix + obj.structor)) &&
                         cssFiles.push(obj.structor);
 
-                theme && obj[theme] && 
+                theme && obj[theme] &&
                         arr.push(readText(cssPrefix + obj[theme])) &&
                         cssFiles.push(obj[theme]);
 
@@ -89,8 +89,8 @@ module.exports = function( grunt ) {
                         url = matches[i].match(
                                 /url\(((['"]?)(?!data)([^'"\n\r]+?)\2)\)/i)[3];
 
-                        images[url] = path.resolve(cssPrefix + 
-                                path.dirname(obj.structor || obj[theme]) + 
+                        images[url] = path.resolve(cssPrefix +
+                                path.dirname(obj.structor || obj[theme]) +
                                 path.sep + url);
                     }
                 }
@@ -141,7 +141,7 @@ module.exports = function( grunt ) {
         banner = opts.banner;
         dest = f.dest;
 
-        file.write(dest, 
+        file.write(dest,
                 banner.replace(/@files/ig, jsFiles.join(', ')) + '\n' + js.join(opts.separator));
 
         grunt.log.writeln('✓ 生成 %s - %s ', dest, String(caculateSize(dest)).green );
@@ -156,7 +156,7 @@ module.exports = function( grunt ) {
 
         renderedImages = {};
         for (image in images) {
-            
+
             if( images.hasOwnProperty( image ) ) {
                 newName = path.basename(image);
 
@@ -171,17 +171,19 @@ module.exports = function( grunt ) {
                 }
 
                 renderedImages[newName] = images[image];
-                file.write(destDir + 'images/' + newName, 
-                        file.read(images[image]));
+                file.write(destDir + 'images/' + newName,
+                        file.read(images[image], {
+                encoding: null
+            }));
 
-                css = strReplace('\\((\'|")?' + 
-                        image.replace(/\./g, '\\.') + '\\1\\)', 
+                css = strReplace('\\((\'|")?' +
+                        image.replace(/\./g, '\\.') + '\\1\\)',
                             '(./images/' + newName + ')', css);
             }
         }
 
         dest = dest.replace(/\.js$/, '.css');
-        file.write(dest, 
+        file.write(dest,
                 banner.replace(/@files/g, cssFiles.join(', ')) + '\n' + css );
         grunt.log.writeln('✓ 生成 %s - %s ', dest, String(caculateSize(dest)).green);
     }
