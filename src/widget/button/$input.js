@@ -57,7 +57,6 @@
             // 设置disabled状态
             if ( $el.is( 'input[type="checkbox"], input[type="radio"]' ) ) {
                 $el.prop( 'disabled', state === 'disabled' );
-                $el.prop( 'checked', state === 'checked' );
             }
 
             return this.origin.apply( this, arguments );
