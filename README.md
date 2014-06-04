@@ -2,7 +2,7 @@
 + 当前版本（2.1.0）基于zepto 1.0
 + 2.0.3及以下版本（支持zepto 1.0rc1），请移步至老的github地址 https://github.com/campaign/gmu
 
-##Build State [![Build Status](https://secure.travis-ci.org/gmuteam/GMU.png?branch=dev-refactor)](https://travis-ci.org/fex-team/GMU.svg?branch=master)
+##Build State [![Build Status](https://travis-ci.org/fex-team/GMU.svg?branch=master)](https://travis-ci.org/fex-team/GMU)
 
 ##GMU##
 GMU是基于zepto的轻量级mobile UI组件库，符合jquery ui使用规范，提供webapp、pad端简单易用的UI组件。兼容iOS3+ / android2.1+，支持国内主流移动端浏览器，如safari, chrome, UC, qq等。
