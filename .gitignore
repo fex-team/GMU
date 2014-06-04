@@ -2,7 +2,6 @@
 /.idea
 /gmu_webapp2.0.0.zip
 /node_modules
-/dist
 /doc
 /test/report/report.html
 /test/report/report.xml
