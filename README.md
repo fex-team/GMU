@@ -45,6 +45,21 @@ gmu所有的代码要求通过[此内定代码规范](https://github.com/gmuteam
 `grunt doc`
 
 
+###关于dist目录###
+
+如果不想自己打包也可以直接使用 `dist` 目录中打包好的资源，其中包括
+
+```html
+reset.css
+gmu.css
+zepto.js
+gmu.js
+```
+
+按顺序直接引用即可，此外，`dist` 中还有压缩版本，可以按需使用。
+
+需要注意的是，GMU中有些插件是无法共存的，因此 `dist` 目录中的 `gmu.js` 中并不包含这些插件，如需自定打包规则请参考之前的打包教程。
+
 ###反馈bug###
 如果您有任何关于GMU或移动前端开发中的问题，可以在QQ群中讨论，也可以通过[git issue](https://github.com/campaign/gmu/issues)给我们反馈bug，我们会尽快解决。
 当然，我们更欢迎您的fork，为GMU添砖加瓦。
