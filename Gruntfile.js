@@ -40,8 +40,12 @@ module.exports = function(grunt) {
                 src: [
                     'widget/**/*.js',
 
-                    // 所有的插件都默认不打包，要加的话在下面配。
-                    '!widget/**/$*.js'
+                    // 过滤掉一些可能冲突的插件
+                    '!widget/gotop/$iscroll.js',
+                    '!widget/refresh/$*.js',
+                    'widget/refresh/$iOS5.js',
+                    '!widget/slider/$dynamic.js',
+                    '!widget/slider/$multiview.js'
                 ],
 
                 dest: 'dist/gmu.js'
