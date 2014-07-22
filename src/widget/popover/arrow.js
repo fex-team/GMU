@@ -1,5 +1,5 @@
 /**
- * @file 是否现实剪头
+ * @file 是否现实箭头
  * @import widget/popover/popover.js
  */
 (function( gmu ) {
@@ -8,7 +8,7 @@
     Popover.template.arrow = '<span class="ui-arrow"></span>';
 
     /**
-     * @property {Boolean} [arrow=true] 是否显示剪头
+     * @property {Boolean} [arrow=true] 是否显示箭头
      * @namespace options
      * @for Popover
      * @uses Popover.arrow
@@ -16,8 +16,8 @@
     Popover.options.arrow = true;    // 默认开启arrow
 
     /**
-     * 扩展Popover显示剪头功能。当此文件引入后，Popover实例将自动开启显示剪头。
-     * 剪头的位置会根据不同的placement显示在不同的位置。
+     * 扩展Popover显示箭头功能。当此文件引入后，Popover实例将自动开启显示箭头。
+     * 箭头的位置会根据不同的placement显示在不同的位置。
      * @class arrow
      * @namespace Popover
      * @pluginfor Popover
