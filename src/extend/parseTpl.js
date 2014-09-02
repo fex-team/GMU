@@ -15,7 +15,7 @@
      * @param {Object} data 数据
      * @example var str = "<p><%=name%></p>",
      * obj = {name: 'ajean'};
-     * console.log($.parseTpl(str, data)); // => <p>ajean</p>
+     * console.log($.parseTpl(str, obj)); // => <p>ajean</p>
      */
     $.parseTpl = function( str, data ) {
         var tmpl = 'var __p=[];' + 'with(obj||{}){__p.push(\'' +
