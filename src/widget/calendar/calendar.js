@@ -139,7 +139,7 @@
 
                 case 'change':
                     elems = $('.ui-calendar-header .ui-calendar-year, ' +
-                        '.ui-calendar-header .ui-calendar-month', this._el);
+                        '.ui-calendar-header .ui-calendar-month', this.$el);
 
                     return this.switchMonthTo(getVal(elems.eq(1)), getVal(elems.eq(0)));
 
