@@ -346,7 +346,7 @@
             }
 
             //添加一个间隙，样式需求
-            html += '</thead></tr><tbody><tr class="ui-calendar-gap">' +
+            html += '</tr></thead><tbody><tr class="ui-calendar-gap">' +
                 '<td colspan="7">&#xa0;</td></tr>';
 
             daysInMonth = getDaysInMonth(drawYear, drawMonth);
